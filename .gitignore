@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Vendors assets
+bower.json
+**/vendors/*
+
+
+*.egg-info/
+.installed.cfg
+*.egg
+*.eggs
