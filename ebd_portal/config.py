@@ -14,6 +14,12 @@ PACKAGES = [
 CFG_DATABASE_NAME = "ebd"
 CFG_DATABASE_USER = "ebd"
 
+# <-- Debug toolbar configuration
+DEBUG = True
+DEBUG_TB_ENABLED = True
+DEBUG_TB_INTERCEPT_REDIRECTS = False
+# -->
+
 try:
     from ebd_portal.instance_config import *
 except ImportError:
