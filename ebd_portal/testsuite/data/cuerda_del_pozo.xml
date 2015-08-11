@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+<record>
+  <controlfield tag="001">300</controlfield>
+  <datafield tag="100" ind1=" " ind2=" ">
+     <subfield code="a">Aguilar, Fernando</subfield>
+  </datafield>
+  <datafield tag="245" ind1=" " ind2=" ">
+    <subfield code="a">Datos cuerda del pozo 2013</subfield>
+  </datafield>
+</record>
+</collection>
