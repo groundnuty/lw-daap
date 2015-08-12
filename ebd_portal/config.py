@@ -20,6 +20,8 @@ DEBUG_TB_ENABLED = True
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 # -->
 
+RECORDS_BREADCRUMB_TITLE_KEY = 'title'  
+
 try:
     from ebd_portal.instance_config import *
 except ImportError:
