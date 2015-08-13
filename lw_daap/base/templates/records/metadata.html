@@ -1,0 +1,10 @@
+
+
+{%- extends "records/metadata_base.html" -%}
+
+{# remove the record tabs above the record... #}
+{% block record_tabs %}{% endblock %}
+
+{% block record_content %}
+  {{ format_record(recid, of=of, ln=g.ln)|safe }}
+{% endblock %}

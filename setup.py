@@ -5,17 +5,17 @@ packages = find_packages()
 print packages
 
 setup(
-    name="ebd_portal",
+    name="lw_daap",
     version="0.1",
     url="http://aeonium.eu/",
     author="aeonium",
     author_email="info@aeonium.eu",
-    description="Open Data Portal EBD",
+    description="LifeWatch Data Access and Preservation",
     packages=packages,
     install_requires=[
     	"Invenio>=2"
     ],
     entry_points={
-        "invenio.config": ["ebd_portal = ebd_portal.config"]
+        "invenio.config": ["lw_daap = lw_daap.config"]
     }
 )

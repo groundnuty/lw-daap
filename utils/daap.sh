@@ -27,12 +27,12 @@ sudo pip install -U virtualenvwrapper pip
 
 # Create a virtualenv to install all the python code there
 . /usr/local/bin/virtualenvwrapper.sh
-mkvirtualenv portal-ebd
+mkvirtualenv daap 
 
 # Get the code
-git clone https://github.com/aeonium/portal-ebd.git
-# and work inside the portal-ebd dir
-pushd portal-ebd
+git clone https://github.com/aeonium/lw-daap.git
+# and work inside the dir
+pushd lw-daap 
 
 # install all requirements (this includes proper invenio version)
 pip install -r requirements-devel.txt --exists-action i
@@ -61,7 +61,7 @@ inveniomanage assets build
 inveniomanage database init --user=root --yes-i-know
 inveniomanage database create
 
-# exit portal-ebd dir
+# exit dir
 popd
 
 
@@ -85,11 +85,10 @@ bibrank -f50000 -R -wwrd -s14d -L Sunday -u admin
 bibreformat -s5m -o HB,HD -u admin
 bibsort -R -s7d -L Sunday 01:00-05:00 -u admin
 bibsort -s5m -u admin
-#dbdump -s20h -L 22:00-06:00 --params="--max_allowed_packet=2G" -o /opt/portal-ebd/var/dbdump/ -n10 -u admin
+#dbdump -s20h -L 22:00-06:00 --params="--max_allowed_packet=2G" -o /opt/lw_daap/var/dbdump/ -n10 -u admin
 inveniogc -a -s7d -L Sunday 01:00-05:00 -u admin
 inveniogc -g -s1d -u admin
 oairepositoryupdater -s1h -u admin
-#There is no webcoll in invenio2.1
 webcoll -s5m -u admin
 
 honcho start

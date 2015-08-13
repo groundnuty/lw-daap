@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+<record>
+  <controlfield tag="001">300</controlfield>
+  <datafield tag="100" ind1=" " ind2=" ">
+     <subfield code="a">Aguilar, Fernando</subfield>
+  </datafield>
+  <datafield tag="700" ind1=" " ind2=" ">
+     <subfield code="a">Marco, Jesus</subfield>
+  </datafield>
+  <datafield tag="245" ind1=" " ind2=" ">
+    <subfield code="a">Datos cuerda del pozo 2013</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="c">2015-08-12</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">user-zenodo</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">software</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">analysis</subfield>
+  </datafield>
+  <datafield tag="520" ind1=" " ind2=" ">
+    <subfield code="a">A PDF of the full presentation made by Richard Jefferson in January 1997 at the 14th Congress of the South African Society of Biochemistry and Molecular Biology, held in Grahamstown, South Africa.
+The presentation re-iterates the hologenome theory of evolution, described at a 1994 Cold Spring Harbor meeting, and describes the underlying logic and data derived from studies of the cleavage of pro-hormone glucuronide conjugates by E. coli (and other microbes). The presentation reviews the molecular genetics of the gusRABC operon, and its role in effecting an environmental sensing and response mechanism through enterohepatic circulation of steroids.
+The presentation coined the term 'Ecotherapeutics' (Ecological Therapeutics) and indicated the potential for adjusting the population structure and dynamics of vertebrate associated microbes to impact the performance of the holobiont, via the hologenome.</subfield>
+  </datafield>
+  <datafield tag="041" ind1=" " ind2=" ">
+    <subfield code="a">eng</subfield>
+  </datafield>
+  <datafield tag="542" ind1=" " ind2=" ">
+    <subfield code="l">open</subfield>
+  </datafield>
+  <datafield tag="540" ind1=" " ind2=" ">
+    <subfield code="u">http://www.opendefinition.org/licenses/cc-by</subfield>
+    <subfield code="a">Creative Commons Attribution</subfield>
+  </datafield>
+  <datafield tag="024" ind1="7" ind2=" ">
+    <subfield code="2">DOI</subfield>
+    <subfield code="a">10.5281/lwdaap.11979</subfield>
+  </datafield>
+  <datafield tag="653" ind1="1" ind2=" ">
+    <subfield code="a">hydrological</subfield>
+  </datafield>
+  <datafield tag="653" ind1="1" ind2=" ">
+    <subfield code="a">soria</subfield>
+  </datafield>
+  <datafield tag="FFT" ind1=" " ind2=" ">
+    <subfield code="a">/home/ubuntu/AMT2013.csv</subfield>
+    <subfield code="r">restricted_picture</subfield>
+  </datafield>
+</record>
+</collection>
+
