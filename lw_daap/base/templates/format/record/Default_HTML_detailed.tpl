@@ -27,6 +27,9 @@
         {% if record.publication_date %}
           <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td>
         {% endif %}
+        {% if record.doi %}
+          <tr><td class="key">DOI</td><td class="value">{{ record.doi }}</td>
+        {% endif %}
         {% if record.__license_text__%}
           <tr><td class="key">License</td><td class="value"><a href="{{ record.__license_text__.url }}">
             {{record.__license_text__.license}}</a></td>
