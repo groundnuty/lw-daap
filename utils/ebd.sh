@@ -50,7 +50,7 @@ inveniomanage config set CFG_SITE_SECURE_URL http://$IP:28080
 
 # Bower used for managing css, js, etc
 inveniomanage bower > bower.json
-bower install
+CI=true bower install
 
 # Collect css, js, where flask expects to find it
 inveniomanage config set COLLECT_STORAGE invenio.ext.collect.storage.link
