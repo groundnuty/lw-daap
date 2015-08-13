@@ -1,1 +1,1 @@
-git+git://github.com/inveniosoftware/invenio@maint-2.1#egg=Invenio-2.1
+git+git://github.com/inveniosoftware/invenio@v2.0.5#egg=Invenio-2.0
