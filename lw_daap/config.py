@@ -4,6 +4,7 @@ CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
 CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
+CFG_SITE_SUPPORT_EMAIL = "info@lifewatch.eu"
 
 PACKAGES = [
     "lw_daap.base",

@@ -15,18 +15,10 @@
     <subfield code="c">2015-08-12</subfield>
   </datafield>
   <datafield tag="980" ind1=" " ind2=" ">
-    <subfield code="a">user-zenodo</subfield>
-  </datafield>
-  <datafield tag="980" ind1=" " ind2=" ">
-    <subfield code="a">software</subfield>
-  </datafield>
-  <datafield tag="980" ind1=" " ind2=" ">
-    <subfield code="a">analysis</subfield>
+    <subfield code="a">dataset</subfield>
   </datafield>
   <datafield tag="520" ind1=" " ind2=" ">
-    <subfield code="a">A PDF of the full presentation made by Richard Jefferson in January 1997 at the 14th Congress of the South African Society of Biochemistry and Molecular Biology, held in Grahamstown, South Africa.
-The presentation re-iterates the hologenome theory of evolution, described at a 1994 Cold Spring Harbor meeting, and describes the underlying logic and data derived from studies of the cleavage of pro-hormone glucuronide conjugates by E. coli (and other microbes). The presentation reviews the molecular genetics of the gusRABC operon, and its role in effecting an environmental sensing and response mechanism through enterohepatic circulation of steroids.
-The presentation coined the term 'Ecotherapeutics' (Ecological Therapeutics) and indicated the potential for adjusting the population structure and dynamics of vertebrate associated microbes to impact the performance of the holobiont, via the hologenome.</subfield>
+    <subfield code="a">The Cuerda del Pozo water reservoir, in Soria, Spain; was built in 1941 with a total surface of 2176 ha. and has presented an occupation of 99 hm3 (43.23%). Its main uses are the irrigation of 26,000 ha. of crops and the supply of drinking water to the province of Soria and part of Valladolid. It has historically presented a water quality below its expected limits for both its geographic situation and the characteristics of its watershed.</subfield> 
   </datafield>
   <datafield tag="041" ind1=" " ind2=" ">
     <subfield code="a">eng</subfield>
