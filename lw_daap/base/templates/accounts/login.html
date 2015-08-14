@@ -1,0 +1,47 @@
+{#
+## This file is part of Invenio.
+## Copyright (C) 2012, 2013, 2014 CERN.
+##
+## Invenio is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License as
+## published by the Free Software Foundation; either version 2 of the
+## License, or (at your option) any later version.
+##
+## Invenio is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Invenio; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{% extends "accounts/login_base.html" %}
+
+{%- block form_header %}{% endblock %}
+{%- block form_auth_external scoped -%}{% endblock %}
+{% block nickname_popover_placement %}left{% endblock%}
+
+{%- block form_auth_internal -%}
+ <div class="col-sm-8 col-md-8">
+      <div class="jumbotron login-features">
+        <h1>New to {{config.CFG_SITE_NAME}}?</h1>
+        {#{% include "lw_daap/benefits.html" %}#}
+      </div>
+  </div>
+  <div class="col-sm-4 col-md-4">
+    {%- block form_auth_internal_form -%}
+      <div class="well">
+      <h2>Sign In</h2>
+      {% set next = request.script_root + request.path if request.endpoint != 'webaccount.logout' and request.endpoint != 'webaccount.login' else config.CFG_SITE_SECURE_URL %}
+      <br /><a href="{{url_for('oauthclient.login', remote_app='lifewatch', next=next)}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-lifewatch"></i> Sign in with Lifewatch</a>
+      <br /><a href="{{url_for('oauthclient.login', remote_app='lifewatch', next=next)}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-lifewatch"></i> Sign in with CSIC</a>
+      <br /><a href="{{url_for('oauthclient.login', remote_app='github', next=next)}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-github"></i> Sign in with GitHub</a>
+      <br /><a href="{{url_for('oauthclient.login', remote_app='google', next=next)}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-google"></i> Sign in with Google</a>
+      <br /><a href="{{url_for('oauthclient.login', remote_app='facebook', next=next)}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
+      </div>
+    {%- endblock -%}
+    {%- block form_auth_internal_title scoped -%}{% endblock %}
+  </div>
+{%- endblock -%}
