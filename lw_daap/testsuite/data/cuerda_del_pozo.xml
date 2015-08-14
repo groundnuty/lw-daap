@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collection>
 <record>
-  <controlfield tag="001">345</controlfield>
+  <controlfield tag="001">200</controlfield>
   <datafield tag="100" ind1=" " ind2=" ">
-     <subfield code="a">Aguilar, Fernando</subfield>
-  </datafield>
-  <datafield tag="700" ind1=" " ind2=" ">
-     <subfield code="a">Marco, Jesus</subfield>
+     <subfield code="a">Ecohydros S.L.</subfield>
   </datafield>
   <datafield tag="245" ind1=" " ind2=" ">
-    <subfield code="a">Datos cuerda del pozo 2013</subfield>
+    <subfield code="a">Physicochemical Water Paremeters 2013</subfield>
   </datafield>
   <datafield tag="260" ind1=" " ind2=" ">
     <subfield code="c">2015-08-12</subfield>
@@ -18,10 +15,7 @@
     <subfield code="a">dataset</subfield>
   </datafield>
   <datafield tag="520" ind1=" " ind2=" ">
-    <subfield code="a">The Cuerda del Pozo water reservoir, in Soria, Spain; was built in 1941 with a total surface of 2176 ha. and has presented an occupation of 99 hm3 (43.23%). Its main uses are the irrigation of 26,000 ha. of crops and the supply of drinking water to the province of Soria and part of Valladolid. It has historically presented a water quality below its expected limits for both its geographic situation and the characteristics of its watershed.</subfield> 
-  </datafield>
-  <datafield tag="041" ind1=" " ind2=" ">
-    <subfield code="a">eng</subfield>
+    <subfield code="a">Physicochemical water data taken at Cuerda del Pozo Reservoir during 2013. This dataset includes different parameters like date, temperature, water pressure, salinity, dissolved oxygen, oxygen saturation or pH.</subfield>
   </datafield>
   <datafield tag="542" ind1=" " ind2=" ">
     <subfield code="l">open</subfield>
@@ -32,13 +26,22 @@
   </datafield>
   <datafield tag="024" ind1="7" ind2=" ">
     <subfield code="2">DOI</subfield>
-    <subfield code="a">10.5281/lwdaap.11979</subfield>
+    <subfield code="a">10.5281/lwdaap.200</subfield>
   </datafield>
   <datafield tag="653" ind1="1" ind2=" ">
-    <subfield code="a">hydrological</subfield>
-  </datafield>
-  <datafield tag="653" ind1="1" ind2=" ">
-    <subfield code="a">soria</subfield>
+    <subfield code="a">AMT</subfield>
+    <subfield code="a">temperature</subfield>
+    <subfield code="a">pressure</subfield>
+    <subfield code="a">salinity</subfield>
+    <subfield code="a">dissolved oxygen</subfield>
+    <subfield code="a">saturation</subfield>
+    <subfield code="a">pH</subfield>
+    <subfield code="a">Cuerda del Pozo</subfield>
+    <subfield code="a">reservoir</subfield>
+    <subfield code="a">Soria</subfield>
+    <subfield code="a">Duero</subfield>
+    <subfield code="a">fresh water</subfield>
+    <subfield code="a">confederacion hidrografica</subfield>
   </datafield>
   <datafield tag="FFT" ind1=" " ind2=" ">
     <subfield code="a">/home/ubuntu/AMT2013.csv</subfield>

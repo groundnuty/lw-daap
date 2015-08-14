@@ -41,11 +41,15 @@
     </table>
     {% endblock %}
 
-    {% if record.files_to_upload %}
+    {% if record.fft %}
     {% block files %}
     <h2>Files</h2>
-    {% for f in record.files_to_upload %}
-        {{ f }}
+    {{ record.fft.file_size }}
+    {{ record.fft.description }}
+    {{ record.fft.url }}
+    {% for f in record.fft %}
+        <p>Here!</p>
+        <p>{{ f }} </p>
     {% endfor %}
     {% endblock %}
     {% endif %}
