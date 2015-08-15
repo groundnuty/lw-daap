@@ -35,7 +35,10 @@
             {{record.__license_text__.license}}</a></td>
         {% endif %}
         {% if record.keywords %}
-          <tr><td class="key">Keywords</td><td class="value">{{ record.keywords|join('; ') }}</a></td>
+          <tr><td class="key">Keywords</td><td class="value">{{ record.keywords|join('; ') }}</td>
+        {% endif %}
+        {% if record.period %}
+          <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td>
         {% endif %}
       </tbody>
     </table>

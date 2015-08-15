@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collection>
 <record>
-  <controlfield tag="001">200</controlfield>
+  <controlfield tag="001">25710</controlfield>
+  <datafield tag="024" ind1="7" ind2=" ">
+    <subfield code="2">DOI</subfield>
+    <subfield code="a">10.5281/lwdaap.25710</subfield>
+  </datafield>
+  <datafield tag="045" ind1="2" ind2=" ">
+    <subfield code="b">2013-01-01</subfield>
+    <subfield code="b">2013-12-31</subfield>
+  </datafield>
   <datafield tag="100" ind1=" " ind2=" ">
      <subfield code="a">Ecohydros S.L.</subfield>
   </datafield>
@@ -24,10 +32,6 @@
     <subfield code="u">http://www.opendefinition.org/licenses/cc-by</subfield>
     <subfield code="a">Creative Commons Attribution</subfield>
   </datafield>
-  <datafield tag="024" ind1="7" ind2=" ">
-    <subfield code="2">DOI</subfield>
-    <subfield code="a">10.5281/lwdaap.200</subfield>
-  </datafield>
   <datafield tag="653" ind1="1" ind2=" ">
     <subfield code="a">AMT</subfield>
     <subfield code="a">temperature</subfield>
@@ -43,10 +47,18 @@
     <subfield code="a">fresh water</subfield>
     <subfield code="a">confederacion hidrografica</subfield>
   </datafield>
+<!--
   <datafield tag="FFT" ind1=" " ind2=" ">
     <subfield code="a">/home/ubuntu/AMT2013.csv</subfield>
-    <subfield code="r">restricted_picture</subfield>
+    <subfield code="d">Data from year 2013</subfield>
+    <subfield code="f">csv</subfield>
   </datafield>
+  <datafield tag="FFT" ind1=" " ind2=" ">
+    <subfield code="a">/home/ubuntu/Procfile</subfield>
+    <subfield code="d">test field</subfield>
+    <subfield code="f">honcho</subfield>
+  </datafield>
+-->
 </record>
 </collection>
 
