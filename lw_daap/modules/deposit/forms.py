@@ -711,7 +711,7 @@ class ZenodoForm(WebDepositForm):
     #
     # Funding
     #
-    grants = fields.DynamicFieldList(
+    '''grants = fields.DynamicFieldList(
         fields.FormField(
             GrantForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
@@ -730,12 +730,12 @@ class ZenodoForm(WebDepositForm):
                     "thus experience a delay before your upload is available "
                     "in OpenAIRE." % CFG_SITE_NAME,
         validators=[grants_validator],
-    )
+    )'''
 
     #
     # Related work
     #
-    related_identifiers = fields.DynamicFieldList(
+    '''related_identifiers = fields.DynamicFieldList(
         fields.FormField(
             RelatedIdentifierForm,
             description="Optional. Format: e.g. 10.1234/foo.bar",
@@ -749,7 +749,7 @@ class ZenodoForm(WebDepositForm):
         icon='fa fa-barcode fa-fw',
         widget_classes='',
         min_entries=1,
-    )
+    )'''
 
     #
     # Subjects
@@ -772,7 +772,7 @@ class ZenodoForm(WebDepositForm):
     #
     # Journal
     #
-    journal_title = fields.StringField(
+    '''journal_title = fields.StringField(
         label="Journal title",
         description="Optional.",
         validators=[
@@ -802,12 +802,12 @@ class ZenodoForm(WebDepositForm):
     )
     journal_pages = fields.StringField(
         label="Pages", description="Optional.", export_key='journal.pages',
-    )
+    )'''
 
     #
     # Book/report/chapter
     #
-    partof_title = fields.StringField(
+    '''partof_title = fields.StringField(
         label="Book title",
         description="Optional. "
                     "Title of the book or report which this "
@@ -836,12 +836,12 @@ class ZenodoForm(WebDepositForm):
         description="Optional.",
         placeholder="e.g city, country...",
         export_key='imprint.place',
-    )
+    )'''
 
     #
     # Thesis
     #
-    thesis_supervisors = fields.DynamicFieldList(
+    '''thesis_supervisors = fields.DynamicFieldList(
         fields.FormField(
             CreatorForm,
             widget=ExtendedListWidget(
@@ -860,12 +860,12 @@ class ZenodoForm(WebDepositForm):
         label='Awarding University',
         validators=[validators.optional()],
         icon='fa fa-building fa-fw',
-    )
+    )'''
 
     #
     # Contributors
     #
-    contributors = fields.DynamicFieldList(
+    '''contributors = fields.DynamicFieldList(
         fields.FormField(
             ContributorsForm,
             widget=ExtendedListWidget(
@@ -878,12 +878,12 @@ class ZenodoForm(WebDepositForm):
         icon='fa fa-users fa-fw',
         widget_classes='',
         min_entries=1,
-    )
+    )'''
 
     #
     # Conference
     #
-    conference_title = fields.StringField(
+    '''conference_title = fields.StringField(
         label="Conference title",
         description="Optional.",
         validators=[
@@ -946,18 +946,18 @@ class ZenodoForm(WebDepositForm):
         description="Optional. Number of part within a session.",
         placeholder="e.g 1",
         export_key="meetings.session_part",
-    )
+    )'''
 
     #
     # References
     #
-    references = zfields.TextAreaListField(
+    '''references = zfields.TextAreaListField(
         label="References",
         description="Optional. Format: One reference per line.",
         validators=[validators.optional(), ],
         icon='fa fa-bookmark',
         placeholder="One reference per line...",
-    )
+    )'''
 
     #
     # File upload field
@@ -1016,68 +1016,68 @@ class ZenodoForm(WebDepositForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Funding', [
-            'grants',
-        ], {
-            'indication': 'recommended',
-            'description': (
-                '%s is integrated into reporting lines for research funded'
-                ' by the European Commission via OpenAIRE'
-                ' (http://www.openaire.eu). Specify grants which have funded'
-                ' your research, and we will let your funding agency'
-                ' know!' % CFG_SITE_NAME
-            ),
-        }),
-        ('Related/alternate identifiers', [
-            'related_identifiers',
-        ], {
-            'classes': '',
-            'indication': 'recommended',
-            'description': (
-                'Specify identifiers of related publications and datasets.'
-                ' Supported identifiers include: DOI, Handle, ARK, PURL,'
-                ' ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic'
-                ' Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC,'
-                ' URNs and URLs.'
-            ),
-        }),
-        ('Contributors', [
-            'contributors'
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('References', [
-            'references',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Journal', [
-            'journal_title', 'journal_volume', 'journal_issue',
-            'journal_pages',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Conference', [
-            'conference_title', 'conference_acronym', 'conference_dates',
-            'conference_place', 'conference_url', '-', 'conference_session',
-            'conference_session_part'
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Book/Report/Chapter', [
-            'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
-            'partof_title', 'partof_pages',
-        ], {'classes': '', 'indication': 'optional', }),
-        ('Thesis', [
-            'thesis_university', 'thesis_supervisors',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
+#        ('Funding', [
+#            'grants',
+#        ], {
+#            'indication': 'recommended',
+#            'description': (
+#                '%s is integrated into reporting lines for research funded'
+#                ' by the European Commission via OpenAIRE'
+#                ' (http://www.openaire.eu). Specify grants which have funded'
+#                ' your research, and we will let your funding agency'
+#                ' know!' % CFG_SITE_NAME
+#            ),
+#        }),
+#        ('Related/alternate identifiers', [
+#            'related_identifiers',
+#        ], {
+#            'classes': '',
+#            'indication': 'recommended',
+#            'description': (
+#                'Specify identifiers of related publications and datasets.'
+#                ' Supported identifiers include: DOI, Handle, ARK, PURL,'
+#                ' ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic'
+#                ' Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC,'
+#                ' URNs and URLs.'
+#            ),
+#        }),
+#        ('Contributors', [
+#            'contributors'
+#        ], {
+#            'classes': '',
+#            'indication': 'optional',
+#        }),
+#        ('References', [
+#            'references',
+#        ], {
+#            'classes': '',
+#            'indication': 'optional',
+#        }),
+#        ('Journal', [
+#            'journal_title', 'journal_volume', 'journal_issue',
+#            'journal_pages',
+#        ], {
+#            'classes': '',
+#            'indication': 'optional',
+#        }),
+#        ('Conference', [
+#            'conference_title', 'conference_acronym', 'conference_dates',
+#            'conference_place', 'conference_url', '-', 'conference_session',
+#            'conference_session_part'
+#        ], {
+#            'classes': '',
+#            'indication': 'optional',
+#        }),
+#        ('Book/Report/Chapter', [
+#            'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
+#            'partof_title', 'partof_pages',
+#        ], {'classes': '', 'indication': 'optional', }),
+#        ('Thesis', [
+#            'thesis_university', 'thesis_supervisors',
+#        ], {
+#            'classes': '',
+#            'indication': 'optional',
+#        }),
         ('Subjects', [
             'subjects'
         ], {

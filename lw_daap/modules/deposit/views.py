@@ -41,14 +41,14 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.before_app_first_request
-def register_receivers():
-    """
-    Setup signal receivers for deposit module.
-    """
-    template_context_created.connect(
-        index_context_listener,
-        sender='webdeposit.index'
-    )
-
-    file_uploaded.connect(large_file_notification, weak=False)
+#@blueprint.before_app_first_request
+#def register_receivers():
+#    """
+#    Setup signal receivers for deposit module.
+#    """
+#    template_context_created.connect(
+#        index_context_listener,
+#        sender='webdeposit.index'
+#    )
+#
+#    file_uploaded.connect(large_file_notification, weak=False)
