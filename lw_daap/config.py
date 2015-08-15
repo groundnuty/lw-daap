@@ -17,7 +17,9 @@ PACKAGES = [
     "invenio.modules.*",
 ]
 
-PACKAGES_EXCLUDE= []
+PACKAGES_EXCLUDE= [
+    "invenio.modules.documentation",
+]
 
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.upload:upload",
