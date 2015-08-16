@@ -18,6 +18,7 @@ PACKAGES = [
 ]
 
 PACKAGES_EXCLUDE= [
+    "invenio.modules.messages",
     "invenio.modules.documentation",
     "invenio.modules.messages",
 ]
