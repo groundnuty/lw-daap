@@ -45,11 +45,6 @@ OAUTHCLIENT_REMOTE_APPS = dict(
     ),
 )
 
-GITHUB_APP_CREDENTIALS = dict(
-    consumer_key="yourkey",
-    consumer_secret="yoursecret",
-)
-
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.upload:upload",
 ]
@@ -93,6 +88,11 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 # -->
 
 RECORDS_BREADCRUMB_TITLE_KEY = 'title'  
+
+try:
+    from lw_daap.secrets import *
+except ImportError:
+    pass
 
 try:
     from lw_daap.instance_config import *
