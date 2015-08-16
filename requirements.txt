@@ -1,4 +1,6 @@
 git+git://github.com/inveniosoftware/invenio@v2.0.5#egg=Invenio-2.0
+# current alembic version does not work for the upgrader, enforce 0.7.6
+alembic==0.7.6
 # TODO: THESE ARE FROM ZENODO.DEPOSIT, CHECK IF REALLY NEEDED
 idutils
 altmetric
