@@ -7,8 +7,8 @@ CFG_SITE_NAME_INTL = {
 CFG_SITE_SUPPORT_EMAIL = "info@lifewatch.eu"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 3
 
-COMMUNITIES_PARENT_NAME="community-parent"
-COMMUNITIES_PARENT_NAME_PROVISIONAL="community-parent"
+COMMUNITIES_PARENT_NAME="communities-collection"
+COMMUNITIES_PARENT_NAME_PROVISIONAL="communities-collection"
 
 PACKAGES = [
     "lw_daap.base",
