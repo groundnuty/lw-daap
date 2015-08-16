@@ -46,13 +46,15 @@
 
     {% if record.fft %}
     {% block files %}
-    <h2>Files</h2>
-    {{ record.fft.file_size }}
-    {{ record.fft.description }}
-    {{ record.fft.url }}
-    {% for f in record.fft %}
-        <p>Here!</p>
-        <p>{{ f }} </p>
+    <h2>Files ({{ record.fft|length }})</h2>
+    {% for row in record.fft|batch(2) %}
+      <div class="row">
+        {% for file in row %}
+        <div class="col-sm-6">
+            <a href="{{ file.url }}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ file.description }}</a>
+        </div>
+        {% endfor %}
+      </div>
     {% endfor %}
     {% endblock %}
     {% endif %}
