@@ -1,3 +1,5 @@
+from invenio_oauthclient.contrib import github
+
 CFG_SITE_LANGS = ["en"]
 
 CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
@@ -5,6 +7,7 @@ CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
 CFG_SITE_SUPPORT_EMAIL = "info@lifewatch.eu"
+CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 3
 
 COMMUNITIES_PARENT_NAME="community-parent"
 COMMUNITIES_PARENT_NAME_PROVISIONAL="community-parent"
