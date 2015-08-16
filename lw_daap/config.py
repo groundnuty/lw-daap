@@ -1,5 +1,3 @@
-from invenio_oauthclient.contrib import github
-
 CFG_SITE_LANGS = ["en"]
 
 CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
