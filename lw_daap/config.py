@@ -21,6 +21,35 @@ PACKAGES_EXCLUDE= [
     "invenio.modules.documentation",
 ]
 
+OAUTHCLIENT_REMOTE_APPS = dict(
+    github=dict(
+        title='GitHub',
+        icon='fa fa-github',
+        
+	authorized_handler="invenio.modules.oauthclient.handlers" ":authorized_default_handler",
+        disconnect_handler="invenio.modules.oauthclient.handlers" ":disconnect_handler",
+        
+
+
+        params=dict(
+            request_token_params={
+                'scope': 'user:email,admin:repo_hook,read:org'
+            },
+            base_url='https://api.github.com/',
+            request_token_url=None,
+            access_token_url="https://github.com/login/oauth/access_token",
+            access_token_method='POST',
+            authorize_url="https://github.com/login/oauth/authorize",
+            app_key="GITHUB_APP_CREDENTIALS",
+        )
+    ),
+)
+
+GITHUB_APP_CREDENTIALS = dict(
+    consumer_key="yourkey",
+    consumer_secret="yoursecret",
+)
+
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.upload:upload",
 ]
