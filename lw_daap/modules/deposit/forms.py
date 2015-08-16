@@ -521,6 +521,14 @@ class ZenodoForm(WebDepositForm):
         widget=date_widget,
         widget_classes='input-sm',
     )
+    #period = zfields.PeriodField(
+    #    label=_('Period'),
+    #    icon='fa fa-calendar fa-fw',
+    #    description='Optional. Input the start and end date with format: YYYY-MM-DD.',
+    #    validators=[validators.DataRequired()],
+    #    widget=date_widget,
+    #    widget_classes='input-sm',
+    #)
     title = fields.TitleField(
         validators=[validators.DataRequired()],
         description='Required.',
@@ -989,20 +997,20 @@ class ZenodoForm(WebDepositForm):
             ['upload_type', 'publication_type', 'image_type', ],
             {'indication': 'required'}),
         ('Basic information', [
-            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'doi', 'prereserve_doi', 'publication_date', 'period', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {'indication': 'required', }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions'
         ], {
             'indication': 'required',
-            # 'description': (
-            #     'Unless you explicitly specify the license conditions below'
-            #     ' for Open Access and Embargoed Access uploads, you agree to'
-            #     ' release your data files under the terms of the Creative'
-            #     ' Commons Zero (CC0) waiver. All authors of the data and'
-            #     ' publications have agreed to the terms of this waiver and'
-            #     ' license.')
+             'description': (
+                 'Unless you explicitly specify the license conditions below'
+                 ' for Open Access and Embargoed Access uploads, you agree to'
+                 ' release your data files under the terms of the Creative'
+                 ' Commons Zero (CC0) waiver. All authors of the data and'
+                 ' publications have agreed to the terms of this waiver and'
+                 ' license.')
         }),
         ('Communities', [
             'communities',
