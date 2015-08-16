@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collection>
 <record>
-  <controlfield tag="001">25710</controlfield>
+  <controlfield tag="001">101</controlfield>
   <datafield tag="024" ind1="7" ind2=" ">
     <subfield code="2">DOI</subfield>
-    <subfield code="a">10.5281/lwdaap.25710</subfield>
+    <subfield code="a">10.5281/lwdaap.101</subfield>
   </datafield>
   <datafield tag="045" ind1="2" ind2=" ">
     <subfield code="b">2013-01-01</subfield>
@@ -21,6 +21,9 @@
   </datafield>
   <datafield tag="980" ind1=" " ind2=" ">
     <subfield code="a">dataset</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">provisional-user-hydro</subfield>
   </datafield>
   <datafield tag="520" ind1=" " ind2=" ">
     <subfield code="a">Physicochemical water data taken at Cuerda del Pozo Reservoir during 2013. This dataset includes different parameters like date, temperature, water pressure, salinity, dissolved oxygen, oxygen saturation or pH.</subfield>

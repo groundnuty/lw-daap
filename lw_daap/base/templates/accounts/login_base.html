@@ -78,6 +78,7 @@
 
   @rtype: str
   #}
+
   {%- block external_login_form scoped -%}
   {% if provider in config.CFG_OPENID_PROVIDERS %}
     {% set type = 'openid' %}
@@ -161,6 +162,9 @@
   </div>
   {%- endblock form_header_message -%}
 </div>
+
+
+
 {%- endblock form_header -%}
 {%- block form_body scoped -%}
 <div class="row">

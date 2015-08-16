@@ -1,1 +1,4 @@
 git+git://github.com/inveniosoftware/invenio@v2.0.5#egg=Invenio-2.0
+# TODO: THESE ARE FROM ZENODO.DEPOSIT, CHECK IF REALLY NEEDED
+idutils
+altmetric
