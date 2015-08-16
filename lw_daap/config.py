@@ -13,6 +13,7 @@ COMMUNITIES_PARENT_NAME_PROVISIONAL="communities-collection"
 PACKAGES = [
     "lw_daap.base",
     "lw_daap.modules.deposit",
+    "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
 ]
