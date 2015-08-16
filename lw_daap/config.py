@@ -8,7 +8,6 @@ CFG_SITE_SUPPORT_EMAIL = "info@lifewatch.eu"
 
 COMMUNITIES_PARENT_NAME="community-parent"
 COMMUNITIES_PARENT_NAME_PROVISIONAL="community-parent"
-#COMMUNITIES_OUTPUTFORMAT_PROVISIONAL = 'hb'
 
 PACKAGES = [
     "lw_daap.base",
@@ -19,6 +18,7 @@ PACKAGES = [
 
 PACKAGES_EXCLUDE= [
     "invenio.modules.documentation",
+    "invenio.modules.messages",
 ]
 
 OAUTHCLIENT_REMOTE_APPS = dict(
