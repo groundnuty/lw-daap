@@ -49,9 +49,11 @@ OAUTHCLIENT_REMOTE_APPS = dict(
 )
 
 DEPOSIT_TYPES = [
-    "lw_daap.modules.deposit.workflows.upload:upload",
+    "lw_daap.modules.deposit.workflows.dataset:dataset",
+    "lw_daap.modules.deposit.workflows.software:software",
+    "lw_daap.modules.deposit.workflows.analysis:analysis",
 ]
-DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.upload:upload"
+DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.dataset:dataset"
 
 # Don't commit anything. Testmode implies prefix is set to 10.5072
 CFG_DATACITE_TESTMODE = True

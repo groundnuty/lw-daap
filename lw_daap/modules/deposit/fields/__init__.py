@@ -28,6 +28,7 @@ from .reserve_doi_field import ReserveDOIField
 from .upload_subtype_field import UploadSubtypeField
 from .core import TextAreaListField
 from .period import PeriodField
+from .spatial import SpatialField
 
 __all__ = [
     'AccessRightField',

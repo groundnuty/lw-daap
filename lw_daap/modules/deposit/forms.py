@@ -422,10 +422,10 @@ class ZenodoForm(WebDepositForm):
     #
     # Fields
     #
-    upload_type = zfields.UploadTypeField(
-        validators=[validators.DataRequired()],
-        export_key='upload_type.type',
-    )
+    #upload_type = zfields.UploadTypeField(
+    #    validators=[validators.DataRequired()],
+    #    export_key='upload_type.type',
+    #)
 #    publication_type = fields.SelectField(
 #        label='Publication Type',
 #        choices=[
@@ -529,6 +529,15 @@ class ZenodoForm(WebDepositForm):
         validators=[validators.DataRequired()],
         widget=date_widget,
         widget_classes='input-sm',
+    )
+    spatial = zfields.SpatialField(
+        validators=[validators.DataRequired()],
+        description='Optional.',
+        filters=[
+            strip_string,
+        ],
+        export_key='spatial',
+        icon='fa fa-map-marker fa-fw',
     )
     title = fields.TitleField(
         validators=[validators.DataRequired()],
@@ -994,15 +1003,18 @@ class ZenodoForm(WebDepositForm):
     # Grouping of fields
     #
     groups = [
-        ('Type of file(s)',
-            ['upload_type', 'publication_type', 'image_type', ],
-            {'indication': 'required'}),
+        #('Type of file(s)',
+        #    ['upload_type', 'publication_type', 'image_type', ],
+        #    {'indication': 'required'}),
         ('Basic information', [
-            'doi', 'prereserve_doi', 'publication_date', 'period', 'title',  'creators',
+            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {'indication': 'required', }),
+        ('Physical information',[
+            'period', 'spatial',
+        ], {'indication': 'optional', }),
         ('License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions'
+            'access_right', 'embargo_date', 'license', 'access_conditions',
         ], {
             'indication': 'required',
              'description': (

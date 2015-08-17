@@ -26,7 +26,9 @@
         <h1>Publish and preserve</h1>
             <p>Share your research &mdash; all research outputs from across all fields of
             science are welcome.</p>
-            <a class="btn btn-primary" href="{{ url_for(".create") }}" role="button">Create a new record</a>
+            <a class="btn btn-primary" href="{{ url_for(".create", deposition_type="dataset" ) }}" role="button"><i class="fa fa-table fa-2x fa-fw"></i>Register new dataset</a>
+            <a class="btn btn-primary" href="{{ url_for(".create", deposition_type="software") }}" role="button"><i class="fa fa-cogs fa-2x fa-fw"></i>Register new software</a>
+            <a class="btn btn-primary" href="{{ url_for(".create", deposition_type="analysis") }}" role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw"></i>Register new analysis</a>
         </div>
     </div>
     <div class="col-sm-6 col-md-4">
