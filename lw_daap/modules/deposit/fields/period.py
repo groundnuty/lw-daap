@@ -1,12 +1,12 @@
 
-from wtforms import Form, FormField, validators
+from invenio.modules.deposit.fields.wtformsext import FormField
+from wtforms import Form, validators
 
 from invenio.base.i18n import _
 from invenio.modules.deposit.fields import Date 
 from invenio.modules.deposit.field_widgets import date_widget
 
 __all__ = ['PeriodField']
-
 
 class PeriodFieldForm(Form):
     start = Date(

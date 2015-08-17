@@ -28,7 +28,7 @@ from datetime import date
 import idutils
 from flask import request
 from jinja2 import Markup
-from wtforms import validators, widgets
+from wtforms import FormField, validators, widgets
 from wtforms.validators import ValidationError
 
 from invenio.base.globals import cfg
@@ -521,14 +521,15 @@ class ZenodoForm(WebDepositForm):
         widget=date_widget,
         widget_classes='input-sm',
     )
-    #period = zfields.PeriodField(
-    #    label=_('Period'),
-    #    icon='fa fa-calendar fa-fw',
-    #    description='Optional. Input the start and end date with format: YYYY-MM-DD.',
-    #    validators=[validators.DataRequired()],
-    #    widget=date_widget,
-    #    widget_classes='input-sm',
-    #)
+    #period = zfields.PeriodField( 
+    period = fields.Date( 
+        label=_('Period'),
+        icon='fa fa-calendar fa-fw',
+        description='Optional. Input the start and end date with format: YYYY-MM-DD.',
+        validators=[validators.DataRequired()],
+        widget=date_widget,
+        widget_classes='input-sm',
+    )
     title = fields.TitleField(
         validators=[validators.DataRequired()],
         description='Required.',
