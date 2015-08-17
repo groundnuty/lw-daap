@@ -53,8 +53,8 @@ from invenio.modules.deposit.helpers import record_to_draft
 from invenio.modules.deposit.tasks import merge_changes, is_sip_uploaded
 from lw_daap.modules.deposit.utils import create_doi, filter_empty_helper
 from invenio.ext.restful import error_codes, ISODate
-from lw_daap.modules.deposit.forms import ZenodoForm, \
-    ZenodoEditForm
+from lw_daap.modules.deposit.forms import BasicForm, DatasetForm, \
+    SoftwareForm, AnalysisForm, BasicEditForm
 from invenio.ext.sqlalchemy import db
 from invenio.base.helpers import unicodifier
 from invenio.modules.records.api import Record
@@ -648,10 +648,10 @@ class upload(DepositionType):
     enabled = True
     default = True
     api = True
-    draft_definitions = {
-        '_default': ZenodoForm,
-        '_edit': ZenodoEditForm,
-    }
+    #draft_definitions = {
+    #    '_default': DatasetForm,
+    #    '_edit': DatasetEditForm,
+    #}
 
     marshal_metadata_fields = dict(
         access_right=fields.String,

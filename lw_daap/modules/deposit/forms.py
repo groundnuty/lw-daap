@@ -57,7 +57,7 @@ from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
 
 
-__all__ = ('ZenodoForm', )
+__all__ = ('BasicForm', 'DatasetForm', 'SoftwareForm', 'AnalysisForm', )
 
 
 #
@@ -389,87 +389,12 @@ class CommunityForm(WebDepositForm):
         ]
     )
 
-
-class GrantForm(WebDepositForm):
-    id = fields.StringField(
-        widget=widgets.HiddenInput(),
-        processors=[
-            replace_field_data('acronym', grant_kb_value('acronym')),
-            replace_field_data('title', grant_kb_value('title'))
-        ],
-    )
-    acronym = fields.StringField(
-        widget=widgets.HiddenInput(),
-    )
-    title = fields.StringField(
-        placeholder="Start typing a grant number, name or abbreviation...",
-        autocomplete_fn=kb_autocomplete(
-            'json_projects',
-            mapper=json_projects_kb_mapper
-        ),
-        widget=TagInput(),
-        widget_classes='form-control',
-    )
-
-
 #
-# Form
+# BasicForm
 #
-class ZenodoForm(WebDepositForm):
+class BasicForm(WebDepositForm):
 
-    """Zenodo Upload Form."""
-
-    #
-    # Fields
-    #
-    #upload_type = zfields.UploadTypeField(
-    #    validators=[validators.DataRequired()],
-    #    export_key='upload_type.type',
-    #)
-#    publication_type = fields.SelectField(
-#        label='Publication Type',
-#        choices=[
-#            ('book', 'Book'),
-#            ('section', 'Book section'),
-#            ('conferencepaper', 'Conference paper'),
-#            ('article', 'Journal article'),
-#            ('patent', 'Patent'),
-#            ('preprint', 'Preprint'),
-#            ('deliverable', _('Project Deliverable')),
-#            ('milestone', _('Project Milestone')),
-#            ('proposal', 'Proposal'),
-#            ('report', 'Report'),
-#            ('softwaredocumentation', 'Software documentation'),
-#            ('thesis', 'Thesis'),
-#            ('technicalnote', 'Technical note'),
-#            ('workingpaper', 'Working paper'),
-#            ('other', 'Other'),
-#        ],
-#        validators=[
-#            required_if('upload_type', ['publication']),
-#            validators.optional()
-#        ],
-#        hidden=True,
-#        disabled=True,
-#        export_key='upload_type.subtype',
-#    )
-#    image_type = fields.SelectField(
-#        choices=[
-#            ('figure', 'Figure'),
-#            ('plot', 'Plot'),
-#            ('drawing', 'Drawing'),
-#            ('diagram', 'Diagram'),
-#            ('photo', 'Photo'),
-#            ('other', 'Other'),
-#        ],
-#        validators=[
-#            required_if('upload_type', ['image']),
-#            validators.optional()
-#        ],
-#        hidden=True,
-#        disabled=True,
-#        export_key='upload_type.subtype',
-#    )
+    """Basic Upload Form."""
 
     #
     # Basic information
@@ -520,24 +445,6 @@ class ZenodoForm(WebDepositForm):
         validators=[validators.DataRequired()],
         widget=date_widget,
         widget_classes='input-sm',
-    )
-    #period = zfields.PeriodField( 
-    period = fields.Date( 
-        label=_('Period'),
-        icon='fa fa-calendar fa-fw',
-        description='Optional. Input the start and end date with format: YYYY-MM-DD.',
-        validators=[validators.DataRequired()],
-        widget=date_widget,
-        widget_classes='input-sm',
-    )
-    spatial = zfields.SpatialField(
-        validators=[validators.DataRequired()],
-        description='Optional.',
-        filters=[
-            strip_string,
-        ],
-        export_key='spatial',
-        icon='fa fa-map-marker fa-fw',
     )
     title = fields.TitleField(
         validators=[validators.DataRequired()],
@@ -676,7 +583,7 @@ class ZenodoForm(WebDepositForm):
                     'conditions. Based on the justification, you decide '
                     'who to grant/deny access. You are not allowed to '
                     'charge users for granting access to data hosted on '
-                    'Zenodo.',
+                    'Dataset.',
         default="",
         validators=[
             required_if('access_right', ['restricted']),
@@ -727,49 +634,6 @@ class ZenodoForm(WebDepositForm):
     )
 
     #
-    # Funding
-    #
-    '''grants = fields.DynamicFieldList(
-        fields.FormField(
-            GrantForm,
-            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-            export_key=lambda f: {
-                'identifier': f.data['id'],
-                'title': "%s - %s (%s)" % (
-                    f.data['acronym'], f.data['title'], f.data['id']
-                )
-            }
-        ),
-        widget=TagListWidget(template="{{acronym}} - {{title}} ({{id}})"),
-        widget_classes=' dynamic-field-list',
-        icon='fa fa-money fa-fw',
-        description="Optional. Note, a human %s curator will validate your"
-                    " upload before reporting it to OpenAIRE, and you may "
-                    "thus experience a delay before your upload is available "
-                    "in OpenAIRE." % CFG_SITE_NAME,
-        validators=[grants_validator],
-    )'''
-
-    #
-    # Related work
-    #
-    '''related_identifiers = fields.DynamicFieldList(
-        fields.FormField(
-            RelatedIdentifierForm,
-            description="Optional. Format: e.g. 10.1234/foo.bar",
-            widget=ExtendedListWidget(
-                item_widget=ItemWidget(),
-                html_tag='div'
-            ),
-        ),
-        label="Related identifiers",
-        add_label='Add another related identifier',
-        icon='fa fa-barcode fa-fw',
-        widget_classes='',
-        min_entries=1,
-    )'''
-
-    #
     # Subjects
     #
     subjects = fields.DynamicFieldList(
@@ -788,9 +652,182 @@ class ZenodoForm(WebDepositForm):
     )
 
     #
+    # File upload field
+    #
+    plupload_file = fields.FileUploadField(
+        label="",
+        widget=plupload_widget,
+        export_key=False
+    )
+
+    def validate_plupload_file(form, field):
+        """Ensure minimum one file is attached."""
+        if not getattr(request, 'is_api_request', False):
+            # Tested in API by a separate workflow task.
+            if len(form.files) == 0:
+                raise ValidationError("You must provide minimum one file.")
+
+
+#
+# Form
+#
+class DatasetForm(BasicForm):
+
+    """Dataset Upload Form."""
+
+    #period = zfields.PeriodField( 
+    period = fields.Date( 
+        label=_('Period'),
+        icon='fa fa-calendar fa-fw',
+        description='Optional. Input the start and end date with format: YYYY-MM-DD.',
+        validators=[validators.DataRequired()],
+        widget=date_widget,
+        widget_classes='input-sm',
+    )
+    spatial = zfields.SpatialField(
+        validators=[validators.DataRequired()],
+        description='Optional.',
+        filters=[
+            strip_string,
+        ],
+        export_key='spatial',
+        icon='fa fa-map-marker fa-fw',
+    )
+
+    #
+    # Form configuration
+    #
+    _title = _('New dataset')
+    _drafting = True   # enable and disable drafting
+
+    #
+    # Grouping of fields
+    #
+    groups = [
+        ('Basic information', [
+            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'description', 'keywords', 'notes',
+        ], {'indication': 'required', }),
+        ('Physical information',[
+            'period', 'spatial',
+        ], {'indication': 'optional', }),
+        ('License', [
+            'access_right', 'embargo_date', 'license', 'access_conditions',
+        ], {
+            'indication': 'required',
+             'description': (
+                 'Unless you explicitly specify the license conditions below'
+                 ' for Open Access and Embargoed Access uploads, you agree to'
+                 ' release your data files under the terms of the Creative'
+                 ' Commons Zero (CC0) waiver. All authors of the data and'
+                 ' publications have agreed to the terms of this waiver and'
+                 ' license.')
+        }),
+        ('Communities', [
+            'communities',
+        ], {
+            'indication': 'recommended',
+            'description': Markup(
+                'Any user can create a community collection on'
+                ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
+                ' communities</a>). Specify communities which you wish your'
+                ' upload to appear in. The owner of the community will'
+                ' be notified, and can either accept or reject your'
+                ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+        }),
+        ('Subjects', [
+            'subjects'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+            'description': 'Specify subjects from a taxonomy or controlled '
+                           'vocabulary. Each term must be uniquely identified '
+                           '(e.g. a URL). For free form text, use the keywords'
+                           ' field in basic information section.',
+        }),
+    ]
+
+class SoftwareForm(BasicForm):
+
+    """Software Upload Form."""
+
+    #
+    # Form configuration
+    #
+    _title = _('New software')
+    _drafting = True   # enable and disable drafting
+
+    #
+    # Grouping of fields
+    #
+    groups = [
+        ('Basic information', [
+            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'description', 'keywords', 'notes',
+        ], {'indication': 'required', }),
+        ('License', [
+            'access_right', 'embargo_date', 'license', 'access_conditions',
+        ], {
+            'indication': 'required',
+             'description': (
+                 'Unless you explicitly specify the license conditions below'
+                 ' for Open Access and Embargoed Access uploads, you agree to'
+                 ' release your data files under the terms of the Creative'
+                 ' Commons Zero (CC0) waiver. All authors of the data and'
+                 ' publications have agreed to the terms of this waiver and'
+                 ' license.')
+        }),
+        ('Communities', [
+            'communities',
+        ], {
+            'indication': 'recommended',
+            'description': Markup(
+                'Any user can create a community collection on'
+                ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
+                ' communities</a>). Specify communities which you wish your'
+                ' upload to appear in. The owner of the community will'
+                ' be notified, and can either accept or reject your'
+                ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+        }),
+        ('Subjects', [
+            'subjects'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+            'description': 'Specify subjects from a taxonomy or controlled '
+                           'vocabulary. Each term must be uniquely identified '
+                           '(e.g. a URL). For free form text, use the keywords'
+                           ' field in basic information section.',
+        }),
+    ]
+
+class AnalysisForm(BasicForm):
+
+    """Analysis Upload Form."""
+
+    #
+    # Related work
+    #
+    related_identifiers = fields.DynamicFieldList(
+        fields.FormField(
+            RelatedIdentifierForm,
+            description="Optional. Format: e.g. 10.1234/foo.bar",
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
+        ),
+        label="Related identifiers",
+        add_label='Add another related identifier',
+        icon='fa fa-barcode fa-fw',
+        widget_classes='',
+        min_entries=1,
+    )
+
+    #
     # Journal
     #
-    '''journal_title = fields.StringField(
+    journal_title = fields.StringField(
         label="Journal title",
         description="Optional.",
         validators=[
@@ -820,12 +857,12 @@ class ZenodoForm(WebDepositForm):
     )
     journal_pages = fields.StringField(
         label="Pages", description="Optional.", export_key='journal.pages',
-    )'''
+    )
 
     #
     # Book/report/chapter
     #
-    '''partof_title = fields.StringField(
+    partof_title = fields.StringField(
         label="Book title",
         description="Optional. "
                     "Title of the book or report which this "
@@ -854,12 +891,12 @@ class ZenodoForm(WebDepositForm):
         description="Optional.",
         placeholder="e.g city, country...",
         export_key='imprint.place',
-    )'''
+    )
 
     #
     # Thesis
     #
-    '''thesis_supervisors = fields.DynamicFieldList(
+    thesis_supervisors = fields.DynamicFieldList(
         fields.FormField(
             CreatorForm,
             widget=ExtendedListWidget(
@@ -878,12 +915,12 @@ class ZenodoForm(WebDepositForm):
         label='Awarding University',
         validators=[validators.optional()],
         icon='fa fa-building fa-fw',
-    )'''
+    )
 
     #
     # Contributors
     #
-    '''contributors = fields.DynamicFieldList(
+    contributors = fields.DynamicFieldList(
         fields.FormField(
             ContributorsForm,
             widget=ExtendedListWidget(
@@ -896,12 +933,12 @@ class ZenodoForm(WebDepositForm):
         icon='fa fa-users fa-fw',
         widget_classes='',
         min_entries=1,
-    )'''
+    )
 
     #
     # Conference
     #
-    '''conference_title = fields.StringField(
+    conference_title = fields.StringField(
         label="Conference title",
         description="Optional.",
         validators=[
@@ -964,48 +1001,29 @@ class ZenodoForm(WebDepositForm):
         description="Optional. Number of part within a session.",
         placeholder="e.g 1",
         export_key="meetings.session_part",
-    )'''
+    )
 
     #
     # References
     #
-    '''references = zfields.TextAreaListField(
+    references = zfields.TextAreaListField(
         label="References",
         description="Optional. Format: One reference per line.",
         validators=[validators.optional(), ],
         icon='fa fa-bookmark',
         placeholder="One reference per line...",
-    )'''
-
-    #
-    # File upload field
-    #
-    plupload_file = fields.FileUploadField(
-        label="",
-        widget=plupload_widget,
-        export_key=False
     )
-
-    def validate_plupload_file(form, field):
-        """Ensure minimum one file is attached."""
-        if not getattr(request, 'is_api_request', False):
-            # Tested in API by a separate workflow task.
-            if len(form.files) == 0:
-                raise ValidationError("You must provide minimum one file.")
 
     #
     # Form configuration
     #
-    _title = _('New upload')
+    _title = _('New analysis')
     _drafting = True   # enable and disable drafting
 
     #
     # Grouping of fields
     #
     groups = [
-        #('Type of file(s)',
-        #    ['upload_type', 'publication_type', 'image_type', ],
-        #    {'indication': 'required'}),
         ('Basic information', [
             'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
@@ -1037,68 +1055,43 @@ class ZenodoForm(WebDepositForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-#        ('Funding', [
-#            'grants',
-#        ], {
-#            'indication': 'recommended',
-#            'description': (
-#                '%s is integrated into reporting lines for research funded'
-#                ' by the European Commission via OpenAIRE'
-#                ' (http://www.openaire.eu). Specify grants which have funded'
-#                ' your research, and we will let your funding agency'
-#                ' know!' % CFG_SITE_NAME
-#            ),
-#        }),
-#        ('Related/alternate identifiers', [
-#            'related_identifiers',
-#        ], {
-#            'classes': '',
-#            'indication': 'recommended',
-#            'description': (
-#                'Specify identifiers of related publications and datasets.'
-#                ' Supported identifiers include: DOI, Handle, ARK, PURL,'
-#                ' ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic'
-#                ' Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC,'
-#                ' URNs and URLs.'
-#            ),
-#        }),
-#        ('Contributors', [
-#            'contributors'
-#        ], {
-#            'classes': '',
-#            'indication': 'optional',
-#        }),
-#        ('References', [
-#            'references',
-#        ], {
-#            'classes': '',
-#            'indication': 'optional',
-#        }),
-#        ('Journal', [
-#            'journal_title', 'journal_volume', 'journal_issue',
-#            'journal_pages',
-#        ], {
-#            'classes': '',
-#            'indication': 'optional',
-#        }),
-#        ('Conference', [
-#            'conference_title', 'conference_acronym', 'conference_dates',
-#            'conference_place', 'conference_url', '-', 'conference_session',
-#            'conference_session_part'
-#        ], {
-#            'classes': '',
-#            'indication': 'optional',
-#        }),
-#        ('Book/Report/Chapter', [
-#            'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
-#            'partof_title', 'partof_pages',
-#        ], {'classes': '', 'indication': 'optional', }),
-#        ('Thesis', [
-#            'thesis_university', 'thesis_supervisors',
-#        ], {
-#            'classes': '',
-#            'indication': 'optional',
-#        }),
+        ('Contributors', [
+            'contributors'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
+        ('References', [
+            'references',
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
+        ('Journal', [
+            'journal_title', 'journal_volume', 'journal_issue',
+            'journal_pages',
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
+        ('Conference', [
+            'conference_title', 'conference_acronym', 'conference_dates',
+            'conference_place', 'conference_url', '-', 'conference_session',
+            'conference_session_part'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
+        ('Book/Report/Chapter', [
+            'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
+            'partof_title', 'partof_pages',
+        ], {'classes': '', 'indication': 'optional', }),
+        ('Thesis', [
+            'thesis_university', 'thesis_supervisors',
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
         ('Subjects', [
             'subjects'
         ], {
@@ -1110,7 +1103,6 @@ class ZenodoForm(WebDepositForm):
                            ' field in basic information section.',
         }),
     ]
-
 
 def filter_fields(groups):
     def _inner(element):
@@ -1140,7 +1132,7 @@ class EditFormMixin(object):
     )
 
 
-class ZenodoEditForm(ZenodoForm, EditFormMixin):
+class BasicEditForm(BasicForm, EditFormMixin):
 
     """Specialized form for editing a record."""
 
@@ -1168,3 +1160,4 @@ class ZenodoEditForm(ZenodoForm, EditFormMixin):
 
     _title = _('Edit upload')
     template = "deposit/edit.html"
+
