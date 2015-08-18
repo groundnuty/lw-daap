@@ -24,6 +24,31 @@
 
 from invenio.base.bundles import styles as _s, jquery as _j, invenio as _i
 
+#
+# Site-wide CSS
+#
 _s.contents += [
     "css/custom.css",
 ]
+
+#
+# Site-wide JS
+#
+_i.contents += [
+    "js/zenodo/init.js",
+]
+_i.bower.update({
+    "zeroclipboard": "~2.1.6",
+})
+
+# Remove MathJax (served from CDN instead).
+#del _j.bower['MathJax']
+
+#
+# Site-wide styles
+#
+#_s.contents.remove("less/base.less")
+#_s.contents.remove("less/footer.less")
+#_s.contents += [
+#    "less/zenodo.less",
+#]

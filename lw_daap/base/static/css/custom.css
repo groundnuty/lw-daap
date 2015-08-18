@@ -22,16 +22,12 @@
    filter: alpha(opacity=100);
 }
 
-
-
 .navbar-nav li a {
  line-height: 70px;
  font-family: "Open Sans", sans-serif;
  font-size: 16px;
  color: #333;
 }
-
-
 
 * {
   margin: 0;
@@ -58,3 +54,21 @@ html, body {
 
 #site-footer {
 }
+
+.hide-on-collapsed {
+  display: block;
+}
+
+.show-on-collapsed {
+  display: none;
+}
+
+.panel-toggle.collapsed .hide-on-collapsed {
+  display: none;
+}
+
+.panel-toggle.collapsed .show-on-collapsed {
+  display: block;
+}
+
+

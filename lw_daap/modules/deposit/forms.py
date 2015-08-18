@@ -654,7 +654,7 @@ class BasicForm(WebDepositForm):
     #
     # File upload field
     #
-    plupload_file = fields.FileUploadField(
+    plupload_file = zfields.FileUploadField(
         label="",
         widget=plupload_widget,
         export_key=False
@@ -680,12 +680,10 @@ class DatasetForm(BasicForm):
         label=_('Period'),
         icon='fa fa-calendar fa-fw',
         description='Optional. Input the start and end date with format: YYYY-MM-DD.',
-        validators=[validators.DataRequired()],
         widget=date_widget,
         widget_classes='input-sm',
     )
     spatial = zfields.SpatialField(
-        validators=[validators.DataRequired()],
         description='Optional.',
         filters=[
             strip_string,

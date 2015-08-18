@@ -20,9 +20,5 @@
  * or submit itself to any jurisdiction.
  */
 require(['jquery', 'js/zenodo/zenodo', 'vendors/zeroclipboard/dist/ZeroClipboard', 'js/citationformatter/citationformatter'], function() {
-    /*
-     * It preloads js/zenodo/zenodo to give it a name so you're free to use it
-     * from any places.
-     */
     console.info("js/zenodo/init is loaded");
 })
