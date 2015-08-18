@@ -654,7 +654,7 @@ class BasicForm(WebDepositForm):
     #
     # File upload field
     #
-    plupload_file = zfields.FileUploadField(
+    plupload_file = fields.FileUploadField(
         label="",
         widget=plupload_widget,
         export_key=False

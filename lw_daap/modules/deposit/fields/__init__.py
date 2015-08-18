@@ -29,7 +29,6 @@ from .upload_subtype_field import UploadSubtypeField
 from .core import TextAreaListField
 from .period import PeriodField
 from .spatial import SpatialField
-from .file_upload import FileUploadField
 
 __all__ = [
     'AccessRightField',
@@ -41,5 +40,4 @@ __all__ = [
     'TextAreaListField',
     'PeriodField',
     'SpatialField',
-    'FileUploadField',
 ]
