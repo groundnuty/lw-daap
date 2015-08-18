@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+<record>
+  <controlfield tag="001">103</controlfield>
+  <datafield tag="024" ind1="7" ind2=" ">
+    <subfield code="2">DOI</subfield>
+    <subfield code="a">10.5281/lwdaap.103</subfield>
+  </datafield>
+  <datafield tag="045" ind1="2" ind2=" ">
+    <subfield code="b">2013-01-01</subfield>
+    <subfield code="b">2013-12-31</subfield>
+  </datafield>
+  <datafield tag="100" ind1=" " ind2=" ">
+     <subfield code="a">Ecohydros S.L.</subfield>
+  </datafield>
+  <datafield tag="245" ind1=" " ind2=" ">
+    <subfield code="a">Physicochemical Water Paremeters 2013</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="c">2015-08-12</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">dataset</subfield>
+  </datafield>
+  <datafield tag="980" ind1=" " ind2=" ">
+    <subfield code="a">provisional-user-cuerdadelpozo</subfield>
+  </datafield>
+  <datafield tag="520" ind1=" " ind2=" ">
+    <subfield code="a">Physicochemical water data taken at Cuerda del Pozo Reservoir during 2013. This dataset includes different parameters like date, temperature, water pressure, salinity, dissolved oxygen, oxygen saturation or pH.</subfield>
+  </datafield>
+  <datafield tag="542" ind1=" " ind2=" ">
+    <subfield code="l">embargoed</subfield>
+  </datafield>
+  <datafield tag="942" ind1=" " ind2=" ">
+    <subfield code="a">2015-12-31</subfield>
+  </datafield>
+  <datafield tag="540" ind1=" " ind2=" ">
+    <subfield code="u">http://www.opendefinition.org/licenses/cc-by</subfield>
+    <subfield code="a">Creative Commons Attribution</subfield>
+  </datafield>
+  <datafield tag="653" ind1="1" ind2=" ">
+    <subfield code="a">AMT</subfield>
+    <subfield code="a">temperature</subfield>
+    <subfield code="a">pressure</subfield>
+    <subfield code="a">salinity</subfield>
+    <subfield code="a">dissolved oxygen</subfield>
+    <subfield code="a">saturation</subfield>
+    <subfield code="a">pH</subfield>
+    <subfield code="a">Cuerda del Pozo</subfield>
+    <subfield code="a">reservoir</subfield>
+    <subfield code="a">Soria</subfield>
+    <subfield code="a">Duero</subfield>
+    <subfield code="a">fresh water</subfield>
+    <subfield code="a">confederacion hidrografica</subfield>
+  </datafield>
+  <datafield tag="FFT" ind1=" " ind2=" ">
+    <subfield code="a">/home/ubuntu/AMT2013.csv</subfield>
+    <subfield code="d">Data from year 2013</subfield>
+    <subfield code="f">csv</subfield>
+  </datafield>
+<!--
+  <datafield tag="FFT" ind1=" " ind2=" ">
+    <subfield code="a">/home/ubuntu/Procfile</subfield>
+    <subfield code="d">test field</subfield>
+    <subfield code="f">honcho</subfield>
+  </datafield>
+-->
+</record>
+</collection>
+
