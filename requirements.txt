@@ -4,3 +4,4 @@ alembic==0.7.6
 # TODO: THESE ARE FROM ZENODO.DEPOSIT, CHECK IF REALLY NEEDED
 idutils
 altmetric
+github3.py
