@@ -1,15 +1,16 @@
+{% from "format/record/record_macros.tpl" import render_authors, render_access_rights %}
 
 <div class="records-details">
-
   <div class="">
     {% block header %}
     <h1>{{ record.title }}</h1>
     <div class="record-published">
-      {# TODO: format this with search links #}
-      Published by {{ record.authors|join('; ', attribute='name') }}
+      <h3>Published by  {{ render_authors(record, 4) }}</h3>
+      {% if record.access_right %}
+      <h4>Access {{ render_access_rights(record) }}</h4>
+      {% endif %} 
       {% if record.__license_text__ %}
-         License: <a href="{{ record.__license_text__.url }}">
-            {{record.__license_text__.license}}</a>
+      <h4>License: <a href="{{ record.__license_text__.url }}">{{record.__license_text__.license}}</a></h4>
       {% endif%}
     </div>
     <div> {# FIXME: add some space for this to breath #}
@@ -25,20 +26,24 @@
     <table class="table table-bordered table-condensed table-dgu-fixed-size dgu-table">
       <tbody>
         {% if record.publication_date %}
-          <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td>
+          <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td></tr>
         {% endif %}
         {% if record.doi %}
-          <tr><td class="key">DOI</td><td class="value">{{ record.doi }}</td>
+          <tr><td class="key">DOI</td><td class="value">{{ record.doi }}</td></tr>
         {% endif %}
         {% if record.__license_text__%}
           <tr><td class="key">License</td><td class="value"><a href="{{ record.__license_text__.url }}">
-            {{record.__license_text__.license}}</a></td>
+            {{record.__license_text__.license}}</a></td></tr>
         {% endif %}
         {% if record.keywords %}
-          <tr><td class="key">Keywords</td><td class="value">{{ record.keywords|join('; ') }}</td>
+          <tr><td class="key">Keywords</td><td class="value">{{ record.keywords|join('; ') }}</td></tr>
         {% endif %}
         {% if record.period %}
-          <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td>
+          <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td></tr>
+        {% endif %}
+        {% if record.fft %}
+          <tr><td class="key">Size</td><td class="value">
+            SUM SIZES{# record.fft|map(attribute='file_size', int)|join(', ') #}</td></tr>
         {% endif %}
       </tbody>
     </table>
