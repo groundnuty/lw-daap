@@ -72,3 +72,19 @@ html, body {
 }
 
 
+/* loader */
+.loader, .state-success, .state-failure, .state-danger {
+    margin-right: 10px;
+}
+
+.loader img, .state-success, .state-failure, .state-danger {
+    display: none;
+}
+
+.loading img {
+    display: inline;
+}
+
+.loader .loading img {
+    display: inline;
+}
