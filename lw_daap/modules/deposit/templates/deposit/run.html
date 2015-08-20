@@ -155,10 +155,10 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
 
         var config = {
           form: {
-            save_url: undefined,
-            save_all_url: undefined,
-            complete_url: undefined,
-            autocomplete_url: undefined,
+            save_url: '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id) }}',
+            save_all_url: '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, all='1') }}',
+            complete_url: '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, submit='1') }}',
+            autocomplete_url: '{{ url_for(".autocomplete", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, field_name="__FIELDNAME__") }}',
             datepicker_element: '.datepicker',
             datepicker_options: {dateFormat: "YYYY-MM-DD", pickTime: false}
           },
