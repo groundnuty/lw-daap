@@ -11,3 +11,6 @@ bower.json
 .installed.cfg
 *.egg
 *.eggs
+
+# secrets
+lw_daap/secrets.py
