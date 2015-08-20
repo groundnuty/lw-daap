@@ -393,7 +393,6 @@ class CommunityForm(WebDepositForm):
 # BasicForm
 #
 class BasicForm(WebDepositForm):
-
     """Basic Upload Form."""
 
     #
@@ -672,8 +671,11 @@ class BasicForm(WebDepositForm):
 # Form
 #
 class DatasetForm(BasicForm):
-
     """Dataset Upload Form."""
+    upload_type = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="dataset",
+    )
 
     #period = zfields.PeriodField( 
     period = fields.Date( 
@@ -746,8 +748,11 @@ class DatasetForm(BasicForm):
     ]
 
 class SoftwareForm(BasicForm):
-
     """Software Upload Form."""
+    upload_type = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="software",
+    )
 
     #
     # Form configuration
@@ -799,9 +804,13 @@ class SoftwareForm(BasicForm):
         }),
     ]
 
-class AnalysisForm(BasicForm):
 
+class AnalysisForm(BasicForm):
     """Analysis Upload Form."""
+    upload_type = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="analysis",
+    )
 
     #
     # Related work
