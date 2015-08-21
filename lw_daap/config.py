@@ -78,9 +78,6 @@ try:
 except ImportError:
    pass
 
-  
-
-
 try:
     from lw_daap.secrets import *
 except ImportError:

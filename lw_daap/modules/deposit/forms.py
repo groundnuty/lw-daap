@@ -40,6 +40,7 @@ from invenio.modules.deposit.autocomplete_utils import kb_autocomplete
 from invenio.modules.deposit.field_widgets import ButtonWidget, \
     CKEditorWidget, ColumnInput, ExtendedListWidget, ItemWidget, TagInput, \
     TagListWidget, date_widget, plupload_widget
+#from .field_widgets import spaupload_widget
 from invenio.modules.deposit.filter_utils import sanitize_html, strip_string
 from invenio.modules.deposit.form import WebDepositForm
 from invenio.modules.deposit.processor_utils import PidNormalize, \
@@ -393,6 +394,7 @@ class CommunityForm(WebDepositForm):
 # BasicForm
 #
 class BasicForm(WebDepositForm):
+
     """Basic Upload Form."""
 
     #
@@ -437,7 +439,7 @@ class BasicForm(WebDepositForm):
     publication_date = fields.Date(
         label=_('Publication date'),
         icon='fa fa-calendar fa-fw',
-        description='Required. Format: YYYY-MM-DD. In case your upload '
+        description='Required. In case your upload '
         'was already published elsewhere, please use the date of first'
         ' publication.',
         default=date.today(),
@@ -464,6 +466,7 @@ class BasicForm(WebDepositForm):
         ),
         label='Authors',
         add_label='Add another author',
+        description='Required.',
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
@@ -509,8 +512,10 @@ class BasicForm(WebDepositForm):
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
         ),
+        validators=[validators.optional()],
         label='Keywords',
         add_label='Add another keyword',
+        description='Optional.',
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
@@ -540,8 +545,8 @@ class BasicForm(WebDepositForm):
     embargo_date = fields.Date(
         label=_('Embargo date'),
         icon='fa fa-calendar fa-fw',
-        description='Required only for Embargoed Access uploads. Format: '
-        'YYYY-MM-DD. The date your upload will be made publicly available '
+        description='Required only for Embargoed Access uploads.'
+        'The date your upload will be made publicly available '
         'in case it is under an embargo period from your publisher.',
         default=date.today(),
         validators=[
@@ -650,6 +655,7 @@ class BasicForm(WebDepositForm):
         min_entries=1,
     )
 
+    
     #
     # File upload field
     #
@@ -671,28 +677,22 @@ class BasicForm(WebDepositForm):
 # Form
 #
 class DatasetForm(BasicForm):
+
     """Dataset Upload Form."""
     upload_type = fields.StringField(
         widget=widgets.HiddenInput(),
         default="dataset",
     )
 
-    #period = zfields.PeriodField( 
-    period = fields.Date( 
+    period = fields.FormField(
+        zfields.PeriodFieldForm, 
         label=_('Period'),
         icon='fa fa-calendar fa-fw',
-        description='Optional. Input the start and end date with format: YYYY-MM-DD.',
-        widget=date_widget,
-        widget_classes='input-sm',
+        description='Start and end dates.',
+        widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        widget_classes='', 
     )
-    spatial = zfields.SpatialField(
-        description='Optional.',
-        filters=[
-            strip_string,
-        ],
-        export_key='spatial',
-        icon='fa fa-map-marker fa-fw',
-    )
+
 
     #
     # Form configuration
@@ -707,13 +707,14 @@ class DatasetForm(BasicForm):
         ('Basic information', [
             'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
-        ], {'indication': 'required', }),
-        ('Physical information',[
-            'period', 'spatial',
-        ], {'indication': 'optional', }),
+        ], {
+            #'classes': '',
+            'indication': 'required', 
+        }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',
         ], {
+            #'classes': '',
             'indication': 'required',
              'description': (
                  'Unless you explicitly specify the license conditions below'
@@ -723,9 +724,16 @@ class DatasetForm(BasicForm):
                  ' publications have agreed to the terms of this waiver and'
                  ' license.')
         }),
+        ('Physical information',[
+            'period', 
+        ], {
+            'classes': '',
+            'indication': 'optional', 
+        }),
         ('Communities', [
             'communities',
         ], {
+            #'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community collection on'
@@ -748,6 +756,7 @@ class DatasetForm(BasicForm):
     ]
 
 class SoftwareForm(BasicForm):
+
     """Software Upload Form."""
     upload_type = fields.StringField(
         widget=widgets.HiddenInput(),
@@ -767,10 +776,14 @@ class SoftwareForm(BasicForm):
         ('Basic information', [
             'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
-        ], {'indication': 'required', }),
+        ], {
+            #'classes': '',
+            'indication': 'required', 
+        }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',
         ], {
+            #'classes': '',
             'indication': 'required',
              'description': (
                  'Unless you explicitly specify the license conditions below'
@@ -783,6 +796,7 @@ class SoftwareForm(BasicForm):
         ('Communities', [
             'communities',
         ], {
+            #'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community collection on'
@@ -804,8 +818,8 @@ class SoftwareForm(BasicForm):
         }),
     ]
 
-
 class AnalysisForm(BasicForm):
+
     """Analysis Upload Form."""
     upload_type = fields.StringField(
         widget=widgets.HiddenInput(),
@@ -1034,13 +1048,14 @@ class AnalysisForm(BasicForm):
         ('Basic information', [
             'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
-        ], {'indication': 'required', }),
-        ('Physical information',[
-            'period', 'spatial',
-        ], {'indication': 'optional', }),
+        ], {
+            #'classes': '',
+            'indication': 'required', 
+        }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',
         ], {
+            #'classes': '',
             'indication': 'required',
              'description': (
                  'Unless you explicitly specify the license conditions below'
@@ -1053,6 +1068,7 @@ class AnalysisForm(BasicForm):
         ('Communities', [
             'communities',
         ], {
+            #'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community collection on'

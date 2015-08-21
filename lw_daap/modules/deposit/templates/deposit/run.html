@@ -131,6 +131,8 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
                     component.attr.continue_url = component.attr.continue_url.replace("-1", new_uuid);
                   } else if (component.$node.attr("id") === "pluploader") {
                     component.attr.url = component.attr.url.replace("-1", new_uuid);
+                  } else if (component.$node.attr("id") === "spauploader") {
+                    component.attr.url = component.attr.url.replace("-1", new_uuid);
                   } else if (component.$node.attr("id") === "dropboxuploader") {
                     component.attr.dropbox_url = component.attr.dropbox_url.replace("-1", new_uuid);
                   }
@@ -143,6 +145,8 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
                   component.attr.delete_url = component.attr.delete_url.replace("-1", new_uuid);
                   component.attr.continue_url = component.attr.continue_url.replace("-1", new_uuid);
                 } else if (component.$node.attr("id") === "pluploader") {
+                  component.attr.url = component.attr.url.replace("-1", new_uuid);
+                } else if (component.$node.attr("id") === "spauploader") {
                   component.attr.url = component.attr.url.replace("-1", new_uuid);
                 } else if (component.$node.attr("id") === "dropboxuploader") {
                   component.attr.dropbox_url = component.attr.dropbox_url.replace("-1", new_uuid);
@@ -195,9 +199,13 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
         form.attachTo("#submitForm", config.form);
         Uploader.attachTo("#uploader", config.uploader);
         PlUploader.attachTo("#pluploader", config.pluploader);
+        //PlUploader.attachTo("#spaupload_file-pluploader", config.spauploader);
+        //DropboxUploader.attachTo("#plupload_file-dropboxuploader", config.dropboxuploader);
         DropboxUploader.attachTo("#dropboxuploader", config.dropboxuploader);
         FileList.attachTo("#uploader-filelist");
         ErrorList.attachTo("#uploader-errorlist");
+        //FileList.attachTo("#spaupload_file-uploader-filelist");
+        //ErrorList.attachTo("#spaupload_file-uploader-errorlist");
 
       });
     }

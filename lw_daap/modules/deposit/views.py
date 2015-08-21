@@ -30,7 +30,7 @@ from __future__ import absolute_import
 from flask import Blueprint
 from invenio.modules.deposit.signals import template_context_created, \
     file_uploaded
-from .receivers import index_context_listener, large_file_notification
+#from .receivers import index_context_listener, large_file_notification
 
 
 blueprint = Blueprint(

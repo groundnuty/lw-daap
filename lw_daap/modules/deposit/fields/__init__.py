@@ -27,7 +27,7 @@ from .related_identifiers_field import RelatedIdentifiersField
 from .reserve_doi_field import ReserveDOIField
 from .upload_subtype_field import UploadSubtypeField
 from .core import TextAreaListField
-from .period import PeriodField
+from .period import PeriodFieldForm
 from .spatial import SpatialField
 
 __all__ = [
@@ -38,6 +38,6 @@ __all__ = [
     'ReserveDOIField',
     'UploadSubtypeField',
     'TextAreaListField',
-    'PeriodField',
+    'PeriodFieldForm',
     'SpatialField',
 ]

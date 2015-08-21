@@ -28,6 +28,7 @@ from invenio.base.globals import cfg
 from invenio.modules.deposit.form import WebDepositForm
 from invenio.modules.deposit.fields.file_upload import FileUploadField
 from invenio.modules.deposit.field_widgets import PLUploadWidget
+from .field_widgets import SPAUploadWidget
 from invenio.modules.deposit.models import DepositionDraftCacheManager
 
 
@@ -35,10 +36,17 @@ class UploadForm(WebDepositForm):
     plupload_file = FileUploadField(
         label="",
         widget=PLUploadWidget(
-            template="deposit/widget_plupload_index.html"
+            template="deposit/widget_plupload.html"
         )
     )
 
+class SpaUloadForm(WebDepositForm):
+    spaupload_file = FileUploadField(
+        label="",
+        widget=SPAUploadWidget(
+            template="deposit/widget_spaupload.html"
+        )
+    )
 
 def index_context_listener(sender, context=None):
     """
