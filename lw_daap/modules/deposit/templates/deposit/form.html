@@ -29,7 +29,6 @@
 {% endmacro %}
 
 
-
 {% macro modal_dialog(id="submitModal", title="Are you sure you want to submit?", body=submit_dialog_body()) %}
 <div id="{{id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="{{id}}Label" aria-hidden="true">
   <div class="modal-dialog">
@@ -51,7 +50,6 @@
 {% endmacro %}
 
 
-
 {% block form_title scoped %}
 {{super()}}
 <p class="text-muted"><small>{% block instructions %}Instructions: (i) Press "Save" to save your upload for editing later, as many times you like. (ii) Upload and remove extra files in the bottom of the form. (iii) When ready, press "Submit" to finalize and make your upload public.{% endblock %}</small></p>
@@ -66,12 +64,14 @@
 {% block form_group_header scoped %}
     {% if group %}
         {{ form_group_accordion_start(group, grouploop.index) }}
+    {#
     {% else %}
-        {{ form_action_bar(margin="10px") }}
+        {{ form_action_bar(margin="0px") }}
+    #}
     {% endif %}
 {% endblock %}
 
-{% block form_footer scoped %}{% endblock %}
+{% block form_footer scoped %}{{ form_action_bar() }}{% endblock %}
 
 {#
  # Custom display of upload_type field
