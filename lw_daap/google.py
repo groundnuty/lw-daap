@@ -1,4 +1,3 @@
-
 REMOTE_APP = dict(
     title='Google',
     description='Software collaboration platform.',
@@ -14,7 +13,7 @@ REMOTE_APP = dict(
     ),
     params=dict(
         request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email'},
-        base_url='https://accounts.google.com/o/oauth2/',
+        base_url='https://www.googleapis.com/oauth2/v1/',
         request_token_url=None,
         access_token_url="https://accounts.google.com/o/oauth2/token",
         access_token_method='POST',
@@ -26,7 +25,8 @@ REMOTE_APP = dict(
 
 def account_info(remote, resp):
     """ Retrieve remote account information used to find local user. """
-    return dict(email="https://www.googleapis.com/auth/userinfo.email", nickname="https://www.googleapis.com/auth/userinfo.profile")
+    userinfo = remote.get('userinfo').data
+    return dict(email=userinfo.get('email'), nickname=userinfo.get('email'))
 
 
 def account_setup(remote, token):
