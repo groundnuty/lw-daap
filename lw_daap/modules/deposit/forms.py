@@ -1152,6 +1152,7 @@ class EditFormMixin(object):
         ],
         widget=widgets.HiddenInput(),
         label="",
+        default=date.today(),
     )
 
 
@@ -1184,3 +1185,12 @@ class BasicEditForm(BasicForm, EditFormMixin):
     _title = _('Edit upload')
     template = "deposit/edit.html"
 
+
+class DatasetEditForm(BasicEditForm, DatasetForm):
+    pass
+
+class SoftwareEditForm(BasicEditForm, SoftwareForm):
+    pass
+
+class AnalysisEditForm(BasicEditForm, AnalysisForm):
+    pass

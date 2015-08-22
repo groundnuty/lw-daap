@@ -69,19 +69,24 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 RECORDS_BREADCRUMB_TITLE_KEY = 'title'  
 
+
 try:
    import github3
    import lw_daap.github
+   import lw_daap.google
    OAUTHCLIENT_REMOTE_APPS = dict(
 	github=lw_daap.github.REMOTE_APP,
+	google=lw_daap.google.REMOTE_APP,
    )   
 except ImportError:
    pass
+
 
 try:
     from lw_daap.secrets import *
 except ImportError:
     pass
+
 
 try:
     from lw_daap.instance_config import *

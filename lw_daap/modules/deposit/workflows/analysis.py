@@ -5,10 +5,10 @@ from __future__ import absolute_import
 from .upload import upload
 
 from lw_daap.modules.deposit.forms import AnalysisForm, \
-    BasicEditForm
+    AnalysisEditForm
 
 class analysis(upload):
     draft_definitions = {
         '_default': AnalysisForm,
-        '_edit': BasicEditForm,
+        '_edit': AnalysisEditForm,
     }
