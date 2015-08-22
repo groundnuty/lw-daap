@@ -1,3 +1,12 @@
+#
+# LifeWatch Data Access and Preservation
+# Configuration
+
+import invenio.modules.oauthclient.contrib.github
+
+import lw_daap.base.auth.google
+
+# Global config
 CFG_SITE_LANGS = ["en"]
 
 CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
@@ -6,6 +15,7 @@ CFG_SITE_NAME_INTL = {
 }
 CFG_SITE_SUPPORT_EMAIL = "support@aeonium.eu"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
+
 
 COMMUNITIES_PARENT_NAME="communities-collection"
 COMMUNITIES_PARENT_NAME_PROVISIONAL="communities-collection"
@@ -69,18 +79,11 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 RECORDS_BREADCRUMB_TITLE_KEY = 'title'  
 
-
-try:
-   import github3
-   import lw_daap.github
-   import lw_daap.google
-   OAUTHCLIENT_REMOTE_APPS = dict(
-	github=lw_daap.github.REMOTE_APP,
-	google=lw_daap.google.REMOTE_APP,
-   )   
-except ImportError:
-   pass
-
+# OAuth configuration
+OAUTHCLIENT_REMOTE_APPS = dict(
+    github=invenio.modules.oauthclient.contrib.github.REMOTE_APP,
+    google=lw_daap.base.auth.google.REMOTE_APP,
+)
 
 try:
     from lw_daap.secrets import *
