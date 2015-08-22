@@ -108,55 +108,6 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
     ) {
 
       $(function () {
-
-        var preupload_hooks = {
-
-          resolve_uuid: (function (component) {
-            var new_uuid = -1;
-            var url = '{{ url_for(".create", deposition_type=deposition_type) }}';
-
-            return function (component) {
-              if (new_uuid === -1) {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    async: false,
-                    cache: false
-                }).done(function (uuid) {
-                  new_uuid = uuid;
-
-                  if (component.$node.attr("id") === "uploader") {
-                    component.attr.get_file_url = component.attr.get_file_url.replace("-1", new_uuid);
-                    component.attr.delete_url = component.attr.delete_url.replace("-1", new_uuid);
-                    component.attr.continue_url = component.attr.continue_url.replace("-1", new_uuid);
-                  } else if (component.$node.attr("id") === "pluploader") {
-                    component.attr.url = component.attr.url.replace("-1", new_uuid);
-                  } else if (component.$node.attr("id") === "spauploader") {
-                    component.attr.url = component.attr.url.replace("-1", new_uuid);
-                  } else if (component.$node.attr("id") === "dropboxuploader") {
-                    component.attr.dropbox_url = component.attr.dropbox_url.replace("-1", new_uuid);
-                  }
-                }).fail(function() {
-                  //
-                });
-              } else {
-                if (component.$node.attr("id") === "uploader") {
-                  component.attr.get_file_url = component.attr.get_file_url.replace("-1", new_uuid);
-                  component.attr.delete_url = component.attr.delete_url.replace("-1", new_uuid);
-                  component.attr.continue_url = component.attr.continue_url.replace("-1", new_uuid);
-                } else if (component.$node.attr("id") === "pluploader") {
-                  component.attr.url = component.attr.url.replace("-1", new_uuid);
-                } else if (component.$node.attr("id") === "spauploader") {
-                  component.attr.url = component.attr.url.replace("-1", new_uuid);
-                } else if (component.$node.attr("id") === "dropboxuploader") {
-                  component.attr.dropbox_url = component.attr.dropbox_url.replace("-1", new_uuid);
-                }
-              }
-            }
-          }())
-
-        };
-
         var config = {
           form: {
             save_url: '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id) }}',
@@ -168,99 +119,45 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
           },
 
           uploader: {
-            get_file_url: '{{ url_for('.get_file', deposition_type=deposition_type, uuid='-1') }}',
-            delete_url: '{{ url_for('.delete_file', deposition_type=deposition_type, uuid='-1') }}',
+            get_file_url: '{{ url_for('.get_file', deposition_type=deposition_type, uuid=uuid) }}',
+            delete_url: '{{ url_for('.delete_file', deposition_type=deposition_type, uuid=uuid) }}',
             form_selector: "#submitForm",
             form_files: {{ form.files|default([])|safe }},
             resolve_uuid_url: '{{ url_for('.create', deposition_type=deposition_type) }}',
-            resolve_uuid: true,
+            resolve_uuid: false,
             autoupload: false,
-            continue_url: '{{ url_for('.run', deposition_type=deposition_type, uuid='-1') }}',
+            continue_url: '{{ url_for('.run', deposition_type=deposition_type, uuid=uuid) }}',
             fileListSelector: '#uploader-filelist',
-            errorListSelector: '#uploader-errorlist',
-            preupload_hooks: preupload_hooks
+            errorListSelector: '#uploader-errorlist'/*,
+            preupload_hooks: preupload_hooks*/
           },
 
           pluploader: {
-            url: '{{ url_for('.upload_file', deposition_type=deposition_type, uuid='-1') }}',
+            url: '{{ url_for('.upload_file', deposition_type=deposition_type, uuid=uuid) }}',
             max_file_size: '{{config.DEPOSIT_MAX_UPLOAD_SIZE|default('10mb')}}',
             max_files_count: {{config.DEPOSIT_MAX_UPLOAD_FILES_COUNT|default('null')}},
-            drop_element: $('#uploader')[0],
-            preupload_hooks: preupload_hooks
+            drop_element: $('#uploader')[0]/*,
+            preupload_hooks: preupload_hooks*/
           },
 
           dropboxuploader: {
-            dropbox_url: '{{ url_for('.upload_url', deposition_type=deposition_type, uuid='-1') }}',
-            max_files_count: {{config.DEPOSIT_MAX_UPLOAD_FILES_COUNT|default('null')}},
-            preupload_hooks: preupload_hooks
+            dropbox_url: '{{ url_for('.upload_url', deposition_type=deposition_type, uuid=uuid) }}',
+            max_files_count: {{config.DEPOSIT_MAX_UPLOAD_FILES_COUNT|default('null')}}/*,
+            preupload_hooks: preupload_hooks*/
           }
         };
 
         form.attachTo("#submitForm", config.form);
         Uploader.attachTo("#uploader", config.uploader);
         PlUploader.attachTo("#pluploader", config.pluploader);
-        //PlUploader.attachTo("#spaupload_file-pluploader", config.spauploader);
-        //DropboxUploader.attachTo("#plupload_file-dropboxuploader", config.dropboxuploader);
         DropboxUploader.attachTo("#dropboxuploader", config.dropboxuploader);
         FileList.attachTo("#uploader-filelist");
         ErrorList.attachTo("#uploader-errorlist");
-        //FileList.attachTo("#spaupload_file-uploader-filelist");
-        //ErrorList.attachTo("#spaupload_file-uploader-errorlist");
 
       });
     }
   );
 
-      /*$(function () {
-
-        var config = {
-          form: {
-            save_url: '/deposit/26/_default',
-            save_all_url: '/deposit/26/_default?all=1',
-            complete_url: '/deposit/26/_default?submit=1',
-            autocomplete_url: '/deposit/26/_default/__FIELDNAME__/',
-            datepicker_element: '.datepicker',
-            datepicker_options: {
-                format: "YYYY-MM-DD",
-                pickTime: false
-            }
-          },
-
-          uploader: {
-            get_file_url: '/deposit/26/file/',
-            delete_url: '/deposit/26/file/delete/',
-            form_selector: "#submitForm",
-            form_files: [{"checksum": "2ab92001d669d03ca626e81e5baade1b", "size": 13114, "id": "66d7efdc-a801-408a-9191-80785a1d277e", "name": "image.png"}],
-            resolve_uuid_url: '/deposit/create/',
-            resolve_uuid: false,
-            continue_url: '/deposit/-1/',
-            autoupload: false,
-            fileListSelector: '#uploader-filelist',
-            errorListSelector: '#uploader-errorlist'
-          },
-
-          pluploader: {
-            url: '/deposit/26/file/',
-            max_file_size: '2147483648',
-            max_files_count: 100,
-            drop_element: $('#field-plupload_file')[0]
-          },
-
-          dropboxuploader: {
-            dropbox_url: '/deposit/26/file/url/',
-            max_files_count: 100
-          }
-        };
-
-        form.attachTo("#submitForm", config.form);
-        Uploader.attachTo("#uploader", config.uploader);
-        PlUploader.attachTo("#pluploader", config.pluploader);
-        DropboxUploader.attachTo("#dropboxuploader", config.dropboxuploader);
-        FileList.attachTo("#uploader-filelist");
-        ErrorList.attachTo("#uploader-errorlist");
-      });
-    }
-  );*/
 </script>
 
 {%- endblock form_script_options %}
