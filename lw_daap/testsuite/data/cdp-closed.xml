@@ -26,7 +26,7 @@
     <subfield code="a">dataset</subfield>
   </datafield>
   <datafield tag="980" ind1=" " ind2=" ">
-    <subfield code="a">provisional-user-cuerdadelpozo</subfield>
+    <subfield code="a">community-cuerdadelpozo</subfield>
   </datafield>
   <datafield tag="520" ind1=" " ind2=" ">
     <subfield code="a">Physicochemical water data taken at Cuerda del Pozo Reservoir during 2013. This dataset includes different parameters like date, temperature, water pressure, salinity, dissolved oxygen, oxygen saturation or pH.</subfield>
@@ -53,7 +53,6 @@
   <datafield tag="FFT" ind1=" " ind2=" ">
     <subfield code="a">/home/ubuntu/AMT2013.csv</subfield>
     <subfield code="d">Data from year 2013</subfield>
-    <subfield code="f">csv</subfield>
   </datafield>
 <!--
   <datafield tag="FFT" ind1=" " ind2=" ">

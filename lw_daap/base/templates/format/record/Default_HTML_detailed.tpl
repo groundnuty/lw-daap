@@ -25,6 +25,14 @@
     {# FIXME: good class for the table #}
     <table class="table table-bordered table-condensed table-dgu-fixed-size dgu-table">
       <tbody>
+        {% if record.upload_type %}
+          <tr><td class="key">Type</td><td class="value">{{ record.upload_type }}</td></tr>
+        {% endif %}
+        {% if record.communities %}
+          <tr><td class="key">Communities</td>
+              <td class="value">{{ record.communities|join(', ')}} </td>
+          </tr>
+        {% endif %}
         {% if record.publication_date %}
           <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td></tr>
         {% endif %}
@@ -56,7 +64,13 @@
       <div class="row">
         {% for file in row %}
         <div class="col-sm-6">
-            <a href="{{ file.url }}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ file.description }}</a>
+            <div class=""> 
+                <a href="{{ file.url }}"><div class="" style="width: 20%;">
+                    <i class="glyphicon glyphicon-file" aria-hidden="true" style="font-size: 3em;"></i><span class="format-name">.csv<span>
+                </div></a>
+                <div class="" style="width: 80%;">
+                    {{ file.description }} 
+                </div>
         </div>
         {% endfor %}
       </div>

@@ -160,7 +160,7 @@
     {% endblock %}
     {%- set comm_id = collection|community_id %}
     <h1>{{ collection }}</h1>
-    {{ curation_buttons(bfo, 'cuerdadelpozo') }}
+    {{ curation_buttons(bfo, comm_id) }}
 
     {% block record_footer %}
         {{ render_record_footer(4) }}

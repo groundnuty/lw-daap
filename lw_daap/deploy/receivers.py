@@ -33,6 +33,7 @@ def post_handler_database_create(sender, default_data='', *args, **kwargs):
 
     print(">>> Creating collections for communities...")
     for c in Community.query.all():
+        print("Fixing community %s..." % Community)
         c.save_collections()
 
 #    print(">>> Fixing dbquery for root collection.")

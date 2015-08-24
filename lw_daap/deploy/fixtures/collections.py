@@ -22,11 +22,6 @@ class CollectionData(DataSet):
         name = 'Software'
         dbquery = '980__a:software'
 
-    class communities(object):
-        id = 5
-        name = 'communities-collection'
-        dbquery = None
-
 
 class CollectionCollectionData(DataSet):
     class site_analysis:

@@ -16,13 +16,15 @@ CFG_SITE_NAME_INTL = {
 CFG_SITE_SUPPORT_EMAIL = "support@aeonium.eu"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
 
-
-COMMUNITIES_PARENT_NAME="communities-collection"
-COMMUNITIES_PARENT_NAME_PROVISIONAL="communities-collection"
+COMMUNITIES_PARENT_NAME=CFG_SITE_NAME
+COMMUNITIES_PARENT_NAME_PROVISIONAL=CFG_SITE_NAME
+COMMUNITIES_ID_PREFIX = 'community'
+COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 
 PACKAGES = [
     "lw_daap.base",
     "lw_daap.modules.deposit",
+    "lw_daap.modules.communities",
     "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
@@ -31,7 +33,11 @@ PACKAGES = [
 PACKAGES_EXCLUDE= [
     "invenio.modules.messages",
     "invenio.modules.documentation",
+    "invenio.modules.oauth2server",
+    "invenio.modules.workflows",
+    "invenio.modules.annotations",
 ]
+
 
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.dataset:dataset",

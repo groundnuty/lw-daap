@@ -61,10 +61,8 @@ __all__ = ['upload']
 
 CFG_LICENSE_KB = "licenses"
 CFG_LICENSE_SOURCE = "opendefinition.org"
-CFG_ZENODO_USER_COLLECTION_ID = "zenodo"
-CFG_ECFUNDED_USER_COLLECTION_ID = "ecfunded"
 
-
+CFG_DAAP_DEFAULT_COLLECTION_ID="daap"
 
 # =======
 # Helpers
@@ -117,10 +115,9 @@ def process_draft(draft):
     """
     Process loaded form JSON
     """
-    # Filter out Zenodo and OpenAIRE communities
+    # Filter out daap community 
     draft.values['communities'] = filter(
-        lambda c: c['identifier'] not in [CFG_ZENODO_USER_COLLECTION_ID,
-                                          CFG_ECFUNDED_USER_COLLECTION_ID],
+        lambda c: c['identifier'] not in [CFG_DAAP_DEFAULT_COLLECTION_ID],
         draft.values.get('communities', [])
     )
     return draft
@@ -313,17 +310,9 @@ def process_recjson_new(deposition, recjson):
     # ===========
     # Specific Zenodo user collection, used to curate content for
     # Zenodo
-    if CFG_ZENODO_USER_COLLECTION_ID not in recjson['provisional_communities']:
+    if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson['provisional_communities']:
         recjson['provisional_communities'].append(
-            CFG_ZENODO_USER_COLLECTION_ID
-        )
-
-    # Specific Zenodo user collection for OpenAIRE (used to curate
-    # FP7 funded research)
-    if recjson.get('grants', []) and CFG_ECFUNDED_USER_COLLECTION_ID \
-       not in recjson['provisional_communities']:
-        recjson['provisional_communities'].append(
-            CFG_ECFUNDED_USER_COLLECTION_ID
+            CFG_DAAP_DEFAULT_COLLECTION_ID
         )
 
     # ==============================
@@ -414,19 +403,12 @@ def merge(deposition, dest, a, b):
     b['provisional_communities'] = provisional
 
     # Append Zenodo collection
-    if CFG_ZENODO_USER_COLLECTION_ID in dest['communities']:
-        a['communities'].append(CFG_ZENODO_USER_COLLECTION_ID)
-        b['communities'].append(CFG_ZENODO_USER_COLLECTION_ID)
-    elif CFG_ZENODO_USER_COLLECTION_ID in dest['provisional_communities']:
-        a['provisional_communities'].append(CFG_ZENODO_USER_COLLECTION_ID)
-        b['provisional_communities'].append(CFG_ZENODO_USER_COLLECTION_ID)
-
-    if CFG_ECFUNDED_USER_COLLECTION_ID in dest['communities']:
-        a['communities'].append(CFG_ECFUNDED_USER_COLLECTION_ID)
-        b['communities'].append(CFG_ECFUNDED_USER_COLLECTION_ID)
-    elif CFG_ECFUNDED_USER_COLLECTION_ID in dest['provisional_communities']:
-        a['provisional_communities'].append(CFG_ECFUNDED_USER_COLLECTION_ID)
-        b['provisional_communities'].append(CFG_ECFUNDED_USER_COLLECTION_ID)
+    if CFG_DAAP_DEFAULT_COLLECTION_ID in dest['communities']:
+        a['communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
+        b['communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
+    elif CFG_DAAP_DEFAULT_COLLECTION_ID in dest['provisional_communities']:
+        a['provisional_communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
+        b['provisional_communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
 
     b["doi"] = a["doi"]
 

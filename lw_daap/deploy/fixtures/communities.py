@@ -7,7 +7,7 @@ from fixture import DataSet
 class CommunityData(DataSet):
     class daap:
         id = 'daap'
-        title = 'LifeWatch Data Access and Preservation'
+        title = 'LifeWatch DAAP'
         id_user = 1
 
     class cuerda_del_pozo:
