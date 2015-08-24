@@ -81,6 +81,17 @@
             </div>
             {% endfor %}
         {% endif %}
+    {% else %}        
+        {% for row in record.fft|batch(2) %}
+        <h2>Files ({{ record.fft|length }})</h2>
+        <div class="row">
+            {% for file in row %}
+            <div class="col-sm-6">
+                <a href="{{ file.url }}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ file.description }}</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
     {% endif %}
     {% endblock %}
     {% endif %}
