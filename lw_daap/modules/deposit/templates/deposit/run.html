@@ -17,14 +17,13 @@
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 {% extends "deposit/run_base.html" %}
-
 {% macro submit_dialog_body() %}
 <ul>
     <li>Your upload will be <strong>publicly available</strong> shortly after you submit &mdash; uploaded files are only publicly available if you have chosen Open Access and/or Embargoed Access (subject to the embargo date).</li>
     <br>
     <li>Uploaded files <strong>cannot</strong> be modified/added/removed after upload. Metadata (title, description, etc.) <strong>can</strong> be modified.</li>
     <br>
-    <li>A Digital Object Identifier (DOI) will be registered for your upload, unless you provide an existing one.</li>
+    <li>A Digital Object Identifier (DOI DOI DOI) will be registered for your upload, unless you provide an existing one.</li>
 </ul>
 {% endmacro %}
 
@@ -50,6 +49,7 @@
 </div>
 {% endmacro %}
 
+
 {#
  # Add modal dialog
  #}
@@ -58,9 +58,12 @@
 {{super()}}
 {% endblock body %}
 
+
 {#
  # Set date picker options
  #}
+
+
 {%- block form_script_options %}
 {{super()}}
 <script type="text/javascript">

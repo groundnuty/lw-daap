@@ -39,8 +39,7 @@ from invenio.modules.deposit import fields
 from invenio.modules.deposit.autocomplete_utils import kb_autocomplete
 from invenio.modules.deposit.field_widgets import ButtonWidget, \
     CKEditorWidget, ColumnInput, ExtendedListWidget, ItemWidget, TagInput, \
-    TagListWidget, date_widget, plupload_widget
-#from .field_widgets import spaupload_widget
+    TagListWidget, plupload_widget
 from invenio.modules.deposit.filter_utils import sanitize_html, strip_string
 from invenio.modules.deposit.form import WebDepositForm
 from invenio.modules.deposit.processor_utils import PidNormalize, \
@@ -53,6 +52,7 @@ from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from . import fields as zfields
+from .field_widgets import date_widget
 from .autocomplete import community_autocomplete
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
@@ -736,10 +736,10 @@ class DatasetForm(BasicForm):
             #'classes': '',
             'indication': 'recommended',
             'description': Markup(
-                'Any user can create a community collection on'
+                'Any user can create a community on'
                 ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
                 ' communities</a>). Specify communities which you wish your'
-                ' upload to appear in. The owner of the community will'
+                ' upload to appear in. The owner of the community (and also the default community) will'
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),

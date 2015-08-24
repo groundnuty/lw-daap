@@ -1,28 +1,34 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of Invenio.
+# Copyright (C) 2012, 2013, 2014, 2015 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 """Implement custom field widgets."""
 
-from wtforms.widgets import HTMLString
-from invenio.ext.template import render_template_to_string
 
-class SPAUploadWidget(object):
+from wtforms.widgets import HTMLString, html_params
 
-    """SPAUpload widget implementation."""
 
-    def __init__(self, template=None):
-        """Initialize widget with custom template."""
-        self.template = template or "deposit/widget_spaupload.html"
-
-    def __call__(self, field, **kwargs):
-        """Render SPAUpload widget."""
-        field_id = kwargs.pop('id', field.id)
-        kwargs['class'] = u'spaupload'
-
-        return HTMLString(
-            render_template_to_string(
-                self.template,
-                field=field,
-                field_id=field_id,
-                **kwargs
-            )
-        )
-
-spaupload_widget = SPAUploadWidget()
+def date_widget(field, **kwargs):
+    """Create datepicker widget."""
+    field_id = kwargs.pop('id', field.id)
+    date_format = kwargs.pop('date_format','YYYY-MM-DD') 
+    html = [u'<div class="row"><div class="col-xs-5 col-sm-3">'
+            '<input class="datepicker form-control" %s data-date-format="%s" '
+            ' type="text"></div></div'
+            % (html_params(id=field_id, name=field_id, value=field.data or ''),
+               date_format)]
+    return HTMLString(u''.join(html))
