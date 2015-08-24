@@ -404,7 +404,7 @@ class BasicForm(WebDepositForm):
         label="Digital Object Identifier",
         description="Optional. Did your publisher already assign a DOI to your"
         " upload? If not, leave the field empty and we will register a new"
-        " DOI for you. A DOI allows others to easily and unambiguously cite"
+        " DOI for you when you ask for minting it. A DOI allows others to easily and unambiguously cite"
         " your upload.",
         placeholder="e.g. 10.1234/foo.bar...",
         validators=[
@@ -1180,7 +1180,7 @@ class BasicEditForm(BasicForm, EditFormMixin):
         readonly="true"
     )
     prereserve_doi = None
-    plupload_file = None
+    #plupload_file = None
 
     _title = _('Edit upload')
     template = "deposit/edit.html"

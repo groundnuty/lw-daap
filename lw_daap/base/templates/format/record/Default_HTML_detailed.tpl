@@ -59,22 +59,29 @@
 
     {% if record.fft %}
     {% block files %}
-    <h2>Files ({{ record.fft|length }})</h2>
-    {% for row in record.fft|batch(2) %}
-      <div class="row">
-        {% for file in row %}
-        <div class="col-sm-6">
-            <div class=""> 
-                <a href="{{ file.url }}"><div class="" style="width: 20%;">
-                    <i class="glyphicon glyphicon-file" aria-hidden="true" style="font-size: 3em;"></i><span class="format-name">.csv<span>
-                </div></a>
-                <div class="" style="width: 80%;">
-                    {{ file.description }} 
+    {% if record.access_right is equalto 'closed' %}
+    <h2>Files</h2>
+    <h3>Access to this record is not allowed under the record conditions.</h3>
+    {% elif record.access_right is equalto 'restricted' %}
+    <h2>Files</h2>
+    <h3>Access to this record is not allowed under the record conditions.</h3>
+    {% elif record.access_right is equalto 'embargoed' %} 
+        {% if bfe_datetime(bfo, embargo_date=record.embargo_date) %}
+            <h2>Files</h2>
+            <h3>Access to this record is allowed from {{ record.embargo_date }}.</h3>
+        {% else %}        
+            {% for row in record.fft|batch(2) %}
+            <h2>Files ({{ record.fft|length }})</h2>
+            <div class="row">
+                {% for file in row %}
+                <div class="col-sm-6">
+                    <a href="{{ file.url }}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ file.description }}</a>
                 </div>
-        </div>
-        {% endfor %}
-      </div>
-    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
     {% endblock %}
     {% endif %}
   </div> <!-- class="" -->
