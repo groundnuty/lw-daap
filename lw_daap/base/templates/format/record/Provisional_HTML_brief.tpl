@@ -159,7 +159,6 @@
         {{ render_fulltext_snippets() }}
     {% endblock %}
     {%- set comm_id = collection|community_id %}
-    <h1>{{ collection }}</h1>
     {{ curation_buttons(bfo, comm_id) }}
 
     {% block record_footer %}
