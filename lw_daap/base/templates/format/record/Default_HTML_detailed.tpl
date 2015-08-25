@@ -1,24 +1,35 @@
 {% from "format/record/record_macros.tpl" import render_authors, render_access_rights %}
 
-<div class="records-details">
-  <div class="">
-    {% block header %}
-    <h1>{{ record.title }}</h1>
-    <div class="record-published">
+
+<div class="record-details">
+  {% block header %}
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h1>{{ record.title }}</h1>
+    </div> <!-- col 12 -->
+  </div> <!-- row -->
+  <div class="row">
+    <div class="col-sm-9 col-md-9">
       <h3>Published by  {{ render_authors(record, 4) }}</h3>
       {% if record.access_right %}
-      <h4>Access {{ render_access_rights(record) }}</h4>
-      {% endif %} 
+        <h4>Access {{ render_access_rights(record) }}</h4>
+      {% endif %}
       {% if record.__license_text__ %}
-      <h4>License: <a href="{{ record.__license_text__.url }}">{{record.__license_text__.license}}</a></h4>
+        <h4>License: <a href="{{ record.__license_text__.url }}">{{record.__license_text__.license}}</a></h4>
       {% endif%}
-    </div>
-    <div> {# FIXME: add some space for this to breath #}
+      {# FIXME: add some space for this to breath #}
+      <div class="record-abstract">
         {% if record.description %}
             {{ record.description }}
         {% endif %}
-    </div>
-    {% endblock %}
+      </div> <!-- record-abstract -->
+    </div> <!-- col 9 -->
+    <div class="col-sm-3 col-md-3 well">
+        <h4>DOI</h4>
+    </div> <!-- col 3 -->
+  </div> <!-- row -->
+  {% endblock %}
+  <div class="">
 
     {% block metadata %}
     <h2>Metadata</h2>
@@ -65,11 +76,11 @@
     {% elif record.access_right is equalto 'restricted' %}
     <h2>Files</h2>
     <h3>Access to this record is not allowed under the record conditions.</h3>
-    {% elif record.access_right is equalto 'embargoed' %} 
+    {% elif record.access_right is equalto 'embargoed' %}
         {% if bfe_datetime(bfo, embargo_date=record.embargo_date) %}
             <h2>Files</h2>
             <h3>Access to this record is allowed from {{ record.embargo_date }}.</h3>
-        {% else %}        
+        {% else %}       
             {% for row in record.fft|batch(2) %}
             <h2>Files ({{ record.fft|length }})</h2>
             <div class="row">
@@ -81,7 +92,7 @@
             </div>
             {% endfor %}
         {% endif %}
-    {% else %}        
+    {% else %}       
         {% for row in record.fft|batch(2) %}
         <h2>Files ({{ record.fft|length }})</h2>
         <div class="row">
