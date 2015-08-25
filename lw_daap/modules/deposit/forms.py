@@ -403,10 +403,10 @@ class BasicForm(WebDepositForm):
     doi = fields.DOIField(
         label="Digital Object Identifier",
         description="Optional. Did your publisher already assign a DOI to your"
-        " upload? If not, leave the field empty and we will register a new"
-        " DOI for you when you ask for minting it. A DOI allows others to easily and unambiguously cite"
+        " upload? If not, prereserve a new"
+        " DOI for you ready for minting when you ask for it. A DOI allows others to easily and unambiguously cite"
         " your upload.",
-        placeholder="e.g. 10.1234/foo.bar...",
+        placeholder="e.g. 10.1234/lw_daap...",
         validators=[
             DOISyntaxValidator(),
             pre_reserved_doi_validator(
@@ -429,10 +429,10 @@ class BasicForm(WebDepositForm):
             label=_("Pre-reserve DOI"),
             icon='fa fa-barcode',
             tooltip=_(
-                'Pre-reserve a Digital Object Identifier for your upload. This'
+                ' Pre-reserve a Digital Object Identifier for your upload. This'
                 ' allows you to know the DOI before you submit your upload, '
-                'and can thus include it in e.g. publications. The DOI is not'
-                ' finally registered until submit your upload.'
+                ' and can thus include it in e.g. publications. The DOI is not '
+                ' finally registered until you explicitely ask for minting it.'
             ),
         ),
     )
