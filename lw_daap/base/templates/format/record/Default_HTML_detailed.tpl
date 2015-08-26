@@ -74,16 +74,16 @@
       </tbody>
     </table>
     {% endblock %}
-
+    {% set record_owner = current_user.id == record.owner.id|int %}
     {% if record.fft %}
     {% block files %}
-    {% if record.access_right is equalto 'closed' %}
+    {% if (record.access_right is equalto 'closed') and not record_owner %}
     <h2>Files</h2>
     <h3>Access to this record is not allowed under the record conditions.</h3>
-    {% elif record.access_right is equalto 'restricted' %}
+    {% elif (record.access_right is equalto 'restricted') and not record_owner %}
     <h2>Files</h2>
     <h3>Access to this record is not allowed under the record conditions.</h3>
-    {% elif record.access_right is equalto 'embargoed' %}
+    {% elif (record.access_right is equalto 'embargoed') and not record_owner %}
         {% if bfe_datetime(bfo, embargo_date=record.embargo_date) %}
             <h2>Files</h2>
             <h3>Access to this record is allowed from {{ record.embargo_date }}.</h3>
