@@ -390,6 +390,38 @@ class CommunityForm(WebDepositForm):
         ]
     )
 
+class FileDescriptionForm(WebDepositForm):
+    file = fields.FileUploadField(
+        label="",
+        widget=plupload_widget,
+        export_key=False
+    )
+    file_description = fields.StringField(
+        label="File Description", description="Optional.", export_key=False,
+    )
+
+
+class FilesForm(WebDepositForm):
+    file_list = fields.DynamicFieldList(
+        fields.FormField(
+            FileDescriptionForm,
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
+        ),
+        label='Upload File',
+        add_label='Add another author',
+        description='Required.',
+        icon='fa fa-user fa-fw',
+        widget_classes='',
+        min_entries=1,
+        validators=[validators.DataRequired(), list_length(
+            min_num=1, element_filter=filter_empty_helper(),
+        )],
+    )
+ 
+
 #
 # BasicForm
 #
@@ -654,18 +686,18 @@ class BasicForm(WebDepositForm):
     #
     # File upload field
     #
-    plupload_file = fields.FileUploadField(
-        label="",
-        widget=plupload_widget,
-        export_key=False
-    )
+    #plupload_file = fields.FileUploadField(
+    #    label="",
+    #    widget=plupload_widget,
+    #    export_key=False
+    #)
 
-    def validate_plupload_file(form, field):
-        """Ensure minimum one file is attached."""
-        if not getattr(request, 'is_api_request', False):
-            # Tested in API by a separate workflow task.
-            if len(form.files) == 0:
-                raise ValidationError("You must provide minimum one file.")
+    #def validate_plupload_file(form, field):
+    #    """Ensure minimum one file is attached."""
+    #    if not getattr(request, 'is_api_request', False):
+    #        # Tested in API by a separate workflow task.
+    #        if len(form.files) == 0:
+    #            raise ValidationError("You must provide minimum one file.")
 
 
 #
@@ -751,6 +783,7 @@ class DatasetForm(BasicForm):
     ]
 
 class SoftwareForm(BasicForm):
+    template = 'deposit/metadata.html'
 
     """Software Upload Form."""
     upload_type = fields.StringField(

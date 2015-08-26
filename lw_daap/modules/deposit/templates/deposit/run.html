@@ -16,7 +16,9 @@
 ## along with Invenio; if not, write to the Free Software Foundation, Inc.,
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
+
 {% extends "deposit/run_base.html" %}
+
 {% macro submit_dialog_body() %}
 <ul>
     <li>Your upload will be <strong>publicly available</strong> shortly after you submit &mdash; uploaded files are only publicly available if you have chosen Open Access and/or Embargoed Access (subject to the embargo date).</li>
@@ -29,32 +31,10 @@
 
 
 
-{% macro modal_dialog(id="submitModal", title="Are you sure you want to submit?", body=submit_dialog_body()) %}
-<div id="{{id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="{{id}}Label" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="{{id}}Label">{{title}}</h3>
-  </div>
-  <div class="modal-body">
-    {{body}}
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i> Close</button>
-    <button class="btn btn-primary form-submit-zenodo"><i class="fa fa-check fa-inverse"></i> Submit</button>
-  </div>
-  </div>
-  </div>
-</div>
-{% endmacro %}
-
-
 {#
  # Add modal dialog
  #}
 {% block body %}
-{{ modal_dialog() }}
 {{super()}}
 {% endblock body %}
 
@@ -67,6 +47,7 @@
 {%- block form_script_options %}
 {{super()}}
 <script type="text/javascript">
+{#
 // var date_options = undefined;
 require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, form) {
     function init_submit_zenodo(url, selector, form_selector, dialog) {
@@ -84,6 +65,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
     var complete_url = '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, submit='1') }}';
     init_submit_zenodo(complete_url, '.form-submit-zenodo', '#submitForm', '#form-submit-dialog');
 });
+#}
 </script>
 
 <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="{{config.DEPOSIT_DROPBOX_API_KEY}}"></script>

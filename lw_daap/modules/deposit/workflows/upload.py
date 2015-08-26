@@ -463,6 +463,7 @@ def transfer_ownership(deposition, user_id):
 # ==============
 # Workflow tasks
 # ==============
+# TODO: remove?
 def run_tasks(update=False):
     """Run bibtasklet and webcoll after upload."""
     def _run_tasks(obj, dummy_eng):
@@ -493,6 +494,7 @@ def run_tasks(update=False):
     return _run_tasks
 
 
+# TODO: remove this?
 def reserved_recid():
     """
     Check for existence of a reserved recid and put in metadata so
@@ -545,85 +547,123 @@ def api_validate_files():
 # ===============
 class upload(DepositionType):
     """
-    Zenodo deposition workflow
+    LW DAAP deposition workflow
     """
     workflow = [
-        p.IF_ELSE(
-            has_submission,
-            # Existing deposition
+        p.IF_ELSE(has_submission,
             [
-                # Load initial record
-                load_record(
-                    draft_id='_edit',
-                    post_process=process_draft
-                ),
-                # Render the form and wait until it is completed
-                render_form(draft_id='_edit'),
+                # existing record, let user edit
+                load_record(draft_id='edit',
+                            post_process=process_draft),
+                render_form(draft_id='edit'),
             ],
-            # New deposition
             [
-                # Load pre-filled data from cache
-                prefill_draft(draft_id='_default'),
-                # Render the form and wait until it is completed
-                render_form(draft_id='_default'),
+                prefill_draft(draft_id='metadata'),
+                # render the metadata form
+                render_form(draft_id='metadata'),
+                # now go for the files
+                render_form(draft_id='files'),
                 # Test if all files are available for API
+                # FIXME: what to do about this? 
                 api_validate_files(),
-            ]
+            ],
         ),
-        # Create the submission information package by merging data
-        # from all drafts - i.e. generate the recjson.
+        # merge all drafts (default + files)
         prepare_sip(),
-        p.IF_ELSE(
-            has_submission,
+        p.IF_ELSE(has_submission,
             [
-                # Process SIP recjson
-                process_sip_metadata(process_recjson_edit),
-                # Merge SIP metadata into record and generate MARC
-                merge_record(
-                    draft_id='_edit',
-                    post_process_load=process_draft,
-                    process_export=process_recjson_edit,
-                    merge_func=merge,
-                ),
-                # Set file restrictions
-                process_bibdocfile(process=process_files),
             ],
             [
-                # Check for reserved recids.
-                reserved_recid(),
-                # Reserve a new record id
+                # Create new record ID
                 create_recid(),
-                # Register DOI in internal pid store.
-                mint_pid(
-                    pid_field='doi',
-                    pid_store_type='doi',
-                    pid_creator=lambda recjson: create_doi(
-                        recid=recjson['recid']
-                    )['doi'],
-                    existing_pid_checker=check_existing_pid,
-                ),
-                # Process SIP metadata
+                # do some stuff
                 process_sip_metadata(process_recjson_new),
-            ]
-        ),
-        # Generate MARC based on recjson structure
-        finalize_record_sip(),
-        p.IF_ELSE(
-            has_submission,
-            [
-                # Seal the SIP and write MARCXML file and call bibupload on it
-                upload_record_sip(),
-                # Schedule background tasks.
-                run_tasks(update=True),
             ],
-            [
-                # Note: after upload_record_sip(), has_submission will return
-                # True no matter if it's a new or editing of a deposition.
-                upload_record_sip(),
-                run_tasks(update=False),
-            ]
         ),
+        # generate MARC 
+        finalize_record_sip(),
+        # and let bibupload do the magic
+        upload_record_sip(),
     ]
+        
+#    workflow = [
+#      
+#        p.IF_ELSE(
+#            has_submission,
+#            # Existing deposition
+#            [
+#                # Load initial record
+#                load_record(
+#                    draft_id='_edit',
+#                    post_process=process_draft
+#                ),
+#                # Render the form and wait until it is completed
+#                render_form(draft_id='_edit'),
+#            ],
+#            # New deposition
+#            [
+#                # Load pre-filled data from cache
+#                prefill_draft(draft_id='_default'),
+#                # Render the form and wait until it is completed
+#                render_form(draft_id='_default'),
+#                # Test if all files are available for API
+#                api_validate_files(),
+#            ]
+#        ),
+#        # Create the submission information package by merging data
+#        # from all drafts - i.e. generate the recjson.
+#        prepare_sip(),
+#        p.IF_ELSE(
+#            has_submission,
+#            [
+#                # Process SIP recjson
+#                process_sip_metadata(process_recjson_edit),
+#                # Merge SIP metadata into record and generate MARC
+#                merge_record(
+#                    draft_id='_edit',
+#                    post_process_load=process_draft,
+#                    process_export=process_recjson_edit,
+#                    merge_func=merge,
+#                ),
+#                # Set file restrictions
+#                process_bibdocfile(process=process_files),
+#            ],
+#            [
+#                # Check for reserved recids.
+#                reserved_recid(),
+#                # Reserve a new record id
+#                create_recid(),
+#                # Register DOI in internal pid store.
+#                mint_pid(
+#                    pid_field='doi',
+#                    pid_store_type='doi',
+#                    pid_creator=lambda recjson: create_doi(
+#                        recid=recjson['recid']
+#                    )['doi'],
+#                    existing_pid_checker=check_existing_pid,
+#                ),
+#                # Process SIP metadata
+#                process_sip_metadata(process_recjson_new),
+#            ]
+#        ),
+#        # Generate MARC based on recjson structure
+#        finalize_record_sip(),
+#        p.IF_ELSE(
+#            has_submission,
+#            [
+#                # Seal the SIP and write MARCXML file and call bibupload on it
+#                upload_record_sip(),
+#                # Schedule background tasks.
+#                run_tasks(update=True),
+#            ],
+#            [
+#                # Note: after upload_record_sip(), has_submission will return
+#                # True no matter if it's a new or editing of a deposition.
+#                upload_record_sip(),
+#                run_tasks(update=False),
+#            ]
+#        ),
+#    ]
     name = "Upload"
     name_plural = "Uploads"
     editable = True
