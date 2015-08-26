@@ -74,7 +74,7 @@
       </tbody>
     </table>
     {% endblock %}
-    {% set record_owner = current_user.id == record.owner.id|int %}
+    {% set record_owner = current_user.id == record.get('owner', {}).get('id', -1)|int %}
     {% if record.fft %}
     {% block files %}
     {% if (record.access_right is equalto 'closed') and not record_owner %}
