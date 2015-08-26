@@ -141,6 +141,9 @@ def process_recjson(deposition, recjson):
         recjson['_first_author'] = recjson['authors'][0]
         recjson['_additional_authors'] = recjson['authors'][1:]
 
+    if 'keywords' in recjson and recjson['keywords']:
+        recjson['keywords'] = [ item.strip() for item in rrecjson['keywords'].split(',') ]
+
     # ===========
     # Communities
     # ===========

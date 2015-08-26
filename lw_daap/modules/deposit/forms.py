@@ -507,18 +507,13 @@ class BasicForm(WebDepositForm):
             strip_string,
         ],
     )
-    keywords = fields.DynamicFieldList(
-        fields.StringField(
-            widget_classes='form-control',
-            widget=ColumnInput(class_="col-xs-10"),
-        ),
+    keywords = fields.TextAreaField(
         validators=[validators.optional()],
         label='Keywords',
-        add_label='Add another keyword',
-        description='Optional.',
+        description='Optional. Introduce keywords separated by commas.',
+        default='',
         icon='fa fa-tags fa-fw',
-        widget_classes='',
-        min_entries=1,
+        widget_classes='form-control',
     )
     notes = fields.TextAreaField(
         label="Additional notes",
