@@ -4,7 +4,7 @@
 
 REMOTE_APP = dict(
     title='google',
-    description='Software collaboration platform.',
+    description='Internet platform.',
     icon='fa fa-google',
     authorized_handler="invenio.modules.oauthclient.handlers"
                        ":authorized_signup_handler",

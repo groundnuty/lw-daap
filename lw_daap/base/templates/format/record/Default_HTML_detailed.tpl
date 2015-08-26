@@ -25,7 +25,7 @@
       </div> <!-- record-abstract -->
     </div> <!-- col 9 -->
     <div class="col-sm-3 col-md-3 well">
-        <h4>DOI</h4>
+        <h4>Mint DOI</h4>
     </div> <!-- col 3 -->
   </div> <!-- row -->
   {% endblock %}
@@ -40,9 +40,7 @@
           <tr><td class="key">Type</td><td class="value">{{ record.upload_type }}</td></tr>
         {% endif %}
         {% if record.communities %}
-          <tr><td class="key">Communities</td>
-              <td class="value">{{ record.communities|join(', ')}} </td>
-          </tr>
+          <tr><td class="key">Communities</td><td class="value"> {{ bfe_community(bfo, record=record) }}</td></tr>  
         {% endif %}
         {% if record.publication_date %}
           <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td></tr>
@@ -55,14 +53,23 @@
             {{record.__license_text__.license}}</a></td></tr>
         {% endif %}
         {% if record.keywords %}
-          <tr><td class="key">Keywords</td><td class="value">{{ record.keywords|join('; ') }}</td></tr>
+          <tr><td class="key">Keywords</td><td class="value">
+                 {% for keyword in record['keywords'] %}
+                 <span class="label label-default">
+                 <a href="{{ url_for('search.search', p='keyword:' + keyword) }}">
+                    {{ keyword }}
+                 </a>
+                 </span>
+                 &nbsp
+                 {% endfor %}
+          </td></tr>
         {% endif %}
         {% if record.period %}
           <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td></tr>
         {% endif %}
         {% if record.fft %}
           <tr><td class="key">Size</td><td class="value">
-            SUM SIZES{# record.fft|map(attribute='file_size', int)|join(', ') #}</td></tr>
+            {{ bfe_size(bfo, record=record) }} KB </td></tr>
         {% endif %}
       </tbody>
     </table>
