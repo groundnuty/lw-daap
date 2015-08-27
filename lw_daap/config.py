@@ -5,6 +5,7 @@
 import invenio.modules.oauthclient.contrib.github
 
 import lw_daap.base.auth.google
+import lw_daap.base.auth.facebook
 
 # Global config
 CFG_SITE_LANGS = ["en"]
@@ -23,12 +24,14 @@ COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 
 PACKAGES = [
     "lw_daap.base",
+    "lw_daap.modules.accessrequests",
     "lw_daap.modules.deposit",
     "lw_daap.modules.communities",
     "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
 ]
+
 
 PACKAGES_EXCLUDE= [
     "invenio.modules.messages",
@@ -89,6 +92,7 @@ RECORDS_BREADCRUMB_TITLE_KEY = 'title'
 OAUTHCLIENT_REMOTE_APPS = dict(
     github=invenio.modules.oauthclient.contrib.github.REMOTE_APP,
     google=lw_daap.base.auth.google.REMOTE_APP,
+    facebook=lw_daap.base.auth.facebook.REMOTE_APP,
 )
 
 try:
