@@ -23,7 +23,7 @@ from __future__ import absolute_import, print_function
 from flask import current_app
 from flask_registry import ImportPathRegistry, SingletonRegistry, \
     RegistryProxy, RegistryError
-from invenio.modules.deposit.models import DepositionType
+from lw_daap.modules.invenio_deposit.models import DepositionType
 from invenio.modules.workflows.registry import workflows
 
 

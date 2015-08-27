@@ -185,6 +185,7 @@ class DepositionType(object):
         filename=fields.String(attribute='name'),
         id=fields.String(attribute='uuid'),
         filesize=fields.String(attribute='size'),
+        description=fields.String(attribute='description'),
     )
     """ REST API structure of a file """
 
@@ -578,6 +579,7 @@ class DepositionFile(FactoryMixin):
             name=self.name,
             size=self.size,
             checksum=self.checksum,
+            description=self.description,
             #bibdoc=self.bibdoc
         )
 
@@ -587,6 +589,7 @@ class DepositionFile(FactoryMixin):
         self.name = state['name']
         self.size = state['size']
         self.checksum = state['checksum']
+        self.description = state.get('description', '')
 
     def __repr__(self):
         data = self.__getstate__()
@@ -605,8 +608,9 @@ class DepositionFile(FactoryMixin):
             raise Exception("No path set")
         return self._path
 
-    def save(self, incoming_file, filename=None, *args, **kwargs):
+    def save(self, incoming_file, filename=None, description=None, *args, **kwargs):
         self.name = secure_filename(filename or incoming_file.filename)
+        self.description = description
         (self._path, self.size, self.checksum, result) = self.backend.save(
             incoming_file, filename, *args, **kwargs
         )
@@ -1242,7 +1246,8 @@ class Deposition(object):
         """
         metadata = DepositionDraft.merge_data(self.drafts.values())
         metadata['files'] = map(
-            lambda x: dict(path=x.path, name=os.path.splitext(x.name)[0]),
+            lambda x: dict(path=x.path, name=os.path.splitext(x.name)[0],
+                           description=x.description),
             self.files
         )
 

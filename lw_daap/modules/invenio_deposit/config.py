@@ -26,7 +26,7 @@ DEPOSIT_TYPES = []
 
 Import string must be to the actual subclass of DepositionType, e.g.::
 
-    invenio.modules.deposit.workflows.article_workflow:Article
+    lw_daap.modules.invenio_deposit.workflows.article_workflow:Article
 
 Also, each DepositionType is a workflow, so the workflow module must also
 be able to load the module it, which usually means that your

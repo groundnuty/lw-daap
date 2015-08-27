@@ -150,6 +150,11 @@ define(function(require) {
                 });
             });
 
+            PlUploader.bind('BeforeUpload', function(up, file) {
+                var desc = $('#file-desc-' + file.id).val()
+                up.settings.multipart_params = {description: desc};
+            });
+
             PlUploader.init();
         });
     }

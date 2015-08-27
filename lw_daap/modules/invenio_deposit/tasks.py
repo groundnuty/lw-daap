@@ -33,7 +33,7 @@ from functools import wraps
 
 from invenio.modules.records.api import get_record
 from invenio.modules.editor.models import HstRECORD
-from invenio.modules.deposit.models import Deposition, Agent, \
+from lw_daap.modules.invenio_deposit.models import Deposition, Agent, \
     DepositionDraftCacheManager
 from invenio.ext.logging import register_exception
 from invenio.ext.restful import error_codes

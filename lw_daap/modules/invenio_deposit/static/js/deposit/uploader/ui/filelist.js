@@ -33,7 +33,7 @@ define(function(require) {
 
 
         this.attributes({
-            tableBodySelector: 'tbody',
+            tableBodySelector: '.filelist-placeholder',
             get_file_url: ''
         });
 
@@ -69,12 +69,13 @@ define(function(require) {
 
         function handleItemClick(ev) {
             if ($(ev.target).hasClass("rmlink")) {
-                var fileId = ev.target.parentNode.parentNode.id;
+                var fileId = ev.target.dataset.fileId;
+                var selector = '#' + fileId;
 
                 this.trigger('fileRemovedByUser', {
                     fileId: fileId
                 });
-                $(ev.target.parentNode.parentNode).fadeOut(200, function() {
+                $(selector).fadeOut(200, function() {
                     $(this).remove();
                 });
             }
@@ -84,11 +85,9 @@ define(function(require) {
             var that = this;
             $.each(files, function(key, file) {
                 if (file.status === 5) {
-                    var selector = '#' + file.id;
-                    var $elem = $(that.$node.find(selector).children()[2]).children();
-                    var $elemName = $(that.$node.find(selector).children()[0]);
-                    $elemName.html("<a href='" + that.attr.get_file_url + "?file_id=" + file.server_id + "'>" + file.name + "</a>");
-                    $elem.remove();
+                    var selector = '#download-link-' + file.id;
+                    var $elem = $(that.$node.find(selector));
+                    $elem.append("<a href='" + that.attr.get_file_url + "?file_id=" + file.server_id + "' class='btn btn-default'><i class='fa fa-cloud-download'></i> Download</a>");
                 }
             });
             $('#upload-speed').html('');
