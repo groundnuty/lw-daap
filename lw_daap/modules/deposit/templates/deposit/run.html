@@ -19,18 +19,6 @@
 
 {% extends "deposit/run_base.html" %}
 
-{% macro submit_dialog_body() %}
-<ul>
-    <li>Your upload will be <strong>publicly available</strong> shortly after you submit &mdash; uploaded files are only publicly available if you have chosen Open Access and/or Embargoed Access (subject to the embargo date).</li>
-    <br>
-    <li>A Digital Object Identifier (DOI) will be registered for your upload when you <strong>ask for minting</strong> it, unless you provide an existing one.</li>
-    <br>
-    <li>Once a DOI is asigned, uploaded files <strong>cannot</strong> be modified/added/removed after upload. Metadata (title, description, etc.) <strong>can</strong> beD modified.</li>
-</ul>
-{% endmacro %}
-
-
-
 {#
  # Add modal dialog
  #}
@@ -68,7 +56,9 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
 #}
 </script>
 
+<!--
 <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="{{config.DEPOSIT_DROPBOX_API_KEY}}"></script>
+-->
 
 <script type="text/javascript">
   require(
@@ -100,7 +90,10 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
             complete_url: '{{ url_for(".save", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, submit='1') }}',
             autocomplete_url: '{{ url_for(".autocomplete", deposition_type=deposition_type, uuid=uuid, draft_id=draft.id, field_name="__FIELDNAME__") }}',
             datepicker_element: '.datepicker',
-            datepicker_options: {dateFormat: "YYYY-MM-DD", pickTime: false}
+            datepicker_options: {dateFormat: "YYYY-MM-DD", pickTime: false},
+            added_hook: function(options, element) {
+                         alert('pumpum');
+ }
           },
 
           uploader: {
@@ -113,8 +106,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
             autoupload: false,
             continue_url: '{{ url_for('.run', deposition_type=deposition_type, uuid=uuid) }}',
             fileListSelector: '#uploader-filelist',
-            errorListSelector: '#uploader-errorlist'/*,
-            preupload_hooks: preupload_hooks*/
+            errorListSelector: '#uploader-errorlist'
           },
 
           pluploader: {
@@ -132,9 +124,24 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
           }
         };
 
+        // configure all the uploaders 
+/*
+        $('.pluploader-btn').each(function(e) {
+            uploader_area = $(this).parents('.pluploader-area')[0]
+            plupconfig = {
+                url: '{{ url_for('.upload_file', deposition_type=deposition_type, uuid=uuid) }}',
+                max_file_size: '{{config.DEPOSIT_MAX_UPLOAD_SIZE|default('10mb')}}',
+                max_files_count: {{config.DEPOSIT_MAX_UPLOAD_FILES_COUNT|default('null')}},
+                drop_element: uploader_area 
+            } 
+            PlUploader.attachTo($(this), plupconfig);
+            Uploader.attachTo(uploader_area, config.uploader);
+        });
+*/
+
         form.attachTo("#submitForm", config.form);
-        Uploader.attachTo("#uploader", config.uploader);
         PlUploader.attachTo("#pluploader", config.pluploader);
+        Uploader.attachTo("#uploader", config.uploader);
         DropboxUploader.attachTo("#dropboxuploader", config.dropboxuploader);
         FileList.attachTo("#uploader-filelist");
         ErrorList.attachTo("#uploader-errorlist");

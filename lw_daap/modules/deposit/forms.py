@@ -391,7 +391,7 @@ class CommunityForm(WebDepositForm):
     )
 
 class FileDescriptionForm(WebDepositForm):
-    file = fields.FileUploadField(
+    upload_file = fields.FileUploadField(
         label="",
         widget=plupload_widget,
         export_key=False
@@ -400,27 +400,39 @@ class FileDescriptionForm(WebDepositForm):
         label="File Description", description="Optional.", export_key=False,
     )
 
-
 class FilesForm(WebDepositForm):
-    file_list = fields.DynamicFieldList(
-        fields.FormField(
-            FileDescriptionForm,
-            widget=ExtendedListWidget(
-                item_widget=ItemWidget(),
-                html_tag='div'
-            ),
-        ),
-        label='Upload File',
-        add_label='Add another author',
-        description='Required.',
-        icon='fa fa-user fa-fw',
-        widget_classes='',
-        min_entries=1,
-        validators=[validators.DataRequired(), list_length(
-            min_num=1, element_filter=filter_empty_helper(),
-        )],
+    template = 'deposit/files.html'
+    
+    plupload_file = fields.FileUploadField(
+        label="",
+        widget=plupload_widget,
+        export_key=False
     )
+
+    #file_descriptions = fields.DynamicFieldList(
+    #    fields.FormField(
+    #        FileDescriptionForm,
+    #        widget=ExtendedListWidget(
+    #            item_widget=ItemWidget(),
+    #            html_tag='div'
+    #        ),
+    #    ),
+    #    label='',
+    #    add_label='Add another file',
+    #    description='Required.',
+    #    icon='fa fa-user fa-fw',
+    #    widget_classes='',
+    #    min_entries=1,
+    #    validators=[validators.DataRequired(), list_length(
+    #        min_num=1, element_filter=filter_empty_helper(),
+    #    )],
+    #)
  
+    #groups = [
+    #    ('Upload Files',
+    #     ['file_list'],
+    #     { 'indication': 'required', }),
+    #]
 
 #
 # BasicForm
@@ -781,6 +793,7 @@ class DatasetForm(BasicForm):
                            ' field in basic information section.',
         }),
     ]
+
 
 class SoftwareForm(BasicForm):
     template = 'deposit/metadata.html'

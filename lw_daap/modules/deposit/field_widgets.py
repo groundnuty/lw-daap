@@ -18,16 +18,17 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 """Implement custom field widgets."""
 
-
 from wtforms.widgets import HTMLString, html_params
 
+#from invenio.modules.deposit.field_widgets import PLUploadWidget
 
 def date_widget(field, **kwargs):
-    """Create datepicker widget."""
+    """Date picker widget that allows to specify the date format to use.
+       Default is YYYY-MM-DD"""
     field_id = kwargs.pop('id', field.id)
     date_format = kwargs.pop('date_format','YYYY-MM-DD') 
     html = [u'<div class="row"><div class="col-xs-5 col-sm-3">'
-            '<input class="datepicker form-control" %s data-date-format="%s" '
+            '<input class="datepicker form-control" %s data-date-format="%s"'
             ' type="text"></div></div'
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
