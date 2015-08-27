@@ -4,7 +4,7 @@
 
 REMOTE_APP = dict(
     title='facebook',
-    description='Internet platform.',
+    description='Internet social platform.',
     icon='fa fa-facebook',
     authorized_handler="invenio.modules.oauthclient.handlers"
                        ":authorized_signup_handler",
