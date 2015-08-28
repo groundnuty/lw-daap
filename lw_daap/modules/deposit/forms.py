@@ -444,6 +444,7 @@ class FilesForm(WebDepositForm):
 # BasicForm
 #
 class BasicForm(WebDepositForm):
+    template = 'deposit/metadata.html'
 
     """Basic Upload Form."""
 
@@ -795,7 +796,6 @@ class DatasetForm(BasicForm):
 
 
 class SoftwareForm(BasicForm):
-    template = 'deposit/metadata.html'
 
     """Software Upload Form."""
     upload_type = fields.StringField(
