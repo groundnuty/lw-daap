@@ -24,7 +24,7 @@ COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 
 PACKAGES = [
     "lw_daap.base",
-#    "lw_daap.modules.accessrequests",
+    "lw_daap.modules.accessrequests",
     "lw_daap.modules.deposit",
     "lw_daap.modules.communities",
     "lw_daap.deploy",
