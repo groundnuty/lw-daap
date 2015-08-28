@@ -3,7 +3,7 @@
 #
 
 REMOTE_APP = dict(
-    title='facebook',
+    title='Facebook',
     description='Internet social platform.',
     icon='fa fa-facebook',
     authorized_handler="invenio.modules.oauthclient.handlers"
@@ -30,5 +30,5 @@ REMOTE_APP = dict(
 
 def account_info(remote, resp):
     """ Retrieve remote account information used to find local user. """
-    userinfo = remote.get('userinfo').data
+    userinfo = remote.get('https://graph.facebook.com/me?fields=email').data
     return dict(email=userinfo.get('email'), nickname=userinfo.get('email'))
