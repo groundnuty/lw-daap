@@ -24,17 +24,18 @@
         {% endif %}
       </div> <!-- record-abstract -->
     </div> <!-- col 9 -->
-    <div class="col-sm-3 col-md-3 well">
-        <h4>Mint DOI</h4>
-    </div> <!-- col 3 -->
+    <button type="button" class="btn btn-lg btn-default well pull-right">Mint DOI</button>
   </div> <!-- row -->
   {% endblock %}
   <div class="">
-
+    <br/>
+    <br/>
     {% block metadata %}
     <h2>Metadata</h2>
     {# FIXME: good class for the table #}
-    <table class="table table-bordered table-condensed table-dgu-fixed-size dgu-table">
+    <br/>
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped table-dgu-fixed-size dgu-table">
       <tbody>
         {% if record.upload_type %}
           <tr><td class="key">Type</td><td class="value">{{ record.upload_type }}</td></tr>
@@ -73,7 +74,10 @@
         {% endif %}
       </tbody>
     </table>
+    </div>
     {% endblock %}
+    <br/>
+    <br/>
     {% set record_owner = current_user.id == record.get('owner', {}).get('id', -1)|int %}
     {% if record.fft %}
     {% block files %}
@@ -89,7 +93,7 @@
             <h3>Access to this record is allowed from {{ record.embargo_date }}.</h3>
         {% else %}       
             {% for row in record.fft|batch(2) %}
-            <h2>Files ({{ record.fft|length }})</h2>
+            <h2>Files ({{ record.fft|length }})</h2> <br/>
             <div class="row">
                 {% for file in row %}
                 <div class="col-sm-6">
@@ -101,11 +105,15 @@
         {% endif %}
     {% else %}       
         {% for row in record.fft|batch(2) %}
-        <h2>Files ({{ record.fft|length }})</h2>
+        <h2>Files ({{ record.fft|length }})</h2><br />
         <div class="row">
             {% for file in row %}
             <div class="col-sm-6">
-                <a href="{{ file.url }}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ file.description }}</a>
+               <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                  <button type="button" class="btn btn-info">{{ file.description }} {{ file.type }}</button>
+                  <button type="button" class="btn btn-default"><a href="{{ file.url }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a></button>
+                  <button type="button" class="btn btn-default"><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></button>
+                </div>
             </div>
             {% endfor %}
         </div>
