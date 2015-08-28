@@ -25,9 +25,9 @@ Button that when clicked will reserve a DOI.
 """
 
 from wtforms import Field
-from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.processor_utils import replace_field_data
-from invenio.modules.deposit.field_widgets import ButtonWidget
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.processor_utils import replace_field_data
+from lw_daap.modules.invenio_deposit.field_widgets import ButtonWidget
 
 
 __all__ = ['ReserveDOIField']

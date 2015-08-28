@@ -30,7 +30,7 @@ class TestDepositObjects(InvenioTestCase):
 
     def test_load_workflow(self):
         from invenio.modules.workflows.models import BibWorkflowObject
-        from invenio.modules.deposit.models import Deposition
+        from lw_daap.modules.invenio_deposit.models import Deposition
 
         q = BibWorkflowObject.query.filter(BibWorkflowObject.id_user != 0).all()
         for b in q:

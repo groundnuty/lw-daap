@@ -25,6 +25,7 @@ COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 PACKAGES = [
     "lw_daap.base",
     "lw_daap.modules.deposit",
+    "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.communities",
     "lw_daap.deploy",
     "invenio.base",
@@ -33,6 +34,7 @@ PACKAGES = [
 
 
 PACKAGES_EXCLUDE= [
+    "invenio.modules.deposit",
     "invenio.modules.messages",
     "invenio.modules.documentation",
     "invenio.modules.oauth2server",

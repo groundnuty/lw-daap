@@ -22,7 +22,7 @@
 
 from wtforms import TextAreaField
 from wtforms.compat import text_type
-from invenio.modules.deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 
 
 class TextAreaListField(WebDepositField, TextAreaField):

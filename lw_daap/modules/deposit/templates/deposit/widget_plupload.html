@@ -27,20 +27,15 @@
 
   <h4>{{ _('Files') }}</h4>
 
-  <table id="uploader-filelist" class="table table-striped">
-    <thead>
-      <tr>
-        <th>{{ _('Filename') }}</th>
-        <th style="width: 50%;">{{ _('File Description') }}</th>
-        <th>{{ _('Size') }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="sortable">
-    </tbody>
-  </table>
+  <div id="uploader-filelist"> 
+    <div class="filelist-placeholder"></div>
+  </div> 
   <div id="uploader-errorlist" style="visibility: hidden;">
     <ul id="errorList"></ul>
+  </div>
+  <div>
+        <a href="javascript:;" id="uploader-upload" class="btn btn-success" disabled>Start upload</a>
+        <a href="javascript:;" id="uploader-stop" class="btn btn-danger">Stop upload</a>
   </div>
   <small id="upload-speed" class="muted pull-right" style="margin-right: 10px; padding-top:5px;"></small>
 </div>

@@ -2,9 +2,9 @@
 from wtforms import validators, widgets
 
 from invenio.base.i18n import _
-from invenio.modules.deposit.form import WebDepositForm
-from invenio.modules.deposit.fields import Date
-from invenio.modules.deposit.field_widgets import date_widget
+from lw_daap.modules.invenio_deposit.form import WebDepositForm
+from lw_daap.modules.invenio_deposit.fields import Date
+from lw_daap.modules.invenio_deposit.field_widgets import date_widget
 
 
 __all__ = ['PeriodField']

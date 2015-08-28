@@ -21,7 +21,7 @@
 ## or submit itself to any jurisdiction.
 
 from wtforms import TextAreaField
-from invenio.modules.deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 from wtforms.compat import text_type
 from wtforms.validators import Regexp, ValidationError
 from invenio.utils.text import wash_for_xml

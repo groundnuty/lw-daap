@@ -25,11 +25,11 @@ from invenio.utils.text import nice_size
 from invenio.ext.email import send_email
 from invenio.ext.template import render_template_to_string
 from invenio.base.globals import cfg
-from invenio.modules.deposit.form import WebDepositForm
-from invenio.modules.deposit.fields.file_upload import FileUploadField
-from invenio.modules.deposit.field_widgets import PLUploadWidget
+from lw_dapp.modules.invenio_deposit.form import WebDepositForm
+from lw_dapp.modules.invenio_deposit.fields.file_upload import FileUploadField
+from lw_dapp.modules.invenio_deposit.field_widgets import PLUploadWidget
 from .field_widgets import SPAUploadWidget
-from invenio.modules.deposit.models import DepositionDraftCacheManager
+from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
 
 
 class UploadForm(WebDepositForm):

@@ -56,7 +56,7 @@ class WebDepositApiTest(DepositApiTestCase):
         self.assertFalse('Set-Cookie' in response.headers)
 
     def test_depositions_list_post_invalid(self):
-        from invenio.modules.deposit.models import Deposition
+        from lw_daap.modules.invenio_deposit.models import Deposition
 
         # Invalid arguments
         cases = [
@@ -602,7 +602,7 @@ class WebDepositZenodoApiTest(DepositApiTestCase):
 
     def run_deposition_tasks(self, deposition_id, with_webcoll=True):
         # Run submitted tasks
-        from invenio.modules.deposit.models import Deposition
+        from lw_daap.modules.invenio_deposit.models import Deposition
         dep = Deposition.get(deposition_id)
         sip = dep.get_latest_sip(sealed=True)
         for task_id in sip.task_ids:

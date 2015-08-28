@@ -20,8 +20,8 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.field_widgets import BigIconRadioInput, \
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.field_widgets import BigIconRadioInput, \
     InlineListWidget
 
 from wtforms import RadioField

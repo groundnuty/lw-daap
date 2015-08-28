@@ -87,7 +87,7 @@ def do_upgrade():
     """ Implement your upgrades here  """
     from invenio.modules.workflows.models import BibWorkflowObject
     from invenio.modules.workflows.engine import ObjectVersion, WorkflowStatus
-    from invenio.modules.deposit.models import Deposition
+    from lw_daap.modules.invenio_deposit.models import Deposition
 
     for o in BibWorkflowObject.query.filter(BibWorkflowObject.id_user!=0).all():
         d = Deposition(o)

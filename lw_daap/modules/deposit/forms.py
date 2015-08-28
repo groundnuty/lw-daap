@@ -35,16 +35,16 @@ from invenio.base.globals import cfg
 from invenio.base.i18n import _
 from invenio.config import CFG_DATACITE_DOI_PREFIX, CFG_SITE_NAME, \
     CFG_SITE_SUPPORT_EMAIL
-from invenio.modules.deposit import fields
-from invenio.modules.deposit.autocomplete_utils import kb_autocomplete
-from invenio.modules.deposit.field_widgets import ButtonWidget, \
+from lw_daap.modules.invenio_deposit import fields
+from lw_daap.modules.invenio_deposit.autocomplete_utils import kb_autocomplete
+from lw_daap.modules.invenio_deposit.field_widgets import ButtonWidget, \
     CKEditorWidget, ColumnInput, ExtendedListWidget, ItemWidget, TagInput, \
     TagListWidget, plupload_widget
-from invenio.modules.deposit.filter_utils import sanitize_html, strip_string
-from invenio.modules.deposit.form import WebDepositForm
-from invenio.modules.deposit.processor_utils import PidNormalize, \
+from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, strip_string
+from lw_daap.modules.invenio_deposit.form import WebDepositForm
+from lw_daap.modules.invenio_deposit.processor_utils import PidNormalize, \
     PidSchemeDetection, datacite_lookup, replace_field_data
-from invenio.modules.deposit.validation_utils import DOISyntaxValidator, \
+from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator, \
     invalid_doi_prefix_validator, list_length, minted_doi_validator, \
     not_required_if, pid_validator, pre_reserved_doi_validator, required_if, \
     unchangeable
@@ -396,9 +396,7 @@ class FileDescriptionForm(WebDepositForm):
         widget=plupload_widget,
         export_key=False
     )
-    file_description = fields.StringField(
-        label="File Description", description="Optional.", export_key=False,
-    )
+
 
 class FilesForm(WebDepositForm):
     template = 'deposit/files.html'
@@ -408,6 +406,14 @@ class FilesForm(WebDepositForm):
         widget=plupload_widget,
         export_key=False
     )
+
+    def validate_plupload_file(form, field):
+        """Ensure minimum one file is attached."""
+
+        if not getattr(request, 'is_api_request', False):
+            # Tested in API by a separate workflow task.
+            if len(form.files) == 0:
+                raise ValidationError("You must provide minimum one file.")
 
     #file_descriptions = fields.DynamicFieldList(
     #    fields.FormField(
@@ -703,13 +709,6 @@ class BasicForm(WebDepositForm):
     #    widget=plupload_widget,
     #    export_key=False
     #)
-
-    #def validate_plupload_file(form, field):
-    #    """Ensure minimum one file is attached."""
-    #    if not getattr(request, 'is_api_request', False):
-    #        # Tested in API by a separate workflow task.
-    #        if len(form.files) == 0:
-    #            raise ValidationError("You must provide minimum one file.")
 
 
 #

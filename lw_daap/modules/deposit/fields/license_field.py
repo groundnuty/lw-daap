@@ -27,8 +27,8 @@ from operator import itemgetter
 
 from wtforms import SelectField
 
-from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.processor_utils import set_flag
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.processor_utils import set_flag
 from invenio.modules.knowledge.api import get_kb_mappings
 
 __all__ = ['LicenseField']

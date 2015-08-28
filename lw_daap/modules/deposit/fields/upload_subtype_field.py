@@ -21,7 +21,7 @@
 ## or submit itself to any jurisdiction.
 
 from wtforms import SelectField
-from invenio.modules.deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 from lw_daap.modules.deposit.fields.objecttype_field import UPLOAD_TYPES
 
 __all__ = ['UploadSubtypeField']

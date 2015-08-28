@@ -20,7 +20,7 @@
 
 from wtforms.widgets import HTMLString, html_params
 
-#from invenio.modules.deposit.field_widgets import PLUploadWidget
+#from lw_daap.modules.invenio_deposit.field_widgets import PLUploadWidget
 
 def date_widget(field, **kwargs):
     """Date picker widget that allows to specify the date format to use.

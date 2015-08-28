@@ -1,5 +1,5 @@
 from wtforms import FileField as wFileField 
-from invenio.modules.deposit.field_base import WebDepositField
+from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 
 __all__ = ['FileField']
 

@@ -35,9 +35,9 @@ from invenio.base.globals import cfg
 from invenio.modules.formatter import format_record
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.ext.login import UserInfo
-from invenio.modules.deposit.models import DepositionType, Deposition, \
+from lw_daap.modules.invenio_deposit.models import DepositionType, Deposition, \
     InvalidApiAction
-from invenio.modules.deposit.tasks import render_form, \
+from lw_daap.modules.invenio_deposit.tasks import render_form, \
     create_recid, \
     prepare_sip, \
     finalize_record_sip, \
@@ -49,8 +49,8 @@ from invenio.modules.deposit.tasks import render_form, \
     merge_record, \
     process_sip_metadata, \
     process_bibdocfile
-from invenio.modules.deposit.helpers import record_to_draft
-from invenio.modules.deposit.tasks import merge_changes, is_sip_uploaded
+from lw_daap.modules.invenio_deposit.helpers import record_to_draft
+from lw_daap.modules.invenio_deposit.tasks import merge_changes, is_sip_uploaded
 from lw_daap.modules.deposit.utils import create_doi, filter_empty_helper
 from invenio.ext.restful import error_codes, ISODate
 from invenio.ext.sqlalchemy import db
