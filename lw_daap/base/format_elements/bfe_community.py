@@ -24,11 +24,13 @@ from invenio.legacy.search_engine import get_all_collections_of_a_record
 from invenio.modules.communities.models import Community
 
 
-def format_element(bfo, record=''):
-    comms = []
-    for cname in record.get('communities', []):
-        c = Community.query.get(cname)
-    return str(c.title)
+def format_element(bfo, record='', separator=', '):
+   comms = []
+   for cname in record.get('communities', []):
+      c = Community.query.get(cname)
+      comms.append(str(c.title))
+   return separator.join(comms)
+
 
 def escape_values(bfo):
     return 0
