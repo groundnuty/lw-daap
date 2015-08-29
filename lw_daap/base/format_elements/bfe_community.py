@@ -28,8 +28,7 @@ def format_element(bfo, record=''):
     comms = []
     for cname in record.get('communities', []):
         c = Community.query.get(cname)
-        comms.append(c.title)
-    return comms
+    return str(c.title)
 
 def escape_values(bfo):
     return 0
