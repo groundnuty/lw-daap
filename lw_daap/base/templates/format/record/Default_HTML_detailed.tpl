@@ -24,7 +24,7 @@
         {% endif %}
       </div> <!-- record-abstract -->
     </div> <!-- col 9 -->
-    <button type="button" class="btn btn-lg btn-default well pull-right">Mint DOI</button>
+    {% if not record.doi %}<button type="button" class="btn btn-lg btn-default well pull-right">Mint DOI</button>{% endif %}
   </div> <!-- row -->
   {% endblock %}
   <div class="">
@@ -35,13 +35,15 @@
     {# FIXME: good class for the table #}
     <br/>
     <div class="table-responsive">
-    <table class="table table-bordered table-striped table-dgu-fixed-size dgu-table">
+    <table class="table table-striped">
       <tbody>
         {% if record.upload_type %}
           <tr><td class="key">Type</td><td class="value">{{ record.upload_type }}</td></tr>
         {% endif %}
         {% if record.communities %}
-          <tr><td class="key">Communities</td><td class="value"> {{ bfe_community(bfo, record=record) }}</td></tr>  
+          <tr><td class="key">Communities</td><td class="value"> 
+            {{ bfe_community(bfo, record=record) }}
+        </td></tr>
         {% endif %}
         {% if record.publication_date %}
           <tr><td class="key">Publication date</td><td class="value">{{ record.publication_date }}</td></tr>
@@ -56,12 +58,7 @@
         {% if record.keywords %}
           <tr><td class="key">Keywords</td><td class="value">
                  {% for keyword in record['keywords'] %}
-                 <span class="label label-default">
-                 <a href="{{ url_for('search.search', p='keyword:' + keyword) }}">
-                    {{ keyword }}
-                 </a>
-                 </span>
-                 &nbsp
+                    <span class="label label-default"><a href="{{ url_for('search.search', p='keyword:' + keyword) }}">{{ keyword }}</a></span>
                  {% endfor %}
           </td></tr>
         {% endif %}
@@ -110,9 +107,9 @@
             {% for file in row %}
             <div class="col-sm-6">
                <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                  <button type="button" class="btn btn-info">{{ file.description }} {{ file.type }}</button>
-                  <button type="button" class="btn btn-default"><a href="{{ file.url }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a></button>
-                  <button type="button" class="btn btn-default"><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></button>
+                  <span class="btn btn-info">{{ file.description }}</span>
+                  <a class="btn btn-default" href="{{ file.url }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
+                  <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                 </div>
             </div>
             {% endfor %}
