@@ -30,7 +30,7 @@
     <label class="control-label col-md-3" for="file-desc-{{file.id}}">Description</label>
     <div id="field-file-desc-{{file.id}}" class="col-md-9">
       <input id="file-desc-{{file.id}}" class="form-control" type="text"
-          placeholder="Provide a description of file contents" value=""></input>
+          placeholder="Provide a description of file contents" value="{{file.description}}"></input>
     </div>
   </div>
   {{^downloadable}}

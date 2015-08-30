@@ -166,7 +166,8 @@ define(function(require) {
                         size: Uploader.bytesToSize(file.size),
                         status: 5,
                         percent: 100,
-                        server_id: file.id
+                        server_id: file.id,
+                        description: file.description
                     };
                 });
 

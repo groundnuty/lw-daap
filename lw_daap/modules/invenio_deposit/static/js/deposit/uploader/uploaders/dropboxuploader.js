@@ -111,13 +111,15 @@ define(function(require) {
                                 name: val.name
                             }
                         });
+                        var desc = $('#file-desc-' + val.id).val();
                         $.ajax({
                             type: 'POST',
                             url: self.attr.dropbox_url,
                             data: $.param({
                                 name: val.name,
                                 size: val.bytes,
-                                url: val.link
+                                url: val.link,
+                                description: desc
                             }),
                             dataType: "json"
                         }).done(function(data) {

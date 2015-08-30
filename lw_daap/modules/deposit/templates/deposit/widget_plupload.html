@@ -20,12 +20,19 @@
 <div id="uploader">
   <div class="pluploader-area well">
     <div class="uploader-selection" class="pluploader-area well">
-      <a id="pluploader" href="javascript:;" class="btn btn-default"><i class="fa fa-cloud-upload"></i> Choose file</a>
-    </div>
+      <a id="pluploader" href="javascript:;" class="btn btn-default btn-xs"><i class="fa fa-cloud-upload"></i> Choose file</a>
+     {% if config.DEPOSIT_DROPBOX_API_KEY %}
+     <span>or</span>
+     <a id="dropboxuploader" href="javascript:;" class="dropbox-dropin-btn dropbox-dropin-default dropboxuploader">
+       <span class="dropin-btn-status"></span>
+       Choose from Dropbox
+     </a>
+     {% endif %}
+  </div>
     <p class="text-muted" align="center"><small>Drag and drop files to upload</small></p>
- </div>
+  </div>
 
-  <h4>{{ _('Files') }}</h4>
+  <hr/>
 
   <div id="uploader-filelist"> 
     <div class="filelist-placeholder"></div>

@@ -29,6 +29,7 @@ from fs import path
 from invenio.base.globals import cfg
 
 
+
 class UploadError(IOError):
 
     """Error during upload."""
@@ -70,7 +71,7 @@ class ExternalFile(object):
         """Close the external file."""
         self._file.close()
 
-    def read(self):
+    def read(self, chunk_size=None):
         """Read the external file."""
         return self._file.read()
 
