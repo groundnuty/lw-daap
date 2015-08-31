@@ -373,7 +373,7 @@ def upload_url(deposition_type=None, uuid=None):
         if f.name == url_file.filename:
             raise FilenameAlreadyExists(f.name)
 
-    description = request.form.get('description', '')
+    description = request.form.get('description', url_file.filename)
 
     if df.save(url_file, filename=secure_filename(url_file.filename),
                description=description):
@@ -411,7 +411,7 @@ def upload_file(deposition_type=None, uuid=None):
 
     df = DepositionFile(backend=backend)
 
-    description = request.form.get('description', '')
+    description = request.form.get('description', filename)
 
     if df.save(uploaded_file, filename=filename, description=description, **kwargs):
         try:
