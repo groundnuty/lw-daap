@@ -25,7 +25,7 @@ def format_element(bfo, record=''):
     sizes = []
     for fft in record.get('fft', []):
         sizes.append(int(fft.get('file_size', 0)))
-    return int(sum(sizes)/1024.)
+    return sum(sizes)
 
 def escape_values(bfo):
     return 0
