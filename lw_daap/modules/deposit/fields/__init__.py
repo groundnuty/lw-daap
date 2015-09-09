@@ -28,7 +28,6 @@ from .reserve_doi_field import ReserveDOIField
 from .upload_subtype_field import UploadSubtypeField
 from .core import TextAreaListField
 from .period import PeriodFieldForm
-from .spatial import SpatialField
 from .file_field import FileField
 
 __all__ = [
@@ -40,6 +39,5 @@ __all__ = [
     'UploadSubtypeField',
     'TextAreaListField',
     'PeriodFieldForm',
-    'SpatialField',
     'FileField',
 ]

@@ -65,9 +65,12 @@
         {% if record.period %}
           <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td></tr>
         {% endif %}
+        {% if record.period %}
+          <tr><td class="key">Spatial Coverage</td><td class="value">{{ record.spatial }}</td></tr>
+        {% endif %}
         {% if record.fft %}
           <tr><td class="key">Size</td><td class="value">
-            {{ bfe_size(bfo, record=record) }} KB </td></tr>
+            {{ bfe_size(bfo, record=record) | filesizeformat }} </td></tr>
         {% endif %}
       </tbody>
     </table>
