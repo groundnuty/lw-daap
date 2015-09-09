@@ -683,6 +683,26 @@ class BasicForm(WebDepositForm):
         export_key='provisional_communities',
     )
 
+
+    #
+    # Related work
+    #
+    related_identifiers = fields.DynamicFieldList(
+        fields.FormField(
+            RelatedIdentifierForm,
+            description="Optional. Format: e.g. 10.1234/foo.bar",
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
+        ),
+        label="Related identifiers",
+        add_label='Add another related identifier',
+        icon='fa fa-barcode fa-fw',
+        widget_classes='',
+        min_entries=1,
+    )
+
     #
     # Subjects
     #
@@ -725,13 +745,24 @@ class DatasetForm(BasicForm):
 
     period = fields.FormField(
         zfields.PeriodFieldForm, 
-        label=_('Period'),
+        label=_('Temporal coverage'),
         icon='fa fa-calendar fa-fw',
-        description='Start and end dates.',
+        description='Optional. Start and end dates.',
         widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
         widget_classes='', 
     )
 
+    spatial = fields.TextAreaField(
+        label="Spatial coverage",
+        description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
+        default='',
+        validators=[validators.optional()],
+        filters=[
+            strip_string,
+        ],
+        widget_classes='form-control',
+        icon='fa fa-map-marker fa-fw',
+    )
 
     #
     # Form configuration
@@ -764,7 +795,8 @@ class DatasetForm(BasicForm):
                  ' license.')
         }),
         ('Physical information',[
-            'period', 
+            'period',
+            'spatial', 
         ], {
             'classes': '',
             'indication': 'optional', 
@@ -781,6 +813,12 @@ class DatasetForm(BasicForm):
                 ' upload to appear in. The owner of the community (and also the default community) will'
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+        }),
+        ('Related Identifiers', [
+            'related_identifiers'
+        ], {
+            'classes': '',
+            'indication': 'optional',
         }),
         ('Subjects', [
             'subjects'
@@ -846,6 +884,12 @@ class SoftwareForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
+        ('Related Identifiers', [
+            'related_identifiers'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
         ('Subjects', [
             'subjects'
         ], {
@@ -866,24 +910,6 @@ class AnalysisForm(BasicForm):
         default="analysis",
     )
 
-    #
-    # Related work
-    #
-    related_identifiers = fields.DynamicFieldList(
-        fields.FormField(
-            RelatedIdentifierForm,
-            description="Optional. Format: e.g. 10.1234/foo.bar",
-            widget=ExtendedListWidget(
-                item_widget=ItemWidget(),
-                html_tag='div'
-            ),
-        ),
-        label="Related identifiers",
-        add_label='Add another related identifier',
-        icon='fa fa-barcode fa-fw',
-        widget_classes='',
-        min_entries=1,
-    )
 
     #
     # Journal
@@ -1118,43 +1144,49 @@ class AnalysisForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Contributors', [
-            'contributors'
+        ('Related Identifiers', [
+            'related_identifiers'
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('References', [
-            'references',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Journal', [
-            'journal_title', 'journal_volume', 'journal_issue',
-            'journal_pages',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Conference', [
-            'conference_title', 'conference_acronym', 'conference_dates',
-            'conference_place', 'conference_url', '-', 'conference_session',
-            'conference_session_part'
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
-        ('Book/Report/Chapter', [
-            'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
-            'partof_title', 'partof_pages',
-        ], {'classes': '', 'indication': 'optional', }),
-        ('Thesis', [
-            'thesis_university', 'thesis_supervisors',
-        ], {
-            'classes': '',
-            'indication': 'optional',
-        }),
+        #('Contributors', [
+        #    'contributors'
+        #], {
+        #    'classes': '',
+        #    'indication': 'optional',
+        #}),
+        #('References', [
+        #    'references',
+        #], {
+        #    'classes': '',
+        #    'indication': 'optional',
+        #}),
+        #('Journal', [
+        #    'journal_title', 'journal_volume', 'journal_issue',
+        #    'journal_pages',
+        #], {
+        #    'classes': '',
+        #    'indication': 'optional',
+        #}),
+        #('Conference', [
+        #    'conference_title', 'conference_acronym', 'conference_dates',
+        #    'conference_place', 'conference_url', '-', 'conference_session',
+        #    'conference_session_part'
+        #], {
+        #    'classes': '',
+        #    'indication': 'optional',
+        #}),
+        #('Book/Report/Chapter', [
+        #    'imprint_publisher',  'imprint_place', 'imprint_isbn', '-',
+        #    'partof_title', 'partof_pages',
+        #], {'classes': '', 'indication': 'optional', }),
+        #('Thesis', [
+        #    'thesis_university', 'thesis_supervisors',
+        #], {
+        #    'classes': '',
+        #    'indication': 'optional',
+        #}),
         ('Subjects', [
             'subjects'
         ], {
