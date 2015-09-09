@@ -4,6 +4,7 @@
 
 import invenio.modules.oauthclient.contrib.github
 
+import lw_daap.base.auth.github
 import lw_daap.base.auth.google
 import lw_daap.base.auth.facebook
 
@@ -91,7 +92,8 @@ RECORDS_BREADCRUMB_TITLE_KEY = 'title'
 
 # OAuth configuration
 OAUTHCLIENT_REMOTE_APPS = dict(
-    github=invenio.modules.oauthclient.contrib.github.REMOTE_APP,
+    #github=invenio.modules.oauthclient.contrib.github.REMOTE_APP,
+    github=lw_daap.base.auth.github.REMOTE_APP,
     google=lw_daap.base.auth.google.REMOTE_APP,
     facebook=lw_daap.base.auth.facebook.REMOTE_APP,
 )
