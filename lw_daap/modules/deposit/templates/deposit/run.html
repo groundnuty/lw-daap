@@ -101,7 +101,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
             form_files: {{ form.files|default([])|safe }},
             resolve_uuid_url: '{{ url_for('.create', deposition_type=deposition_type) }}',
             resolve_uuid: false,
-            autoupload: false,
+            autoupload: true,
             continue_url: '{{ url_for('.run', deposition_type=deposition_type, uuid=uuid) }}',
             fileListSelector: '#uploader-filelist',
             errorListSelector: '#uploader-errorlist'

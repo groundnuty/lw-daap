@@ -117,7 +117,7 @@
             resolve_uuid_url: '{{ url_for(".create", deposition_type=deposition_type) }}',
             resolve_uuid: false,
             continue_url: '{{ url_for('.run', deposition_type=deposition_type, uuid='-1') }}',
-            autoupload: false,
+            autoupload: true,
             fileListSelector: '#uploader-filelist',
             errorListSelector: '#uploader-errorlist'
           },

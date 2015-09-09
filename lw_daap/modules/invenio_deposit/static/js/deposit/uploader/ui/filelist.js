@@ -61,10 +61,10 @@ define(function(require) {
         }
 
         function handleFileProgressUpdatedOnFileList(ev, data) {
-            var selector = "#" + data.file.id;
+            var selector = "#progress-bar-" + data.file.id;
             $('#upload-speed').html(data.upload_speed);
-            $(this.$node.find(selector).children()[2]).children().children().css('width', data.file.percent.toString() + "%");
-            $(this.$node.find(selector).children()[2]).children().children().addClass("progress-bar-striped");
+            $(this.$node.find(selector)).css('width', data.file.percent.toString() + "%");
+            $(this.$node.find(selector)).addClass("progress-bar-striped");
         }
 
         function handleItemClick(ev) {
