@@ -18,49 +18,50 @@
 #}
 
 <div id="uploader">
-  <div class="pluploader-area well">
-    <div class="uploader-selection" class="pluploader-area well">
-      <a id="pluploader" href="javascript:;" class="btn btn-default btn-xs"><i class="fa fa-cloud-upload"></i> Choose file</a>
-     {% if config.DEPOSIT_DROPBOX_API_KEY %}
-     <span>or</span>
-     <a id="dropboxuploader" href="javascript:;" class="dropbox-dropin-btn dropbox-dropin-default dropboxuploader">
-       <span class="dropin-btn-status"></span>
-       Choose from Dropbox
-     </a>
-     {% endif %}
-  </div>
-    <p class="text-muted" align="center"><small>Drag and drop files to upload</small></p>
-  </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Choose files</div>
+        <div class="panel-body">
+            {# TODO: set some instructions here #}
+            {% block instructions %}Instructions: do put something here?{% endblock instructions %}
+        </div>    
+        <ul class="list-group">
+            <li class="list-group-item text-center">
+                <br />
+                <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                    <a id="pluploader" href="javascript:;" class="btn btn-default"><i class="fa fa-upload"></i> Upload</a>
+                    {% if config.DEPOSIT_DROPBOX_API_KEY %}
+                    <a id="dropboxuploader" href="javascript:;" class="btn btn-default"><i class="fa fa-dropbox"></i> Import from Dropbox</a>
+                    <!--<a id="dropboxuploader" href="javascript:;" class="dropbox-dropin-btn dropbox-dropin-default dropboxuploader">
+                    <span class="dropin-btn-status"></span>Choose from Dropbox</a>-->
+                    {% endif %}
+                    <a id="githubuploader" href="javascript:;" class="btn btn-default" style="border-radius:0px 5px 5px 0px;">
+                        <i class="fa fa-github"></i> Import from GitHub
+                    </a>
+                </div>
+                <br />
+                <br />
+            </li>
+            <li class="list-group-item well">
+                <div class="pluploader-area">
+                    <div class="uploader-selection pluploader-area"></div>
+                    <p class="text-muted" align="center"><small>Drag and drop files <strong>here</strong> to upload</small></p>
+                </div>
+            </li>
+        </ul>
+    </div> 
 
-  <hr/>
-
-  <div id="uploader-filelist"> 
-    <div class="filelist-placeholder"></div>
-  </div> 
-  <div id="uploader-errorlist" style="visibility: hidden;">
-    <ul id="errorList"></ul>
-  </div>
-  <div>
+    <div id="uploader-filelist"> 
+        <div class="filelist-placeholder"></div>
+    </div> 
+    <div id="uploader-errorlist" style="visibility: hidden;">
+        <div id="errorList"></div>
+    </div>
+    {# Not Needed cause files are autouploaded now.
+    <div>
         <a href="javascript:;" id="uploader-upload" class="btn btn-success" disabled>Start upload</a>
         <a href="javascript:;" id="uploader-stop" class="btn btn-danger">Stop upload</a>
-  </div>
-  <small id="upload-speed" class="muted pull-right" style="margin-right: 10px; padding-top:5px;"></small>
+    </div>
+    <small id="upload-speed" class="muted pull-right" style="margin-right: 10px; padding-top:5px;"></small>
+    #}
 </div>
 
-{#
-  <div id="uploader-uploaders" class="uploaders">
-     <a id="pluploader" href="javascript:;" class="btn btn-default btn-xs pluploader">Choose files ... </a>
-     {% if config.DEPOSIT_DROPBOX_API_KEY %}
-     <span>or</span>
-     <a id="dropboxuploader" href="javascript:;" class="dropbox-dropin-btn dropbox-dropin-default dropboxuploader">
-       <span class="dropin-btn-status"></span>
-       Choose from Dropbox
-     </a>
-     <span>or</span>
-     {% endif %}
-     <a id="onedata" href="javascript:;" class="btn btn-default btn-xs pluploader">Choose from OneData</a>
-  </div>
-
-
-</div>
-#}

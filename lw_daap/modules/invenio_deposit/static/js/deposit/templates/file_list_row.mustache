@@ -19,39 +19,35 @@
 
 
 <div id="{{file.id}}">
-  <div id="state-group-name-{{file.id}}" class="form-group">
-    <label class="control-label col-md-3" for="file-name-{{file.id}}">Name</label>
-    <div id="field-file-name-{{file.id}}" class="col-md-9">
-      <input id="file-name-{{file.id}}" class="form-control" type="text"
-          value="{{file.name}}" readonly="true"></input>
-    </div>
-  </div>
-  <div id="state-group-desc-{{file.id}}" class="form-group">
-    <label class="control-label col-md-3" for="file-desc-{{file.id}}">Description</label>
-    <div id="field-file-desc-{{file.id}}" class="col-md-9">
-      <input id="file-desc-{{file.id}}" class="form-control" type="text"
-          placeholder="Provide a description of file contents" value="{{file.description}}"></input>
-    </div>
-  </div>
-  {{^downloadable}}
-  <div class="form-group">
-    <label class="control-label col-md-3">Upload Progress</label>
-    <div class="col-md-9 progress">
-      <div class="progress-bar progress-bar-default" style="width: {{file.percent}}%;"></div>
-    </div>
-  </div>
-   {{/downloadable}}
-  <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-9 ">
-        {{file.size}}
-        <div id="donwload-link-{{file.id}}">
-        {{#downloadable}}
-          <a href="{{get_file_url}}?file_id={{file.server_id}}" class="btn btn-default">
-            <i class="fa fa-cloud-download"></i> Download</a>
-        {{/downloadable}}
-        </div>
-        <a class="fa fa-trash-o fa-fw rmlink" data-file-id="{{file.id}}" style="margin-left: 20px"></a>
-      </div>
-  </div>
+            <div class="col-md-10">
+
+                <div id="state-group-name-{{file.id}}" class="form-group">
+                    <label class="control-label col-md-3" for="file-name-{{file.id}}">Name</label>
+                    <div id="field-file-name-{{file.id}}" class="col-md-9">
+                        <input id="file-name-{{file.id}}" class="form-control" type="text"
+                         value="{{file.name}}" readonly="true"></input>
+                    </div>
+                </div>
+                <div id="state-group-desc-{{file.id}}" class="form-group">
+                    <label class="control-label col-md-3" for="file-desc-{{file.id}}">Description</label>
+                    <div id="field-file-desc-{{file.id}}" class="col-md-9">
+                        <input id="file-desc-{{file.id}}" class="form-control" type="text"
+                         placeholder="Provide a description of file contents" value="{{file.description}}"></input>
+                    </div>
+                </div>
+                {{^downloadable}}
+                <div class="form-group">
+                    <label class="control-label col-md-3">Upload Progress</label>
+                    <div class="progress" style="heigh: 10px">
+                        <div id="progress-bar-{{file.id}}" class="progress-bar progress-bar-default" style="width: {{file.percent}}%;"></div>
+                  </div>
+                </div>
+                {{/downloadable}}
+
+            </div>
+            <div class="col-md-2 text-center">
+                <a class="fa fa-trash-o fa-fw fa-2x rmlink" data-file-id="{{file.id}}"></a><br />
+                <br/><strong>{{file.size}}</strong><br />
+            </div>
+            <div class="col-xs-12"><hr /></div>
 </div>

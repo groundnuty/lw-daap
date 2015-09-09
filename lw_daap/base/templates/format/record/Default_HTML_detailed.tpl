@@ -24,7 +24,7 @@
         {% endif %}
       </div> <!-- record-abstract -->
     </div> <!-- col 9 -->
-    {% if not record.doi %}<button type="button" class="btn btn-lg btn-default well pull-right">Mint DOI</button>{% endif %}
+    <button type="button" class="btn btn-lg btn-default well pull-right">Mint DOI</button>
   </div> <!-- row -->
   {% endblock %}
   <div class="">
@@ -105,11 +105,11 @@
         <h2>Files ({{ record.fft|length }})</h2><br />
         <div class="row">
             {% for file in row %}
-            <div class="col-sm-6">
+            <div class="col-xs-8">
                <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                  <span class="btn btn-info">{{ file.description }}</span>
-                  <a class="btn btn-default" href="{{ file.url }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
-                  <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                  <span class="btn btn-primary disabled"><strong>CSV</strong></span>
+                  <span class="btn btn-default disabled"><strong>{{ file.description if file.description else "-null-"}}</strong></span>
+                  <a class="btn btn-default" href="{{ file.url }}"><span class="fa fa-download" aria-hidden="true"></span> {{file.file_size|filesizeformat}}</a>
                 </div>
             </div>
             {% endfor %}
@@ -118,5 +118,5 @@
     {% endif %}
     {% endblock %}
     {% endif %}
-  </div> <!-- class="" -->
+  </div>
 </div>
