@@ -53,6 +53,7 @@ define(function(require) {
          */
 
         this.handleFilesAdded = function(ev, data) {
+          
             Uploader.select('uploadButtonSelector').removeAttr('disabled');
             Uploader.select('uploadsTableSelector').css('visibility', 'visible');
             Uploader.select('uploadButtonSelector').css('visibility', 'visible');

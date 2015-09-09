@@ -49,7 +49,7 @@ DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.analysis:analysis",
 ]
 DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.dataset:dataset"
-
+DEPOSIT_MAX_UPLOAD_SIZE = "1000mb"
 # Don't commit anything. Testmode implies prefix is set to 10.5072
 CFG_DATACITE_TESTMODE = True
 
@@ -87,7 +87,7 @@ DEBUG_TB_ENABLED = True
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 # -->
 
-RECORDS_BREADCRUMB_TITLE_KEY = 'title'  
+RECORDS_BREADCRUMB_TITLE_KEY = 'title'
 
 # OAuth configuration
 OAUTHCLIENT_REMOTE_APPS = dict(
