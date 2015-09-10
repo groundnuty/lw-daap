@@ -62,11 +62,22 @@
                  {% endfor %}
           </td></tr>
         {% endif %}
+        {% if record.notes %}
+          <tr><td class="key">Additional notes</td><td class="value">{{ record.notes }}</td></tr>
+        {% endif %}
         {% if record.period %}
           <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td></tr>
         {% endif %}
-        {% if record.period %}
+        {% if record.spatial %}
           <tr><td class="key">Spatial Coverage</td><td class="value">{{ record.spatial }}</td></tr>
+        {% endif %}
+        {% if record.related_identifiers %}
+          <tr><td class="key">Related identifiers</td><td class="value">
+                    {{ record.related_identifiers }}
+          </td></tr>
+        {% endif %}
+        {% if record.subjects %}
+          <tr><td class="key">Subjects</td><td class="value">{{ record.subjects }}</td></tr>
         {% endif %}
         {% if record.fft %}
           <tr><td class="key">Size</td><td class="value">
