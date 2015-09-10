@@ -16,10 +16,14 @@
       {% endif %}
       {% if record.__license_text__ %}
         <h4>License: <a href="{{ record.__license_text__.url }}">{{record.__license_text__.license}}</a></h4>
-      {% endif%}
+      {% endif %}
+      {% if record.access_conditions %}
+        {{ record.access_conditions }}
+      {% endif %}
       {# FIXME: add some space for this to breath #}
       <div class="record-abstract">
         {% if record.description %}
+            <h4>Description</h4>
             {{ record.description }}
         {% endif %}
       </div> <!-- record-abstract -->
@@ -122,7 +126,7 @@
     {% elif (record.access_right is equalto 'embargoed') %}
       <h3>Access to this record is allowed from {{ record.embargo_date }}.</h3>
     {% else %}
-      <h3>Access to this record is not allowed under the record conditions.</h3>
+      <h3>Access to this record is allowed under the record conditions.</h3>
     {% endif %}
     {% endblock %}
     {% endif %}
