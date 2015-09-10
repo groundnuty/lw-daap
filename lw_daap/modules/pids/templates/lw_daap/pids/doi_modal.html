@@ -1,0 +1,52 @@
+<div id="doi-confirm-dialog" class="modal fade" tabindex="-1" 
+     role="dialog" aria-labelledby="{{id}}Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="{{id}}Label">Mint DOI</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
+            <li>The minting process will take some minutes, when available it will be shown in the record.</li>
+        </ul>
+        <div class="alert help-block alert-danger" id="doi-modal-state-title" style="margin-top: 5px; display: none;">
+        </div>
+      </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"
+                onclick='$.post("{{ url_for('lwdaap_pids.mint_doi', recid=recid) }}")
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#doi-confirm-dialog").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#doi-modal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>
+            Mint DOI
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{#
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+    </div>
+  </div>
+</div>
+#}

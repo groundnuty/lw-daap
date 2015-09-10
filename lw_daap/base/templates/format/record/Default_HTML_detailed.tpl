@@ -1,5 +1,6 @@
 {% from "format/record/record_macros.tpl" import render_authors, render_access_rights %}
 
+{% include "lw_daap/pids/doi_modal.html" %}
 
 <div class="record-details">
   {% block header %}

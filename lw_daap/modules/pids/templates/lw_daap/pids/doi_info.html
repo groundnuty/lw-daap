@@ -13,9 +13,8 @@
     {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
         <p class="text-muted">DOI minting is in progress...</p>
     {% else %}
-        <a href="{{ url_for('lwdaap_pids.mint_doi', recid=record.recid|int) }}" type="button" class="btn btn-warning" 
-            title="Mint the DOI">Mint DOI</a>
+        <button type="button" type="button" class="btn btn-warning" data-toggle="modal"
+            data-target="#doi-confirm-dialog">Mint DOI</button>
     {% endif %}
   {% endif %}
 {% endif %}
-
