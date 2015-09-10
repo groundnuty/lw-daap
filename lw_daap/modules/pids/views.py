@@ -7,6 +7,7 @@ from flask_login import current_user, login_required
 from invenio.ext.cache import cache
 from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
+from invenio.modules.pidstore.tasks import datacite_register
 from invenio.modules.records.api import get_record
 
 from .utils import build_doi, get_cache_key
@@ -73,8 +74,10 @@ def mint_doi(recid):
 
     try:
         pid.assign('rec', recid)
-    except Exception:
+        datacite_register.delay(recid)
+    except Exception, e:
         register_exception(alert_admin=True)
+        return error_400(e.msg)
 
     r = add_doi(recid, doi)
 

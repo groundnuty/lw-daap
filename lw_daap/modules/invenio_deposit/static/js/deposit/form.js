@@ -868,9 +868,14 @@ define(function(require, exports, module) {
     });
     $('#webdeposit_form_accordion').on('shown', function (e) {
       $(e.target).css("overflow", "visible");
-    })
+    });
     // Initialize jquery_plugins
     $(this.attr.datepickerSelector).datetimepicker(this.attr.datepicker_options);
+    //FIXME i need a jquery book
+    var datepicker_options=this.attr.datepicker_options;
+    $(document).on('mouseenter', '.datepicker', function(e){
+        $('.datepicker').datetimepicker(datepicker_options);
+    });
   });
 
   }
