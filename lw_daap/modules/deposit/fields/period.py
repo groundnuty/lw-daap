@@ -12,14 +12,14 @@ __all__ = ['PeriodField']
 class PeriodFieldForm(WebDepositForm):
     start = Date(
         label=_('Start date'),
-        description='Start date.', 
+        description='Start date.',
         widget=date_widget,
-        widget_classes='input-sm',
+        widget_classes='',
         )
     end = Date(
         label=_('End date'),
         description='End date.',
         widget=date_widget,
-        widget_classes='input-sm',
+        widget_classes='',
         )
 

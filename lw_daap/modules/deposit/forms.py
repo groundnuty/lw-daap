@@ -400,7 +400,7 @@ class FileDescriptionForm(WebDepositForm):
 
 class FilesForm(WebDepositForm):
     template = 'deposit/files.html'
-    
+
     plupload_file = fields.FileUploadField(
         label="",
         widget=plupload_widget,
@@ -433,7 +433,7 @@ class FilesForm(WebDepositForm):
     #        min_num=1, element_filter=filter_empty_helper(),
     #    )],
     #)
- 
+
     #groups = [
     #    ('Upload Files',
     #     ['file_list'],
@@ -456,7 +456,7 @@ class BasicForm(WebDepositForm):
         description="Optional. Did your publisher already assign a DOI to "
                     "your upload? If not, leave the field empty and a new "
                     "DOI will be prereserved for your record. If you wish, "
-                    "you can mint the prereserved DOI in the " 
+                    "you can mint the prereserved DOI in the "
                     "next steps. A DOI allows "
                     "others to easily and unambiguously cite your data.",
         placeholder="e.g. 10.1234/lw_daap...",
@@ -704,7 +704,7 @@ class BasicForm(WebDepositForm):
         min_entries=1,
     )
 
-    
+
     #
     # File upload field
     #
@@ -726,14 +726,11 @@ class DatasetForm(BasicForm):
         default="dataset",
     )
 
-    period = fields.DynamicFieldList( 
+    period = fields.DynamicFieldList(
         fields.FormField(
-            zfields.PeriodFieldForm, 
-            #label="Temporal coverage",
-            #icon='fa fa-calendar fa-fw',
+            zfields.PeriodFieldForm,
             description='Optional. Start and end dates.',
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-            #widget_classes='',
         ),
         label="Temporal coverage",
         add_label='Add another period',
@@ -769,7 +766,7 @@ class DatasetForm(BasicForm):
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
-            'indication': 'required', 
+            'indication': 'required',
         }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',
@@ -786,10 +783,10 @@ class DatasetForm(BasicForm):
         }),
         ('Physical information',[
             'period',
-            'spatial', 
+            'spatial',
         ], {
             'classes': '',
-            'indication': 'optional', 
+            'indication': 'optional',
         }),
         ('Communities', [
             'communities',
@@ -846,7 +843,7 @@ class SoftwareForm(BasicForm):
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
-            'indication': 'required', 
+            'indication': 'required',
         }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',
@@ -1106,7 +1103,7 @@ class AnalysisForm(BasicForm):
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
-            'indication': 'required', 
+            'indication': 'required',
         }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions',

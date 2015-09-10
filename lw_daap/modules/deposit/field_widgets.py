@@ -26,10 +26,18 @@ def date_widget(field, **kwargs):
     """Date picker widget that allows to specify the date format to use.
        Default is YYYY-MM-DD"""
     field_id = kwargs.pop('id', field.id)
-    date_format = kwargs.pop('date_format','YYYY-MM-DD') 
-    html = [u'<div class="row"><div class="col-xs-5 col-sm-3">'
-            '<input class="datepicker form-control" %s data-date-format="%s"'
-            ' type="text"></div></div'
+    date_format = kwargs.pop('date_format','YYYY-MM-DD')
+    html = [u'<div class="col-xs-5 col-sm-3">'
+                    '<div class="form-group">'
+                        '<div class="input-group datepicker">'
+                            '<input class="form-control" %s data-date-format="%s" type="text">'
+                            '<span class="input-group-addon">'
+                                '<span class="glyphicon glyphicon-calendar"></span>'
+                            '</span>'
+                        '</div>'
+                     '</div>'
+                '</div>'
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
+    open("/home/lwdaap/DEBUG", "a+").write(u''.join(html) + '\n')
     return HTMLString(u''.join(html))
