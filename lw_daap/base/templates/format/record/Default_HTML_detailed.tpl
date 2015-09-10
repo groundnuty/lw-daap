@@ -73,9 +73,12 @@
         {% endif %}
         {% if record.related_identifiers %}
           <tr><td class="key">Related identifiers</td><td class="value">
-                    {{ record.related_identifiers }}
+                 {% for relid in record.related_identifiers %}
+                    <span class="label label-default"><a href="{{ url_for('search.search', p='relid.identifier:' + relid.identifier) }}">{{ relid.identifier }}</a></span>
+                 {% endfor %}
           </td></tr>
         {% endif %}
+        {{ record }}
         {% if record.subjects %}
           <tr><td class="key">Subjects</td><td class="value">{{ record.subjects }}</td></tr>
         {% endif %}
