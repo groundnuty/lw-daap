@@ -1,7 +1,7 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, abort, current_app
+from flask import Blueprint, abort, current_app, jsonify, url_for
 from flask_login import current_user, login_required
 
 from invenio.ext.cache import cache
@@ -9,7 +9,7 @@ from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.records.api import get_record
 
-from .utils import build_doi
+from .utils import build_doi, get_cache_key
 
 blueprint = Blueprint(
     'lwdaap_pids',
@@ -33,7 +33,14 @@ def add_doi(recid, doi):
                      opts=[], alias="doi")
     return rec
 
-@blueprint.route('mint/<int:recid>', methods=['GET', 'POST'])
+
+def error_400(msg):
+    response = jsonify({'code': 400, 'msg': msg})
+    response.status_code = 400
+    return response
+
+
+@blueprint.route('mint/<int:recid>', methods=['POST'])
 @login_required
 def mint_doi(recid):
     """ mint a PID for the record """
@@ -46,19 +53,18 @@ def mint_doi(recid):
 
     # don't try to mint a doi if the record already has one
     if record.get('doi', None) is not None:
-        abort(400) 
+        return error_400('Record already has a DOI.')
 
     # crazy invenio stuff, cache actions so they dont get duplicated
-    key = "pid_mint:%s" % recid
+    key = get_cache_key(recid)
     cache_action = cache.get(key)
     if cache_action:
-        pass
-        #return "ONGOING!"
+        return error_400('DOI is being processed, you should wait some minutes.')
 
     doi = build_doi(recid)
     # Set 5 min cache to allow bibupload/bibreformat to finish
     cache.set(key, doi, timeout=5*60)
-    record[DOI_PID_TYPE] = doi 
+    record[DOI_PID_TYPE] = doi
 
     current_app.logger.info("Registering pid %s" % doi)
     pid = PersistentIdentifier.create(DOI_PID_TYPE, doi)
@@ -66,10 +72,10 @@ def mint_doi(recid):
         pid = PersistentIdentifier.get(DOI_PID_TYPE, doi)
 
     try:
-        pid.assign('rec', recid) 
+        pid.assign('rec', recid)
     except Exception:
         register_exception(alert_admin=True)
 
     r = add_doi(recid, doi)
 
-    return "%s" % record['doi']
+    return jsonify({'status': 'ok', 'redirect': url_for('record.metadata', recid=recid)})
