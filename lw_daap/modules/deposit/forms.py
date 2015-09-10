@@ -46,7 +46,7 @@ from lw_daap.modules.invenio_deposit.processor_utils import PidNormalize, \
     PidSchemeDetection, datacite_lookup, replace_field_data
 from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator, \
     invalid_doi_prefix_validator, list_length, minted_doi_validator, \
-    not_required_if, pid_validator, pre_reserved_doi_validator, required_if, \
+    not_required_if, pid_validator, required_if, \
     unchangeable
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
@@ -453,17 +453,13 @@ class BasicForm(WebDepositForm):
     #
     doi = fields.DOIField(
         label="Digital Object Identifier",
-        description="Optional. Did your publisher already assign a DOI to your"
-        " upload? If not, prereserve a new"
-        " DOI for you ready for minting when you ask for it. A DOI allows others to easily and unambiguously cite"
-        " your upload.",
+        description="Optional. Did your publisher already assign a DOI to "
+                    "your upload? If not, we will prereserve a new DOI for "
+                    "you ready for minting when you ask for it. A DOI allows "
+                    "others to easily and unambiguously cite your data.",
         placeholder="e.g. 10.1234/lw_daap...",
         validators=[
             DOISyntaxValidator(),
-            pre_reserved_doi_validator(
-                'prereserve_doi',
-                prefix=CFG_DATACITE_DOI_PREFIX
-            ),
             invalid_doi_prefix_validator(prefix=CFG_DATACITE_DOI_PREFIX),
         ],
         processors=[
@@ -471,21 +467,6 @@ class BasicForm(WebDepositForm):
         ],
         export_key='doi',
         icon='fa fa-barcode fa-fw',
-    )
-    prereserve_doi = zfields.ReserveDOIField(
-        label="",
-        doi_field="doi",
-        doi_creator=create_doi,
-        widget=ButtonWidget(
-            label=_("Pre-reserve DOI"),
-            icon='fa fa-barcode',
-            tooltip=_(
-                ' Pre-reserve a Digital Object Identifier for your upload. This'
-                ' allows you to know the DOI before you submit your upload, '
-                ' and can thus include it in e.g. publications. The DOI is not '
-                ' finally registered until you explicitely ask for minting it.'
-            ),
-        ),
     )
     publication_date = fields.Date(
         label=_('Publication date'),
@@ -782,7 +763,7 @@ class DatasetForm(BasicForm):
     #
     groups = [
         ('Basic information', [
-            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
@@ -859,7 +840,7 @@ class SoftwareForm(BasicForm):
     #
     groups = [
         ('Basic information', [
-            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
@@ -1119,7 +1100,7 @@ class AnalysisForm(BasicForm):
     #
     groups = [
         ('Basic information', [
-            'doi', 'prereserve_doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
@@ -1258,7 +1239,6 @@ class BasicEditForm(BasicForm, EditFormMixin):
         export_key='doi',
         readonly="true"
     )
-    prereserve_doi = None
     #plupload_file = None
 
     _title = _('Edit upload')
