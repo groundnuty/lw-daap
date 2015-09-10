@@ -454,8 +454,10 @@ class BasicForm(WebDepositForm):
     doi = fields.DOIField(
         label="Digital Object Identifier",
         description="Optional. Did your publisher already assign a DOI to "
-                    "your upload? If not, we will prereserve a new DOI for "
-                    "you ready for minting when you ask for it. A DOI allows "
+                    "your upload? If not, leave the field empty and a new "
+                    "DOI will be prereserved for your record. If you wish, "
+                    "you can mint the prereserved DOI in the " 
+                    "next steps. A DOI allows "
                     "others to easily and unambiguously cite your data.",
         placeholder="e.g. 10.1234/lw_daap...",
         validators=[
@@ -509,7 +511,7 @@ class BasicForm(WebDepositForm):
     )
     description = fields.TextAreaField(
         label="Description",
-        description='Required.',
+        description='Required. You can upload documentation in the next step.',
         default='',
         icon='fa fa-pencil fa-fw',
         validators=[validators.DataRequired(), ],

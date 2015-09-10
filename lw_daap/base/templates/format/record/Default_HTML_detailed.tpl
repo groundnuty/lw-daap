@@ -81,7 +81,6 @@
                  {% endfor %}
           </td></tr>
         {% endif %}
-        {{ record }}
         {% if record.subjects %}
           <tr><td class="key">Subjects</td><td class="value">{{ record.subjects }}</td></tr>
         {% endif %}
@@ -109,10 +108,10 @@
         {% for file in row %}
           <div class="col-xs-8">
             <div class="btn-group btn-group-lg" role="group" aria-label="...">
-              <span class="btn btn-primary disabled"><strong>CSV</strong></span>
-              <span class="btn btn-default disabled"><strong>{{ file.description if file.description else "-null-"}}</strong></span>
+              <span class="btn btn-primary disabled"><span class="fa fa-file-o" aria-hidden="true"></span><br/><strong>{{ bfe_fileextension(bfo, url=file.url) }}</strong></span>
+              <span class="btn btn-default disabled"><br/><strong>{{ file.description if file.description else bfe_filename(bfo, url=file.url) }}</strong></span>
               <a class="btn btn-default" href="{{ file.url }}">
-                <span class="fa fa-download" aria-hidden="true"></span>
+                <span class="fa fa-download" aria-hidden="true"></span></br>
                 {{ file.file_size|filesizeformat if file.file_size }}
               </a>
             </div>
