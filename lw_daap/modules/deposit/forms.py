@@ -743,13 +743,20 @@ class DatasetForm(BasicForm):
         default="dataset",
     )
 
-    period = fields.FormField(
-        zfields.PeriodFieldForm, 
-        label=_('Temporal coverage'),
+    period = fields.DynamicFieldList( 
+        fields.FormField(
+            zfields.PeriodFieldForm, 
+            #label="Temporal coverage",
+            #icon='fa fa-calendar fa-fw',
+            description='Optional. Start and end dates.',
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+            #widget_classes='',
+        ),
+        label="Temporal coverage",
+        add_label='Add another period',
         icon='fa fa-calendar fa-fw',
-        description='Optional. Start and end dates.',
-        widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-        widget_classes='', 
+        widget_classes='',
+        min_entries=1,
     )
 
     spatial = fields.TextAreaField(
