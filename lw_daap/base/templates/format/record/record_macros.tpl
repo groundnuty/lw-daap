@@ -6,7 +6,7 @@
 {%- macro render_authors(record, max=None) %}
 {% if record.authors %}
   {% for author in record.authors %}
-    <a href="{{ url_for('search.search', p='author:"' + author.name + '"') }}">{{ author.name }} ({{ author.affiliation }})</a>{% if not loop.last %}; {% endif %}
+    <a href="{{ url_for('search.search', p='author:"' + author.name + '"') }}">{{ author.name }}{{ ' (' ~ author.affiliation ~ ')' if author.affiliation }}</a>{% if not loop.last %}; {% endif %}
   {% endfor %}
 {% endif %}
 {% endmacro -%}
