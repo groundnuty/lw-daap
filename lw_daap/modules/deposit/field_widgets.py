@@ -39,5 +39,4 @@ def date_widget(field, **kwargs):
                 '</div>'
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
-    open("/home/lwdaap/DEBUG", "a+").write(u''.join(html) + '\n')
     return HTMLString(u''.join(html))
