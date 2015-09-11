@@ -87,7 +87,11 @@
           </td></tr>
         {% endif %}
         {% if record.subjects %}
-          <tr><td class="key">Subjects</td><td class="value">{{ record.subjects }}</td></tr>
+          <tr><td class="key">Subjects</td><td class="value">
+                 {% for term in record.subjects %}
+                    {{ term.term }} {{ ' (' ~ term.identifier ~ ')' if term.identifier }}{% if not loop.last %}; {% endif %}
+                 {% endfor %}
+          </td></tr>
         {% endif %}
         {% if show_files %}
           {% if record.fft %}
