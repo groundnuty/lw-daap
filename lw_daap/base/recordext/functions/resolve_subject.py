@@ -29,10 +29,6 @@ resolver_regexp = "\((?P<scheme>\w+)\)(?P<identifier>\S+)"
 def resolve_subject(val, part):
     p = re.compile(resolver_regexp)
     m = p.search(val)
-    if part == 'identifier':
-        return "IDENTIFIER!"
-    else:
-        return "SCHEME!"
     if m:
         if part == 'identifier':
             identifier = m.group('identifier')
