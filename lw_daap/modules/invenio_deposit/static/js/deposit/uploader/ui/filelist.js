@@ -96,6 +96,11 @@ define(function(require) {
             $('#upload-speed').html('');
         };
 
+        function handleFileUploadCompleted(ev, data) {
+            var selector = "#file-id-" + data.file.id;
+            $(selector).val(data.file.server_id);
+        }
+
         function handleMouseOver(ev) {
             if ($(ev.target).hasClass("sortlink")) {
                 $("#sortable").sortable("enable");
@@ -138,6 +143,7 @@ define(function(require) {
             this.on('filesAddedToFileList', handleFilesAddedToFileList);
             this.on('fileProgressUpdatedOnFileList', handleFileProgressUpdatedOnFileList);
             this.on('uploadCompleted', handleUploadCompleted);
+            this.on('fileUploadCompleted', handleFileUploadCompleted);
             this.on('click', handleItemClick);
             this.on('mouseover', handleMouseOver);
             this.on('mouseup', handleItemMouseUp);
