@@ -9,7 +9,7 @@ from lw_daap.modules.deposit.forms import DatasetForm, \
 
 class dataset(upload):
     draft_definitions = {
-        'metadata': DatasetForm,
-        'edit': DatasetEditForm,
-        'files': FilesForm,
+        '_metadata': DatasetForm,
+        '_edit': DatasetEditForm,
+        '_files': FilesForm,
     }

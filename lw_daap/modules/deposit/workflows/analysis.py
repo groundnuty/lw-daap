@@ -9,7 +9,7 @@ from lw_daap.modules.deposit.forms import AnalysisForm, \
 
 class analysis(upload):
     draft_definitions = {
-        'metadata': AnalysisForm,
-        'edit': AnalysisEditForm,
-        'files': FilesForm,
+        '_metadata': AnalysisForm,
+        '_edit': AnalysisEditForm,
+        '_files': FilesForm,
     }
