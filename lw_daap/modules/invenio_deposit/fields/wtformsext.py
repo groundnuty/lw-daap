@@ -381,10 +381,11 @@ class DynamicFieldList(FieldList):
                 # Update keys in formdata, to allow proper form processing
                 self.raw_data = formdata.getlist(self.name)
                 for index, raw_entry in enumerate(self.raw_data):
-                    entry_formdata = MultiDict({
-                        "%s-%s" % (self.name, index): raw_entry
-                    })
-                    self._add_entry(entry_formdata, index=index)
+                    if raw_entry:
+                        entry_formdata = MultiDict({
+                            "%s-%s" % (self.name, index): raw_entry
+                        })
+                        self._add_entry(entry_formdata, index=index)
         else:
             for obj_data in data:
                 self._add_entry(formdata, obj_data)
