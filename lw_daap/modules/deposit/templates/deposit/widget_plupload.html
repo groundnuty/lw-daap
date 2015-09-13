@@ -31,8 +31,6 @@
                     <a id="pluploader" href="javascript:;" class="btn btn-default"><i class="fa fa-upload"></i> Upload</a>
                     {% if config.DEPOSIT_DROPBOX_API_KEY %}
                     <a id="dropboxuploader" href="javascript:;" class="btn btn-default"><i class="fa fa-dropbox"></i> Import from Dropbox</a>
-                    <!--<a id="dropboxuploader" href="javascript:;" class="dropbox-dropin-btn dropbox-dropin-default dropboxuploader">
-                    <span class="dropin-btn-status"></span>Choose from Dropbox</a>-->
                     {% endif %}
                     <a id="githubuploader" href="javascript:;" class="btn btn-default" style="border-radius:0px 5px 5px 0px;">
                         <i class="fa fa-github"></i> Import from GitHub
@@ -49,14 +47,15 @@
             </li>
         </ul>
     </div> 
+  <div id="uploader-errorlist" style="visibility: hidden;">
+        <div id="errorList"></div>
+    </div>
 
     <div id="uploader-filelist"> 
         <div class="filelist-placeholder"></div>
     </div> 
-    <div id="uploader-errorlist" style="visibility: hidden;">
-        <div id="errorList"></div>
-    </div>
-    {# Not Needed cause files are autouploaded now.
+    
+      {#
     <div>
         <a href="javascript:;" id="uploader-upload" class="btn btn-success" disabled>Start upload</a>
         <a href="javascript:;" id="uploader-stop" class="btn btn-danger">Stop upload</a>

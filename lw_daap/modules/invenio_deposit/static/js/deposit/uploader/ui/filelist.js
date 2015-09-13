@@ -63,8 +63,6 @@ define(function(require) {
         function handleFileProgressUpdatedOnFileList(ev, data) {
             var selector = "#progress-bar-" + data.file.id;
             var info = "#progress-info-" + data.file.id;
-
-            //$(this.$node.find(selector)).html(data.file.percent.toString() + "%  " + data.upload_speed);
             $(this.$node.find(info)).html(data.file.percent.toString() + "%  " + data.upload_speed);
             $(this.$node.find(selector)).css('width', data.file.percent.toString() + "%");
             $(this.$node.find(selector)).addClass("progress-bar-striped");
