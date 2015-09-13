@@ -34,7 +34,11 @@
       <label class="control-label col-md-3" for="file-desc-{{file.id}}">Description</label>
       <div id="field-file-desc-{{file.id}}" class="col-md-9">
         <input id="file-desc-{{file.id}}" class="form-control" type="text"
-               placeholder="Provide a description of file contents" value="{{file.description}}" />
+               placeholder="Provide a description of file contents" value="{{file.description}}"
+               name="file_description-{{file.index}}-description"></input>
+        <input id="file-id-{{file.id}}" class="form-control" type="hidden"
+               value="{{file.id}}" name="file_description-{{file.index}}-file_id"></input>
+
       </div>
     </div>
     <div id="state-group-prog-{{file.id}}" class="form-group">

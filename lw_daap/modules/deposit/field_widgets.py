@@ -19,8 +19,9 @@
 """Implement custom field widgets."""
 
 from wtforms.widgets import HTMLString, html_params
+from lw_daap.modules.invenio_deposit.field_widgets import DynamicListWidget,\
+    DynamicItemWidget
 
-#from lw_daap.modules.invenio_deposit.field_widgets import PLUploadWidget
 
 def date_widget(field, **kwargs):
     """Date picker widget that allows to specify the date format to use.
@@ -40,3 +41,20 @@ def date_widget(field, **kwargs):
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
     return HTMLString(u''.join(html))
+
+
+class DynamicItemWidgetNoButtons(DynamicItemWidget):
+    """DynamicItemWidget with no buttons on it"""
+    def _sort_button(self):
+        return ''
+
+    def _remove_button(self):
+        return ''
+
+
+class DynamicHiddenListWidget(DynamicListWidget):
+    """DynamicList that is not shown"""
+    item_widget = DynamicItemWidgetNoButtons()
+
+    def _add_button(self, field):
+        return ''

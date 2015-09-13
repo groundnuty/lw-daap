@@ -52,7 +52,8 @@ from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from . import fields as zfields
-from .field_widgets import date_widget
+from .field_widgets import date_widget, DynamicItemWidgetNoButtons, \
+    DynamicHiddenListWidget
 from .autocomplete import community_autocomplete
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
@@ -391,10 +392,13 @@ class CommunityForm(WebDepositForm):
     )
 
 class FileDescriptionForm(WebDepositForm):
-    upload_file = fields.FileUploadField(
+    description = fields.StringField(
         label="",
-        widget=plupload_widget,
-        export_key=False
+        widget=widgets.HiddenInput(),
+    )
+    file_id = fields.StringField(
+        label="",
+        widget=widgets.HiddenInput(),
     )
 
 
@@ -407,6 +411,21 @@ class FilesForm(WebDepositForm):
         export_key=False
     )
 
+    file_description = fields.DynamicFieldList(
+        fields.FormField(
+            FileDescriptionForm,
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
+        ),
+        label='',
+        widget_classes='',
+        icon='fa fa-user fa-fw',
+        widget=DynamicHiddenListWidget(),
+        min_entries=0,
+    )
+
     def validate_plupload_file(form, field):
         """Ensure minimum one file is attached."""
 
@@ -415,30 +434,6 @@ class FilesForm(WebDepositForm):
             if len(form.files) == 0:
                 raise ValidationError("You must provide minimum one file.")
 
-    #file_descriptions = fields.DynamicFieldList(
-    #    fields.FormField(
-    #        FileDescriptionForm,
-    #        widget=ExtendedListWidget(
-    #            item_widget=ItemWidget(),
-    #            html_tag='div'
-    #        ),
-    #    ),
-    #    label='',
-    #    add_label='Add another file',
-    #    description='Required.',
-    #    icon='fa fa-user fa-fw',
-    #    widget_classes='',
-    #    min_entries=1,
-    #    validators=[validators.DataRequired(), list_length(
-    #        min_num=1, element_filter=filter_empty_helper(),
-    #    )],
-    #)
-
-    #groups = [
-    #    ('Upload Files',
-    #     ['file_list'],
-    #     { 'indication': 'required', }),
-    #]
 
 #
 # BasicForm
@@ -541,7 +536,7 @@ class BasicForm(WebDepositForm):
             strip_string,
         ],
     )
-    keywords = fields.TextAreaField(
+    keywords = zfields.KeywordsField(
         validators=[validators.optional()],
         label='Keywords',
         description='Optional. Introduce keywords separated by commas.',
@@ -967,7 +962,6 @@ def filter_fields(groups):
 
 
 class EditFormMixin(object):
-
     """Mixin class for forms that needs editing."""
 
     recid = fields.IntegerField(
@@ -988,29 +982,21 @@ class EditFormMixin(object):
 
 
 class BasicEditForm(BasicForm, EditFormMixin):
-
     """Specialized form for editing a record."""
-
-    # Remove some fields.
     doi = fields.DOIField(
         label="Digital Object Identifier",
-        description="Optional. Did your publisher already assign a DOI to your"
-        " upload? If not, leave the field empty and we will register a new"
-        " DOI for you. A DOI allow others to easily and unambiguously cite"
-        " your upload.",
-        placeholder="e.g. 10.1234/foo.bar...",
+        placeholder="e.g. 10.1234/lw_daap...",
         validators=[
             DOISyntaxValidator(),
-            minted_doi_validator(prefix=CFG_DATACITE_DOI_PREFIX),
             invalid_doi_prefix_validator(prefix=CFG_DATACITE_DOI_PREFIX),
         ],
         processors=[
             local_datacite_lookup
         ],
         export_key='doi',
-        readonly="true"
+        icon='fa fa-barcode fa-fw',
+        readonly="true",
     )
-    #plupload_file = None
 
     _title = _('Edit upload')
     template = "deposit/edit.html"

@@ -25,7 +25,7 @@ from __future__ import absolute_import
 import json
 from datetime import date
 
-from flask import render_template, url_for, request
+from flask import render_template, url_for, request, current_app
 from flask.ext.restful import fields, marshal
 from flask.ext.login import current_user
 
@@ -63,6 +63,21 @@ CFG_LICENSE_KB = "licenses"
 CFG_LICENSE_SOURCE = "opendefinition.org"
 
 CFG_DAAP_DEFAULT_COLLECTION_ID="daap"
+
+
+# XXX FIXME XXX TODO
+def has_doi(obj, eng):
+    if has_submission(obj, eng):
+        d = Deposition(obj)
+        sip = d.get_latest_sip(sealed=True)
+        
+        print "/"
+        print sip.metadata.get('doi', 'kk')
+        print sip.metadata.get('doi', None) is not None
+        print "*" * 80
+        return sip.metadata.get('doi', None) is not None
+    return False
+
 
 # =======
 # Helpers
@@ -142,7 +157,7 @@ def process_recjson(deposition, recjson):
         recjson['_additional_authors'] = recjson['authors'][1:]
 
     if 'keywords' in recjson and recjson['keywords']:
-        recjson['keywords'] = sorted(set([ item.strip() for item in recjson['keywords'].split(',') ]))
+        recjson['keywords'] = sorted(set([item.strip() for item in recjson['keywords'].split(',')]))
 
     # ===========
     # Communities
@@ -374,8 +389,8 @@ def process_files(deposition, bibrecdocs):
             'name': bf.name,
             'format': bf.format,
             'restriction': fft_status,
-            'description': 'KEEP-OLD-VALUE',
-            'comment': 'KEEP-OLD-VALUE',
+            'description': bf.description,
+            'comment': bf.comment,
         })
 
 
@@ -383,6 +398,11 @@ def merge(deposition, dest, a, b):
     """
     Merge changes from editing a deposition.
     """
+    #print "*" * 80
+    #print a, b, 
+    #print dest 
+    #print "/" * 80
+
     # A record might have been approved in communities since it was loaded,
     # thus we "manually" merge communities
     approved = set(a['communities']) & set(b['provisional_communities'])
@@ -405,6 +425,7 @@ def merge(deposition, dest, a, b):
     b['communities'] = communities
     b['provisional_communities'] = provisional
 
+
     # Append Zenodo collection
     if CFG_DAAP_DEFAULT_COLLECTION_ID in dest['communities']:
         a['communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
@@ -413,10 +434,15 @@ def merge(deposition, dest, a, b):
         a['provisional_communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
         b['provisional_communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
 
-    b["doi"] = a["doi"]
+    # XXX
+    # b["doi"] = a["doi"]
 
     # Now proceed, with normal merging.
     data = merge_changes(deposition, dest, a, b)
+
+    #print "&" * 80
+    #print data
+    #print "u" * 80
 
     if 'authors' in data and data['authors']:
         data['_first_author'] = data['authors'][0]
@@ -464,6 +490,7 @@ def transfer_ownership(deposition, user_id):
 # Workflow tasks
 # ==============
 # TODO: remove?
+# XXX FIXME XXX TODO: submit here a task for updating the metadata at datacite
 def run_tasks(update=False):
     """Run bibtasklet and webcoll after upload."""
     def _run_tasks(obj, dummy_eng):
@@ -471,6 +498,8 @@ def run_tasks(update=False):
 
         d = Deposition(obj)
         sip = d.get_latest_sip(sealed=True)
+        # XXX XXX XXX
+        return
 
         recid = sip.metadata['recid']
 
@@ -510,6 +539,25 @@ def reserved_recid():
 
         d.update()
     return _reserved_recid
+
+def process_file_descriptions():
+    """
+    Get the file description from the draft and add them
+    to the deposition
+    """
+    def _process_file_descriptions(obj, eng):
+        d = Deposition(obj)
+        draft = d.get_draft("_files")
+        if not draft:
+            return 
+        draft_files = draft.values.get('file_description', [])
+        for f in d.files:
+            for df in draft.values.get('file_description', []):
+                if f.uuid == df.get('file_id', None):
+                    f.description = df.get('description', '')
+        d.update()
+
+    return _process_file_descriptions
 
 
 def api_validate_files():
@@ -553,25 +601,42 @@ class upload(DepositionType):
         p.IF_ELSE(has_submission,
             [
                 # existing record, let user edit
-                load_record(draft_id='edit',
+                load_record(draft_id='_edit',
                             post_process=process_draft),
-                render_form(draft_id='edit'),
+                render_form(draft_id='_edit'),
             ],
             [
-                prefill_draft(draft_id='metadata'),
-                # render the metadata form
-                render_form(draft_id='metadata'),
+                # new deposition
+                prefill_draft(draft_id='_metadata'),
+                render_form(draft_id='_metadata'),
+            ],
+        ),
+        p.IF_NOT(
+            has_doi,
+            [
                 # now go for the files
-                render_form(draft_id='files'),
+                render_form(draft_id='_files'),
                 # Test if all files are available for API
-                # FIXME: what to do about this? 
+                # XXX: what to do about this? 
                 api_validate_files(),
+                process_file_descriptions(), 
             ],
         ),
         # merge all drafts (default + files)
         prepare_sip(),
         p.IF_ELSE(has_submission,
             [
+                # Process SIP recjson
+                process_sip_metadata(process_recjson_edit),
+                # Merge SIP metadata into record and generate MARC
+                merge_record(
+                    draft_id='_edit',
+                    post_process_load=process_draft,
+                    process_export=process_recjson_edit,
+                    merge_func=merge,
+                ),
+                # Set file restrictions
+                process_bibdocfile(process=process_files),
             ],
             [
                 # Create new record ID
@@ -584,6 +649,7 @@ class upload(DepositionType):
         finalize_record_sip(),
         # and let bibupload do the magic
         upload_record_sip(),
+        p.IF(has_doi, [ run_tasks(update=False) ]),
     ]
         
 #    workflow = [
@@ -734,7 +800,7 @@ class upload(DepositionType):
     def default_draft_id(cls, deposition):
         if deposition.has_sip() and '_edit' in deposition.drafts:
             return '_edit'
-        return '_default'
+        return '_maetadata'
 
     @classmethod
     def marshal_deposition(cls, deposition):
@@ -807,7 +873,7 @@ class upload(DepositionType):
     def api_action(cls, deposition, action_id):
         if action_id == 'publish':
             return deposition.run_workflow(headless=True)
-        elif action_id == 'edit':
+        elif action_id == '_edit':
             # Trick: Works in combination with load_record task to provide
             # proper response codes to API clients.
             if deposition.state == 'done' or deposition.drafts:

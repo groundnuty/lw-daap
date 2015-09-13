@@ -25,9 +25,10 @@ COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 
 PACKAGES = [
     "lw_daap.base",
-    "lw_daap.modules.deposit",
-    "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.communities",
+    "lw_daap.modules.deposit",
+    "lw_daap.modules.github",
+    "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.pids",
     "lw_daap.deploy",
     "invenio.base",
@@ -39,7 +40,7 @@ PACKAGES_EXCLUDE= [
     "invenio.modules.deposit",
     "invenio.modules.messages",
     "invenio.modules.documentation",
-    "invenio.modules.oauth2server",
+    #"invenio.modules.oauth2server",
     "invenio.modules.workflows",
     "invenio.modules.annotations",
 ]
@@ -85,6 +86,8 @@ CFG_DATABASE_USER = "lwdaap"
 
 # <-- Debug toolbar configuration
 DEBUG = True
+ASSETS_DEBUG = True
+ASSETS_AUTO_BUILD = True
 DEBUG_TB_ENABLED = True
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 # -->
@@ -98,6 +101,10 @@ OAUTHCLIENT_REMOTE_APPS = dict(
     google=lw_daap.base.auth.google.REMOTE_APP,
     facebook=lw_daap.base.auth.facebook.REMOTE_APP,
 )
+
+WEBHOOKS_DEBUG_RECEIVER_URLS = {
+    'github': 'http://github.aeonium.ultrahook.com?access_token=%(token)s',
+}
 
 try:
     from lw_daap.secrets import *

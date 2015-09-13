@@ -45,7 +45,9 @@ define(function(require) {
             resolve_uuid_url: null,
             resolve_uuid: false,
             autoupload: false,
-            preupload_hooks: {}
+            preupload_hooks: {},
+            last_index: "__last_index__",
+            prefix: "file_description"
         });
 
         /**
@@ -59,16 +61,21 @@ define(function(require) {
             Uploader.select('uploadButtonSelector').css('visibility', 'visible');
             var newFiles = {};
 
+            var last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
+            var idx = parseInt(last_index.val(), 10) + 1;
             data.files.forEach(function(file) {
                 if (files[file.name] === undefined) {
                     files[file.name] = file
                     newFiles[file.name] = file
+                    newFiles[file.name].index = idx;
                 } else {
                     Uploader.trigger('uploaderError', {
                         message: "The file already added to the list."
                     });
                 }
             });
+            last_index.val(idx);
+
 
             Uploader.trigger(this.select('fileListSelector'), 'filesAddedToFileList', newFiles);
             if (Uploader.attr.autoupload === true) Uploader.handleUpload();
@@ -148,6 +155,7 @@ define(function(require) {
 
         this.handleFileUploadedCompleted = function(ev, data) {
             files[data.file.name].server_id = data.file.server_id;
+            this.trigger(this.select('fileListSelector'), 'fileUploadCompleted', data);
         }
 
         this.handleUploaderError = function(ev, data) {
@@ -159,7 +167,9 @@ define(function(require) {
         }
 
         this.init_fileList = function(formfiles) {
+            var last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
             if (formfiles.length) {
+                var idx = parseInt(last_index.val(), 10) + 1;
                 formfiles.forEach(function(file) {
                     files[file.name] = {
                         id: file.id,
@@ -168,9 +178,11 @@ define(function(require) {
                         status: 5,
                         percent: 100,
                         server_id: file.id,
-                        description: file.description
+                        description: file.description,
+                        index: idx++
                     };
                 });
+                last_index.val(idx);
 
                 Uploader.trigger(this.select('fileListSelector'), 'filesAddedToFileList', files);
             }
