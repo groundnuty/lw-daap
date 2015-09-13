@@ -40,7 +40,7 @@ search_also, with context -%}
 }
 .websearch .nav > li > a {
   white-space: nowrap;
-  padding-left: 0px;
+  padding-left: 10px;
   padding-right: 0px;
 }
 .websearch .nav > li > a:hover {
@@ -94,13 +94,18 @@ search_also, with context -%}
 {%- block index -%}
 <div class="row websearch clearfix"><!-- row 2 -->
   {%- block portalbox_lt -%}{{ portalbox_sidebar(portalboxes.lt, class="col-md-2") }}{%- endblock -%}
-
   {%- block index_right -%}
   {% if collection.collection_children_r %}
-    <div class="col-md-{{ '4' if collection.collection_children_v else '8' }} collection clearfix">
-      <h4>{{ collection.get_collectionbox_name(box_type='r') }}</h4>
-      {{ collection_tree(collection.collection_children_r, limit=2, class="nav nav-list clearfix") }}
-    </div>
+    <div class="col-md-{{ '6' if collection.collection_children_v else '8' }} collection clearfix">
+      <div class="panel panel-default ">
+        {#  <div class="panel-heading"><h4>{{ collection.get_collectionbox_name(box_type='r') }}</h4></div> #}
+        <div class="panel-heading"><h4>Browse by type:</h4></div>
+
+          <div class="panel-body">
+            {{ collection_tree(collection.collection_children_r, limit=2, class="nav nav-list list-group") }}
+          </div>    
+      </div>
+  </div>
   {% else %}
       <div class="col-md-{{ '4' if collection.collection_children_v else '8' }}">
       {% if collection.is_restricted %}
@@ -128,14 +133,16 @@ search_also, with context -%}
   {% endif %}
   {%- endblock index_right -%}
 
-
+  <div class="col-md-2"></div>
   {%- block index_left -%}
   {% if collection.collection_children_v %}
-    <div class="col-md-4 collection clearfix">
-      <h4>{{ collection.get_collectionbox_name(box_type='v') }}</h4>
-      {{ collection_tree(collection.collection_children_v, limit=2, class="nav nav-list clearfix") }}
-
+    <div class="col-md-6 collection clearfix">
+      <div class="panel panel-default">
+        {# <div class="panel-heading"><h4>{{ collection.get_collectionbox_name(box_type='v') }}</h4></div> #}
+        <div class="panel-heading"><h4>Browse by communities:</h4></div>
+      <div class="panel-body">{{ collection_tree(collection.collection_children_v, limit=2, class="nav nav-list clearfix") }}</div>
       {{ search_also(collection.externalcollections_2) }}
+    </div>
     </div>
   {% elif collection.externalcollections_2 %}
       <div class="col-md-2">
