@@ -61,8 +61,8 @@ define(function(require) {
             Uploader.select('uploadButtonSelector').css('visibility', 'visible');
             var newFiles = {};
 
-            this.last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
-            idx = parseInt(this.last_index.val(), 10) + 1;
+            var last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
+            var idx = parseInt(last_index.val(), 10) + 1;
             data.files.forEach(function(file) {
                 if (files[file.name] === undefined) {
                     files[file.name] = file
@@ -74,7 +74,7 @@ define(function(require) {
                     });
                 }
             });
-            this.last_index.val(idx);
+            last_index.val(idx);
 
 
             Uploader.trigger(this.select('fileListSelector'), 'filesAddedToFileList', newFiles);
@@ -167,9 +167,9 @@ define(function(require) {
         }
 
         this.init_fileList = function(formfiles) {
-            this.last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
+            var last_index = $("#" + Uploader.attr.prefix + '-' + Uploader.attr.last_index);
             if (formfiles.length) {
-                idx = parseInt(this.last_index.val(), 10) + 1;
+                var idx = parseInt(last_index.val(), 10) + 1;
                 formfiles.forEach(function(file) {
                     files[file.name] = {
                         id: file.id,
@@ -182,7 +182,7 @@ define(function(require) {
                         index: idx++
                     };
                 });
-                this.last_index.val(idx);
+                last_index.val(idx);
 
                 Uploader.trigger(this.select('fileListSelector'), 'filesAddedToFileList', files);
             }
