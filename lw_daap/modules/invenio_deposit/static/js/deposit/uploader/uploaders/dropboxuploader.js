@@ -105,6 +105,7 @@ define(function(require) {
                     if (val.status !== 5) {
                         if (pause === 5) return false;
                         self.trigger('fileProgressUpdated', {
+                            upload_speed: '',
                             file: {
                                 id: val.id,
                                 percent: 80,
@@ -126,6 +127,10 @@ define(function(require) {
                             dropboxFiles[filename].server_id = data.id;
                             dropboxFiles[filename].status = 5;
                             dropboxFiles[filename].percent = 100;
+                            self.trigger('fileProgressUpdated', {
+                                upload_speed: '',
+                                file: dropboxFiles[filename] 
+                            });
                             self.trigger('fileUploadedCompleted', {
                                 file: dropboxFiles[filename]
                             });
