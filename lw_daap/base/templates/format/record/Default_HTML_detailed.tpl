@@ -115,8 +115,6 @@
                      (record.access_right == 'embargoed' and
                       bfe_datetime(bfo, embargo_date=record.embargo_date)))
     %}
-    {{ record.fft }}
-    {{ record.get('owner') }}
     {% if record.fft %}
     {% block files %}
     <h2>Files{% if allowed %} ({{ record.fft|length }}){% endif %}</h2>
