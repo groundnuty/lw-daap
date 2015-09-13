@@ -73,8 +73,11 @@
         {% if record.notes %}
         <tr><td class="key">Additional notes</td><td class="value">{{ record.notes }}</td></tr>
         {% endif %}
-        {% if record.period %}
-        <tr><td class="key">Temporal Coverage</td><td class="value">{{ record.period.start }} - {{ record.period.end }}</td></tr>
+        {% if record.period %}        
+        <tr><td class="key">Temporal Coverage</td><td class="value">
+            {% for period in record.period %}
+            {{ period.start }} - {{ period.end }}{% if not loop.last %}; {% endif %}
+            {% endfor %}
         {% endif %}
         {% if record.spatial %}
         <tr><td class="key">Spatial Coverage</td><td class="value">{{ record.spatial }}</td></tr>
@@ -112,6 +115,8 @@
                      (record.access_right == 'embargoed' and
                       bfe_datetime(bfo, embargo_date=record.embargo_date)))
     %}
+    {{ record.fft }}
+    {{ record.get('owner') }}
     {% if record.fft %}
     {% block files %}
     <h2>Files{% if allowed %} ({{ record.fft|length }}){% endif %}</h2>
