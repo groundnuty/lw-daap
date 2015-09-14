@@ -67,7 +67,7 @@ define(function(require) {
                 if (files[file.name] === undefined) {
                     files[file.name] = file
                     newFiles[file.name] = file
-                    newFiles[file.name].index = idx;
+                    newFiles[file.name].index = idx++;
                 } else {
                     Uploader.trigger('uploaderError', {
                         message: "The file already added to the list."
