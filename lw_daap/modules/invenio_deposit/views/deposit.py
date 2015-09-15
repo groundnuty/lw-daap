@@ -241,11 +241,7 @@ def save(deposition_type=None, uuid=None, draft_id=None):
 
     data = request.json or MultiDict({})
     if data and 'files' in data:
-        # XXX this is a patch!
-        try:
-            deposition.sort_files(data['files'])
-        except Exception, e:
-            current_app.logger.debug("PIM %s" % e)
+        deposition.sort_files(data['files'])
 
     # get_draft() and process() will raise an exception if draft doesn't exist
     # or the draft does not have a form.

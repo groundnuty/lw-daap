@@ -392,7 +392,7 @@ class DepositionType(object):
             return deposition.type.stopable
         elif action in ['add_file', 'remove_file', 'sort_files']:
             # Don't allow to add/remove/sort files after first submission
-            return not deposition.has_sip()
+            return not deposition.is_minted()
         elif action in ['add_draft', ]:
             # Allow adding drafts when inprogress (independent of SIP exists
             # or not).
@@ -1247,7 +1247,7 @@ class Deposition(object):
         metadata = DepositionDraft.merge_data(self.drafts.values())
         metadata['files'] = map(
             lambda x: dict(path=x.path, name=os.path.splitext(x.name)[0],
-                           description=x.description),
+                           description=x.description, uuid=x.uuid),
             self.files
         )
 
@@ -1255,6 +1255,23 @@ class Deposition(object):
         self.sips.append(sip)
 
         return sip
+
+    def is_minted(self, sealed=True):
+        """
+        Determine if deposition has a minted pid
+        """
+        if self.has_sip(sealed):
+            sip = self.get_latest_sip(sealed=sealed)
+            recid = sip.metadata.get('recid', None)
+            if recid is not None:
+                from invenio.modules.records.api import get_record
+                try:
+                    record = get_record(recid)
+                    if record:
+                        return record.get('doi', None) is not None
+                except Exception, e:
+                    pass
+        return False
 
     def has_sip(self, sealed=True):
         """
