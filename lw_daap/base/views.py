@@ -37,7 +37,7 @@ def add_record_variables(sender, **kwargs):
                 list_hidden=False
             ) if not f.is_icon()],
             # this updates the DB, but avoids ugly caching
-            daap_record=get_record(kwargs['recid'], False)
+            daap_record=get_record(kwargs['recid'], True)
         )
 
         return ctx
