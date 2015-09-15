@@ -105,7 +105,7 @@
     </div>
     {% endblock %}
 
-    {% if daap_files %}
+    {% if daap_files and show_files %}
       {% set record_owner = current_user.id == daap_record.get('owner', {}).get('id', -1)|int %}
       {% set allowed = (record_owner or
                        (daap_record.access_right == 'open') or
