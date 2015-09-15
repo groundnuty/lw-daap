@@ -65,17 +65,10 @@ CFG_LICENSE_SOURCE = "opendefinition.org"
 CFG_DAAP_DEFAULT_COLLECTION_ID="daap"
 
 
-# XXX FIXME XXX TODO
 def has_doi(obj, eng):
     if has_submission(obj, eng):
         d = Deposition(obj)
-        sip = d.get_latest_sip(sealed=True)
-        
-        print "/"
-        print sip.metadata.get('doi', 'kk')
-        print sip.metadata.get('doi', None) is not None
-        print "*" * 80
-        return sip.metadata.get('doi', None) is not None
+        return d.is_minted()
     return False
 
 
@@ -216,55 +209,6 @@ def process_recjson(deposition, recjson):
         del recjson['license']
 
     # =======================
-    # Journal
-    # =======================
-    # Set year or delete fields if no title is provided
-    if recjson.get('journal.title', None):
-        recjson['journal.year'] = recjson['publication_date'][:4]
-
-    # =======================
-    # References
-    # =======================
-    if recjson.get('references', []):
-        recjson['references'] = map(
-            lambda x: dict(raw_reference=x),
-            recjson['references']
-        )
-
-    # =======================
-    # Book/chaper/report
-    # =======================
-    if 'imprint.publisher' in recjson and 'imprint.place' in recjson:
-        recjson['imprint.year'] = recjson['publication_date'][:4]
-
-    if 'part_of.title' in recjson:
-        mapping = [
-            ('part_of.publisher', 'imprint.publisher'),
-            ('part_of.place', 'imprint.place'),
-            ('part_of.year', 'imprint.year'),
-            ('part_of.isbn', 'isbn'),
-        ]
-        for new, old in mapping:
-            if old in recjson:
-                try:
-                    recjson[new] = recjson[old]
-                    del recjson[old]
-                except KeyError:
-                    pass
-
-    # =================
-    # Grants
-    # =================
-    # Remap incoming dictionary
-    recjson['grants'] = map(
-        lambda x: dict(
-            title="%s - %s (%s)" % (x['acronym'], x['title'], x['id']),
-            identifier=x['id']
-        ),
-        recjson.get('grants', [])
-    )
-
-    # =======================
     # Filter out empty fields
     # =======================
     filter_empty_elements(recjson)
@@ -284,7 +228,7 @@ def process_recjson(deposition, recjson):
 
 def filter_empty_elements(recjson):
     list_fields = [
-        'authors', 'keywords', 'thesis_supervisors', 'subjects',
+        'authors', 'keywords', 'subjects',
     ]
     for key in list_fields:
         recjson[key] = filter(
@@ -343,7 +287,7 @@ def process_recjson_new(deposition, recjson):
     )
 
     # Calculate number of leading zeros needed in the comment.
-    file_commment_fmt = "%%0%dd" % len(str(len(recjson['fft'])))
+    file_commment_fmt = "%%0%dd-%%s" % len(str(len(recjson['fft'])))
 
     for idx, f in enumerate(recjson['fft']):
         f['restriction'] = fft_status
@@ -352,7 +296,7 @@ def process_recjson_new(deposition, recjson):
         # Hence, this trick stores the ordering of files for a record in
         # the files comment, so files can be alphabetically sorted by their
         # comment (i.e. we add leading zeros).
-        f['comment'] = file_commment_fmt % idx
+        f['comment'] = file_commment_fmt % (idx, f['uuid'])
 
     return recjson
 
@@ -363,10 +307,10 @@ def process_recjson_edit(deposition, recjson):
     """
     process_recjson(deposition, recjson)
     # Remove all FFTs
-    try:
-        del recjson['fft']
-    except KeyError:
-        pass
+    #try:
+    #    del recjson['fft']
+    #except KeyError:
+    #    pass
     return recjson
 
 
@@ -382,26 +326,48 @@ def process_files(deposition, bibrecdocs):
         sip.metadata.get('embargo_date'),
     )
 
+    fft = {f['uuid']: f for f in sip.metadata['fft']}
     sip.metadata['fft'] = []
 
+    file_commment_fmt = "%%0%dd-%%s" % len(str(len(fft)))
+    idx = 0
     for bf in bibrecdocs.list_latest_files():
-        sip.metadata['fft'].append({
-            'name': bf.name,
-            'format': bf.format,
-            'restriction': fft_status,
-            'description': bf.description,
-            'comment': bf.comment,
-        })
+        try:
+            order, uuid = bf.comment.split('-', 1)
+        except ValueError, e:
+            continue
+        if uuid in fft:
+            sip.metadata['fft'].append({
+                'name': bf.name,
+                'format': bf.format,
+                'restriction': fft_status,
+                'description': fft[uuid].get('description', 'KEEP-OLD-VALUE'),
+                #'description': 'KEEP-OLD-VALUE',
+                'comment': file_commment_fmt % (idx, uuid),
+            })
+            idx += 1
+            fft.pop(uuid)
+        else:
+            # file should be removed is no longer in the list
+            current_app.logger.debug("Removing file %s" % bf.name)
+            sip.metadata['fft'].append({
+                'name': bf.name,
+                'docfile_type': 'DELETE-FILE',
+                'format': bf.format,
+             })
+    # handle any missing files
+    for f in fft.values():
+        f['restriction'] = fft_status
+        f['comment'] = file_commment_fmt % (idx, f['uuid'])
+        idx += 1
+        sip.metadata['fft'].append(f)
+    current_app.logger.debug(sip.metadata['fft'])
 
 
 def merge(deposition, dest, a, b):
     """
     Merge changes from editing a deposition.
     """
-    #print "*" * 80
-    #print a, b, 
-    #print dest 
-    #print "/" * 80
 
     # A record might have been approved in communities since it was loaded,
     # thus we "manually" merge communities
@@ -425,8 +391,7 @@ def merge(deposition, dest, a, b):
     b['communities'] = communities
     b['provisional_communities'] = provisional
 
-
-    # Append Zenodo collection
+    # Append default collection
     if CFG_DAAP_DEFAULT_COLLECTION_ID in dest['communities']:
         a['communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
         b['communities'].append(CFG_DAAP_DEFAULT_COLLECTION_ID)
@@ -439,10 +404,6 @@ def merge(deposition, dest, a, b):
 
     # Now proceed, with normal merging.
     data = merge_changes(deposition, dest, a, b)
-
-    #print "&" * 80
-    #print data
-    #print "u" * 80
 
     if 'authors' in data and data['authors']:
         data['_first_author'] = data['authors'][0]
@@ -549,7 +510,7 @@ def process_file_descriptions():
         d = Deposition(obj)
         draft = d.get_draft("_files")
         if not draft:
-            return 
+            return
         draft_files = draft.values.get('file_description', [])
         for f in d.files:
             for df in draft.values.get('file_description', []):
@@ -617,9 +578,9 @@ class upload(DepositionType):
                 # now go for the files
                 render_form(draft_id='_files'),
                 # Test if all files are available for API
-                # XXX: what to do about this? 
+                # XXX: what to do about this?
                 api_validate_files(),
-                process_file_descriptions(), 
+                process_file_descriptions(),
             ],
         ),
         # merge all drafts (default + files)
@@ -645,13 +606,13 @@ class upload(DepositionType):
                 process_sip_metadata(process_recjson_new),
             ],
         ),
-        # generate MARC 
+        # generate MARC
         finalize_record_sip(),
         # and let bibupload do the magic
         upload_record_sip(),
         p.IF(has_doi, [ run_tasks(update=False) ]),
     ]
-        
+
 #    workflow = [
 #      
 #        p.IF_ELSE(
@@ -742,38 +703,17 @@ class upload(DepositionType):
         access_right=fields.String,
         access_conditions=fields.String,
         communities=fields.List(fields.Raw),
-        conference_acronym=fields.String,
-        conference_dates=fields.String,
-        conference_place=fields.String,
-        conference_title=fields.String,
-        conference_url=fields.String,
-        conference_session=fields.String,
-        conference_session_part=fields.String,
         creators=fields.Raw(default=[]),
         description=fields.String,
         doi=fields.String(default=''),
         embargo_date=ISODate,
-        grants=fields.List(fields.Raw),
-        image_type=fields.String(default=''),
-        imprint_isbn=fields.String,
-        imprint_place=fields.String,
-        imprint_publisher=fields.String,
-        journal_issue=fields.String,
-        journal_pages=fields.String,
-        journal_title=fields.String,
-        journal_volume=fields.String,
         keywords=fields.Raw(default=[]),
         subjects=fields.Raw(default=[]),
         license=fields.String,
         notes=fields.String(default=''),
-        partof_pages=fields.String,
-        partof_title=fields.String,
         prereserve_doi=fields.Raw,
         publication_date=ISODate,
-        publication_type=fields.String(default=''),
-        references=fields.List(fields.String, default=[]),
         related_identifiers=fields.Raw(default=[]),
-        thesis_supervisors=fields.Raw(default=[]),
         title=fields.String,
         upload_type=fields.String,
         contributors=fields.Raw(default=[]),
@@ -825,8 +765,6 @@ class upload(DepositionType):
 
         # Fix known differences in marshalling
         draft.values = filter_empty_elements(draft.values)
-        if 'grants' not in draft.values:
-            draft.values['grants'] = []
 
         # Set disabled values to None in output
         for field, flags in draft.flags.items():
