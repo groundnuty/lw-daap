@@ -16,6 +16,10 @@ setup(
     	"Invenio>=2"
     ],
     entry_points={
-        "invenio.config": ["lw_daap = lw_daap.config"]
+        "invenio.config": ["lw_daap = lw_daap.config"],
+        'console_scripts': [
+            # overwrite invenio bibupload
+            'bibupload = lw_daap.ext.bibupload.scripts.bibupload:main',
+        ],
     }
 )
