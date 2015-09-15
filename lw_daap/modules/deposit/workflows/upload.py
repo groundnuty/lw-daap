@@ -111,7 +111,7 @@ def process_draft(draft):
     """
     Process loaded form JSON
     """
-    # Filter out daap community 
+    # Filter out daap communityc
     draft.values['communities'] = filter(
         lambda c: c['identifier'] not in [CFG_DAAP_DEFAULT_COLLECTION_ID],
         draft.values.get('communities', [])
@@ -314,11 +314,16 @@ def process_files(deposition, bibrecdocs):
         sip.metadata.get('embargo_date'),
     )
 
-    fft = {f['uuid']: f for f in sip.metadata['fft']}
+    fft = {}
+    # this will allow to keep the order in the file listc
+    # and let us keep track of the files in the deposition
+    file_commment_fmt = "%%0%dd-%%s" % len(str(len(fft)))
+    for idx, f in enumerate(sip.metadata['fft']):
+        fft[f['uuid']] = f
+        fft[f['uuid']]['comment'] = file_commment_fmt % (idx, f['uuid'])
+
     sip.metadata['fft'] = []
 
-    file_commment_fmt = "%%0%dd-%%s" % len(str(len(fft)))
-    idx = 0
     for bf in bibrecdocs.list_latest_files():
         try:
             order, uuid = bf.comment.split('-', 1)
@@ -330,10 +335,8 @@ def process_files(deposition, bibrecdocs):
                 'format': bf.format,
                 'restriction': fft_status,
                 'description': fft[uuid].get('description', 'KEEP-OLD-VALUE'),
-                #'description': 'KEEP-OLD-VALUE',
-                'comment': file_commment_fmt % (idx, uuid),
+                'comment': fft[uuid]['comment']
             })
-            idx += 1
             fft.pop(uuid)
         else:
             # file should be removed is no longer in the list
@@ -346,8 +349,6 @@ def process_files(deposition, bibrecdocs):
     # handle any missing files
     for f in fft.values():
         f['restriction'] = fft_status
-        f['comment'] = file_commment_fmt % (idx, f['uuid'])
-        idx += 1
         sip.metadata['fft'].append(f)
     current_app.logger.debug(sip.metadata['fft'])
 
