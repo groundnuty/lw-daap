@@ -2,6 +2,11 @@
 
 {% include "lw_daap/pids/doi_modal.html" %}
 
+{% if not daap_record %}
+{% set daap_record = record %}
+{% endif %}
+
+
 <div class="record-details">
   {% block header %}
   <div class="row">
