@@ -27,5 +27,3 @@ def format_element(bfo, embargo_date=''):
 
 def escape_values(bfo):
     return 0
-
-

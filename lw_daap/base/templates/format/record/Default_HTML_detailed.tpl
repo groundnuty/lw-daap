@@ -105,7 +105,7 @@
       {% set allowed = (record_owner or
                        (daap_record.access_right == 'open') or
                        (daap_record.access_right == 'embargoed' and
-                         bfe_datetime(bfo, embargo_date=daap_record.embargo_date)))
+                         bfe_daap_datetime(bfo, embargo_date=daap_record.embargo_date)))
       %}
       {% block files %}
       <h2>Files{% if allowed %} ({{ daap_files|length }}){% endif %}</h2>
