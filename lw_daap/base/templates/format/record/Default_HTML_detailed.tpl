@@ -93,7 +93,7 @@
           {% endif %}
           {% if daap_files %}
             <tr><td class="key">Size</td><td class="value">
-            {{ bfe_size(bfo, files=daap_files) | filesizeformat }} </td></tr>
+            {{ bfe_daap_filesize(bfo, files=daap_files) | filesizeformat }} </td></tr>
           {% endif %}
         </tbody>
       </table>

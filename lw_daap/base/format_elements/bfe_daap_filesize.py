@@ -21,9 +21,9 @@
 ## or submit itself to any jurisdiction.
 
 
-def format_element(bfo, record_files=[]):
+def format_element(bfo, files=[]):
     sizes = []
-    for f in record_files:
+    for f in files:
         try:
             sizes.append(int(f.size))
         except ValueError:
