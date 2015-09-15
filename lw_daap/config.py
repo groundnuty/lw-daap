@@ -26,6 +26,7 @@ PACKAGES = [
     "lw_daap.modules.communities",
     "lw_daap.modules.deposit",
     "lw_daap.modules.invenio_deposit",
+    "lw_daap.modules.github",
     "lw_daap.modules.pids",
     "lw_daap.modules.invenio_groups",
     "lw_daap.deploy",
