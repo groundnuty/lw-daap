@@ -31,23 +31,23 @@ from flask_login import current_user, login_required
 
 from flask_menu import register_menu
 
-from invenio_base.decorators import wash_arguments
-from invenio_base.i18n import _
+from invenio.base.decorators import wash_arguments
+from invenio.base.i18n import _
 from invenio.ext.principal import permission_required
 
-from invenio_accounts.models import User
+from invenio.modules.accounts.models import User
 
 from sqlalchemy.exc import IntegrityError
 
-from ..forms import GroupForm, NewMemberForm
-from ..models import Group, Membership
+from .forms import GroupForm, NewMemberForm
+from .models import Group, Membership
 
 
 blueprint = Blueprint(
     'groups_settings', __name__,
-    url_prefix="/account/settings/groups",
-    template_folder='../templates',
-    static_folder='../static',
+    url_prefix="/yourgroups",
+    template_folder='templates',
+    static_folder='static',
 )
 
 default_breadcrumb_root(blueprint, '.settings.groups')
@@ -65,7 +65,7 @@ def get_group_name(id_group):
 @register_menu(
     blueprint, 'settings.groups',
     _('%(icon)s My Groups', icon='<i class="fa fa-users fa-fw"></i>'),
-    order=13,
+    order=0,
     active_when=lambda: request.endpoint.startswith("groups_settings.")
 )
 @register_breadcrumb(blueprint, '.', _('Groups'))
@@ -78,7 +78,7 @@ def get_group_name(id_group):
 })
 def index(page, per_page, q):
     """List all user memberships."""
-    if current_user.is_superadmin:
+    if current_user.is_admin:
         groups = Group.query
     else:
         groups = Group.query_by_user(current_user, eager=True)
@@ -90,7 +90,7 @@ def index(page, per_page, q):
     invitations = Membership.query_invitations(current_user).count()
 
     return render_template(
-        'groups/settings.html',
+        'groups/index.html',
         groups=groups,
         requests=requests,
         invitations=invitations,

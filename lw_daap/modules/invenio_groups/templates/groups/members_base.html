@@ -20,8 +20,10 @@
 {%- import "accounts/settings/helpers.html" as helpers with context -%}
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
+{#
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
+#}
 
 {%- extends "accounts/settings/index.html" -%}
 
@@ -33,7 +35,6 @@
     with_body=False,
     icon="fa fa-users fa-fw",
     btn=_("Manage"), btn_icon='fa fa-fw fa-wrench', btn_href=url_for('.manage', group_id=group.id),
-    btn2=_("Invite"), btn_icon2='fa fa-fw fa-plus', btn_href2=url_for('.new_member', group_id=group.id),
    ) }}
 <div class="panel-body">
   {%- block description %}
@@ -85,8 +86,11 @@
 {% endblock members_list %}
 <ul class="list-group">
   <li class="list-group-item text-center">
+  paginate this
+  {# 
     {{ list_status(members) }}
     {{ paginate(members, small=True) if members.items|length }}
+    #}
   </li>
 </ul>
 {%- endif %}

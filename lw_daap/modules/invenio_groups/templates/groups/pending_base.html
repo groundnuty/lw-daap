@@ -21,9 +21,10 @@
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptyprompt with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
+{#
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
-
+#}
 {%- extends "accounts/settings/index_base.html" -%}
 
 {%- bundles "groups.css", "groups.js" -%}
@@ -52,7 +53,7 @@
   <thead>
     <tr>
       <th class="col-md-{%- if requests -%}4{%- else -%}7{%- endif -%}">{{ _("Group") }}</th>
-      {%- if requests %}
+    {%- if requests %}
       <th class="col-md-3">{{ _("User") }}</th>
       {%- endif %}
       <th class="col-md-5"></th>
