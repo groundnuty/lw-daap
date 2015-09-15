@@ -21,10 +21,13 @@
 ## or submit itself to any jurisdiction.
 
 
-def format_element(bfo, record=''):
+def format_element(bfo, record_files=[]):
     sizes = []
-    for fft in record.get('fft', []):
-        sizes.append(int(fft.get('file_size', 0)))
+    for f in record_files:
+        try:
+            sizes.append(int(f.size))
+        except ValueError:
+            pass
     return sum(sizes)
 
 def escape_values(bfo):

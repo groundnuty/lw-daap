@@ -88,11 +88,9 @@
             {% endfor %}
             </td></tr>
           {% endif %}
-          {% if show_files %}
-            {% if record.fft %}
-              <tr><td class="key">Size</td><td class="value">
-              {{ bfe_size(bfo, record=record) | filesizeformat }} </td></tr>
-            {% endif %}
+          {% if record_files %}
+            <tr><td class="key">Size</td><td class="value">
+            {{ bfe_size(bfo, record_files=record_files) | filesizeformat }} </td></tr>
           {% endif %}
         </tbody>
       </table>
