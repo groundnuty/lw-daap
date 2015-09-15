@@ -52,8 +52,7 @@ from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from . import fields as zfields
-from .field_widgets import date_widget, DynamicItemWidgetNoButtons, \
-    DynamicHiddenListWidget
+from .field_widgets import date_widget, DynamicHiddenListWidget
 from .autocomplete import community_autocomplete
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
@@ -983,21 +982,7 @@ class EditFormMixin(object):
 
 class BasicEditForm(BasicForm, EditFormMixin):
     """Specialized form for editing a record."""
-    doi = fields.DOIField(
-        label="Digital Object Identifier",
-        placeholder="e.g. 10.1234/lw_daap...",
-        validators=[
-            DOISyntaxValidator(),
-            invalid_doi_prefix_validator(prefix=CFG_DATACITE_DOI_PREFIX),
-        ],
-        processors=[
-            local_datacite_lookup
-        ],
-        export_key='doi',
-        icon='fa fa-barcode fa-fw',
-        readonly="true",
-    )
-
+    doi = None
     _title = _('Edit upload')
     template = "deposit/edit.html"
 
