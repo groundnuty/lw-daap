@@ -98,6 +98,7 @@
       </table>
     </div>
     {% endblock %}
+
     {% if show_files %}
       {% set record_owner = current_user.id == record.get('owner', {}).get('id', -1)|int %}
       {% set allowed = (record_owner or 
@@ -105,28 +106,28 @@
                        (record.access_right == 'embargoed' and
                          bfe_datetime(bfo, embargo_date=record.embargo_date)))
       %}
-      {% if record.fft %}
+      {% if record_files %}
         {% block files %}
-        <h2>Files{% if allowed %} ({{ record.fft|length }}){% endif %}</h2>
+        <h2>Files{% if allowed %} ({{ record_files|length }}){% endif %}</h2>
           {% if allowed %}
-          {% for row in record.fft|batch(2) %}
+          {% for row in record_files|batch(2) %}
           <div class="row">
             {% for file in row %}
               <div class="file-resource col-sm-6">
                 <div class="file-resource-type col-sm-2 text-center">
                   <span class="fa fa-stack fa-2x">
                   <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
-                  <strong class="fa fa-stack-1x uppercase" style="margin-top: .5em; font-size: 0.6em;">{{ bfe_fileextension(bfo, url=file.url) }}</strong>
+                  <strong class="fa fa-stack-1x uppercase" style="margin-top: .5em; font-size: 0.6em;">{{ file.format }}</strong>
                   </span>
                 </div>
                 <div class="file-resource-text col-sm-8">
                   <strong>
-                  {{ file.description if file.description else bfe_filename(bfo, url=file.url) }}
+                  {{ file.description if file.description else file.get_full_name() }}
                   </strong>
                 </div>
                 <a class="file-resource-download col-sm-2 text-center" href="{{ file.url }}">
                   <span class="fa fa-download fa-2x" aria-hidden="true"></span></br>
-                  {{ file.file_size|filesizeformat if file.file_size }}
+                  {{ file.size|filesizeformat if file.size }}
                 </a>
               </div>
             {% endfor %}
