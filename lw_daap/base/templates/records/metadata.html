@@ -4,5 +4,5 @@
 {% block record_tabs %}{% endblock %}
 
 {% block record_content %}
-  {{ format_record(recid, of=of, ln=g.ln, verbose=0, on_the_fly=true, show_files=true, record_files=record_files)|safe }}
+  {{ format_record(recid, of=of, ln=g.ln, verbose=0, on_the_fly=true, daap_record=daap_record, daap_files=daap_files)|safe }}
 {% endblock %}

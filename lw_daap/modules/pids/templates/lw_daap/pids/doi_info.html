@@ -2,19 +2,21 @@
  # whatever
  #}
 
-<h4>Persistent Identifier</h4>
-{% if record.doi %}
-  {{ record.doi }}
-{% else %}
-  <p>This record does not have yet a persistent identifier, we have prereserved the
-     <span class="doi">{{ bfe_prereserved_doi(bfo, record=record) }}</span> DOI for it.</p>
- 
-  {% if current_user.get_id() == record.get('owner', {}).get('id', -1)|int %}
-    {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
-        <p class="text-muted">DOI minting is in progress...</p>
-    {% else %}
-        <button type="button" type="button" class="btn btn-warning" data-toggle="modal"
-            data-target="#doi-confirm-dialog">Mint DOI</button>
+{% if daap_record %}
+  <h4>Persistent Identifier</h4>
+  {% if daap_record.doi %}
+    {{ daap_record.doi }}
+  {% else %}
+    <p>This record does not have yet a persistent identifier, we have prereserved the
+       <span class="doi">{{ bfe_prereserved_doi(bfo) }}</span> DOI for it.</p>
+
+    {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
+      {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
+          <p class="text-muted">DOI minting is in progress...</p>
+      {% else %}
+          <button type="button" type="button" class="btn btn-warning" data-toggle="modal"
+              data-target="#doi-confirm-dialog">Mint DOI</button>
+      {% endif %}
     {% endif %}
   {% endif %}
 {% endif %}
