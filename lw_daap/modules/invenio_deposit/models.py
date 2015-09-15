@@ -1266,7 +1266,7 @@ class Deposition(object):
             if recid is not None:
                 from invenio.modules.records.api import get_record
                 try:
-                    record = get_record(recid)
+                    record = get_record(recid, True)
                     if record:
                         return record.get('doi', None) is not None
                 except Exception, e:
