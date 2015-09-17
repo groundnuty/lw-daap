@@ -42,7 +42,7 @@ from sqlalchemy.exc import IntegrityError
 from .forms import GroupForm, NewMemberForm
 from .models import Group, Membership
 
-
+entries_per_page=10
 blueprint = Blueprint(
     'groups_settings', __name__,
     url_prefix="/yourgroups",
@@ -73,25 +73,32 @@ def get_group_name(id_group):
 @permission_required('usegroups')
 @wash_arguments({
     'page': (int, 1),
-    'per_page': (int, 5),
+    'per_page': (int, entries_per_page),
     'q': (unicode, ''),
 })
 def index(page, per_page, q):
     """List all user memberships."""
-    if current_user.is_admin:
-        groups = Group.query
-    else:
-        groups = Group.query_by_user(current_user, eager=True)
+    #if current_user.is_admin:
+    #    groups = Group.query
+    #else:
+
+    # Member Groups
+    m_groups = Group.query_by_user(current_user, eager=True)
+    m_groups = m_groups.paginate(page, per_page=per_page)
+
+    q_groups = None
+    # Query Groups
     if q:
-        groups = Group.search(groups, q)
-    groups = groups.paginate(page, per_page=per_page)
+        q_groups = Group.search(Group.query, q)
+        q_groups = q_groups.paginate(page, per_page=per_page)
 
     requests = Membership.query_requests(current_user).count()
     invitations = Membership.query_invitations(current_user).count()
 
     return render_template(
         'groups/index.html',
-        groups=groups,
+        m_groups=m_groups,
+        q_groups=q_groups,
         requests=requests,
         invitations=invitations,
         page=page,
@@ -106,7 +113,7 @@ def index(page, per_page, q):
 @permission_required('usegroups')
 @wash_arguments({
     'page': (int, 1),
-    'per_page': (int, 5),
+    'per_page': (int, entries_per_page),
 })
 def requests(page, per_page):
     """List all pending memberships, listed only for group admins."""
@@ -127,7 +134,7 @@ def requests(page, per_page):
 @permission_required('usegroups')
 @wash_arguments({
     'page': (int, 1),
-    'per_page': (int, 5),
+    'per_page': (int, entries_per_page),
 })
 def invitations(page, per_page):
     """List all user pending memberships."""
@@ -152,11 +159,12 @@ def new():
     if form.validate_on_submit():
         try:
             group = Group.create(admins=[current_user], **form.data)
-
+            group.add_member(current_user)
             flash(_('Group "%(name)s" created', name=group.name), 'success')
             return redirect(url_for(".index"))
         except IntegrityError:
             flash(_('Group creation failure'), 'error')
+
 
     return render_template(
         "groups/new.html",
@@ -247,7 +255,7 @@ def delete(group_id):
 @permission_required('usegroups')
 @wash_arguments({
     'page': (int, 1),
-    'per_page': (int, 5),
+    'per_page': (int, entries_per_page),
     'q': (unicode, ''),
     's': (unicode, ''),
 })
@@ -453,4 +461,27 @@ def new_member(group_id):
         ),
         'error'
     )
+    return redirect(url_for('.index'))
+
+@blueprint.route('/<int:group_id>/join', methods=['GET', 'POST'])
+@login_required
+#@register_breadcrumb(blueprint, '.members.new', _('New'))
+@permission_required('usegroups')
+def join(group_id):
+    """Add (invite) new member."""
+    group = Group.query.get_or_404(group_id)
+
+    if group.can_join(current_user):
+	group.subscribe(current_user)
+        #return redirect(url_for('.index'))
+    
+	
+    #flash(
+    #    _(
+    #        'You cannot invite yourself to the group '
+    #        '%(group_name)s',
+    #        group_name=group.name
+    #    ),
+    #    'error'
+    #)
     return redirect(url_for('.index'))

@@ -393,6 +393,7 @@ class Group(db.Model):
         """
         return Membership.delete(self, user)
 
+
     def invite(self, user, admin=None):
         """Invite a user to a group (should be done by admins).
 
@@ -468,7 +469,7 @@ class Group(db.Model):
         :param user: User to be checked.
         :returns: True or False.
         """
-        if getattr(user, 'is_superadmin', False):
+        if getattr(user, 'is_admin', False):
             return True
         elif self.privacy_policy == PrivacyPolicy.PUBLIC:
             return True
@@ -483,7 +484,7 @@ class Group(db.Model):
         :param user: User to be checked.
         :returns: True or False.
         """
-        if getattr(user, 'is_superadmin', False):
+        if getattr(user, 'is_admin', False):
             return True
         elif self.is_managed:
             return False
@@ -500,7 +501,7 @@ class Group(db.Model):
         :param user: User to be checked.
         :returns: True or False.
         """
-        if getattr(user, 'is_superadmin', False):
+        if getattr(user, 'is_admin', False):
             return True
         elif self.is_managed:
             return False
@@ -511,13 +512,30 @@ class Group(db.Model):
         else:
             return False
 
+    def can_join(self, user):
+        """Determine if user can join to a group.
+
+        Be aware that this check is independent from the people (users) which
+        are going to be invited. The checked user is the one who invites
+        someone, NOT who is going to be invited.
+
+        :param user: User to be checked.
+        :returns: True or False.
+        """
+        if self.is_member(user):
+            return False
+        if self.subscription_policy != SubscriptionPolicy.CLOSED:
+            return True
+        else:
+            return False
+
     def can_leave(self, user):
         """Determine if user can leave a group.
 
         :param user: User to be checked.
         :returns: True or False.
         """
-        if getattr(user, 'is_superadmin', False):
+        if getattr(user, 'is_admin', False):
             return True
         elif self.is_managed:
             return False
@@ -622,11 +640,11 @@ class Membership(db.Model):
     def query_requests(cls, admin, eager=False):
         """Get all pending group requests."""
         # Get direct pending request
-        if hasattr(admin, 'is_superadmin') and admin.is_superadmin:
-            q1 = GroupAdmin.query.with_entities(
-                GroupAdmin.group_id)
-        else:
-            q1 = GroupAdmin.query_by_admin(admin).with_entities(
+        #if hasattr(admin, 'is_admin') and admin.is_superadmin:
+        #    q1 = GroupAdmin.query.with_entities(
+        #        GroupAdmin.group_id)
+        #else:
+        q1 = GroupAdmin.query_by_admin(admin).with_entities(
                 GroupAdmin.group_id)
         q2 = Membership.query.filter(
             Membership.state == MembershipState.PENDING_ADMIN,

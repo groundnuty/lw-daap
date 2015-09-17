@@ -18,17 +18,32 @@
  */
 
 require([
-  'jquery',
-], function () {
-  'use strict';
+    'jquery',
+    ], function () {
+      $('.table tr').click(function (ev) {
+        if (this.children.length > 0) {
+          var data = this.children[0].dataset;
+          if (data.groupId) {
+            window.location.href = "./" + data.groupId;
+          }
+        }
+      });
 
-  $('.table tr').click(function (ev) {
-    if (this.children.length > 0) {
-      var data = this.children[0].dataset;
-      if (data.groupId) {
-        window.location.href = "./" + data.groupId;
-      }
-    }
-  });
-
-});
+      $('.panel #collapse').on("click", function () {
+        results = $(this).parents('.panel').find('#g_search_results');
+        console.info(results);
+        if (results) {
+          if ($(this).hasClass('panel-collapsed')) {
+            results.slideDown();
+            $(this).removeClass('panel-collapsed');
+            $(this).find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+          }
+          else {
+            // collapse the panel
+            results.slideUp();
+            $(this).addClass('panel-collapsed');
+            $(this).find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+          }
+        }
+      });
+    });
