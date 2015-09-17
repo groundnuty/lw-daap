@@ -46,7 +46,7 @@
              x_contact='<a href="mailto:{email}">{email}</a>'.format(email=config.CFG_SITE_SUPPORT_EMAIL)|safe) }}
     </small>
     <hr />
-    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hd', show_files=false)|safe}}
+    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hd', show_files=false, daap_record=None)|safe}}
 
     </div>
     <div class="col-md-4">

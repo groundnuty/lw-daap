@@ -6,7 +6,6 @@
 {% set daap_record = record %}
 {% endif %}
 
-
 <div class="record-details">
   {% block header %}
   <div class="row">
