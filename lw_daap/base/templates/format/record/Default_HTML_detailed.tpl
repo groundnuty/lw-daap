@@ -29,6 +29,7 @@
       {% if daap_record.access_conditions %}
         {{ daap_record.access_conditions }}
       {% endif %}
+      <div class="spacer10"></div>
       <div class="record-abstract">
         {% if daap_record.description %}
           <h4>Description</h4>
@@ -41,7 +42,7 @@
     </div>
   </div>
   {% endblock %}
-
+  <div class="spacer40"></div>
   <div>
     {% block metadata %}
     <h2>Metadata</h2>
@@ -52,7 +53,7 @@
             <tr><td class="key">Type</td><td class="value">{{ daap_record.upload_type }}</td></tr>
           {% endif %}
           {% if daap_record.communities %}
-            <tr><td class="key">Communities</td><td class="value">{{ bfe_daap_community(bfo, daap_record=daap_record) }}</td></tr>
+            <tr><td class="key">Communities</td><td class="value">{{ bfe_daap_community(bfo, record=daap_record) }}</td></tr>
           {% endif %}
           {% if daap_record.publication_date %}
             <tr><td class="key">Publication date</td><td class="value">{{ daap_record.publication_date }}</td></tr>
@@ -112,6 +113,7 @@
                        (daap_record.access_right == 'embargoed' and
                          bfe_daap_datetime(bfo, embargo_date=daap_record.embargo_date)))
       %}
+      <div class="spacer40"></div>
       {% block files %}
       <h2>Files{% if allowed %} ({{ daap_files|length }}){% endif %}</h2>
         {% if allowed %}
