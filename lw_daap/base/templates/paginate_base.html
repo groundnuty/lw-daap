@@ -30,7 +30,7 @@ Returns:
 
 It assumes that page exists in the current context.
 #}
-{%- macro paginate(obj, small) %}
+{%- macro paginate(obj, page, small) %}
 {%- set args = request.args.copy().to_dict() -%}
 {%- do args.update(request.view_args.copy()) -%}
 {%- set endpoint = request.endpoint -%}
@@ -38,7 +38,7 @@ It assumes that page exists in the current context.
   <ul class="pagination {{ 'pagination-sm' if small }}">
     <li {% if not obj.has_prev -%} class="disabled" {%- endif %}}>
       {%- set new_args = args.copy() -%}
-      {%- do new_args.update({'page': 1}) -%}
+      {%- do new_args.update({page: 1}) -%}
       {%- if not obj.has_prev %}
       <span title="first">&laquo;</span>
       {% else %}
@@ -46,7 +46,7 @@ It assumes that page exists in the current context.
       {%- endif %}
     </li>
     <li {% if not obj.has_prev -%} class="disabled" {%- endif %}}>
-      {%- do args.update({'page': obj.page-1 }) -%}
+      {%- do args.update({page: obj.page-1 }) -%}
       {%- if not obj.has_prev %}
       <span title="prev">&lsaquo;</span>
       {% else %}
@@ -56,7 +56,7 @@ It assumes that page exists in the current context.
     {%- for page_p in obj.iter_pages() %}
       {%- if page_p %}
         {%- set new_args = args.copy() -%}
-        {%- do new_args.update({'page': page_p}) -%}
+        {%- do new_args.update({page: page_p}) -%}
         <li {% if page_p == obj.page -%} class="active" {%- endif %}>
           <a title="current" href="{{ url_for(endpoint, **new_args) }}">{{ page_p }}</a>
         </li>
@@ -66,7 +66,7 @@ It assumes that page exists in the current context.
     {%- endfor %}
     <li {% if not obj.has_next -%} class="disabled" {%- endif %}}>
       {%- set new_args = args.copy() -%}
-      {%- do new_args.update({'page': obj.page+1}) -%}
+      {%- do new_args.update({page: obj.page+1}) -%}
       {%- if not obj.has_next %}
       <span title ="next">&rsaquo;</span>
       {% else %}
@@ -75,7 +75,7 @@ It assumes that page exists in the current context.
     </li>
     <li {% if not obj.has_next -%} class="disabled" {%- endif %}}>
       {%- set new_args = args.copy() -%}
-      {%- do new_args.update({'page': obj.pages }) -%}
+      {%- do new_args.update({page: obj.pages }) -%}
       {%- if not obj.has_next %}
       <span title="last">&raquo;</span>
       {% else %}
@@ -97,7 +97,7 @@ Returns:
 
 It assumes that page and per_page exists in the current context.
 #}
-{%- macro list_status(obj) %}
+{%- macro list_status(obj, page) %}
 <span class="text-muted">
   {{ _("Displaying items %(start)d - %(stop)d out of %(total)d", start=(page - 1) * per_page, stop=((page - 1) * per_page) + obj.items|count, total=obj.total) }}
 </span>

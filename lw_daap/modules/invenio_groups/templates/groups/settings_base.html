@@ -112,8 +112,8 @@
   {%- endblock m_groups_list %}
   <ul class="list-group">
     <li class="list-group-item text-center">
-       {{ list_status(m_groups) }} 
-       {{ paginate(m_groups, small=True) if m_groups.items|length }}
+       {{ list_status(m_groups, mpage) }} 
+       {{ paginate(m_groups, 'mpage', small=True) if m_groups.items|length }}
     </li>
   </ul>
 {%- endif %}
@@ -177,8 +177,8 @@
       {%- endblock q_groups_list %}
       <ul class="list-group">
         <li class="list-group-item text-center">
-          {{ list_status(q_groups) }}
-          {{ paginate(q_groups, small=True) if q_groups.items|length }}
+          {{ list_status(q_groups, mpage) }}
+          {{ paginate(q_groups, 'qpage', small=True) if q_groups.items|length }}
         </li>
       </ul>
     {%- endif %}

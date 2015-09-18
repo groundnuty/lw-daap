@@ -72,11 +72,12 @@ def get_group_name(id_group):
 @login_required
 @permission_required('usegroups')
 @wash_arguments({
-    'page': (int, 1),
+    'mpage': (int, 1),
+    'qpage': (int, 1),
     'per_page': (int, entries_per_page),
     'q': (unicode, ''),
 })
-def index(page, per_page, q):
+def index(mpage, qpage, per_page, q):
     """List all user memberships."""
     #if current_user.is_admin:
     #    groups = Group.query
@@ -84,13 +85,13 @@ def index(page, per_page, q):
 
     # Member Groups
     m_groups = Group.query_by_user(current_user, eager=True)
-    m_groups = m_groups.paginate(page, per_page=per_page)
+    m_groups = m_groups.paginate(mpage, per_page=per_page)
 
     q_groups = None
     # Query Groups
     if q:
         q_groups = Group.search(Group.query, q)
-        q_groups = q_groups.paginate(page, per_page=per_page)
+        q_groups = q_groups.paginate(qpage, per_page=per_page)
 
     requests = Membership.query_requests(current_user).count()
     invitations = Membership.query_invitations(current_user).count()
@@ -101,7 +102,8 @@ def index(page, per_page, q):
         q_groups=q_groups,
         requests=requests,
         invitations=invitations,
-        page=page,
+        mpage=mpage,
+        qpage=qpage,
         per_page=per_page,
         q=q
     )
@@ -473,8 +475,8 @@ def join(group_id):
     if group.can_join(current_user):
 	group.subscribe(current_user)
         #return redirect(url_for('.index'))
-    
-	
+
+
     #flash(
     #    _(
     #        'You cannot invite yourself to the group '
