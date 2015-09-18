@@ -21,10 +21,10 @@
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptyprompt with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
-{#
+
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
-#}
+
 {%- extends "accounts/settings/index_base.html" -%}
 
 {%- bundles "groups.css", "groups.js" -%}
@@ -37,8 +37,13 @@
    ) }}
 <div class="panel-body">
   {%- block pending_groups_description %}
-  Invitations you received from communities admins. Click accept in order to become a member of the particular team
-  or reject to cancel a pending invitation.
+   {%- if requests %}  
+        Requests you received from non-group members. Click accept in order to grant membership to the particular team
+        or reject to cancel a pending request.
+   {%- else %} 
+        Invitations you received from groups admins. Click accept in order to become a member of the particular team
+        or reject to cancel a pending invitation.
+   {%- endif %} 
   {%- endblock pending_groups_description %}
 </div>
 {%- block pending_groups_list  %}

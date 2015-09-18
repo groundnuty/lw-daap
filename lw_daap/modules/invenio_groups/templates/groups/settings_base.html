@@ -21,10 +21,10 @@
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptyprompt with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
-{#
+
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
-#}
+
 {%- extends "accounts/settings/index_base.html" -%}
 
 {%- bundles "groups.css", "groups.js" -%}
@@ -39,7 +39,7 @@
   {%- block groups_description %}
   <div class="row">
   <div class="col-md-8">
-  List of groups your are currently admin or member of. While being in particular group you gain special privileges, which enables you to get more involved in growth of the community.
+  List of groups your are currently admin or member of: being in particular group you gain special privileges.
   </div>
   {%- endblock groups_description %}
   <div class="col-md-4">
@@ -86,23 +86,23 @@
         </td>
         <td class="text-center vcenter">{{ group.members_count() }}</td>
         <td class="text-center btn-toolbar vcenter">
-          {%- if group.is_member(current_user) %}
+          {%- if group.is_member(current_user) and not group.is_admin(current_user) %}
           <button class="btn btn-xs btn-danger pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
             <i class="fa fa-fw fa-chain-broken"></i>{{ _("Leave") }}
           </button>
-            {%- if group.is_admin(current_user) %}
+          {%- endif %}
+          {%- if group.is_admin(current_user) %}
             <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.manage',  group_id=group.id) }}">
               <i class="fa fa-fw fa fa-wrench"></i> {{ _("Manage") }}
             </a>
             <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.new_member', group_id=group.id) }}">
               <i class="fa fa-fw fa fa-plus"></i> {{ _("Invite") }}
             </a>
-            {%- endif %}
-            {%- if group.can_see_members(current_user) %}
+          {%- endif %}
+          {%- if group.can_see_members(current_user) %}
             <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
               <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
             </a>
-            {%- endif %}
           {%- endif %}
         </td>
       </tr>
@@ -112,10 +112,8 @@
   {%- endblock m_groups_list %}
   <ul class="list-group">
     <li class="list-group-item text-center">
-      <span class="text-muted">Here be dragons</span>
-      
-      {# {{ list_status(groups) }}
-      {{ paginate(groups, small=True) if groups.items|length }} #}
+       {{ list_status(m_groups) }} 
+       {{ paginate(m_groups, small=True) if m_groups.items|length }}
     </li>
   </ul>
 {%- endif %}
@@ -146,7 +144,7 @@
           </thead>
           <tbody>
             {%- for group in q_groups.items %}
-            {%- if not group.is_member(current_user) %}
+            {#{%- if not group.is_member(current_user) %}#}
             <tr>
               <td data-group-id="{{ group.id if group.is_admin(current_user) else '' }}">
                 <div>
@@ -162,28 +160,27 @@
                   <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
                 </a>
                 {% endif %}
+             {% if not group.is_admin(current_user)  %}
              {% if not group.subscription_policy == "Closed" %}
             <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.join', group_id=group.id) }}">
               <i class="fa fa-fw fa-sign-in"></i> {{ _("Join") }}
             </a>
-
+                {%- endif %}
                 {%- endif %}
               </td>
             </tr>
-            {% endif %}
+            {#{% endif %}#}
             {%- endfor %}
           </tbody>
         </table>
-        <ul class="list-group">
-          <li class="list-group-item text-center">
-            <span class="text-muted">Here be dragons</span>
-            
-            {# {{ list_status(groups) }}
-            {{ paginate(groups, small=True) if groups.items|length }} #}
-          </li>
-        </ul>
       </div>
       {%- endblock q_groups_list %}
+      <ul class="list-group">
+        <li class="list-group-item text-center">
+          {{ list_status(q_groups) }}
+          {{ paginate(q_groups, small=True) if q_groups.items|length }}
+        </li>
+      </ul>
     {%- endif %}
   </div>
 </div>

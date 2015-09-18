@@ -20,10 +20,9 @@
 {%- import "accounts/settings/helpers.html" as helpers with context -%}
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
-{#
+
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
-#}
 
 {%- extends "accounts/settings/index.html" -%}
 
@@ -86,11 +85,8 @@
 {% endblock members_list %}
 <ul class="list-group">
   <li class="list-group-item text-center">
-  paginate this
-  {# 
     {{ list_status(members) }}
     {{ paginate(members, small=True) if members.items|length }}
-    #}
   </li>
 </ul>
 {%- endif %}

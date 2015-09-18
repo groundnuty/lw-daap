@@ -42,7 +42,7 @@ from sqlalchemy.exc import IntegrityError
 from .forms import GroupForm, NewMemberForm
 from .models import Group, Membership
 
-entries_per_page=10
+entries_per_page=4
 blueprint = Blueprint(
     'groups_settings', __name__,
     url_prefix="/yourgroups",
@@ -186,7 +186,6 @@ def manage(group_id):
     """Manage your group."""
     group = Group.query.get_or_404(group_id)
     form = GroupForm(request.form, obj=group)
-
     if form.validate_on_submit():
         if group.can_edit(current_user):
             try:
