@@ -170,7 +170,7 @@ class Group(db.Model):
         info=dict(
             label=_("Description"),
             description=_('Optional. A short description of the group.'
-                          ' Default: Empty'),
+                          ' Default: Empty.'),
         ))
     """Description of group."""
 

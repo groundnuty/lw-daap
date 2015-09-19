@@ -34,9 +34,10 @@ class RadioGroupWidget(object):
     def __call__(self, field, **kwargs):
         """Render radio group."""
         html = ""
+        field_value = field.data if field.data else field.default
         for subfield in field:
             label = subfield.label.text
-            if (field.default == subfield.data):
+            if field_value == subfield.data:
                 subfield.checked = True
             else:
                 subfield.checked = False
