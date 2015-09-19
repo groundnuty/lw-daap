@@ -59,7 +59,6 @@ blueprint = Blueprint(
 
 default_breadcrumb_root(blueprint, '.webdeposit')
 
-
 def deposition_error_handler(endpoint='.index'):
     """Decorator to handle deposition exceptions."""
     def decorator(f):
@@ -153,6 +152,23 @@ def deposition_type_index(deposition_type):
         'deposit/deposition_type.html',
         **ctx
     )
+@blueprint.route('/myuploads')
+@register_menu(blueprint,
+        'settings.myuploads',
+        _('%(icon)s My Uploads', icon='<i class="fa fa-file fa-fw"></i>'),
+        order=0)
+@register_breadcrumb(blueprint, '.myuploads', _('My Uploads'))
+@login_required
+def myuploads():
+    ctx = dict(
+        my_depositions=Deposition.get_depositions(current_user),
+    )
+
+    return render_template(
+        'deposit/myview.html',
+        **ctx
+    )
+
 
 
 @blueprint.route('/<depositions:deposition_type>/create',
@@ -278,7 +294,7 @@ def delete(deposition_type=None, uuid=None):
     deposition.delete()
 
     flash(_('%(name)s deleted.', name=deposition.type.name), 'success')
-    return redirect(url_for(".index"))
+    return redirect(url_for(".myuploads"))
 
 
 @blueprint.route('/<depositions:deposition_type>/<int:uuid>',

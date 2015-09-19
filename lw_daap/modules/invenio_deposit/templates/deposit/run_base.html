@@ -48,16 +48,11 @@
 {% block deposit_page %}
 <div class="row">
     {% block file_container %}
-        <div id="file_container" class="col-md-8 form-feedback-warning">
+        <div id="file_container" class="col-md-12 form-feedback-warning">
             <div id="flash-message"></div>
             {% include "deposit/form.html" %}
         </div>
     {% endblock %}
-    {% if form._drafting %}
-        <div class="col-md-4">
-            {% include "deposit/myview.html" %}
-        </div>
-    {% endif %}
     </div>
 </div>
 {% endblock deposit_page %}

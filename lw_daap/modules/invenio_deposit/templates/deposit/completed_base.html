@@ -20,7 +20,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
     <div class="well">
         <span class="pull-right">
@@ -48,9 +48,6 @@
     <hr />
     {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='Hd')|safe}}
 
-    </div>
-    <div class="col-md-4">
-        {% include "deposit/myview.html" %}
     </div>
     </div>
 </div>
