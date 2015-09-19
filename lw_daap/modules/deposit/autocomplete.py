@@ -46,3 +46,27 @@ def community_autocomplete(dummy_form, dummy_field, term, limit=50):
         },
         objs
     )
+
+
+def accessgroups_autocomplete(dummy_form, dummy_field, term, limit=50):
+    from lw_daap.modules.invenio_groups.models import Group
+
+
+    if not term:
+        objs = Group.query.limit(limit).all()
+    else:
+        term = '%' + term + '%'
+        objs = Group.query.filter(
+            Group.name.like(term)
+        ).filter_by().limit(limit).all()
+
+    return map(
+        lambda o: {
+            'value': o.name,
+            'fields': {
+                'identifier': o.id,
+                'title': o.name,
+            }
+        },
+        objs
+    )

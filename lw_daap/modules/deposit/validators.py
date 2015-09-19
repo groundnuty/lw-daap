@@ -79,3 +79,4 @@ def community_validator(form, field):
         for i in ids:
             if i not in found:
                 raise ValidationError("Invalid community identifier: %s" % i)
+
