@@ -19,3 +19,21 @@
 ## In applying this licence, CERN does not waive the privileges and immunities
 ## granted to it by virtue of its status as an Intergovernmental Organization
 ## or submit itself to any jurisdiction.
+
+from lw_daap.modules.invenio_groups.models import Group
+
+from flask import current_app
+
+def format_element(bfo, groups=[], separator=', '):
+    r = []
+    for gid in groups: 
+        try:
+            g = Group.query.get(int(gid))
+            r.append(str(g.name))
+        except ValueError:
+            pass
+    return separator.join(r)
+
+def escape_values(bfo):
+    return 0
+

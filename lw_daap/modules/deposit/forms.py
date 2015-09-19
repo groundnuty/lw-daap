@@ -51,9 +51,11 @@ from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator,
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
+from lw_daap.modules.invenio_groups.models import Group
+
 from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
-from .autocomplete import community_autocomplete
+from .autocomplete import community_autocomplete, accessgroups_autocomplete
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
 
@@ -84,22 +86,22 @@ def map_result(func, mapper):
     return inner
 
 
-def communityform_mapper(obj, prefix):
-    obj.update({
-        'fields': {
-            '%sidentifier' % prefix: obj['id'],
-            '%stitle' % prefix: obj['value'],
-        }
-    })
-    return obj
-
-
 def community_obj_value(key_name):
     from invenio.modules.communities.models import Community
-
+    pass
     def _getter(field):
         if field.data:
             obj = Community.query.filter_by(id=field.data).first()
+            if obj:
+                return getattr(obj, key_name)
+        return None
+    return _getter
+
+
+def accessgroups_obj_value(key_name):
+    def _getter(field):
+        if field.data:
+            obj = Group.query.filter_by(id=field.data).first()
             if obj:
                 return getattr(obj, key_name)
         return None
@@ -127,6 +129,7 @@ def json_projects_kb_mapper(val):
         'fields': {
             'id': grant_id,
             'acronym': acronym,
+
             'title': title,
         }
     }
@@ -390,6 +393,20 @@ class CommunityForm(WebDepositForm):
         ]
     )
 
+class AccessGroupsForm(WebDepositForm):
+    identifier = fields.StringField(
+        widget=widgets.HiddenInput(),
+        processors=[
+            replace_field_data('title', accessgroups_obj_value('name')),
+        ],
+    )
+    title = fields.StringField(
+        placeholder="Start typing a group name...",
+        autocomplete_fn=accessgroups_autocomplete,
+        widget=TagInput(),
+        widget_classes='form-control',
+    )
+
 class FileDescriptionForm(WebDepositForm):
     description = fields.StringField(
         label="",
@@ -644,6 +661,25 @@ class BasicForm(WebDepositForm):
         hidden=True,
         disabled=True,
     )
+    access_groups = fields.DynamicFieldList(
+        fields.FormField(
+            AccessGroupsForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+            description='Specify the groups you will grant the access',
+        ),
+        validators=[
+            required_if('access_right', ['restricted']),
+            validators.optional()
+        ],
+        label=_('Access groups'),
+        description='Specify the groups you will grant the access.',
+        default="",
+        widget=TagListWidget(template="{{title}}"),
+        widget_classes=' dynamic-field-list',
+        icon='fa fa-group fa-fw',
+        hidden=True,
+        disabled=True,
+    )
 
     #
     # Collection
@@ -697,17 +733,6 @@ class BasicForm(WebDepositForm):
         widget_classes='',
         min_entries=1,
     )
-
-
-    #
-    # File upload field
-    #
-    #plupload_file = fields.FileUploadField(
-    #    label="",
-    #    widget=plupload_widget,
-    #    export_key=False
-    #)
-
 
 #
 # Form
@@ -763,7 +788,7 @@ class DatasetForm(BasicForm):
             'indication': 'required',
         }),
         ('License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions',
+            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
             'indication': 'required',
@@ -840,7 +865,7 @@ class SoftwareForm(BasicForm):
             'indication': 'required',
         }),
         ('License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions',
+            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
             'indication': 'required',
@@ -909,7 +934,7 @@ class AnalysisForm(BasicForm):
             'indication': 'required',
         }),
         ('License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions',
+            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
             'indication': 'required',

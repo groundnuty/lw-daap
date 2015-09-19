@@ -353,6 +353,13 @@ class Group(db.Model):
         return Group.query.filter(Group.id.in_(query))
 
     @classmethod
+    def query_by_uid(cls, uid):
+        """Query group by uid.
+        """
+        return Group.query.join(Membership).filter_by(id_user=uid)
+
+
+    @classmethod
     def search(cls, query, q):
         """Modify query as so include only specific group names.
 

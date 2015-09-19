@@ -104,6 +104,8 @@ def access_right_processor(form, field, submit=False, fields=None):
     form.license.flags.disabled = True
     form.access_conditions.flags.hidden = True
     form.access_conditions.flags.disabled = True
+    form.access_groups.flags.hidden = True
+    form.access_groups.flags.disabled = True
 
     if field.data == 'embargoed':
         form.embargo_date.flags.hidden = False
@@ -112,6 +114,8 @@ def access_right_processor(form, field, submit=False, fields=None):
     if field.data == 'restricted':
         form.access_conditions.flags.hidden = False
         form.access_conditions.flags.disabled = False
+        form.access_groups.flags.hidden = False
+        form.access_groups.flags.disabled = False
 
     if field.data in ['open', 'embargoed']:
         form.license.flags.hidden = False

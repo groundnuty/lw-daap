@@ -75,7 +75,7 @@ def has_doi(obj, eng):
 # =======
 # Helpers
 # =======
-def file_firerole(uid, access_right, embargo_date):
+def file_firerole(uid, access_right, embargo_date, access_groups):
     """
     Compute file firerole for a file given access_right, embargo_date.
     """
@@ -92,7 +92,12 @@ def file_firerole(uid, access_right, embargo_date):
             'deny until "%s"' % embargo_date,
             'allow any',
         ]
-    elif access_right in ('closed', 'restricted',):
+    elif access_right == 'restricted':
+        # Access to submitter, deny everyone else
+        fft_status = ['allow uid "%s"' % uid]
+        fft_status.extend(['allow group "%s"' % g for g in access_groups])
+        fft_status.append('deny all')
+    elif access_right == 'closed':
         # Access to submitter, deny everyone else
         fft_status = [
             'allow uid "%s"' % uid,
@@ -157,6 +162,26 @@ def process_recjson(deposition, recjson):
             lambda x: x['identifier'],
             filter(lambda x: not x.get('provisional', False), communities)
         )
+    except TypeError:
+        # Happens on re-run
+        pass
+
+    # ===========
+    # Access groups
+    # ===========
+    try:
+        access_groups = recjson.get('access_groups', [])
+
+        # Extract identifier (i.e. elements are mapped from dict ->
+        # string)
+        recjson['access_groups'] = map(
+            lambda x: x['identifier'], access_groups
+        )
+        recjson['access_groups_title'] = map(
+            lambda x: x['title'], access_groups
+        )
+        
+
     except TypeError:
         # Happens on re-run
         pass
@@ -271,7 +296,8 @@ def process_recjson_new(deposition, recjson):
     fft_status = file_firerole(
         deposition.user_id,
         recjson['access_right'],
-        recjson.get('embargo_date', None)
+        recjson.get('embargo_date', None),
+        recjson.get('access_groups_title',[])
     )
 
     # Calculate number of leading zeros needed in the comment.
@@ -312,6 +338,7 @@ def process_files(deposition, bibrecdocs):
         sip.metadata['owner']['id'],
         sip.metadata['access_right'],
         sip.metadata.get('embargo_date'),
+        sip.metadata.get('access_groups_title'),
     )
 
     fft = {}
@@ -597,6 +624,7 @@ class upload(DepositionType):
     marshal_metadata_fields = dict(
         access_right=fields.String,
         access_conditions=fields.String,
+        access_groups=fields.List(fields.Raw),
         communities=fields.List(fields.Raw),
         creators=fields.Raw(default=[]),
         description=fields.String,

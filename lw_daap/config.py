@@ -2,6 +2,17 @@
 # LifeWatch Data Access and Preservation
 # Configuration
 
+# MonkeyPatch the UserInfo so it gets our group stuff
+# must be done quite early!
+import invenio.ext.login.legacy_user
+old_login = invenio.ext.login.legacy_user.UserInfo._login
+def new_login(self, uid, force=False):
+    from lw_daap.modules.invenio_groups.models import Group
+    data = old_login(self, uid, force)
+    data['group'] = map(lambda x: x.name, Group.query_by_uid(uid))
+    return data
+invenio.ext.login.legacy_user.UserInfo._login = new_login
+
 import lw_daap.base.auth.github
 import lw_daap.base.auth.google
 import lw_daap.base.auth.facebook
