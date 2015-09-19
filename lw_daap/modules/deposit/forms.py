@@ -129,6 +129,7 @@ def json_projects_kb_mapper(val):
         'fields': {
             'id': grant_id,
             'acronym': acronym,
+
             'title': title,
         }
     }
@@ -374,9 +375,9 @@ class SubjectsForm(WebDepositForm):
 class CommunityForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
-        #processors=[
-        #    replace_field_data('title', community_obj_value('title')),
-        #],
+        processors=[
+            replace_field_data('title', community_obj_value('title')),
+        ],
     )
     title = fields.StringField(
         placeholder="Start typing a community name...",
@@ -396,7 +397,7 @@ class AccessGroupsForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
         processors=[
-            replace_field_data('title', accessgroups_obj_value('title')),
+            replace_field_data('title', accessgroups_obj_value('name')),
         ],
     )
     title = fields.StringField(

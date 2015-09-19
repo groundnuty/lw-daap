@@ -175,8 +175,13 @@ def process_recjson(deposition, recjson):
         # Extract identifier (i.e. elements are mapped from dict ->
         # string)
         recjson['access_groups'] = map(
+            lambda x: x['identifier'], access_groups
+        )
+        recjson['access_groups_title'] = map(
             lambda x: x['title'], access_groups
         )
+        
+
     except TypeError:
         # Happens on re-run
         pass
@@ -292,7 +297,7 @@ def process_recjson_new(deposition, recjson):
         deposition.user_id,
         recjson['access_right'],
         recjson.get('embargo_date', None),
-        recjson.get('access_groups',[])
+        recjson.get('access_groups_title',[])
     )
 
     # Calculate number of leading zeros needed in the comment.
@@ -333,7 +338,7 @@ def process_files(deposition, bibrecdocs):
         sip.metadata['owner']['id'],
         sip.metadata['access_right'],
         sip.metadata.get('embargo_date'),
-        sip.metadata.get('access_groups'),
+        sip.metadata.get('access_groups_title'),
     )
 
     fft = {}

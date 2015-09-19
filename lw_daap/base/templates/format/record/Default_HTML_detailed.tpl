@@ -29,7 +29,7 @@
         {{ daap_record.access_conditions }}
       {% endif %}
       {% if daap_record.access_groups %}
-        {{ daap_record.access_groups|join(', ') }}
+        {{ bfe_daap_group_names(bfo, groups=daap_record.access_groups) }}
       {% endif %}
       <div class="spacer10"></div>
       <div class="record-abstract">
@@ -145,7 +145,7 @@
         <h3>Access to this record is allowed from {{ daap_record.embargo_date }}.</h3>
       {% elif (daap_record.access_right is equalto 'restricted')  %}
         <h3>Access to this record is allowed under the record conditions. Request access to some of the allowed groups
-            ({{ daap_record.access_groups|join(', ') }}) to get the permission to access the record.</h3>
+            ({{ bfe_daap_group_names(bfo, groups=daap_record.access_groups) }}) to get the permission to access the record.</h3>
       {% elif (daap_record.access_right is equalto 'closed')  %}
         <h3>Access to this record is not allowed.</h3>
       {% endif %}

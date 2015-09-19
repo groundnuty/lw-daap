@@ -43,8 +43,6 @@ from sqlalchemy_utils.types.choice import ChoiceType
 from .signals import group_created, group_deleted
 from .widgets import RadioGroupWidget
 
-from wtforms import widgets
-
 
 class SubscriptionPolicy(object):
 
@@ -185,7 +183,6 @@ class Group(db.Model):
         info=dict(
             label=_('Privacy Policy'),
             widget=RadioGroupWidget(PrivacyPolicy.descriptions),
-            option_widget=widgets.CheckboxInput()
         )
     )
     """Policy for who can view the list of group members."""
@@ -196,7 +193,6 @@ class Group(db.Model):
         info=dict(
             label=_('Subscription Policy'),
             widget=RadioGroupWidget(SubscriptionPolicy.descriptions),
-            option_widget=widgets.CheckboxInput()
         )
     )
     """Policy for how users can be subscribed to the group."""
