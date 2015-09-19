@@ -28,6 +28,9 @@
       {% if daap_record.access_conditions %}
         {{ daap_record.access_conditions }}
       {% endif %}
+      {% if daap_record.access_groups %}
+        {{ daap_record.access_groups|join(', ') }}
+      {% endif %}
       <div class="spacer10"></div>
       <div class="record-abstract">
         {% if daap_record.description %}
@@ -36,9 +39,11 @@
         {% endif %}
       </div>
     </div>
+    {% if daap_files and show_files %}
     <div class="col-sm-3 col-md-3 well">
       {% include "lw_daap/pids/doi_info.html" %}
     </div>
+    {% endif %}
   </div>
   {% endblock %}
   <div class="spacer40"></div>
@@ -106,12 +111,9 @@
     {% endblock %}
 
     {% if daap_files and show_files %}
-      {% set record_owner = current_user.id == daap_record.get('owner', {}).get('id', -1)|int %}
-      {% set allowed = (record_owner or
-                       (daap_record.access_right == 'open') or
-                       (daap_record.access_right == 'embargoed' and
-                         bfe_daap_datetime(bfo, embargo_date=daap_record.embargo_date)))
-      %}
+
+      {% set allowed = not daap_files[0].is_restricted(current_user)[0] %}
+
       <div class="spacer40"></div>
       {% block files %}
       <h2>Files{% if allowed %} ({{ daap_files|length }}){% endif %}</h2>
@@ -141,8 +143,11 @@
         {% endfor %}
       {% elif (daap_record.access_right is equalto 'embargoed') %}
         <h3>Access to this record is allowed from {{ daap_record.embargo_date }}.</h3>
-      {% else %}
-        <h3>Access to this record is allowed under the record conditions.</h3>
+      {% elif (daap_record.access_right is equalto 'restricted')  %}
+        <h3>Access to this record is allowed under the record conditions. Request access to some of the allowed groups
+            ({{ daap_record.access_groups|join(', ') }}) to get the permission to access the record.</h3>
+      {% elif (daap_record.access_right is equalto 'closed')  %}
+        <h3>Access to this record is not allowed.</h3>
       {% endif %}
       {% endblock %}
     {% endif %}
