@@ -85,8 +85,8 @@
 {% endblock members_list %}
 <ul class="list-group">
   <li class="list-group-item text-center">
-    {{ list_status(members) }}
-    {{ paginate(members, small=True) if members.items|length }}
+    {{ list_status(members, page) }}
+    {{ paginate(members, 'page', small=True) if members.items|length }}
   </li>
 </ul>
 {%- endif %}

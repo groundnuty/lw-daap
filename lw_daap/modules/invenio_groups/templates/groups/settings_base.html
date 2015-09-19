@@ -177,7 +177,7 @@
       {%- endblock q_groups_list %}
       <ul class="list-group">
         <li class="list-group-item text-center">
-          {{ list_status(q_groups, mpage) }}
+          {{ list_status(q_groups, qpage) }}
           {{ paginate(q_groups, 'qpage', small=True) if q_groups.items|length }}
         </li>
       </ul>
