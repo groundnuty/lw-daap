@@ -455,6 +455,11 @@ class Group(db.Model):
             return True
         return False
 
+    def is_unique_admin(self, admin):
+        if self.is_admin(admin) and GroupAdmin.query_by_group(self).count() == 1:
+            return True
+        return False
+
     def is_member(self, user, with_pending=False):
         """Verify if given user is a group member.
 
@@ -542,8 +547,8 @@ class Group(db.Model):
         :param user: User to be checked.
         :returns: True or False.
         """
-        if getattr(user, 'is_admin', False):
-            return True
+        if self.is_unique_admin(user):
+            return False
         elif self.is_managed:
             return False
         else:

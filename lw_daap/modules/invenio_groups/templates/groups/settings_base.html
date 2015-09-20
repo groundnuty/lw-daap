@@ -86,7 +86,7 @@
         </td>
         <td class="text-center vcenter">{{ group.members_count() }}</td>
         <td class="text-center btn-toolbar vcenter">
-          {%- if group.is_member(current_user) and not group.is_admin(current_user) %}
+          {%- if group.is_member(current_user) and not group.is_unique_admin(current_user) %}
           <button class="btn btn-xs btn-danger pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
             <i class="fa fa-fw fa-chain-broken"></i>{{ _("Leave") }}
           </button>
