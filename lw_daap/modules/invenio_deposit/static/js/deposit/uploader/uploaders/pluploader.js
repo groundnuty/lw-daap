@@ -24,7 +24,7 @@ define(function(require) {
 
     return require('flight/lib/component')(PlUploader, withUtil);
 
-    function PlUploader() {
+   function PlUploader() {
 
 
         this.attributes({
@@ -32,7 +32,8 @@ define(function(require) {
             drop_element: null,
             max_file_size: null,
             preupload_hooks: {},
-            filters: {prevent_duplicates: true}
+            filters: {prevent_duplicates: true},
+            newfiles: 0
         });
 
 
@@ -60,7 +61,10 @@ define(function(require) {
                     if (that.attr.preupload_hooks.hasOwnProperty(key)) that.attr.preupload_hooks[key](that);
                 }
                 PlUploader.settings.url = that.attr.url;
-                PlUploader.start();
+                if (that.attr.newfiles) { 
+                    PlUploader.start(); 
+                    that.attr.newfiles = 0;
+                }
             });
 
             that.on('fileRemoved', function(ev, data) {
@@ -88,6 +92,8 @@ define(function(require) {
                         status: file.status
                     }
                 });
+
+                that.attr.newfiles = 1;
 
                 that.trigger('filesAdded', {
                     files: files
