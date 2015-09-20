@@ -45,10 +45,11 @@ from .models import Group, Membership
 entries_per_page=4
 blueprint = Blueprint(
     'groups_settings', __name__,
-    url_prefix="/yourgroups",
+    url_prefix="/groups",
     template_folder='templates',
     static_folder='static',
 )
+
 
 default_breadcrumb_root(blueprint, '.settings.groups')
 
