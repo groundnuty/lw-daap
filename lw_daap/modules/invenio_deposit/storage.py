@@ -26,6 +26,8 @@ import uuid
 from fs import opener
 from fs import path
 
+from flask import current_app
+
 from invenio.base.globals import cfg
 
 
@@ -48,11 +50,6 @@ class ExternalFile(object):
             InvenioBibdocfileUnauthorizedURL
         try:
             self._file = open_url(url, headers={})
-            print "(" * 80
-            print url
-            print self._file.geturl()
-            print self._file.info().getheader('Content-length')
-            print ")" * 80
             self.filename = None
             info = self._file.info()
             content_disposition = info.getheader('Content-Disposition')
@@ -64,7 +61,11 @@ class ExternalFile(object):
             if not self.filename:
                 self.filename = filename
 
-            size = int(info.getheader('Content-length'))
+            length = info.getheader('Content-length')
+            if length is None:
+                current_app.logger.warning("Content-Length not set!")
+                length = 0
+            size = int(length)
             if size > cfg['DEPOSIT_MAX_UPLOAD_SIZE']:
                 raise UploadError("File too big")
         except InvenioBibdocfileUnauthorizedURL as e:
