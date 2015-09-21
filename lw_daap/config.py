@@ -2,6 +2,12 @@
 # LifeWatch Data Access and Preservation
 # Configuration
 
+import sys
+reload(sys)  
+sys.setdefaultencoding('utf8')
+
+from invenio.base.config import EXTENSIONS
+
 # MonkeyPatch the UserInfo so it gets our group stuff
 # must be done quite early!
 import invenio.ext.login.legacy_user
@@ -38,6 +44,7 @@ PACKAGES = [
     "lw_daap.modules.deposit",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
+    "lw_daap.modules.invenio_profile",
     "lw_daap.modules.github",
     "lw_daap.modules.pids",
     "lw_daap.deploy",
@@ -56,6 +63,7 @@ PACKAGES_EXCLUDE= [
     "invenio.modules.annotations",
 ]
 
+#EXTENSIONS.remove('invenio.ext.legacy')
 
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.dataset:dataset",
