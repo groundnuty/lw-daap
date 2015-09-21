@@ -45,7 +45,7 @@ define(function(require) {
                     top = (window.screenY || window.screenTop) +
                           ((window.outerHeight || document.documentElement.offsetHeight) - self.attr.height) / 2;
                 var features = "width=" + self.attr.width + ",height=" + self.attr.height +  ",left=" + left +
-                              ",top=" + top;
+                              ",top=" + top + ",scrollbars=yes";
                 var w = window.open(self.attr.github_chooser_url, 'GitHub_Uploader_Chooser', features);
                 w.focus();
             });
