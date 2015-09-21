@@ -127,6 +127,11 @@ html, body {
 .loader .loading img {
   display: inline;
 }
+
+.github-body {
+  padding-top: 60px;
+}
+
 .spacer1,.spacer2,.spacer3,.spacer4,.spacer5,.spacer6,.spacer7,.spacer8,.spacer9,.spacer10,
 .spacer11,.spacer12,.spacer13,.spacer14.spacer15,.spacer20,.spacer25,.spacer30,.spacer35,
 .spacer40,.spacer45,.spacer50,.spacer55,.spacer60,.spacer65,.spacer70,.spacer75,.spacer80,.spacer85, 

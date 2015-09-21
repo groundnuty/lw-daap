@@ -64,6 +64,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
       "js/deposit/uploader/uploader",
       "js/deposit/uploader/uploaders/pluploader",
       "js/deposit/uploader/uploaders/dropboxuploader",
+      "js/deposit/uploader/uploaders/githubuploader",
       "js/deposit/uploader/ui/filelist",
       "js/deposit/uploader/ui/errorlist"
     ],
@@ -74,6 +75,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
       Uploader,
       PlUploader,
       DropboxUploader,
+      GithubUploader,
       FileList,
       ErrorList
     ) {
@@ -117,8 +119,15 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
             dropbox_url: '{{ url_for('.upload_url', deposition_type=deposition_type, uuid=uuid) }}',
             max_files_count: {{config.DEPOSIT_MAX_UPLOAD_FILES_COUNT|default('null')}}/*,
             preupload_hooks: preupload_hooks*/
+          },
+
+          githubuploader: {
+            upload_url: '{{ url_for('.upload_url', deposition_type=deposition_type, uuid=uuid) }}',
+            github_chooser_url: '{{ url_for('lwdaap_github.index') }}'
           }
+
         };
+
 
         // configure all the uploaders 
 /*
@@ -139,6 +148,7 @@ require(["jquery", "js/zenodo/zenodo", "js/deposit/form"], function($, zenodo, f
         PlUploader.attachTo("#pluploader", config.pluploader);
         Uploader.attachTo("#uploader", config.uploader);
         DropboxUploader.attachTo("#dropboxuploader", config.dropboxuploader);
+        GithubUploader.attachTo("#githubuploader", config.githubuploader);
         FileList.attachTo("#uploader-filelist");
         ErrorList.attachTo("#uploader-errorlist");
 

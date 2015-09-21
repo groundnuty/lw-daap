@@ -377,18 +377,23 @@ def upload_url(deposition_type=None, uuid=None):
     """Upload a new file by use of a URL."""
     deposition = Deposition.get(uuid, current_user, type=deposition_type)
 
+    current_app.logger.debug("1")
+
     # TODO: Improve to read URL as a chunked file to prevent overfilling
     # memory.
     url_file = ExternalFile(
         request.form['url'],
         request.form.get('name', None),
     )
+    current_app.logger.debug("1.5")
 
     df = DepositionFile(backend=DepositionStorage(deposition.id))
+    current_app.logger.debug("2")
 
     for f in deposition.files:
         if f.name == url_file.filename:
             raise FilenameAlreadyExists(f.name)
+    current_app.logger.debug("3")
 
     description = request.form.get('description', url_file.filename)
 
@@ -396,8 +401,10 @@ def upload_url(deposition_type=None, uuid=None):
                description=description):
         deposition.add_file(df)
         deposition.save()
+    current_app.logger.debug("4")
 
     url_file.close()
+    current_app.logger.debug("5")
 
     return jsonify(
         dict(filename=df.name, id=df.uuid, checksum=df.checksum)

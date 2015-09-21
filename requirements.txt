@@ -8,3 +8,5 @@ altmetric
 ###################
 github3.py
 pymongo
+# github integration, check if really needed also
+humanize

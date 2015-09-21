@@ -141,7 +141,11 @@ def sync(gh, extra_data, sync_hooks=True):
             if r.full_name not in extra_data["repos"]:
                 extra_data["repos"][r.full_name] = copy.copy(repo_data)
             # Update description
-            extra_data["repos"][r.full_name]["description"] = r.description
+            extra_data["repos"][r.full_name].update({
+                "description": r.description,
+                "owner": str(r.owner), # XXX FIXME:ayrodrig
+                "name": r.name,
+            })
             new_set.add(r.full_name)
 
         # # TODO:

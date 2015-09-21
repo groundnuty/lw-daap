@@ -32,7 +32,7 @@ define(function(require) {
 
         this.attributes({
             form_files: [],
-            uploadersSelector: '#pluploader, #dropboxuploader',
+            uploadersSelector: '#pluploader, #dropboxuploader, #githubuploader',
             fileListSelector: '#uploader-filelist',
             errorListSelector: '#uploader-errorlist',
             uploadButtonSelector: '#uploader-upload',

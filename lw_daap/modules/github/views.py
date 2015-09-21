@@ -37,8 +37,8 @@ from .helpers import get_api, get_token, get_account, check_token
 blueprint = Blueprint(
     'lwdaap_github',
     __name__,
-    static_folder="../static",
-    template_folder="../templates",
+    static_folder="static",
+    template_folder="templates",
     url_prefix="/github",
 )
 
