@@ -1,0 +1,28 @@
+
+{% extends "github/index_base.html" %}
+
+{% block info_body %}
+<p><a href="{{ url_for('lwdaap_github.index') }}">&laquo; Go back to repositories list</a></p>
+{% if not releases %}
+  <em>There are no releases for this repo, you should create one first.</em>
+{% else %}
+  <em>Select one release to be preserved</em>
+  <table class="table table-stripped"> 
+  <tbody>
+  {% for r in releases %}
+    <tr>
+      <td>
+        <h4 class="repo">{{ r.name if r.name else r.tag_name}}</h4>
+        <small class="text-muted repo-description">{{ r.body }}</small>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-default pull-right release-chooser"
+                data-release-url="{{ url_for('lwdaap_github.select_release',
+                                             owner=repo.owner, name=repo.name,
+                                             release_id=r.id) }}">
+                Select release</button>
+      </td>
+    </tr>
+  {% endfor %}
+{% endif %}
+{% endblock info_body %}
