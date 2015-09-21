@@ -55,9 +55,14 @@ class ExternalFile(object):
             content_disposition = info.getheader('Content-Disposition')
             if content_disposition:
                 for item in content_disposition.split(';'):
+                    current_app.logger.debug("item: %s" % item)
                     item = item.strip()
                     if item.strip().startswith('filename='):
-                        self.filename = item[len('filename="'):-len('"')]
+                        s = item[len('filename='):]
+                        if (s[0] == s[-1]) and s.startswith(("'", '"')):
+                            s = s[1:-1]
+                        self.filename = s
+                        current_app.logger.debug("filename: %s" % self.filename)
             if not self.filename:
                 self.filename = filename
 

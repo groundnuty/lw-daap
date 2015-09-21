@@ -22,6 +22,7 @@ define(function(require) {
                 $.get(that.$node.data('releaseUrl'), function(data) {
                     if (that.attr.useParent) {
                         window.opener.$(that.attr.uploader).trigger('selectedRelease', data);
+                        window.close(); 
                     }
                 });
             });
