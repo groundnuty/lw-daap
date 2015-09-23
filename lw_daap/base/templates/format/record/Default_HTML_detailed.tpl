@@ -101,6 +101,13 @@
             {% endfor %}
             </td></tr>
           {% endif %}
+          {% if daap_record.os or daap_record.flavor or daap_record.app_env%}   
+            <tr><td class="key">Requirements</td><td class="value">
+            {% if daap_record.os %}<p>OS: {{bfe_daap_req_names(bfo, req_id=daap_record.os)}}</p>{% endif %}    
+            {% if daap_record.flavor %}<p>{{bfe_daap_req_names(bfo, req_id=daap_record.flavor)}}</p>{% endif %}    
+            {% if daap_record.app_env %}<p>Application environment: {{bfe_daap_req_names(bfo, req_id=daap_record.app_env)}}</p>{% endif %}    
+            </td></tr>
+          {% endif %}
           {% if daap_files %}
             <tr><td class="key">Size</td><td class="value">
             {{ bfe_daap_filesize(bfo, files=daap_files) | filesizeformat }} </td></tr>

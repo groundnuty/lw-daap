@@ -30,13 +30,10 @@ from invenio.base.bundles import jquery as _j, invenio as _i
 # Site-wide JS
 #
 js = Bundle(
-    "js/github/init.js",
+    "js/github/githubchooser.js",
     output="github.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     weight=60,
-    bower={
-        "bootstrap-switch": "3.0.2",
-    }
 )
 
 styles = Bundle(

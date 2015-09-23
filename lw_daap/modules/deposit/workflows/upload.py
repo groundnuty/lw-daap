@@ -62,6 +62,8 @@ __all__ = ['upload']
 CFG_LICENSE_KB = "licenses"
 CFG_LICENSE_SOURCE = "opendefinition.org"
 
+CFG_REQUIREMENT_KB = "requirements"
+
 CFG_DAAP_DEFAULT_COLLECTION_ID="daap"
 
 
@@ -220,6 +222,34 @@ def process_recjson(deposition, recjson):
             )
     elif 'license' in recjson:
         del recjson['license']
+
+
+    # =================
+    # Requirements
+    # =================
+    #if recjson.get('os', []):
+    #    info = get_kb_mapping(CFG_REQUIREMENT_KB, str(recjson['os']))
+    #    if info:
+    #        info = json.loads(info['value'])
+    #        recjson['os'] = dict(
+    #            identifier=recjson['os'],
+    #            os=info['title'],
+    #        )
+    #elif 'os' in recjson:
+    #    del recjson['os']
+
+
+    #if recjson.get('flavor', []):
+    #    info = get_kb_mapping(CFG_REQUIREMENT_KB, str(recjson['flavor']))
+    #    if info:
+    #        info = json.loads(info['value'])
+    #        recjson['flavor'] = dict(
+    #            identifier=recjson['flavor'],
+    #            flavor=info['title'],
+    #        )
+    #elif 'flavor' in recjson:
+    #    del recjson['flavor']
+
 
     # =======================
     # Filter out empty fields
@@ -633,6 +663,7 @@ class upload(DepositionType):
         keywords=fields.Raw(default=[]),
         subjects=fields.Raw(default=[]),
         license=fields.String,
+        os=fields.String,
         notes=fields.String(default=''),
         publication_date=ISODate,
         related_identifiers=fields.Raw(default=[]),

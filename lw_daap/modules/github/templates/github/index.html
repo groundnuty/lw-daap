@@ -18,3 +18,25 @@
 #}
 
 {% extends "github/index_base.html" %}
+
+{% block info_body %}
+{% if not repos %}
+  <em>You have no repositories on GitHub.<br >Go to <a href="http://github.com/new">GitHub</a> and create your first.</em>
+{% else %}
+  <em>Select one repository to be preserved</em>
+  <table class="table table-stripped">
+  <tbody>
+  {%- for full_name, repo in repos|dictsort -%}
+    <tr>
+      <td>
+        <h4 class="repo"><a href="{{ url_for('lwdaap_github.releases', owner=repo.owner,
+                                             name=repo.name) }}">{{ full_name }}</a></h4>
+        <small class="text-muted repo-description"> {{ repo.description }}</small>
+      </td>
+    </tr>
+  {%- endfor -%}
+  </tbody>
+  </table>
+{% endif %}
+{% endblock info_body %}
+

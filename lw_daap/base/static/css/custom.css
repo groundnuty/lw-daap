@@ -118,3 +118,8 @@ html, body {
 .loader .loading img {
   display: inline;
 }
+
+.github-body {
+  padding-top: 60px;
+}
+

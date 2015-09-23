@@ -30,6 +30,9 @@ from .core import TextAreaListField
 from .period import PeriodFieldForm
 from .file_field import FileField
 from .keywords_field import KeywordsField
+from .requirements_field import RequirementsField
+from .application_environments_field import ApplicationEnvironmentsField
+
 
 __all__ = [
     'AccessRightField',
@@ -42,4 +45,6 @@ __all__ = [
     'PeriodFieldForm',
     'FileField',
     'KeywordsField',
+    'RequirementsField',
+    'ApplicationEnvironmentsField',
 ]
