@@ -19,6 +19,9 @@ def new_login(self, uid, force=False):
     return data
 invenio.ext.login.legacy_user.UserInfo._login = new_login
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import lw_daap.base.auth.github
 import lw_daap.base.auth.google
 import lw_daap.base.auth.facebook
@@ -38,6 +41,8 @@ COMMUNITIES_PARENT_NAME_PROVISIONAL=CFG_SITE_NAME
 COMMUNITIES_ID_PREFIX = 'community'
 COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 
+DISABLE_WARNINGS = True
+
 PACKAGES = [
     "lw_daap.base",
     "lw_daap.modules.communities",
@@ -46,6 +51,7 @@ PACKAGES = [
     "lw_daap.modules.invenio_groups",
     "lw_daap.modules.github",
     "lw_daap.modules.pids",
+    "lw_daap.modules.profile",
     "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
@@ -57,7 +63,6 @@ PACKAGES_EXCLUDE= [
     "invenio.modules.groups",
     "invenio.modules.messages",
     "invenio.modules.documentation",
-    #"invenio.modules.oauth2server",
     "invenio.modules.workflows",
     "invenio.modules.annotations",
 ]
@@ -69,6 +74,7 @@ DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.software:software",
     "lw_daap.modules.deposit.workflows.analysis:analysis",
 ]
+
 DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.dataset:dataset"
 DEPOSIT_MAX_UPLOAD_SIZE = "1000mb"
 # Don't commit anything. Testmode implies prefix is set to 10.5072
