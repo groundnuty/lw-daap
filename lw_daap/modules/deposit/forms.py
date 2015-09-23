@@ -847,6 +847,35 @@ class SoftwareForm(BasicForm):
         default="software",
     )
 
+    # Requirements
+    os = zfields.RequirementsField(
+        label="OS",
+        default='os-notspec',
+        domain_os=True,
+        domain_flavor=False,
+        validators=[validators.optional()],
+        filters=[
+            strip_string,
+        ],
+        icon='fa fa-laptop fa-fw',
+    )
+    flavor = zfields.RequirementsField(
+        label="Flavor",
+        default='flavor-notspec',
+        domain_os=False,
+        domain_flavor=True,
+        validators=[validators.optional()],
+        filters=[
+            strip_string,
+        ],
+        icon='fa fa-laptop fa-fw',
+    )
+    app_env = zfields.ApplicationEnvironmentsField(
+        label="Application environment",
+        validators=[validators.optional()],
+        icon='fa fa-laptop fa-fw',
+    )
+
     #
     # Form configuration
     #
@@ -863,6 +892,14 @@ class SoftwareForm(BasicForm):
         ], {
             #'classes': '',
             'indication': 'required',
+        }),
+        ('Requirements', [
+            'os', 'flavor', 'app_env',
+        ], {
+            #'classes': '',
+            'indication': 'recommended',
+            'description': (
+                'Requirements are recommended in order to allow ...')
         }),
         ('License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',

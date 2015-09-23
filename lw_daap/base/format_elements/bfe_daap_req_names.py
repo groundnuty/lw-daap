@@ -20,31 +20,15 @@
 ## granted to it by virtue of its status as an Intergovernmental Organization
 ## or submit itself to any jurisdiction.
 
-from .access_rights_field import AccessRightField
-from .license_field import LicenseField
-from .objecttype_field import UploadTypeField
-from .related_identifiers_field import RelatedIdentifiersField
-from .reserve_doi_field import ReserveDOIField
-from .upload_subtype_field import UploadSubtypeField
-from .core import TextAreaListField
-from .period import PeriodFieldForm
-from .file_field import FileField
-from .keywords_field import KeywordsField
-from .requirements_field import RequirementsField
-from .application_environments_field import ApplicationEnvironmentsField
+import json
+from invenio.modules.knowledge.api import get_kb_mapping
 
+def format_element(bfo, req_id=''):
+    info = get_kb_mapping('requirements', req_id)
+    if info:
+        info = json.loads(info['value'])
+        return info['title']
+          
+def escape_values(bfo):
+    return 0
 
-__all__ = [
-    'AccessRightField',
-    'LicenseField',
-    'UploadTypeField',
-    'RelatedIdentifiersField',
-    'ReserveDOIField',
-    'UploadSubtypeField',
-    'TextAreaListField',
-    'PeriodFieldForm',
-    'FileField',
-    'KeywordsField',
-    'RequirementsField',
-    'ApplicationEnvironmentsField',
-]

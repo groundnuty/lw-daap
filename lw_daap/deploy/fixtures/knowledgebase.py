@@ -39,6 +39,11 @@ class KnwKBData(DataSet):
         description = ""
         type = "w"
 
+    class requirements:
+        id = 3
+        name = "requirements"
+        description = ""
+        type = "w"
 
 class KnwKBRVALData(DataSet):
     pass
@@ -48,6 +53,7 @@ class KnwKBRVALData(DataSet):
 data = (
     ('kb_licenses.csv', KnwKBData.licenses.id),
     ('kb_json_projects.csv', KnwKBData.json_projects.id),
+    ('kb_requirements.csv', KnwKBData.requirements.id),
 )
 
 idx = 0
