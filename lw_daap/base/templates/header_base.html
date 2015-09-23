@@ -24,42 +24,47 @@
 # {% include 'header.html' %}
 #}
 
-<nav id="header-nav" class="navbar">
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">{{ _('Toggle navigation') }}</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-        <a class="navbar-brand" href="{{ url_for('search.index') }}">
-        <img src="{{ url_for('static', filename='img/logo_lw.png') }}" alt="{{ config.CFG_SITE_NAME_INTL[g.ln] }}" />
-      </a>
-      <span class="navbar-brand-text"><strong>Open</strong>Data</span>
-    </div>
+<nav id="header-nav" class="navbar" role="navigation">
+   <div class="container">
 
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        {%- for item in current_menu.submenu('main').children if item.visible recursive %}
-        {%- if item.children -%}
-        <li class="dropdown">.
-        <a href="{{ item.url }}" style="display: inline-block; padding-right: 5px;"> {{ item.text|safe }} </a>
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="display: inline-block; padding-left: 5px;">
-          <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu pull-right">
-          {{ loop(item.children) }}
-        </ul>
-        </li>
-        {%- else -%}
-        <li class="uppercase"><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
-        {%- endif -%}
-        {%- endfor -%}
-        {% include "user_menu.html" %}
-      </ul>
-    </div>
-  </div>
+      <div class="navbar-header">
+         <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#navbar-main-menu">
+            <span class="sr-only">{{ _('Toggle site navigation') }}</span>
+            <span class="fa fa-chevron-circle-down fa-3x"></span>
+         </button>
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main-menu">
+            <span class="sr-only">{{ _('Toggle user navigation') }}</span>
+            <span class="fa fa-user fa-3x"></span>
+         </button>
+ 
+         <a class="brand" href="{{ url_for('search.index') }}">
+            <img src="{{ url_for('static', filename='img/logo_lw.png') }}" alt="{{ config.CFG_SITE_NAME_INTL[g.ln] }}" />
+            <span><strong>Open</strong>Data</span>
+         </a>
+      </div>
+
+      <div id="navbar-main-menu" class="navbar-collapse collapse">
+         <ul class="nav navbar-nav navbar-right">
+            {%- for item in current_menu.submenu('main').children if item.visible recursive %}
+            {%- if item.children -%}
+            <li class="dropdown">.
+            <a href="{{ item.url }}" style="display: inline-block; padding-right: 5px;"> {{ item.text|safe }} </a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="display: inline-block; padding-left: 5px;">
+               <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu pull-right">
+               {{ loop(item.children) }}
+            </ul>
+            </li>
+            {%- else -%}
+            <li class="uppercase"><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
+            {%- endif -%}
+            {%- endfor -%}
+            {% include "user_menu.html" %}
+         </ul>
+      </div>
+
+   </div>
 </nav>
 
 
