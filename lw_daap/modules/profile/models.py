@@ -18,20 +18,50 @@ class userProfile(db.Model):
 
     """ Fields """
     user_id = db.Column(db.Integer(15, unsigned=True), db.ForeignKey(User.id),
-                        nullable=False, primary_key=True)
+                        nullable=False, primary_key=True, 
+                        )
 
     name = db.Column(db.String(length=40),
-                     nullable=True, default='')
+                     nullable=True, default='',
+                     info=dict(
+                            label=_("Name"),
+                            description=_(''),
+                     ))
+
     affiliation = db.Column(db.String(length=40),
-                            nullable=True, default='')
+                            nullable=True, default='',
+                            info=dict(
+                                label=_("Institution"),
+                                description=_(''),
+                            ))
+
     email = db.Column(db.String(length=40),
-                       nullable=True, default='')
+                      nullable=True, default='',
+                      info=dict(
+                            label=_("Contact e-mail"),
+                            description=_(''),
+                      ))
+
     social_profiles = db.Column(db.String(length=40),
-                                nullable=True, default='')
+                                nullable=True, default='',
+                                info=dict(
+                                    label=_("Social networks"),
+                                    description=_(''),
+                                ))
+
     ei_user = db.Column(db.String(length=40),
-                        nullable=True, default='')
+                        nullable=True, default='',
+                        info=dict(
+                            label=_("User name"),
+                            description=_(''),
+                        ))
+
     ei_pass = db.Column(db.String(length=40),
-                        nullable=True, default='')
+                        nullable=True, default='',
+                        info=dict(
+                            label=_("Password"),
+                            description=_(''),
+                        ))
 
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False, default=datetime.now,
@@ -76,7 +106,6 @@ class userProfile(db.Model):
 
     def update(self, **data):
         for value in data:
-            open('DEBUG', 'a+').write(value + ' ' + data[value] +'\n')
             setattr(self, value, data[value])
         try:
             db.session.commit()
