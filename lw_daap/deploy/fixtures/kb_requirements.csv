@@ -6,7 +6,7 @@
 "11","tiny","{\"flavor-id\": \"1\", \"title\": \"RAM: 512 MB;  Cores: 1\", \"id\": \"tiny\", \"domain_flavor\": true}"
 "12","small","{\"flavor-id\": \"2\", \"title\": \"RAM: 2 GB;  Cores: 1;  Disk: 10 GB\", \"id\": \"small\", \"domain_flavor\": true}"
 "13","medium","{\"flavor-id\": \"3\", \"title\": \"RAM: 4 GB;  Cores: 2;  Disk: 10 GB\", \"id\": \"medium\", \"domain_flavor\": true}"
-"14","large","{\"flavor-id\": \" 4\", \"title\": \"RAM: 7 GB;  Cores: 4;  Disk: 20 GB\", \"id\": \"large\", \"domain_flavor\": true}"
+"14","large","{\"flavor-id\": \"4\", \"title\": \"RAM: 7 GB;  Cores: 4;  Disk: 20 GB\", \"id\": \"large\", \"domain_flavor\": true}"
 "15","xlarge","{\"flavor-id\": \"5\", \"title\": \"RAM: 14 GB;  Cores: 8;  Disk: 30 GB\", \"id\": \"xlarge\", \"domain_flavor\": true}"
 "20","appenv-notspec","{\"title\": \"Not specified\", \"id\": \"appenv-notspec\", \"domain_app_env\": true}"
 "21","ssh","{\"title\": \"SSH\", \"id\": \"ssh\", \"domain_app_env\": true}"
