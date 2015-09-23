@@ -1,0 +1,55 @@
+#header-nav {
+  background-color: white;
+  border: 0px;
+  border-bottom: 1px solid #BBB;
+  box-shadow: 0px 5px 5px #AAAAAA;
+  margin-bottom: 50px;
+  min-height: 80px;
+}
+
+header .container {
+  width: 80%;
+}
+
+header .uppercase {
+  text-transform: uppercase;
+}
+
+header .navbar-brand-text {
+  line-height: 100px;
+  font-size: 2.1em;
+}
+
+header .navbar-brand img {
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+  height: 70px;
+}
+
+header .navbar-brand img:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+
+header .navbar-nav li a:hover {
+  text-shadow:0px 0px 1px #FF5001;
+  border-bottom: 1px solid #CCC;
+  background: linear-gradient(#FFF, #EEE); 
+}
+
+header .navbar-nav li {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2em;
+}
+
+header .navbar-nav a,
+header .navbar-nav a:focus,
+header .navbar-nav a:link,
+header .navbar-nav a:hover,
+header .navbar-nav a:visited,
+header .navbar-nav a:active{
+  line-height: 70px;
+  color: #FF5001;
+}
+

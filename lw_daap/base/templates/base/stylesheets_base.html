@@ -26,3 +26,8 @@
   <link rel="{{ EXTRA.rel }}" type="text/css" href="{{ EXTRA.static_url_path }}{{ ASSET_URL }}"/>
   {%- endassets %}
 {%- endfor %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/spacer.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">

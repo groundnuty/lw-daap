@@ -24,41 +24,40 @@
 # {% include 'header.html' %}
 #}
 
-
-
-  <nav id="header-nav" class="navbar navbar-inverse">
-    <div class="container">
-      <div class="navbar-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">{{ _('Toggle navigation') }}</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+<nav id="header-nav" class="navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">{{ _('Toggle navigation') }}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
         <a class="navbar-brand" href="{{ url_for('search.index') }}">
-          <img src="{{ url_for('static', filename='img/logo_lw.png') }}" alt="{{ config.CFG_SITE_NAME_INTL[g.ln] }}" />
+        <img src="{{ url_for('static', filename='img/logo_lw.png') }}" alt="{{ config.CFG_SITE_NAME_INTL[g.ln] }}" />
       </a>
-      </div>
+      <span class="navbar-brand-text"><strong>Open</strong>Data</span>
+    </div>
 
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
         {%- for item in current_menu.submenu('main').children if item.visible recursive %}
-            {%- if item.children -%}
-                <li class="dropdown">.
-                  <a href="{{ item.url }}" style="display: inline-block; padding-right: 5px;"> {{ item.text|safe }} </a>
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="display: inline-block; padding-left: 5px;">
-                    <b class="caret"></b>
-                  </a>
-                  <ul class="dropdown-menu pull-right">
-                    {{ loop(item.children) }}
-                  </ul>
-                </li>
-            {%- else -%}
-            <li class="uppercase"><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
-            {%- endif -%}
-        {%- endfor -%}
- 	{% include "user_menu.html" %}
+        {%- if item.children -%}
+        <li class="dropdown">.
+        <a href="{{ item.url }}" style="display: inline-block; padding-right: 5px;"> {{ item.text|safe }} </a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="display: inline-block; padding-left: 5px;">
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu pull-right">
+          {{ loop(item.children) }}
         </ul>
+        </li>
+        {%- else -%}
+        <li class="uppercase"><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
+        {%- endif -%}
+        {%- endfor -%}
+        {% include "user_menu.html" %}
+      </ul>
     </div>
   </div>
 </nav>

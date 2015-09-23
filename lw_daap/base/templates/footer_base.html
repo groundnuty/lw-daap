@@ -1,0 +1,51 @@
+{#
+# This file is part of Invenio.
+# Copyright (C) 2014 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{%- block footer_credits %}
+<div class="footer-container">
+  <div class="col-xs-2 col-md-1">
+    {{ _("Powered by") }}<br/>
+    <a class="footer" href="http://invenio-software.org/">
+      <img id="invenio-logo" src="{{url_for('static', filename='img/invenio.png')}}"/>
+    </a>
+  </div>
+  <div class="col-xs-2 col-md-2">
+    {{ _("Maintained by") }}<br/> <a class="footer" href="mailto:{{ config.CFG_SITE_SUPPORT_EMAIL }}">
+      {{- config.CFG_SITE_SUPPORT_EMAIL -}}
+    </a>
+  </div>
+  <div class="col-xs-8 col-md-9 pull-right">
+    {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
+    <a class="footer" href="">{{_("About")}}</a>
+    <span class="separator">|</span>
+    <a class="footer" href="">{{- _("Contact") -}}</a>
+    <span class="separator">|</span>
+    <a class="footer" href="">{{- _("Privacy Policy") -}}</a>
+    <span class="separator">|</span>
+    <a class="footer" href="">{{- _("Terms of Services") -}}</a>
+    {%- if lastupdated -%}
+    {{ _("Last updated") }}: {{ lastupdated|invenio_format_date }}
+    {%- endif -%}
+  </div>
+</div>
+{%- endblock footer_credits %}
+
+{%- block footer_languages %}
+{%- endblock footer_languages %}
+</div>

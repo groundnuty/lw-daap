@@ -123,10 +123,8 @@
           {% for file in row %}
             <div class="file-resource col-sm-6">
               <div class="file-resource-type col-sm-2 text-center">
-                <span class="fa fa-stack fa-2x">
                 <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
-                <strong class="fa fa-stack-1x uppercase" style="margin-top: .5em; font-size: 0.6em;">{{ file.format }}</strong>
-                </span>
+                <strong class="uppercase" style="font-size: 1vw;">{{ file.format }}</strong>
               </div>
               <div class="file-resource-text col-sm-8">
                 <strong>

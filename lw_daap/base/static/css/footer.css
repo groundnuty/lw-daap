@@ -1,0 +1,54 @@
+footer {
+  background: #032B10;
+  color: white;
+  font-size: 1.5vmin;
+  letter-spacing: 2px;
+
+}
+
+footer a,
+footer a:link,
+footer a:visited,
+footer a:hover,
+footer a:visited {
+  color: #0A7C2C;
+  text-decoration: none;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+}
+
+footer a:hover {
+  color: #69C774;
+}
+
+.footer-container {
+  margin-top: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+footer .separator {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #0A722C
+}
+
+footer #invenio-logo {
+  max-width: 100%;
+
+}
+
+#wrap {
+  min-height: 100%;
+  margin-bottom: -96px;
+}
+
+#wrap:after {
+  content: "";
+  display: block;
+} 
+
+#site-footer, #wrap:after {
+  height: 96px;
+}
+
