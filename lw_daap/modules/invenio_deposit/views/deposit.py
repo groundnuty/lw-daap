@@ -152,6 +152,8 @@ def deposition_type_index(deposition_type):
         'deposit/deposition_type.html',
         **ctx
     )
+
+
 @blueprint.route('/myuploads')
 @register_menu(blueprint,
         'settings.myuploads',
@@ -168,7 +170,6 @@ def myuploads():
         'deposit/myview.html',
         **ctx
     )
-
 
 
 @blueprint.route('/<depositions:deposition_type>/create',
