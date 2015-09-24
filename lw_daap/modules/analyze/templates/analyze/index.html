@@ -1,0 +1,49 @@
+
+{% extends "page.html" %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-9">
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>Instance Name</th>
+          <th>OS</th>
+          <th>IP Address</th>
+          <th>Size</th>
+          <th>Status</th>
+          <th>Time since created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+    {% if vms %}
+      {% for vm in vms %}
+        <tr>
+          <td>{{ vm.name }}</td>
+          <td>{{ vm.image }}</td>
+          <td>{{ vm.addresses|join(' ') }}</td>
+          <td>{{ vm.size }}</td>
+          <td>{{ vm.status }}</td>
+          <td>{{ vm.created }}</td>
+          <td>Actions</td>
+        </tr>
+      {% endfor %}
+        
+    {% else %} 
+       <tr> 
+        <td colspan=7 class="text-center">
+            <h2>You have no VM instances!</h2>
+            <h3>Go and run some</h3>
+        </td>
+       </tr>
+    {% endif %}
+      </tbody>
+    </table>
+  </div> 
+
+  <div class="col-md-3">
+    <h1>There</h1>
+  </div> 
+</div>
+{% endblock body %}
