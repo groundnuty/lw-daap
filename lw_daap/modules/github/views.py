@@ -24,9 +24,10 @@
 from __future__ import absolute_import
 
 from flask import Blueprint, render_template, request, current_app, abort, jsonify
-from flask.ext.login import login_required
 
 from invenio.ext.sslify import ssl_required
+
+from lw_daap.ext.login import login_required
 
 from .tasks import handle_github_payload
 from .utils import sync, utcnow, parse_timestamp, remove_hook, create_hook, \
