@@ -17,6 +17,7 @@
 
 /*jshint browser: true, strict: true, globalstrict: true, immed: true, latedef: true, undef: true, regexdash: false */
 /*global oids */
+(function (undefined) {
 "use strict";
 
 function Stream(enc, pos) {
@@ -553,3 +554,7 @@ ASN11.test = function () {
             document.write("In test[" + i + "] expected " + test[i].expected + " got " + res + "\n");
     }
 };
+
+// export globals
+if (typeof module !== 'undefined') { module.exports = ASN11; } else { window.ASN11 = ASN11; }
+})();
