@@ -1,90 +1,45 @@
 {% if current_user.is_guest %}
-<li class="uppercase"><a class="" href="{{url_for('webaccount.login')}}" title="{{ _('Login') }}">
-   <i class="fa fa-sign-in"></i> {{ _('Login') }}
-</a></li>
-{% if config.CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS in [0, 1] %}
-<li><a class="btn navbar-btn btn-warning btn-sm" href="{{url_for('webaccount.register')}}" title="{{ _('Register') }}">
-<i class="fa fa-edit"></i> {{ _('Register') }}
-</a></li>
-{% endif %}
-{# 
-<li class="dropdown">
-   <a href="#" class="dropdown-togle" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp;<b>{{ _('Login') }}</b><span class="caret"></span></a>
-   <ul id="login-dp" class="dropdown-menu">
-      <li>
-         <div class="row">
-            <div class="col-md-12">
-               <h4>Login via:</h4>
-               <div class="social-buttons">
-		  <a href="#" class="btn btn-github"><i class="fa fa-github"></i> GitHub</a>
-                  <a href="#" class="btn btn-google"><i class="fa fa-google"></i> Google</a>
-                  <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                  <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-               </div>
-               <h4 style="text-align:center;">- OR - </h4>
-               <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-                  <div class="form-group">
-                     <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                     <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
-                  </div>
-                  <div class="form-group">
-                     <label class="sr-only" for="exampleInputPassword2">Password</label>
-                     <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
-                     <div class="help-block text-right"><a href="">Forget the password ?</a></div>
-                 </div>
-                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                 </div>
-                 <div class="checkbox">
-                    <label><input type="checkbox"> keep me logged-in</label>
-                 </div>
-              </form>
-           </div>
-           <div class="bottom text-center">
-              New here ? <a href="#"><b>Join Us</b></a>
-           </div>
-	 </div>
-      </li>
-   </ul>
+<li class="uppercase">
+<a class="" href="{{url_for('webaccount.login')}}" title="{{ _('Login') }}">
+  <i class="fa fa-sign-in"></i> {{ _('Login') }}
+</a>
 </li>
-#}
 {% else %}
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	<i class="glyphicon glyphicon-user"></i> {{ current_user.nickname|default(current_user.email) }}
-	<b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu">
-      <li>
-	<div class="navbar-content">
-	  <div class="row">
-	    <div class="col-md-3">
-	      <i class="fa fa-user fa-3x"></i>
-	    </div>
-	    <div class="col-md-9">
-	      <strong>
-		{{ current_user.nickname|default(current_user.email) }}
-	      </strong>
-	      <p class="text-muted small"> {{ current_user.email }} </p>
-	    </div>
-	  </div>
-	</div>
-      </li>
-      {%- for item in current_menu.submenu('settings').children if item.visible %}
-      {% if loop.first %}<li class="divider"></li>{% endif -%}
-      <li><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
-      {%- endfor %}
-      <li class="divider"></li>
-      <li>
-	<a href="{{ url_for('webaccount.logout') }}">
-	  <i class="glyphicon glyphicon-log-out"></i> {{ _('Logout') }}
-	</a>
-      </li>
-
-    </ul>
+<li class="dropdown">
+<a class="fa fa-user fa-3x valign dropdown-toggle" data-toggle="dropdown" href="#">
+  {#<i class="glyphicon glyphicon-user"></i> {{ current_user.nickname|default(current_user.email) }}#}
+</a>
+<ul class="dropdown-menu">
+  <li>
+  <div class="navbar-content">
+    <div class="row">
+      <div class="col-md-3">
+        <i class="fa fa-user fa-3x"></i>
+      </div>
+      <div class="col-md-9">
+        <strong>
+          {{ current_user.nickname|default(current_user.email) }}
+        </strong>
+        <p class="text-muted small"> {{ current_user.email }} </p>
+      </div>
+    </div>
+  </div>
   </li>
+  {%- for item in current_menu.submenu('settings').children if item.visible %}
+  {% if loop.first %}<li class="divider"></li>{% endif -%}
+  <li><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
+  {%- endfor %}
+  <li class="divider"></li>
+  <li>
+  <a href="{{ url_for('webaccount.logout') }}">
+    <i class="glyphicon glyphicon-log-out"></i> {{ _('Logout') }}
+  </a>
+  </li>
+
+</ul>
+</li>
 {% endif %}
- 
+
 
 
 

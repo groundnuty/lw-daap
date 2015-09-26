@@ -57,7 +57,7 @@
             </ul>
             </li>
             {%- else -%}
-            <li class="uppercase"><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
+            <li><a class="uppercase {% if item.active %}active{% endif %}" href="{{ item.url }}"><span>{{ item.text|safe }}</span></a></li>
             {%- endif -%}
             {%- endfor -%}
             {% include "user_menu.html" %}

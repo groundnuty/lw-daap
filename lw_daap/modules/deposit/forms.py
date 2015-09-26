@@ -758,21 +758,11 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
-    frequency = fields.FormField(
-        zfields.FrequencyFieldForm,
-        label="Frecuency",
-        icon='fa fa-clock-o fa-fw',
-        description='Optional. Frecuency collection of your data.',
-        #widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-        widget_classes='',
-        widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"),
-    )
-
-    spatial = fields.TextAreaField(
+    spatial = zfields.MapField(
         label="Spatial coverage",
         description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
+        widget_classes='form-control',
         icon='fa fa-map-marker fa-fw',
-        default='',
     )
 
     #
@@ -785,14 +775,14 @@ class DatasetForm(BasicForm):
     # Grouping of fields
     #
     groups = [
-        ('Basic information', [
+        ('<i class="fa fa-info"></i> Basic information', [
             'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
             'indication': 'required',
         }),
-        ('License', [
+        ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
@@ -805,13 +795,14 @@ class DatasetForm(BasicForm):
                  ' publications have agreed to the terms of this waiver and'
                  ' license.')
         }),
-        ('Physical information',[
-            'period', 'frequency', 'spatial',
+        ('<i class="fa fa-globe"></i> Physical information',[
+            'period',
+            'spatial',
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Communities', [
+        ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
             #'classes': '',
@@ -824,13 +815,13 @@ class DatasetForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Related Identifiers', [
+        ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Subjects', [
+        ('<i class="fa fa-tags"></i> Subjects', [
             'subjects'
         ], {
             'classes': '',
