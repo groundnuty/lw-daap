@@ -14,7 +14,6 @@ blueprint = Blueprint('lw_daap', __name__, url_prefix='',
 
 
 @blueprint.route('/about', methods=['GET', ])
-@register_menu(blueprint, 'main.about', _('About'), order=4)
 @register_breadcrumb(blueprint, 'breadcrumbs.about', _("About"))
 def about():
     return render_template('lw_daap/about.html')
