@@ -758,16 +758,21 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
+    frequency = fields.FormField(
+        zfields.FrequencyFieldForm,
+        label="Frecuency",
+        icon='fa fa-clock-o fa-fw',
+        description='Optional. Frecuency collection of your data.',
+        #widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        widget_classes='',
+        widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"),
+    )
+
     spatial = fields.TextAreaField(
         label="Spatial coverage",
         description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
-        default='',
-        validators=[validators.optional()],
-        filters=[
-            strip_string,
-        ],
-        widget_classes='form-control',
         icon='fa fa-map-marker fa-fw',
+        default='',
     )
 
     #
@@ -801,8 +806,7 @@ class DatasetForm(BasicForm):
                  ' license.')
         }),
         ('Physical information',[
-            'period',
-            'spatial',
+            'period', 'frequency', 'spatial',
         ], {
             'classes': '',
             'indication': 'optional',

@@ -28,16 +28,12 @@ def date_widget(field, **kwargs):
        Default is YYYY-MM-DD"""
     field_id = kwargs.pop('id', field.id)
     date_format = kwargs.pop('date_format','YYYY-MM-DD')
-    html = [u'<div class="col-xs-5 col-md-4" style="margin-right: 10px">'
-                    '<div class="form-group">'
-                        '<div class="input-group datepicker">'
+    html = [u'<div class="input-group datepicker" style="width: 10em">'
                             '<input class="form-control" %s data-date-format="%s" type="text">'
                             '<span class="input-group-addon">'
                                 '<span class="glyphicon glyphicon-calendar"></span>'
                             '</span>'
-                        '</div>'
-                     '</div>'
-                '</div>'
+            '</div>'
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
     return HTMLString(u''.join(html))
