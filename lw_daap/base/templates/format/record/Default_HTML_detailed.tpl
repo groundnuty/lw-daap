@@ -83,6 +83,10 @@
             {% for period in daap_record.period %}
               {{ period.start }} - {{ period.end }}{% if not loop.last %}; {% endif %}
             {% endfor %}
+            </td></tr>
+          {% endif %}
+          {% if daap_record.frequency %}
+            <tr><td class="key">Frequency</td><td class="value">{{ daap_record.frequency.size }} {{ bfe_daap_unit(bfo, frequency=daap_record.frequency) }}</td></tr>
           {% endif %}
           {% if daap_record.spatial %}
             <tr><td class="key">Spatial Coverage</td><td class="value">{{ daap_record.spatial }}</td></tr>
@@ -90,7 +94,7 @@
           {% if daap_record.related_identifiers %}
             <tr><td class="key">Related identifiers</td><td class="value">
             {% for relid in daap_record.related_identifiers %}
-              <span class="label label-default"><a href="{{ url_for('search.search', p='relid.identifier:' + relid.identifier) }}">{{ relid.identifier }}</a></span>
+              {{ relid.identifier }} {{ bfe_daap_relid_relation(bfo, relation=relid.relation) }}{% if not loop.last %}; {% endif %}
             {% endfor %}
             </td></tr>
           {% endif %}
