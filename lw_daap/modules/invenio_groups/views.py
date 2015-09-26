@@ -27,7 +27,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from flask_breadcrumbs import default_breadcrumb_root, register_breadcrumb
 
-from flask_login import current_user, login_required
+from flask_login import current_user
 
 from flask_menu import register_menu
 
@@ -38,6 +38,8 @@ from invenio.ext.principal import permission_required
 from invenio.modules.accounts.models import User
 
 from sqlalchemy.exc import IntegrityError
+
+from lw_daap.ext.login import login_required
 
 from .forms import GroupForm, NewMemberForm
 from .models import Group, Membership

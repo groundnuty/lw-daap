@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from flask import Blueprint, abort, current_app, jsonify, url_for
-from flask_login import current_user, login_required
+from flask_login import current_user
 
 from invenio.ext.cache import cache
 from invenio.legacy.bibrecord import record_add_field
@@ -10,6 +10,8 @@ from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.pidstore.tasks import datacite_register
 from invenio.modules.records.api import get_record
 
+
+from lw_daap.ext.login import login_required
 from .utils import build_doi, get_cache_key
 
 blueprint = Blueprint(

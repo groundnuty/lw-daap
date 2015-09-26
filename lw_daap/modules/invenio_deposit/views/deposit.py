@@ -35,9 +35,11 @@ from flask import current_app, Blueprint, \
     make_response
 from werkzeug.datastructures import MultiDict
 from werkzeug.utils import secure_filename
-from flask_login import current_user, login_required
+from flask_login import current_user
 from flask_breadcrumbs import default_breadcrumb_root, register_breadcrumb
 from flask_menu import register_menu
+
+from lw_daap.ext.login import login_required
 
 from invenio.base.i18n import _
 from ..signals import template_context_created
