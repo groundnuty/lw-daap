@@ -758,12 +758,12 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
-    spatial = zfields.MapField(
-        label="Spatial coverage",
-        description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
-        widget_classes='form-control',
-        icon='fa fa-map-marker fa-fw',
-    )
+    #spatial = zfields.MapField(
+    #    label="Spatial coverage",
+    #    description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
+    #    widget_classes='form-control',
+    #    icon='fa fa-map-marker fa-fw',
+    #)
 
     #
     # Form configuration
