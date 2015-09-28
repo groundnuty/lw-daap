@@ -1,30 +1,24 @@
 footer {
   background: #032B10;
   color: white;
-  font-size: 1.5vmin;
-  letter-spacing: 2px;
-
+  min-height: 96px;
 }
 
-footer a,
 footer a:link,
 footer a:visited,
 footer a:hover,
 footer a:visited {
   color: #0A7C2C;
   text-decoration: none;
-  font-size: 0.8em;
-  letter-spacing: 1px;
+  font-size: 0.9em;
 }
 
 footer a:hover {
   color: #69C774;
 }
 
-.footer-container {
-  margin-top: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
+.footer-container div {
+  padding: 30px 40px;
 }
 
 footer .separator {
@@ -33,22 +27,24 @@ footer .separator {
   color: #0A722C
 }
 
-footer #invenio-logo {
-  max-width: 100%;
-
+#invenio-logo {
+  height: 15px;
 }
 
-#wrap {
-  min-height: 100%;
-  margin-bottom: -96px;
+@media (max-width: 992px) {
+
+  .footer-container div {
+    padding: 10px 40px;
+    text-align: center;
+    float: none !important;
+  }
+
+ .footer-container div:first-child {
+      padding-top: 30px;
+  }
+
+ .footer-container div:last-child {
+      padding-bottom: 30px;
+  }
+
 }
-
-#wrap:after {
-  content: "";
-  display: block;
-} 
-
-#site-footer, #wrap:after {
-  height: 96px;
-}
-

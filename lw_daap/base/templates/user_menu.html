@@ -6,36 +6,21 @@
 </li>
 {% else %}
 <li class="dropdown">
-<a class="fa fa-user fa-3x valign dropdown-toggle" data-toggle="dropdown" href="#">
-  {#<i class="glyphicon glyphicon-user"></i> {{ current_user.nickname|default(current_user.email) }}#}
-</a>
-<ul class="dropdown-menu">
+<a class="fa fa-user fa-3x valign dropdown-toggle" data-toggle="dropdown" href="#"></a>
+<ul id="usermenu" class="dropdown-menu">
   <li>
-  <div class="navbar-content">
-    <div class="row">
-      <div class="col-md-3">
-        <i class="fa fa-user fa-3x"></i>
-      </div>
-      <div class="col-md-9">
-        <strong>
-          {{ current_user.nickname|default(current_user.email) }}
-        </strong>
-        <p class="text-muted small"> {{ current_user.email }} </p>
-      </div>
-    </div>
-  </div>
+  <strong>
+    {{ current_user.nickname|default(current_user.email) }}
+  </strong>
   </li>
   {%- for item in current_menu.submenu('settings').children if item.visible %}
-  {% if loop.first %}<li class="divider"></li>{% endif -%}
   <li><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
   {%- endfor %}
-  <li class="divider"></li>
   <li>
   <a href="{{ url_for('webaccount.logout') }}">
     <i class="glyphicon glyphicon-log-out"></i> {{ _('Logout') }}
   </a>
   </li>
-
 </ul>
 </li>
 {% endif %}

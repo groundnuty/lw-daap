@@ -17,35 +17,30 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-{%- block footer_credits %}
+{%- block footer %}
 <div class="footer-container">
-  <div class="col-xs-2 col-md-1">
-    {{ _("Powered by") }}<br/>
-    <a class="footer" href="http://invenio-software.org/">
+ <div class="col-sm-12 col-md-6">
+    {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
+    <a href="">{{_("About")}}</a>
+    <span class="separator">|</span>
+    <a href="">{{_("API")}}</a>
+    <span class="separator">|</span>
+    <a href="">{{- _("Contact") -}}</a>
+    <span class="separator">|</span>
+    <a href="">{{- _("Privacy Policy") -}}</a>
+    <span class="separator">|</span>
+    <a href="">{{- _("Terms of Services") -}}</a>
+  </div>
+
+  <div class="col-sm-12 col-md-6 pull-right">
+    {{ _("Powered by") }}
+    <a href="http://invenio-software.org/">
       <img id="invenio-logo" src="{{url_for('static', filename='img/invenio.png')}}"/>
     </a>
-  </div>
-  <div class="col-xs-2 col-md-2">
-    {{ _("Maintained by") }}<br/> <a class="footer" href="mailto:{{ config.CFG_SITE_SUPPORT_EMAIL }}">
-      {{- config.CFG_SITE_SUPPORT_EMAIL -}}
+    <br/>
+    {{ _("Developed by") }} <a href="http://aeonium.eu">
+    aeonium.eu
     </a>
   </div>
-  <div class="col-xs-8 col-md-9 pull-right">
-    {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
-    <a class="footer" href="">{{_("About")}}</a>
-    <span class="separator">|</span>
-    <a class="footer" href="">{{- _("Contact") -}}</a>
-    <span class="separator">|</span>
-    <a class="footer" href="">{{- _("Privacy Policy") -}}</a>
-    <span class="separator">|</span>
-    <a class="footer" href="">{{- _("Terms of Services") -}}</a>
-    {%- if lastupdated -%}
-    {{ _("Last updated") }}: {{ lastupdated|invenio_format_date }}
-    {%- endif -%}
-  </div>
-</div>
-{%- endblock footer_credits %}
-
-{%- block footer_languages %}
-{%- endblock footer_languages %}
-</div>
+ </div>
+{%- endblock footer %}
