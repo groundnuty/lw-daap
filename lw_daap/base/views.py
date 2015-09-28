@@ -19,6 +19,12 @@ def about():
     return render_template('lw_daap/about.html')
 
 
+@blueprint.route('/dev', methods=['GET', ])
+@register_breadcrumb(blueprint, 'breadcrumbs.api', _("API"))
+def api():
+    return render_template('lw_daap/api.html')
+
+
 def add_record_variables(sender, **kwargs):
     """Add a variable 'daap_files' and 'daap_record' into record templates."""
     if 'recid' not in kwargs:
