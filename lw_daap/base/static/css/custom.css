@@ -10,10 +10,16 @@ html, body {
   font-family: 'Oxygen', sans-serif;
 }
 
-a, a:link, a:hover,
-a:focus, a:visited, a:active {
+a,
+a:link,
+a:visited,
+a:active {
   text-decoration: none;
   color: #000;
+}
+
+a:hover, a:focus {
+  color: #FF5001;
 }
 
 

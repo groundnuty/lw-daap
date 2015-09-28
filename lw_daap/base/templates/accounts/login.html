@@ -26,7 +26,7 @@
 {%- block form_auth_internal -%}
 <div class="col-sm-6 col-md-8">
    <div class="login-features">
-      <h1>New to {{config.CFG_SITE_NAME}}?</h1>
+      <h1>New to {{config.CFG_SITE_NAME}}</h1>
    </div>
 </div>
 {%- block form_auth_internal_form -%}
@@ -36,7 +36,7 @@
       <div class="spacer20"></div>
       {% if request.path == "/admin/" %}
       {{ super() }}
-      {% endif %}
+      {% else %}
       {% set next = request.script_root + request.path if request.endpoint != 'webaccount.logout' and
       request.endpoint != 'webaccount.login' else config.CFG_SITE_SECURE_URL %}
       <a href="{{url_for('oauthclient.login', remote_app='github', next=next)}}"
@@ -49,6 +49,7 @@
 
       <a href="{{url_for('oauthclient.login', remote_app='facebook', next=next)}}"
          class="btn btn-default btn-lg btn-block"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
+       {% endif %}
    </div>
 </div>
 {%- endblock -%}
