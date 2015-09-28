@@ -89,11 +89,11 @@ def map_result(func, mapper):
 def community_obj_value(key_name):
     from invenio.modules.communities.models import Community
     pass
-    def _getter(field):
-        if field.data:
-            obj = Community.query.filter_by(id=field.data).first()
-            if obj:
-                return getattr(obj, key_name)
+def _getter(field):
+    if field.data:
+        obj = Community.query.filter_by(id=field.data).first()
+        if obj:
+            return getattr(obj, key_name)
         return None
     return _getter
 
@@ -274,7 +274,7 @@ class ContributorsForm(WebDepositForm):
                 'affiliation',
                 [lambda x: bool(x.strip()), ],  # non-empty
                 message="Contributor name is required if you specify"
-                        " affiliation."
+                " affiliation."
             ),
         ],
     )
@@ -465,11 +465,11 @@ class BasicForm(WebDepositForm):
     doi = fields.DOIField(
         label="Digital Object Identifier",
         description="Optional. Did your publisher already assign a DOI to "
-                    "your upload? If not, leave the field empty and a new "
-                    "DOI will be prereserved for your record. If you wish, "
-                    "you can mint the prereserved DOI in the "
-                    "next steps. A DOI allows "
-                    "others to easily and unambiguously cite your data.",
+        "your upload? If not, leave the field empty and a new "
+        "DOI will be prereserved for your record. If you wish, "
+        "you can mint the prereserved DOI in the "
+        "next steps. A DOI allows "
+        "others to easily and unambiguously cite your data.",
         placeholder="e.g. 10.1234/lw_daap...",
         validators=[
             DOISyntaxValidator(),
@@ -543,7 +543,7 @@ class BasicForm(WebDepositForm):
             # Must be set, otherwise MathJax tries to include MathJax via the
             # http on CDN instead of https.
             mathJaxLib='https://cdn.mathjax.org/mathjax/latest/MathJax.js?'
-                       'config=TeX-AMS-MML_HTMLorMML'
+            'config=TeX-AMS-MML_HTMLorMML'
         ),
         filters=[
             sanitize_html(allowed_tag_whitelist=(
@@ -622,12 +622,12 @@ class BasicForm(WebDepositForm):
         label=_('Conditions'),
         icon='fa fa-pencil fa-fw',
         description='Specify the conditions under which you grant users '
-                    'access to the files in your upload. User requesting '
-                    'access will be asked to justify how they fulfil the '
-                    'conditions. Based on the justification, you decide '
-                    'who to grant/deny access. You are not allowed to '
-                    'charge users for granting access to data hosted on '
-                    'Dataset.',
+        'access to the files in your upload. User requesting '
+        'access will be asked to justify how they fulfil the '
+        'conditions. Based on the justification, you decide '
+        'who to grant/deny access. You are not allowed to '
+        'charge users for granting access to data hosted on '
+        'Dataset.',
         default="",
         validators=[
             required_if('access_right', ['restricted']),
@@ -650,7 +650,7 @@ class BasicForm(WebDepositForm):
             # Must be set, otherwise MathJax tries to include MathJax via the
             # http on CDN instead of https.
             mathJaxLib='https://cdn.mathjax.org/mathjax/latest/MathJax.js?'
-                       'config=TeX-AMS-MML_HTMLorMML'
+            'config=TeX-AMS-MML_HTMLorMML'
         ),
         filters=[
             sanitize_html(allowed_tag_whitelist=(
@@ -758,6 +758,16 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
+    frequency = fields.FormField(
+        zfields.FrequencyFieldForm,
+        label="Frecuency",
+        icon='fa fa-clock-o fa-fw',
+        description='Optional. Frecuency collection of your data.',
+        #widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        widget_classes='',
+        widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"),
+    )
+
     #spatial = zfields.MapField(
     #    label="Spatial coverage",
     #    description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
@@ -787,16 +797,17 @@ class DatasetForm(BasicForm):
         ], {
             #'classes': '',
             'indication': 'required',
-             'description': (
-                 'Unless you explicitly specify the license conditions below'
-                 ' for Open Access and Embargoed Access uploads, you agree to'
-                 ' release your data files under the terms of the Creative'
-                 ' Commons Zero (CC0) waiver. All authors of the data and'
-                 ' publications have agreed to the terms of this waiver and'
-                 ' license.')
+            'description': (
+                'Unless you explicitly specify the license conditions below'
+                ' for Open Access and Embargoed Access uploads, you agree to'
+                ' release your data files under the terms of the Creative'
+                ' Commons Zero (CC0) waiver. All authors of the data and'
+                ' publications have agreed to the terms of this waiver and'
+                ' license.')
         }),
         ('<i class="fa fa-globe"></i> Physical information',[
             'period',
+            'frequency',
             'spatial',
         ], {
             'classes': '',
@@ -827,9 +838,9 @@ class DatasetForm(BasicForm):
             'classes': '',
             'indication': 'optional',
             'description': 'Specify subjects from a taxonomy or controlled '
-                           'vocabulary. Each term must be uniquely identified '
-                           '(e.g. a URL). For free form text, use the keywords'
-                           ' field in basic information section.',
+            'vocabulary. Each term must be uniquely identified '
+            '(e.g. a URL). For free form text, use the keywords'
+            ' field in basic information section.',
         }),
     ]
 
@@ -901,13 +912,13 @@ class SoftwareForm(BasicForm):
         ], {
             #'classes': '',
             'indication': 'required',
-             'description': (
-                 'Unless you explicitly specify the license conditions below'
-                 ' for Open Access and Embargoed Access uploads, you agree to'
-                 ' release your data files under the terms of the Creative'
-                 ' Commons Zero (CC0) waiver. All authors of the data and'
-                 ' publications have agreed to the terms of this waiver and'
-                 ' license.')
+            'description': (
+                'Unless you explicitly specify the license conditions below'
+                ' for Open Access and Embargoed Access uploads, you agree to'
+                ' release your data files under the terms of the Creative'
+                ' Commons Zero (CC0) waiver. All authors of the data and'
+                ' publications have agreed to the terms of this waiver and'
+                ' license.')
         }),
         ('Communities', [
             'communities',
@@ -934,9 +945,9 @@ class SoftwareForm(BasicForm):
             'classes': '',
             'indication': 'optional',
             'description': 'Specify subjects from a taxonomy or controlled '
-                           'vocabulary. Each term must be uniquely identified '
-                           '(e.g. a URL). For free form text, use the keywords'
-                           ' field in basic information section.',
+            'vocabulary. Each term must be uniquely identified '
+            '(e.g. a URL). For free form text, use the keywords'
+            ' field in basic information section.',
         }),
     ]
 
@@ -970,13 +981,13 @@ class AnalysisForm(BasicForm):
         ], {
             #'classes': '',
             'indication': 'required',
-             'description': (
-                 'Unless you explicitly specify the license conditions below'
-                 ' for Open Access and Embargoed Access uploads, you agree to'
-                 ' release your data files under the terms of the Creative'
-                 ' Commons Zero (CC0) waiver. All authors of the data and'
-                 ' publications have agreed to the terms of this waiver and'
-                 ' license.')
+            'description': (
+                'Unless you explicitly specify the license conditions below'
+                ' for Open Access and Embargoed Access uploads, you agree to'
+                ' release your data files under the terms of the Creative'
+                ' Commons Zero (CC0) waiver. All authors of the data and'
+                ' publications have agreed to the terms of this waiver and'
+                ' license.')
         }),
         ('Communities', [
             'communities',
@@ -1003,9 +1014,9 @@ class AnalysisForm(BasicForm):
             'classes': '',
             'indication': 'optional',
             'description': 'Specify subjects from a taxonomy or controlled '
-                           'vocabulary. Each term must be uniquely identified '
-                           '(e.g. a URL). For free form text, use the keywords'
-                           ' field in basic information section.',
+            'vocabulary. Each term must be uniquely identified '
+            '(e.g. a URL). For free form text, use the keywords'
+            ' field in basic information section.',
         }),
     ]
 

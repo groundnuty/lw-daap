@@ -27,8 +27,13 @@ open_panel_section, close_panel_section
   <div class="row">
     {% if daap_files and show_files %}
     <div class="col-sm-12 col-md-3">
-      <a class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" href="#"><i class="fa fa-barcode"></i> Mint Doi</a>
-      <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+
+{% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
+      <button class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" 
+      data-toggle="modal" data-target="#doi-confirm-dialog">
+      <i class="fa fa-barcode"></i> Mint Doi</button>
+{% endif %}
+      <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
       <a class="btn btn-block btn-lg btn-sunshine btn-sharp btn-raised" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
       <div class="spacer20"></div>
       <div class="panel-forest panel-sharp">
@@ -117,25 +122,38 @@ open_panel_section, close_panel_section
         </div>
         {% endif %}
         {{ close_panel_section() }}
-
         {{ open_panel_section(
         '<i class="fa fa-globe"></i> Physical information', 3, True) }}
         {% if daap_record.period %}
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700; white-space: nowrap;">
-              <i class="fa fa-calendar fa-fw"></i> Temporal
+              <i class="fa fa-calendar fa-fw"></i> Temporal Coverage
             </span>
           </div>
           <div class="col-md-9">
-          {% for period in daap_record.period %}
-          <div class="col-xs-3"><span class="text-muted">from</span> {{ period.start }}</div>
-          <div class="col-xs-3"><span class="text-muted">to</span> {{ period.end }}</div>
-          <div class="col-xs-6">&nbsp;</div>
-          {% endfor %}
+            {% for period in daap_record.period %}
+            <div class="col-xs-3"><span class="text-muted">from</span> {{ period.start }}</div>
+            <div class="col-xs-3"><span class="text-muted">to</span> {{ period.end }}</div>
+            <div class="col-xs-6">&nbsp;</div>
+            {% endfor %}
           </div>
         </div>
         {% endif %}
+        {% if daap_record.frequency %}
+        <div class="row" style="margin-bottom: 30px;">
+          <div class="col-md-3">
+            <span style="font-size: 1.3em; font-weight: 700; white-space: nowrap;">
+              <i class="fa fa-calendar fa-fw"></i> Frequency
+            </span>
+          </div>
+          <div class="col-md-9">
+            {{ daap_record.frequency.size }} {{ bfe_daap_unit(bfo, frequency=daap_record.frequency) }}
+          </div>
+        </div>
+        {% endif %}
+
+
         {% if daap_record.spatial %}
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
@@ -198,15 +216,15 @@ open_panel_section, close_panel_section
             </span>
           </div>
           <div class="col-md-9">
-          {% for term in daap_record.subjects %}
-          {{ term.term }} {{ ' (' ~ term.identifier ~ ')' if term.identifier }}{% if not loop.last %}; {% endif %}
-          {% endfor %}
+            {% for term in daap_record.subjects %}
+            {{ term.term }} {{ ' (' ~ term.identifier ~ ')' if term.identifier }}{% if not loop.last %}; {% endif %}
+            {% endfor %}
           </div>
         </div>
         {% endif %}
-       {{ close_panel_section() }}
-       {#
-       {% if daap_record.os or daap_record.flavor or daap_record.app_env%}   
+        {{ close_panel_section() }}
+        {#
+        {% if daap_record.os or daap_record.flavor or daap_record.app_env%}   
         <tr>
           <td class="key">Requirements</td>
           <td class="value">
