@@ -4,10 +4,28 @@
   margin: 0;
 }
 
-html, body {
-  height: 100%;
+html,
+body { 
+  height: 100%; 
+}
+
+body {
   background: #FFF;
   font-family: 'Oxygen', sans-serif;
+
+  display: table;
+  width: 100%;
+  /* Fix for Firefox and IE to keep correct max-width behaviour on images: */
+  table-layout: fixed;
+}
+
+.page-row {
+  display: table-row;
+  height: 1px;
+}
+
+.page-row-expanded { 
+  height: 100%;
 }
 
 a,
@@ -104,7 +122,9 @@ blockquote:after {
   vertical-align: -0.3em;
 }
 
-
+#main {
+  height: 100%;
+}
 
 blockquote p {
   display: inline;
@@ -150,23 +170,23 @@ blockquote p {
 }
 
 .file-resource-type {
-height: 60px;
-display: table-cell;
-vertical-align: middle;
+  height: 60px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .file-resource-text {
-height: 60px;
-display: table-cell;
-vertical-align: middle;
-word-break: break-all;
-text-align: left;
+  height: 60px;
+  display: table-cell;
+  vertical-align: middle;
+  word-break: break-all;
+  text-align: left;
 }
 
 .file-resource-download {
-height: 60px;
-display: table-cell;
-vertical-align: middle;
+  height: 60px;
+  display: table-cell;
+  vertical-align: middle;
 
 }
 

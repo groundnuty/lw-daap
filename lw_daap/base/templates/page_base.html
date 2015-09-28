@@ -102,47 +102,47 @@ href="{{ url_for('static', filename=icon_name) }}"/>
 <body{% if body_css_classes %} class="{{ body_css_classes|join(' ') }}"{% endif %}{% if g.ln %} lang="{{ g.ln.split('_', 1)[0]|safe }}"{% if rtl_direction %} {{ rtl_direction|safe }}{% endif %}{% endif %} itemscope itemtype="http://schema.org/WebPage">
 {%- block body_start %}{% endblock body_start %}
 {%- block page_header -%}
-<div id="wrap">
-  <header class="header-two-bars">
-    <!-- replaced page header -->
-    {% block headerbox %}
-    {% include 'header.html' %}
-    {% endblock headerbox %}
-    <!-- end replaced page header -->
-    {% block breadcrumb %}
-    {%- include 'breadcrumbs.html' -%}
-    {% endblock breadcrumb %}
-    {% block pageheaderadd %}{{ pageheaderadd|safe }}{% endblock pageheaderadd %}
-  </header>
-  {%- endblock page_header -%}
-  {%- endblock page_top -%}
-  {%- endif -%}
+<header class="header-two-bars page-row">
+  <!-- replaced page header -->
+  {% block headerbox %}
+  {% include 'header.html' %}
+  {% endblock headerbox %}
+  <!-- end replaced page header -->
+  {% block breadcrumb %}
+  {%- include 'breadcrumbs.html' -%}
+  {% endblock breadcrumb %}
+  {% block pageheaderadd %}{{ pageheaderadd|safe }}{% endblock pageheaderadd %}
+</header>
+{%- endblock page_header -%}
+{%- endblock page_top -%}
+{%- endif -%}
 
-  {%- if not no_pagebody -%}
-  {%- block page_body -%}
-  <div class="container">
-    {% block title %}
-    {% if title %}
-    <div class="page-header">
-      <h1>{{ title }}</h1>
-    </div>
-    {% endif %}
-    {% endblock title %}
-    {{ flashed_messages() }}
-    {%- block body %}
-    {{ body }}
-    {%- endblock body %}
+<main class="page-row page-row-expanded">
+{%- if not no_pagebody -%}
+{%- block page_body -%}
+<div class="container">
+  {% block title %}
+  {% if title %}
+  <div class="page-header">
+    <h1>{{ title }}</h1>
   </div>
-  {%- endblock page_body %}
-  {%- endif %}
+  {% endif %}
+  {% endblock title %}
+  {{ flashed_messages() }}
+  {%- block body %}
+  {{ body }}
+  {%- endblock body %}
+</div>
+{%- endblock page_body %}
+{%- endif %}
 
-  {%- if not no_pagefooter -%}
-  {%- block page_bottom -%}
-  {%- block page_footer %}
-  <div id="push"></div>
-</div>{# end wrap #}
+{%- if not no_pagefooter -%}
+{%- block page_bottom -%}
+</main>{# end main #}
 
-<footer id="site-footer">
+<div class="spacer100"></div>
+{%- block page_footer %}
+<footer class="page-row">
   <div class="container">
     {%- block pagefooteradd %}
     {{- pagefooteradd | safe }}

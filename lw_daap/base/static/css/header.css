@@ -52,6 +52,26 @@ header .navbar-nav {
   letter-spacing: 0px;
 }
 
+#usermenu {
+background: #F1F1F1;
+}
+
+#usermenu > li {
+  padding: 10px 15px;
+}
+
+#usermenu > li > a{
+  line-height: 1em;
+  padding: 0px 0px;
+}
+
+#usermenu > li:first-child {
+  border-bottom: 1px solid #DDD;
+}
+
+#usermenu > li:last-child {
+  border-top: 1px solid #DDD;
+}
 
 @media (max-width: 990px) {
   .brand img {
