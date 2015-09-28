@@ -758,17 +758,12 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
-    spatial = fields.TextAreaField(
-        label="Spatial coverage",
-        description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
-        default='',
-        validators=[validators.optional()],
-        filters=[
-            strip_string,
-        ],
-        widget_classes='form-control',
-        icon='fa fa-map-marker fa-fw',
-    )
+    #spatial = zfields.MapField(
+    #    label="Spatial coverage",
+    #    description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
+    #    widget_classes='form-control',
+    #    icon='fa fa-map-marker fa-fw',
+    #)
 
     #
     # Form configuration
@@ -780,14 +775,14 @@ class DatasetForm(BasicForm):
     # Grouping of fields
     #
     groups = [
-        ('Basic information', [
+        ('<i class="fa fa-info"></i> Basic information', [
             'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
             #'classes': '',
             'indication': 'required',
         }),
-        ('License', [
+        ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
@@ -800,14 +795,14 @@ class DatasetForm(BasicForm):
                  ' publications have agreed to the terms of this waiver and'
                  ' license.')
         }),
-        ('Physical information',[
+        ('<i class="fa fa-globe"></i> Physical information',[
             'period',
             'spatial',
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Communities', [
+        ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
             #'classes': '',
@@ -820,13 +815,13 @@ class DatasetForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Related Identifiers', [
+        ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Subjects', [
+        ('<i class="fa fa-tags"></i> Subjects', [
             'subjects'
         ], {
             'classes': '',

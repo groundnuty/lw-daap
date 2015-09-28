@@ -1,0 +1,44 @@
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014, 2015 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{% extends "page.html" %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="col-sm-12 col-md-12">
+    <div class="jumbotron" id="upload">
+      <h1>Publish and preserve</h1>
+      <p>Share your research &mdash; all research outputs from across all fields of
+      science are welcome.</p>
+      <div class="spacer30"></div>
+      <div class="text-center">
+        <a id="btn-deposit-dataset" class="btn btn-sm btn-sunshine btn-sharp  btn-raised"
+          href="{{ url_for(".create", deposition_type="dataset" ) }}"
+          role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
+        <a id="btn-deposit-software" class="btn btn-sm btn-sunshine btn-sharp btn-raised"
+          href="{{ url_for(".create", deposition_type="software") }}"
+          role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
+        <a id="btn-deposit-analysis" class="btn btn-sm btn-sunshine btn-sharp btn-raised"
+          href="{{ url_for(".create", deposition_type="analysis") }}"
+          role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

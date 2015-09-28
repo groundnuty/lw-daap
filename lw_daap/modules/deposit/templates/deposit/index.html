@@ -19,29 +19,3 @@
 
 {% extends "deposit/index_base.html" %}
 
-{% block body %}
-<div class="row" id="file_container">
-  <div class="col-sm-12 col-md-12">
-    <div class="jumbotron" id="upload">
-      <h1>Publish and preserve</h1>
-      <p>Share your research &mdash; all research outputs from across all fields of
-      science are welcome.</p>
-      <div class="spacer30"></div>
-      <div class="text-center">
-        <a class="btn btn-sm btn-sunshine btn-sharp btn-underline btn-raised"
-          href="{{ url_for(".create", deposition_type="dataset" ) }}"
-              role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-
-        <a class="btn btn-sm btn-sunshine btn-sharp btn-underline btn-raised"
-          href="{{ url_for(".create", deposition_type="software") }}"
-              role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a class="btn btn-sm btn-sunshine btn-sharp btn-underline btn-raised"
-          href="{{ url_for(".create", deposition_type="analysis") }}"
-              role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}

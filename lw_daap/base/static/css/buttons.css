@@ -1,0 +1,85 @@
+.btn-raised:active {
+  margin-bottom: -1px;
+  margin-top: 1px;
+}
+
+.btn-sharp {
+  border: 0 none;
+  border-radius: 0;
+}
+
+.btn-sunshine,
+.btn-sunshine:link,
+.btn-sunshine:visited,
+.btn-sunshine:hover,
+.btn-sunshine:active,
+.btn-forest,
+.btn-forest:link,
+.btn-forest:visited,
+.btn-forest:hover,
+.btn-forest:active,
+.btn-glassy,
+.btn-glassy:active,
+.btn-glassy:hover,
+.btn-glassy:link,
+.btn-glassy:visited {
+  letter-spacing: 0px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+
+/*
+ *  SUNSHINE
+ */
+
+.btn-sunshine {
+  background: #FF5001;
+}
+
+.btn-sunshine:hover,
+.btn-sunshine:focus,
+.btn-sunshine:active {
+  background: #FF7739;
+}
+
+.btn-sunshine.btn-raised {
+  border-bottom: 4px solid #B73C0B;
+}
+
+/*
+ *  FOREST
+ */
+
+.btn-forest {
+  background: #008035;
+}
+
+.btn-forest:hover,
+.btn-forest:focus,
+.btn-forest:active {
+  background: #0A9C45;
+}
+
+.btn-forest.btn-raised {
+  border-bottom: 4px solid #00401B;
+}
+
+/*
+ * GLASSY
+ */
+
+.btn-glassy {
+  background: #999999;
+}
+
+.btn-glassy:hover,
+.btn-glassy:focus,
+.btn-glassy:active {
+  background: #AAAAAA;
+}
+
+.btn-glassy.btn-raised {
+  border-bottom: 4px solid #666666;
+}
+

@@ -16,13 +16,23 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <a data-toggle="collapse" class="panel-toggle{{ ' collapsed' if group.meta.classes is not none else '' }}" href="#collapse-{{ idx }}"> {{ group.name }} <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span> <span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></a>
-        {% if group.meta.indication %}
-            <span class="text-muted pull-right" style="padding-right: 10px;">{{ group.meta.indication }}</span>
-        {% endif %}
+<div class="panel panel-deposit panel-sharp">
+  <div class="panel-heading">
+    <a data-toggle="collapse" class="panel-toggle{{ ' collapsed' if group.meta.classes is not none else '' }}"
+      href="#collapse-{{ idx }}">
+      {{ group.name|safe }}
+      <span class="pull-right show-on-collapsed">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </span>
+      <span class="pull-right hide-on-collapsed">
+        <i class="glyphicon glyphicon-chevron-down"></i>
+      </span>
+    </a>
+    {% if group.meta.indication %}
+    <span class="text-muted pull-right" style="padding-right: 10px;">{{ group.meta.indication }}</span>
+    {% endif %}
 
-    </div>
-    <div id="collapse-{{ idx }}" class="panel-collapse collapse {{ 'in' if group.meta.classes is none else group.meta.classes }}">
+  </div>
+  <div id="collapse-{{ idx }}"
+    class="panel-collapse collapse {{ 'in' if group.meta.classes is none else group.meta.classes }}">
     <div class="panel-body">
