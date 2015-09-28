@@ -20,6 +20,27 @@
 {%- import "profile/helpers.html" as helpers with context %}
 {%- from "_formhelpers.html" import render_field with context %}
 {%- extends "accounts/settings/index_base.html" -%}
+{%  import "profile/delegation.html" as delegation with context %}
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+  require(
+    [
+      "jquery",
+      "js/profile/proxy"
+    ],
+    function($, proxy) {
+        config = {
+            requestUrl: '{{ url_for('.csr_request') }}',
+            delegateUrl: '{{ url_for('.delegate_proxy') }}',
+            removeUrl: '{{ url_for('.delete_proxy') }}'
+        }
+        proxy.attachTo("#delegationModal", config);
+    });
+</script>
+
+{% endblock %}
 
 {% block settings_body %}
 {{helpers.panel_start('User', icon='fa fa-user fa-fw')}}
@@ -35,13 +56,17 @@
     {{ render_field(field) }}
   {%- endfor -%}#}
   {{ render_field(form.name) }}
-  {{ render_field(form.affiliation) }}
+  {{ render_field(form.institution) }}
   {{ render_field(form.email) }}
   {{ render_field(form.social_profiles) }}
 {{helpers.panel_end()}}
 {{helpers.panel_start('e-Insfracture info', icon='fa fa-cloud fa-fw')}}
-  {{ render_field(form.ei_user) }}
-  {{ render_field(form.ei_pass) }}
+  {% if user_dn %}
+  {{ delegation.delegation_info() }}
+  {% else %}
+  <p>Your certificate was not detected, you will not be able to access the e-Infrastructure</p>
+  {% endif %}
+  {{ render_field(form.ssh_public_key) }}
 {{helpers.panel_end()}}
   <div class="btn-toolbar">
     <button type="submit" class="btn btn-primary pull-right">
@@ -49,4 +74,6 @@
     </button>
   </div>
 </form>
+
+{{ delegation.delegate_modal() }}
 {% endblock %}

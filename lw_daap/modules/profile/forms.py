@@ -11,3 +11,4 @@ ModelForm = model_form_factory(InvenioBaseForm)
 class ProfileForm(ModelForm):
   class Meta:
     model = userProfile
+    only = ['name', 'institution', 'email', 'social_profiles', 'ssh_public_key']

@@ -17,51 +17,65 @@ class userProfile(db.Model):
     __tablename__ = 'userProfile'
 
     """ Fields """
-    user_id = db.Column(db.Integer(15, unsigned=True), db.ForeignKey(User.id),
+    user_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(User.id),
                         nullable=False, primary_key=True, 
                         )
 
-    name = db.Column(db.String(length=40),
+    name = db.Column(db.String(length=255),
                      nullable=True, default='',
                      info=dict(
                             label=_("Name"),
                             description=_(''),
                      ))
 
-    affiliation = db.Column(db.String(length=40),
+    institution = db.Column(db.String(length=255),
                             nullable=True, default='',
                             info=dict(
                                 label=_("Institution"),
                                 description=_(''),
                             ))
 
-    email = db.Column(db.String(length=40),
+    email = db.Column(db.String(length=255),
                       nullable=True, default='',
                       info=dict(
                             label=_("Contact e-mail"),
                             description=_(''),
                       ))
 
-    social_profiles = db.Column(db.String(length=40),
+    social_profiles = db.Column(db.String(length=255),
                                 nullable=True, default='',
                                 info=dict(
                                     label=_("Social networks"),
                                     description=_(''),
                                 ))
 
-    ei_user = db.Column(db.String(length=40),
+    ei_user = db.Column(db.String(length=255),
                         nullable=True, default='',
                         info=dict(
                             label=_("User name"),
                             description=_(''),
                         ))
 
-    ei_pass = db.Column(db.String(length=40),
+    ei_pass = db.Column(db.String(length=255),
                         nullable=True, default='',
                         info=dict(
                             label=_("Password"),
                             description=_(''),
                         ))
+
+    user_proxy = db.Column(db.String(length=10000),
+                        nullable=True, default='',)
+
+    csr_priv_key = db.Column(db.String(length=10000),
+                        nullable=True, default='')
+
+    ssh_public_key = db.Column(db.Text(length=2000),
+                               nullable=True, default='',
+                               info=dict(
+                                   label=_("SSH public key"),
+                                   description=_('The ssh public key can be obtained ... COMPLETE THE INSTRUCTIONS!'),
+                              ))
+
 
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False, default=datetime.now,
