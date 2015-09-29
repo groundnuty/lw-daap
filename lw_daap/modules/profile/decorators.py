@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from functools import wraps
 
-from flask import current_app, redirect, url_for
+from flask import current_app, flash, redirect, url_for
 from flask_login import current_user
 
 from .proxy_utils import get_client_proxy_info
@@ -21,5 +21,7 @@ def delegation_required(func):
         if info.get('user_proxy', False):
             return func(*args, **kwargs)
         else:
+            flash('You need a valid credential to access the e-infrastructure',
+                  'danger')
             return redirect(url_for('userProfile.delegate'))
     return decorated_view
