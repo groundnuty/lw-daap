@@ -1,0 +1,14 @@
+
+{% extends "page.html" %}
+{%- from "_formhelpers.html" import render_field with context %}
+
+{% block body %}
+<form name="launch" method="post" class="form-horizontal">
+  {%- for field in form -%}
+    {{ render_field(field) }}
+  {%- endfor -%}
+  <div class="form-actions">
+    <input type="submit" name="save" value="{{ _("Send") }}" class="btn btn-primary"/>
+  </div>
+</form>
+{% endblock body %}
