@@ -1,66 +1,15 @@
-{% macro delegation_info () %}
-{% if user_proxy %}
-{% set msg="Your proxy is valid for " ~ user_proxy_time_left %}
-{% set cls="alert-success" %} 
-{% else %}
-{% set msg="No delegation found" %}
-{% set cls="alert-info" %} 
-{% endif %}
-<div class="row">
-  <div class="col-md-7">
-    <p>You are accessing as <strong>{{ user_dn }}</strong></p>
-  </div>
-  <div class="col-md-5">
-    <div id="proxy-msg" class="alert {{ cls }}" role="alert">{{ msg }}</div>
-  </div>
-</div>
-<div class="row" id="delegate-ui">
-  <div class="col-md-7 col-md-offset-5">
-    <button id="delegation_button" type="button" data-toggle="modal" data-target="#delegationModal"
-            class="btn btn-primary pull-right" {% if user_proxy %}style="display: none;"{% endif %}>
-        Delegate
-    </button>
-    <button id="remove_delegation_button" type="button"
-            class="btn btn-warning pull-right" {% if not user_proxy %}style="display: none;"{% endif %}>
-        Remove Delegation
-    </button>
-  </div>
-</div>
-{% endmacro %}
+{%- extends "profile/profile_base.html" -%}
+{%- import "profile/helpers.html" as helpers with context %}
+{%- from "_formhelpers.html" import render_field with context %}
 
-{% macro delegate_modal() %}
-<div class="modal fade" id="delegationModal" tabindex="-1" role="dialog" aria-labelledby="delegationModalLabel">
-  <div class="modal-dialog" role="document">
-    <form id="pkey-form">
-    <input type="hidden" id="userDN" value="{{ user_dn }}"> 
-    <input type="hidden" id="userCERT" value="{{ user_cert }}"> 
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="delegationModalLabel">Delegate credentials</h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-success">
-          <p>The private RSA key can be obtained from the p12 certificate you
-             have installed in your browser by using:</p>
-          <p class="text-center"><em>openssl pkcs12 -in &lt;yourCert.p12&gt; -nocerts -nodes | openssl rsa </em></p>
-        </div>
-        <div class="alert alert-warning">
-          <strong>NOTE</strong>: the private key WILL NOT BE TRANSMITTED ANYWHERE. It is only used
-           locally (within the user's browser) to generate the proxies needed to have access to
-           the e-Infrastructure services.
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="privateKey"><span class=""><i class="fa fa-user-secret"></i></span> Private key</label>
-          <textarea id="privateKey" name="pemPkey" class="field form-control" rows="5" placeholder="RSA private key"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="delegateButton">Delegate</button>
-      </div>
-    </div>
-    </form>
-  </div>
-</div>
-{% endmacro %}
+{% block settings_body %}
+{{helpers.panel_start('e-Insfracture info', icon='fa fa-cloud fa-fw')}}
+  {% if user_dn %}
+  {{ helpers.delegation_info() }}
+  {% else %}
+  <p>Your certificate was not detected, you will not be able to access the e-Infrastructure</p>
+  {% endif %}
+{{helpers.panel_end()}}
+
+{{ helpers.delegate_modal() }}
+{% endblock %}
