@@ -35,10 +35,10 @@
   {#{%- for field in form -%}
     {{ render_field(field) }}
   {%- endfor -%}#}
-  {{ render_field(form.name, show_description=True)) }}
+  {{ render_field(form.name, show_description=True) }}
   {{ render_field(form.institution, show_description=True) }}
-  {{ render_field(form.email, show_description=True)) }}
-  {{ render_field(form.social_profiles, show_description=True)) }}
+  {{ render_field(form.email, show_description=True) }}
+  {{ render_field(form.social_profiles, show_description=True) }}
 {{helpers.panel_end()}}
 {{helpers.panel_start('e-Insfracture info', icon='fa fa-cloud fa-fw')}}
   {% if user_dn %}
@@ -46,7 +46,7 @@
   {% else %}
   <p>Your certificate was not detected, you will not be able to access the e-Infrastructure</p>
   {% endif %}
-  {{ render_field(form.ssh_public_key, show_description=True)) }}
+  {{ render_field(form.ssh_public_key, show_description=True) }}
 {{helpers.panel_end()}}
   <div class="btn-toolbar">
     <button type="submit" class="btn btn-primary pull-right">
