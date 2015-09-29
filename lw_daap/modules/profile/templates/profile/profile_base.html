@@ -39,7 +39,7 @@
         proxy.attachTo("#delegationModal", config);
     });
 </script>
-
+J
 {% endblock %}
 
 {% block settings_body %}
@@ -51,6 +51,7 @@
 </div>
 {{helpers.panel_end()}}
 <form method="POST" role="form">
+  {{form.csrf_token}}
 {{helpers.panel_start('Personal info', icon='fa fa-info-circle fa-fw')}}
   {#{%- for field in form -%}
     {{ render_field(field) }}

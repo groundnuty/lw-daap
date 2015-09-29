@@ -46,7 +46,7 @@ def get_client_proxy_info(profile):
         'SSL_CLIENT_V_END' not in request.environ or
         'SSL_CLIENT_I_DN' not in request.environ or
         request.environ.get('SSL_CLIENT_VERIFY') != 'SUCCESS'):
-        return info 
+        return info
     info['user_dn'] = request.environ['SSL_CLIENT_S_DN']
     info['user_cert'] = request.environ['SSL_CLIENT_CERT']
     if profile.user_proxy:
@@ -82,11 +82,17 @@ def index():
             flash(_('Profile was updated'), 'success')
         except Exception as e:
             flash(str(e), 'error')
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                current_app.logger.debug("Error in the %s field - %s" % (
+                                         getattr(form, field).label.text,
+                                        error))
 
     ctx = dict(
         form=form,
         profile=profile,
-    ) 
+    )
     ctx.update(get_client_proxy_info(profile))
     return render_template(
         "profile/profile.html",
@@ -98,7 +104,7 @@ def index():
 @login_required
 def csr_request():
     profile = userProfile.get_or_create()
-    
+
     # Generate our key
     key = rsa.generate_private_key(
         public_exponent=65537,
@@ -120,7 +126,7 @@ def csr_request():
 
     return jsonify(dict(
         csr=csr.public_bytes(serialization.Encoding.PEM)
-    )) 
+    ))
 
 
 @blueprint.route('/delegate-proxy', methods=['POST'])
@@ -174,11 +180,11 @@ def delegate_proxy():
 
     time_left = (proxy.not_valid_after.replace(tzinfo=pytz.utc)
                  - datetime.now(tz=pytz.utc))
- 
+
     return jsonify(dict(
         user_proxy=True,
         time_left=humanize.naturaldelta(time_left),
-    )) 
+    ))
 
 
 @blueprint.route('/delete-proxy', methods=['POST'])

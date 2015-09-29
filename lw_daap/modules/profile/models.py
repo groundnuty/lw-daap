@@ -18,7 +18,7 @@ class userProfile(db.Model):
 
     """ Fields """
     user_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(User.id),
-                        nullable=False, primary_key=True, 
+                        nullable=False, primary_key=True,
                         )
 
     name = db.Column(db.String(length=255),
@@ -116,7 +116,7 @@ class userProfile(db.Model):
         if instance:
             return instance
         else:
-            cls.create()
+            return cls.create()
 
     def update(self, **data):
         for value in data:
