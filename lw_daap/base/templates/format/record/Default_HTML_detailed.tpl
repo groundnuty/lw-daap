@@ -28,12 +28,14 @@ open_panel_section, close_panel_section
     {% if daap_files and show_files %}
     <div class="col-sm-12 col-md-3">
 
+{% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
 {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
       <button class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" 
       data-toggle="modal" data-target="#doi-confirm-dialog">
       <i class="fa fa-barcode"></i> Mint Doi</button>
 {% endif %}
       <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+{% endif %}
       <a class="btn btn-block btn-lg btn-sunshine btn-sharp btn-raised" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
       <div class="spacer20"></div>
       <div class="panel-forest panel-sharp">
