@@ -12,3 +12,5 @@ pymongo
 humanize
 # handle proxies
 cryptography
+# v2.2.1 breaks everything :(
+intbitset==2.0
