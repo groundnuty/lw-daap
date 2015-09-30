@@ -37,14 +37,20 @@
 </div>
 <div class="row" id="delegate-ui">
   <div class="col-md-7 col-md-offset-5">
+    <div class="pull-right">
     <button id="delegation_button" type="button" data-toggle="modal" data-target="#delegationModal"
-            class="btn btn-primary pull-right" {% if user_proxy %}style="display: none;"{% endif %}>
+            class="btn btn-forest btn-raised btn-sharp" {% if user_proxy %}style="display: none;"{% endif %}>
         Delegate
     </button>
     <button id="remove_delegation_button" type="button"
-            class="btn btn-warning pull-right" {% if not user_proxy %}style="display: none;"{% endif %}>
+            class="btn btn-sunshine btn-raised btn-sharp" {% if not user_proxy %}style="display: none;"{% endif %}>
         Remove Delegation
     </button>
+    <button id="extend_delegation_button" type="button" data-toggle="modal" data-target="#delegationModal"
+            class="btn btn-forest btn-raised btn-sharp" {% if not user_proxy %}style="display: none;"{% endif %}>
+        Extend Delegation
+    </button>
+    </div>
   </div>
 </div>
 {% endmacro %}
@@ -77,8 +83,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="delegateButton">Delegate</button>
+        <button type="button" class="btn btn-glassy btn-raised btn-sharp" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-forest btn-raised btn-sharp" id="delegateButton">Delegate</button>
       </div>
     </div>
     </form>

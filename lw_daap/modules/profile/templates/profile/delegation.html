@@ -3,6 +3,7 @@
 {%- from "_formhelpers.html" import render_field with context %}
 
 {% block settings_body %}
+
 {{helpers.panel_start('e-Insfracture info', icon='fa fa-cloud fa-fw')}}
   {% if user_dn %}
   {{ helpers.delegation_info() }}
@@ -12,4 +13,5 @@
 {{helpers.panel_end()}}
 
 {{ helpers.delegate_modal() }}
+
 {% endblock %}

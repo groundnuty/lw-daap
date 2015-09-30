@@ -27,11 +27,14 @@ define(function(require) {
             if (data.user_proxy) {
                 $('#remove_delegation_button').show()
                 $('#delegation_button').hide()
+                $('#extend_delegation_button').show()
                 $('#proxy-msg').html("Your proxy is valid for " + data.time_left)
                 $('#proxy-msg').attr("class", "alert alert-success")
+                $('#delegation_button').on('click', window.location=next_url)
             } else {
                 $('#remove_delegation_button').hide()
                 $('#delegation_button').show()
+                $('#extend_delegation_button').hide()
                 $('#proxy-msg').html("No delegation found")
                 $('#proxy-msg').attr("class", "alert alert-info")
             }
