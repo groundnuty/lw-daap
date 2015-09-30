@@ -19,7 +19,7 @@ define(function(require) {
             requestUrl: 'https://localhost/',
             delegateUrl: 'https://localhost/',  
             removeUrl: 'https://localhost/',
-            nextUrl: 'https://localhost/',
+            nextUrl: ''
         }); 
 
         var that;
@@ -31,7 +31,7 @@ define(function(require) {
                 $('#extend_delegation_button').show()
                 $('#proxy-msg').html("Your proxy is valid for " + data.time_left)
                 $('#proxy-msg').attr("class", "alert alert-success")
-                $('#delegation_button').on('click', window.location=that.attr.nextUrl)
+                if ( that.attr.nextUrl != '' ) { window.location=that.attr.nextUrl }
             } else {
                 $('#remove_delegation_button').hide()
                 $('#delegation_button').show()
