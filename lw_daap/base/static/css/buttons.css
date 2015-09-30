@@ -35,6 +35,7 @@
 
 .btn-sunshine {
   background: #FF5001;
+  border: 1px solid #FF5001;
 }
 
 .btn-sunshine:hover,
@@ -53,6 +54,7 @@
 
 .btn-forest {
   background: #008035;
+  border: 1px solid #008035;
 }
 
 .btn-forest:hover,
