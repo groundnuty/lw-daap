@@ -50,7 +50,7 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 <div class="panel panel-deposit panel-sharp">
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-{{key}}">
-      {{ heading }}
+      {{ heading|safe }}
       <span class="pull-right show-on-collapsed">
         <i class="fa fa-chevron-down"></i>
       </span>

@@ -1,0 +1,60 @@
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+<div class="panel panel-forest panel-sharp">
+  <div class="panel-heading">
+    <i class="fa fa-users fa-fw"></i> My communities
+    <a href="{{url_for('.new')}}" 
+      class="btn btn-forest btn-sharp pull-right ">
+      <i class="fa fa-plus-circle"></i>New
+    </a>
+
+  </div>
+  <div class="panel-body">
+   {% if mycommunities %}
+    {% for obj in mycommunities %}
+    <div class="row" style="margin-top: 15px; margin-bottom: 15px;">
+      <div class="col-sm-8">
+        <a href="{{url_for('.edit', community_id=obj.id)}}">
+          {{obj.title if obj.title else 'Untitled'}}
+        </a><br >
+        <small class="muted">Identifier: {{obj.id}}</small>
+      </div>
+      <div class="col-sm-4">
+        <div class="btn-group pull-right">
+          <a class="btn btn-sunshine btn-raised btn-sharp dropdown-toggle btn-xs" data-toggle="dropdown" href="#">
+            Actions
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{obj.community_url}}"><i class="icon-eye-open"></i> View</a></li>
+            <li><a href="{{obj.community_provisional_url}}"><i class="icon-check"></i> Curate</a></li>
+            <li><a href="{{url_for('.edit', community_id=obj.id)}}"><i class="icon-pencil"></i> Edit</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="muted">You currently have no community collections.</p>
+    {% endif %}
+
+
+  </div>
+</div>

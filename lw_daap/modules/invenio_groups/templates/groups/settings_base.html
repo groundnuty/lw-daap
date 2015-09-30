@@ -21,7 +21,7 @@
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptyprompt with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
-
+{%- import "helpers_base.html" as hb %}
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
 
@@ -29,41 +29,34 @@
 
 {%- bundles "groups.css", "groups.js" -%}
 {%- block settings_body %}
-{{ helpers.panel_start(
-    _('My Groups'),
-    with_body=False,
-    icon='fa fa-group fa-fw',
-    btn=_('New group') if m_groups.items|length > 0 else "", btn_icon='fa fa-plus', btn_href=url_for('.new')
-    ) }}
-  <div class="panel-body">
-  {%- block groups_description %}
-  <div class="row">
-  <div class="col-md-8">
-  List of groups your are currently admin or member of: being in particular group you gain special privileges.
-  </div>
-  {%- endblock groups_description %}
-  <div class="col-md-4">
-  <div class="btn-toolbar">
-    <a class="btn btn-primary btn-sm pull-right" href="{{ url_for('.invitations') }}">
+<div class="panel panel-deposit panel-sharp">
+  {% call hb.panel_head() %}
+  <i class="fa fa-group fa-fw"></i>My Groups
+  <div class="pull-right">
+    <a class="btn btn-glassy btn-sharp btn-raised" href="{{ url_for('.invitations') }}">
       <i class="fa fa-fw fa-envelope"></i> {{ _("Invitations") }}
       <span class="badge">{{ invitations }}</span>
     </a>
-    <a class="btn btn-primary btn-sm pull-right" href="{{ url_for('.requests') }}">
+    <a class="btn btn-glassy btn-sharp btn-raised" href="{{ url_for('.requests') }}">
       <i class="fa fa-fw fa-reply"></i> {{ _("Requests") }} 
       <span class="badge">{{ requests }}</span>
     </a>
+    <a class="btn btn-forest btn-sharp btn-raised" href="{{ url_for('.new') }}">
+      <i class="fa fa-fw fa-plus"></i> {{ _("New") }} 
+    </a>
+
   </div>
-</div>
-</div>
-<div class="spacer15"></div>
-{%- if m_groups.items|length == 0 %}
+  <div class="clearfix"></div>
+  {% endcall %}
+  {% call hb.panel_body() %}
+  {%- if m_groups.items|length == 0 %}
   {{ emptyprompt(
-    btn=_('New group'), btn_icon='fa fa-fw fa-plus',
-    btn_href=url_for('.new'),
-    heading=_('Go ahead and create new group !')
-    ) }}
-{%- else %}
- {%- block m_groups_list %}
+  btn=_('New group'), btn_icon='fa fa-fw fa-plus',
+  btn_href=url_for('.new'),
+  heading=_('Go ahead and create new group !')
+  ) }}
+  {%- else %}
+  {%- block m_groups_list %}
 
   <form id="leave-form"></form>
   <table class="table table-striped table-hover table-groups">
@@ -75,53 +68,52 @@
       </tr>
     </thead>
     <tbody>
-      {%- for group in m_groups.items %}
-      <tr>
-        <td data-group-id="{{ group.id if group.is_admin(current_user) else '' }}">
-          <div>
-            <b>{{ group.name }}</b>
-          </div>
-          <br>
-          <small>{{ group.description|truncate(200, True)|safe }}</small>
-        </td>
-        <td class="text-center vcenter">{{ group.members_count() }}</td>
-        <td class="text-center btn-toolbar vcenter">
-          {%- if group.is_member(current_user) and not group.is_unique_admin(current_user) %}
-          <button class="btn btn-xs btn-danger pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
-            <i class="fa fa-fw fa-chain-broken"></i>{{ _("Leave") }}
-          </button>
-          {%- endif %}
-          {%- if group.is_admin(current_user) %}
-            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.manage',  group_id=group.id) }}">
-              <i class="fa fa-fw fa fa-wrench"></i> {{ _("Manage") }}
-            </a>
-            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.new_member', group_id=group.id) }}">
-              <i class="fa fa-fw fa fa-plus"></i> {{ _("Invite") }}
-            </a>
-          {%- endif %}
-          {%- if group.can_see_members(current_user) %}
-            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
-              <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
-            </a>
-          {%- endif %}
-        </td>
-      </tr>
-      {%- endfor %}
+    {%- for group in m_groups.items %}
+    <tr>
+      <td data-group-id="{{ group.id if group.is_admin(current_user) else '' }}">
+        <div>
+          <b>{{ group.name }}</b>
+        </div>
+        <br>
+        <small>{{ group.description|truncate(200, True)|safe }}</small>
+      </td>
+      <td class="text-center vcenter">{{ group.members_count() }}</td>
+      <td class="text-center btn-toolbar vcenter">
+        {%- if group.is_member(current_user) and not group.is_unique_admin(current_user) %}
+        <button class="btn btn-xs btn-danger pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
+          <i class="fa fa-fw fa-chain-broken"></i>{{ _("Leave") }}
+        </button>
+        {%- endif %}
+        {%- if group.is_admin(current_user) %}
+        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.manage',  group_id=group.id) }}">
+          <i class="fa fa-fw fa fa-wrench"></i> {{ _("Manage") }}
+        </a>
+        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.new_member', group_id=group.id) }}">
+          <i class="fa fa-fw fa fa-plus"></i> {{ _("Invite") }}
+        </a>
+        {%- endif %}
+        {%- if group.can_see_members(current_user) %}
+        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
+          <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
+        </a>
+        {%- endif %}
+      </td>
+    </tr>
+    {%- endfor %}
     </tbody>
   </table>
   {%- endblock m_groups_list %}
   <ul class="list-group">
     <li class="list-group-item text-center">
-       {{ list_status(m_groups, mpage) }} 
-       {{ paginate(m_groups, 'mpage', small=True) if m_groups.items|length }}
+    {{ list_status(m_groups, mpage) }} 
+    {{ paginate(m_groups, 'mpage', small=True) if m_groups.items|length }}
     </li>
   </ul>
-{%- endif %}
-{{ helpers.panel_end(with_body=False) }}
+  {%- endif %}
+  {% endcall %}
+</div>
 
-<div class="spacer20"></div>
-
-<div class="panel panel-default">
+<div class="panel panel-deposit panel-sharp">
   <div class="panel-heading">
     <strong class="panel-title"><i class="fa fa-search fa-fw"></i> {{_('Search')}}</strong>
     <span id="collapse" class="pull-right"><i class="fa fa-chevron-down"></i></span>
@@ -129,58 +121,58 @@
   <div class="panel-body">
     {{ searchbar() }}
     {%- if q_groups.items|length == 0 and q %}
-      {{ emptysearch(heading=_("No results found.")) }}
+    {{ emptysearch(heading=_("No results found.")) }}
     {%- elif q %} 
-      {%- block q_groups_list %}
-      <div id="g_search_results">
-        {# <form id="leave-form"></form>#}
-        <table class="table table-striped table-hover table-groups">
-          <thead>
-            <tr>
-              <th class="col-md-6">{{ _("Name") }}</th>
-              <th class="col-md-1">{{ _("Members") }}</th>
-              <th class="col-md-5"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {%- for group in q_groups.items %}
-            {#{%- if not group.is_member(current_user) %}#}
-            <tr>
-              <td data-group-id="{{ group.id if group.is_admin(current_user) else '' }}">
-                <div>
-                  <b>{{ group.name }}</b>
-                </div>
-                <br>
-                <small>{{ group.description|truncate(200, True)|safe }}</small>
-              </td>
-              <td class="text-center vcenter">{{ group.members_count() }}</td>
-              <td class="text-center btn-toolbar vcenter">
-                {%- if group.can_see_members(current_user) %}
-                <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
-                  <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
-                </a>
-                {% endif %}
-             {% if not group.is_admin(current_user)  %}
-             {% if not group.subscription_policy == "Closed" %}
+    {%- block q_groups_list %}
+    <div id="g_search_results">
+      {# <form id="leave-form"></form>#}
+      <table class="table table-striped table-hover table-groups">
+        <thead>
+          <tr>
+            <th class="col-md-6">{{ _("Name") }}</th>
+            <th class="col-md-1">{{ _("Members") }}</th>
+            <th class="col-md-5"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {%- for group in q_groups.items %}
+        {#{%- if not group.is_member(current_user) %}#}
+        <tr>
+          <td data-group-id="{{ group.id if group.is_admin(current_user) else '' }}">
+            <div>
+              <b>{{ group.name }}</b>
+            </div>
+            <br>
+            <small>{{ group.description|truncate(200, True)|safe }}</small>
+          </td>
+          <td class="text-center vcenter">{{ group.members_count() }}</td>
+          <td class="text-center btn-toolbar vcenter">
+            {%- if group.can_see_members(current_user) %}
+            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
+              <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
+            </a>
+            {% endif %}
+            {% if not group.is_admin(current_user)  %}
+            {% if not group.subscription_policy == "Closed" %}
             <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.join', group_id=group.id) }}">
               <i class="fa fa-fw fa-sign-in"></i> {{ _("Join") }}
             </a>
-                {%- endif %}
-                {%- endif %}
-              </td>
-            </tr>
-            {#{% endif %}#}
-            {%- endfor %}
-          </tbody>
-        </table>
-      </div>
-      {%- endblock q_groups_list %}
-      <ul class="list-group">
-        <li class="list-group-item text-center">
-          {{ list_status(q_groups, qpage) }}
-          {{ paginate(q_groups, 'qpage', small=True) if q_groups.items|length }}
-        </li>
-      </ul>
+            {%- endif %}
+            {%- endif %}
+          </td>
+        </tr>
+        {#{% endif %}#}
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+    {%- endblock q_groups_list %}
+    <ul class="list-group">
+      <li class="list-group-item text-center">
+      {{ list_status(q_groups, qpage) }}
+      {{ paginate(q_groups, 'qpage', small=True) if q_groups.items|length }}
+      </li>
+    </ul>
     {%- endif %}
   </div>
 </div>
