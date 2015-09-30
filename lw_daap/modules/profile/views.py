@@ -2,13 +2,7 @@ from __future__ import absolute_import
 
 from datetime import datetime
 
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography import x509
-from cryptography.x509.oid import NameOID
 import humanize
-import pytz
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app
 from flask_login import current_user
@@ -24,7 +18,8 @@ from lw_daap.ext.login import login_required
 from .forms import  *
 from .models import *
 
-from .proxy_utils import get_client_proxy_info, generate_proxy_request, build_proxy
+from .proxy_utils import add_voms_info, get_client_proxy_info, \
+                         generate_proxy_request, build_proxy
 
 
 blueprint = Blueprint(
@@ -112,6 +107,7 @@ def delegate_proxy():
         abort(400)
 
     new_proxy, time_left = build_proxy(proxy, profile.csr_priv_key)
+    add_voms_info(new_proxy, "fedcloud.egi.eu") 
     profile.update(user_proxy=new_proxy)
 
     return jsonify(dict(

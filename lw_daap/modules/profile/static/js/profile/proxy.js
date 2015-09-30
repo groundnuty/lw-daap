@@ -57,7 +57,7 @@ define(function(require) {
 
                 $.post(that.attr.delegateUrl, {x509Proxy: x509Proxy})
                     .done(function(data) {
-                        that.$node.modal('hide')  
+                        that.$node.modal('hide')
                         that.trigger('proxyUpdate', data);
                     });
             });

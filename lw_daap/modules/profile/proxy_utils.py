@@ -3,6 +3,8 @@
 #
 
 from datetime import datetime
+import subprocess
+from tempfile import NamedTemporaryFile
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization, hashes
@@ -12,7 +14,7 @@ from cryptography.x509.oid import NameOID
 import humanize
 import pytz
 
-from flask import request
+from flask import current_app, request
 
 CFG_PRIV_KEY_PASSWD = b'lwdaap-passwd'
 import re
@@ -54,13 +56,13 @@ def generate_proxy_request():
     """
     key = rsa.generate_private_key(
         public_exponent=65537,
-        key_size=2048,
+        key_size=1024,
         backend=default_backend()
     )
     private_key = key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.TraditionalOpenSSL,
-        encryption_algorithm=serialization.BestAvailableEncryption(CFG_PRIV_KEY_PASSWD),
+        encryption_algorithm=serialization.NoEncryption(),
     )
     csr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([
         x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"Dummy"),
@@ -97,7 +99,7 @@ def build_proxy(user_proxy, csr_priv_key):
         abort(400)
 
     private_key = serialization.load_pem_private_key(
-        csr_priv_key.encode('ascii'), password=CFG_PRIV_KEY_PASSWD,
+        csr_priv_key.encode('ascii'), password=None,
         backend=default_backend()
     )
 
@@ -116,3 +118,33 @@ def build_proxy(user_proxy, csr_priv_key):
                  - datetime.now(tz=pytz.utc))
  
     return ''.join(new_proxy_chain), time_left
+
+
+def add_voms_info(user_proxy, vo):
+    """
+    Adds voms information to existing proxy.
+    
+    Uses the voms-proxy-init command (no voms API for Python)
+    """
+    with NamedTemporaryFile() as old_proxy:
+        with NamedTemporaryFile(mode='rw') as new_proxy:
+            old_proxy.write(user_proxy)
+            old_proxy.flush()
+
+            current_app.logger.debug("PROXY\n%s" % user_proxy)
+            cmd = ['voms-proxy-init',
+                   '--out', new_proxy.name,
+                   '--voms', vo,
+                   '-rfc', '--debug',
+                   '--noregen', '--ignorewarn']
+            proc = subprocess.Popen(cmd, shell=False,
+                                    env={'X509_USER_PROXY': old_proxy.name},
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+            current_app.logger.debug("CMD %s" % ' '.join(cmd))
+            out = ''.join([l for l in proc.stdout])
+            proc.wait()
+            if proc.returncode != 0: #  and not _check_proxy_validity(new_proxy):
+                current_app.logger.debug("Failed to generate a proxy (%d): %s" % (proc.returncode, out))
+            return new_proxy.read()
+    return user_proxy
