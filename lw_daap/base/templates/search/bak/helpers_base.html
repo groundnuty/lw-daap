@@ -173,10 +173,10 @@
     <div class="form-group">
       <div class="col-md-offset-2 col-md-10 col-sm-offset-3 col-sm-9">
         <div class="pull-right">
-          <button name="action_browse" class="btn btn-glassy btn-raised">
+          <button name="action_browse" class="btn">
             <i class="glyphicon glyphicon-list"></i> {{ _("Browse") }}
           </button>
-          <button name="action_search" type="submit" class="btn btn-forest btn-raised">
+          <button name="action_search" type="submit" class="btn btn-primary">
             <i class="glyphicon glyphicon-search"></i> {{ _("Search") }}
           </button>
         </div>
@@ -257,10 +257,10 @@
           </button>
         </div>
         <div class="pull-right">
-          <button name="action_browse" class="btn btn-glassy btn-raised">
+          <button name="action_browse" class="btn">
             <i class="glyphicon glyphicon-list"></i> {{ _("Browse") }}
           </button>
-          <button name="action_search" type="submit" class="btn btn-forest btn-raised">
+          <button name="action_search" type="submit" class="btn btn-primary">
             <i class="glyphicon glyphicon-search"></i> {{ _("Search") }}
           </button>
         </div>
@@ -410,11 +410,11 @@
       rel="tooltip"
       title="{{ _('store permanently in user settings') }}"
       data-placement="bottom"
-      class="btn btn-glassy btn-sm pull-left">
+      class="btn btn-primary btn-sm pull-left">
       <i class="glyphicon glyphicon-hdd"></i> {{ _('Save') }}
     </button>
     {%- endif -%}
-    <button class="btn btn-glassy btn-raised pull-right" name="action_search"
+    <button name="action_search"
       rel="tooltip"
       title="{{ _('use settings in current search') }}"
       data-placement="bottom"

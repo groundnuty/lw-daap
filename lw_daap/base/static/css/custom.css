@@ -40,6 +40,22 @@ a:hover, a:focus {
   color: #FF5001;
 }
 
+#search-box-main .navbar {
+  background: #F1F1F1;
+  border: 1px solid #DDD;
+  border-radius: 0px;
+  box-shadow: 1px 1px 1px #EEE;
+}
+
+#search-box-main .btn {
+  border-radius: 0px;
+}
+
+#search-box-main .nav-tabs > li.active > a {
+  background-color: #F1F1F1;
+  font-weight: 900;
+}
+
 
 .label-forest {
   background: #008035;

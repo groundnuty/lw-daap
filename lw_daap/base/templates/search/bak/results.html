@@ -42,16 +42,14 @@
 {%- block search_result_record scoped -%}
 <div class="col-sm-10 col-xs-10">
   {{ format_record(recid, of, ln=g.ln, qid=qid, collection=collection)|safe }}
-{% if not recordloop.last %}<hr/>{% endif %}
-
+  {% if not recordloop.last %}<hr/>{% endif %}
 </div>
 <div class="col-sm-1 col-xs-1">
 {%- if not collection.name.startswith('provisional-') %}
-  <div class="view-record hidden-sm">
-    <a href="{{ url_for('record.metadata', recid=recid, ln=g.ln) }}" class="btn btn-sunshine btn-sharp btn-raised pull-right">{{ _('View')}}</a>
-  </div>
+  <div class="pull-right view-record hidden-sm"><a href="{{ url_for('record.metadata', recid=recid, ln=g.ln) }}" class="btn btn-info">{{ _('View')}}</a></div>{% endif %}
 </div>
 {%- endblock search_result_record -%}
+
 
 {%- block search_result_record_nohtml scoped %}
 {{ format_record(recid, of, ln=g.ln, collection=collection)|safe }}
