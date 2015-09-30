@@ -32,12 +32,11 @@
             requestUrl: '{{ url_for('.csr_request') }}',
             delegateUrl: '{{ url_for('.delegate_proxy') }}',
             removeUrl: '{{ url_for('.delete_proxy') }}',
-            next_url: '{{ "http://aeonium.eu" }}',
+            nextUrl: '{{ request.args['next_url'] }}',
         }
         proxy.attachTo("#delegationModal", config);
     });
 </script>
-J
 {% endblock %}
 
 {% block settings_body %}

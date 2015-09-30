@@ -25,7 +25,8 @@ blueprint = Blueprint(
 @delegation_required()
 def index():
     ctx = dict(
-        vms=list_vms()
+        vms = list_vms(),
+        #next_url = next_url,
     )
     return render_template('analyze/index.html', **ctx)
 
@@ -43,5 +44,6 @@ def launch():
         return redirect(url_for('.index'))
     ctx = dict(
         form = form,
+        #next_url = next_url,
     )
     return render_template('analyze/launch.html', **ctx)
