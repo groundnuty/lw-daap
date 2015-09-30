@@ -3,6 +3,8 @@ import json
 from flask import Blueprint, current_app, render_template, request, redirect, url_for
 from flask_menu import register_menu
 
+from flask import Response
+
 from forms import LaunchForm
 from infra import launch_vm, list_vms
 
@@ -20,16 +22,17 @@ blueprint = Blueprint(
 
 @blueprint.route('/')
 @register_menu(blueprint, 'main.analyze', 'Analyze', order=3)
-@delegation_required
+@delegation_required()
 def index():
     ctx = dict(
-        vms=list_vms()
+        vms = list_vms(),
+        #next_url = next_url,
     )
     return render_template('analyze/index.html', **ctx)
 
 
 @blueprint.route('/launch', methods=['GET', 'POST'])
-@delegation_required
+@delegation_required()
 def launch():
     form = LaunchForm(request.form)
     form.fill_fields_choices()
@@ -41,5 +44,6 @@ def launch():
         return redirect(url_for('.index'))
     ctx = dict(
         form = form,
+        #next_url = next_url,
     )
     return render_template('analyze/launch.html', **ctx)

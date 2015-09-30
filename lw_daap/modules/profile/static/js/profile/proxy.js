@@ -18,7 +18,8 @@ define(function(require) {
             privateKey: '#privateKey',
             requestUrl: 'https://localhost/',
             delegateUrl: 'https://localhost/',  
-            removeUrl: 'https://localhost/' 
+            removeUrl: 'https://localhost/',
+            nextUrl: ''
         }); 
 
         var that;
@@ -27,11 +28,14 @@ define(function(require) {
             if (data.user_proxy) {
                 $('#remove_delegation_button').show()
                 $('#delegation_button').hide()
+                $('#extend_delegation_button').show()
                 $('#proxy-msg').html("Your proxy is valid for " + data.time_left)
                 $('#proxy-msg').attr("class", "alert alert-success")
+                if ( that.attr.nextUrl != '' ) { window.location=that.attr.nextUrl }
             } else {
                 $('#remove_delegation_button').hide()
                 $('#delegation_button').show()
+                $('#extend_delegation_button').hide()
                 $('#proxy-msg').html("No delegation found")
                 $('#proxy-msg').attr("class", "alert alert-info")
             }

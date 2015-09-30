@@ -29,6 +29,9 @@
     ],
     function($, proxy) {
         config = {
+            {% if request.args['next_url'] %}
+                nextUrl: '{{ request.args['next_url'] }}',
+            {% endif %}
             requestUrl: '{{ url_for('.csr_request') }}',
             delegateUrl: '{{ url_for('.delegate_proxy') }}',
             removeUrl: '{{ url_for('.delete_proxy') }}'
@@ -36,7 +39,6 @@
         proxy.attachTo("#delegationModal", config);
     });
 </script>
-J
 {% endblock %}
 
 {% block settings_body %}

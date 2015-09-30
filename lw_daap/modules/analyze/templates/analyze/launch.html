@@ -4,19 +4,26 @@
 
 {% block body %}
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-3">
     <h3>Run a VM</h3>
     <form name="launch" method="post" class="form-horizontal">
     {%- for field in form -%}
       {{ render_field(field) }}
     {%- endfor -%}
       <div class="form-actions">
-        <input type="submit" name="Run" value="{{ _("Run") }}" class="btn btn-primary"/>
+        <input type="submit" name="Run" value="{{ _("Run") }}" class="btn btn-forest btn-raised btn-sharp"/>
       </div>
     </form>
   </div>
-  <div class="col-md-3">
-     <p>instructions?</p>
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-4">
+    <h3>Instuctions</h3>
+     <p>Specify the details for running a VM.</p>
+  </div>
+  <div class="col-md-2">
   </div>
 </div>
 {% endblock body %}
