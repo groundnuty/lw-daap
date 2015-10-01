@@ -1,13 +1,15 @@
 .panel-sharp {
   margin-bottom: 20px;
   border-radius: 0px;
-  border: 1px solid transparent;
   box-shadow: 1px 2px 1px #DDD;
 }
 
 .panel-forest {
   border-color: #00401B;
+}
 
+.btn, .well {
+  border-radius: 0px;
 }
 
 .panel-forest > .panel-heading {
@@ -47,6 +49,8 @@
   box-shadow: 1px 1px 4px #DDD;
 }
 
+
+.panel-default,
 .panel-deposit {
   background-color: #F1F1F1;
   margin: 0px;
@@ -56,6 +60,7 @@
   box-shadow: none;
 }
 
+.panel-default > .panel-heading,
 .panel-deposit > .panel-heading {
   color: #000;
   background-color: #F1F1F1;
@@ -66,17 +71,20 @@
   font-size: 1.4em;
 }
 
+.panel-default > .panel-heading .fa,
 .panel-deposit > .panel-heading .fa  {
   font-weight: 100;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-.panel-deposit  .panel-body {
+.panel-default .panel-body,
+.panel-deposit .panel-body {
   background: #EEF6F5;
   margin: 10px 20px;
   border: 1px solid #CCC;
 }
+
 
 .panel-deposit > .panel-body .nav-list .list-group-item {
   border-radius: 0px;

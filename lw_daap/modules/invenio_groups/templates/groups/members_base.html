@@ -20,7 +20,7 @@
 {%- import "accounts/settings/helpers.html" as helpers with context -%}
 {%- from "groups/helpers.html" import searchbar with context -%}
 {%- from "groups/helpers.html" import emptysearch with context -%}
-
+{% import "helpers_base.html" as hb %}
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
 
@@ -29,68 +29,72 @@
 {%- bundles "groups.css" -%}
 
 {%- block settings_body %}
-{{ helpers.panel_start(
-    _("%s <small class='text-muted'>Members</small>" % group.name),
-    with_body=False,
-    icon="fa fa-users fa-fw",
-    btn=_("Manage"), btn_icon='fa fa-fw fa-wrench', btn_href=url_for('.manage', group_id=group.id),
-   ) }}
-<div class="panel-body">
-  {%- block description %}
-  Here you can see a list of the members.
+<div class="panel-list-wrapper">
+  <div class="panel panel-deposit panel-sharp">
+    {% call hb.panel_head() %}
+    <i class="fa fa-fw fa-users"></i>{{ group.name }} <small class='text-muted'>Members</small>
+    <a class="btn btn-forest btn-sharp pull-right"
+      href={{url_for('.manage', group_id=group.id)}}>
+      <i class="fa fa-fw fa-wrench"></i>Manage
+    </a>
+    {% endcall %}
+    {% call hb.panel_body() %}
+    {%- block description %}
+    Here you can see a list of the members.
+    {%- endblock %}
+    {%- if members.items|length == 0 and request.args['p'] %}
+    {{ searchbar() }}
+    {{ emptysearch(heading=_("No results found")) }}
+    {%- else %}
+    {{ searchbar() }}
+    {%- block members_list %}
+    <form id="remove-form"></form>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1"></th>
+          <th class="col-md-3">{{ _("Username") }}</th>
+          <th class="col-md-3">{{ _("Email") }}</th>
+          <th class="col-md-2">
+            {%- if s == "asc" %}
+            <a href="{{ url_for('.members', group_id=group.id, s='desc') }}"><i class="fa fa-fw fa-sort-asc"></i> {{ _("Status") }}</a>
+            {%- else %}
+            <a href="{{ url_for('.members', group_id=group.id, s='asc') }}"><i class="fa fa-fw fa-sort-desc"></i> {{ _("Status") }}</a>
+            {%- endif %}
+          </th>
+          <th class="col-md-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for member in members.items %}
+      <tr>
+        <td>{%- if group.is_admin(member.user) %}<span class="label label-danger">admin</span> {% endif %}</td>
+        <td>{{ member.user.nickname }}</td>
+        <td>{{ member.user.email }}</td>
+        <td>{{ member.state }}</td>
+        <td class="text-center btn-toolbar vcenter">
+          {%- if group.is_admin(current_user) and not group.is_admin(member.user) and member.is_active() %}
+          <button class="btn btn-xs btn-danger" type="submit" form="remove-form" formaction="{{ url_for('.remove', group_id=group.id, user_id=member.user.id) }}" formmethod="POST">
+            <i class="fa fa-fw fa-chain-broken"></i>{{ _("Remove") }}
+            {%- elif not member.is_active() %}
+            <button class="btn btn-xs btn-danger" type="submit" form="remove-form" formaction="{{ url_for('.remove', group_id=group.id, user_id=member.user.id) }}" formmethod="POST">
+              <i class="fa fa-fw fa-chain-broken"></i>{{ _("Revoke") }}
+              {%- endif %}
+            </button>
+          </td>
+        </tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+      {% endblock members_list %}
+      <ul class="list-group">
+        <li class="list-group-item text-center">
+        {{ list_status(members, page) }}
+        {{ paginate(members, 'page', small=True) if members.items|length }}
+        </li>
+      </ul>
+      {%- endif %}
+      {% endcall %}
+    </div>
+  </div>
   {%- endblock %}
-</div>
-{%- if members.items|length == 0 and request.args['p'] %}
-{{ searchbar() }}
-{{ emptysearch(heading=_("No results found")) }}
-{%- else %}
-{{ searchbar() }}
-{%- block members_list %}
-<form id="remove-form"></form>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="col-md-1"></th>
-      <th class="col-md-3">{{ _("Username") }}</th>
-      <th class="col-md-3">{{ _("Email") }}</th>
-      <th class="col-md-2">
-        {%- if s == "asc" %}
-        <a href="{{ url_for('.members', group_id=group.id, s='desc') }}"><i class="fa fa-fw fa-sort-asc"></i> {{ _("Status") }}</a>
-        {%- else %}
-        <a href="{{ url_for('.members', group_id=group.id, s='asc') }}"><i class="fa fa-fw fa-sort-desc"></i> {{ _("Status") }}</a>
-        {%- endif %}
-      </th>
-      <th class="col-md-2"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {%- for member in members.items %}
-    <tr>
-      <td>{%- if group.is_admin(member.user) %}<span class="label label-danger">admin</span> {% endif %}</td>
-      <td>{{ member.user.nickname }}</td>
-      <td>{{ member.user.email }}</td>
-      <td>{{ member.state }}</td>
-      <td class="text-center btn-toolbar vcenter">
-        {%- if group.is_admin(current_user) and not group.is_admin(member.user) and member.is_active() %}
-        <button class="btn btn-xs btn-danger" type="submit" form="remove-form" formaction="{{ url_for('.remove', group_id=group.id, user_id=member.user.id) }}" formmethod="POST">
-          <i class="fa fa-fw fa-chain-broken"></i>{{ _("Remove") }}
-        {%- elif not member.is_active() %}
-        <button class="btn btn-xs btn-danger" type="submit" form="remove-form" formaction="{{ url_for('.remove', group_id=group.id, user_id=member.user.id) }}" formmethod="POST">
-          <i class="fa fa-fw fa-chain-broken"></i>{{ _("Revoke") }}
-        {%- endif %}
-        </button>
-      </td>
-    </tr>
-    {%- endfor %}
-  </tbody>
-</table>
-{% endblock members_list %}
-<ul class="list-group">
-  <li class="list-group-item text-center">
-    {{ list_status(members, page) }}
-    {{ paginate(members, 'page', small=True) if members.items|length }}
-  </li>
-</ul>
-{%- endif %}
-{{ helpers.panel_end(with_body=False) }}
-{%- endblock %}
