@@ -6,9 +6,10 @@ from flask_menu import register_menu
 from flask import Response
 
 from forms import LaunchForm
-from infra import launch_vm, list_vms
+from infra import launch_vm, list_vms, get_client
 
 from lw_daap.modules.profile.decorators import delegation_required
+from lw_daap.modules.profile.models import userProfile 
 
 
 blueprint = Blueprint(
@@ -24,9 +25,10 @@ blueprint = Blueprint(
 @register_menu(blueprint, 'main.analyze', 'Analyze', order=3)
 @delegation_required()
 def index():
+    profile = userProfile.get_or_create()
+    client = get_client(profile.user_proxy)
     ctx = dict(
-        vms = list_vms(),
-        #next_url = next_url,
+        vms = list_vms(client),
     )
     return render_template('analyze/index.html', **ctx)
 
@@ -37,13 +39,13 @@ def launch():
     form = LaunchForm(request.form)
     form.fill_fields_choices()
     if form.validate_on_submit():
-        launch_vm(name=form.name.data,
-                  image=form.image.data,
-                  flavor=form.flavor.data,
-                  app_env=form.app_env.data)
+        profile = userProfile.get_or_create()
+        client = get_client(profile.user_proxy)
+        launch_vm(client, name=form.name.data, image=form.image.data,
+                  flavor=form.flavor.data, app_env=form.app_env.data)
+        # XXX TODO error checking
         return redirect(url_for('.index'))
     ctx = dict(
         form = form,
-        #next_url = next_url,
     )
     return render_template('analyze/launch.html', **ctx)
