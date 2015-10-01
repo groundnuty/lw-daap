@@ -88,12 +88,11 @@ def map_result(func, mapper):
 
 def community_obj_value(key_name):
     from invenio.modules.communities.models import Community
-    pass
-def _getter(field):
-    if field.data:
-        obj = Community.query.filter_by(id=field.data).first()
-        if obj:
-            return getattr(obj, key_name)
+    def _getter(field):
+        if field.data:
+            obj = Community.query.filter_by(id=field.data).first()
+            if obj:
+                return getattr(obj, key_name)
         return None
     return _getter
 
