@@ -25,7 +25,7 @@
   <div class="panel panel-deposit panel-sharp">
     {% call hb.panel_head() %}
     <i class="fa fa-cloud-upload"></i>
-      {{ _('My uploads') }}
+    {{ _('My uploads') }}
     {% endcall %}
     {% call hb.panel_body() %}
     {% if not my_depositions %}
@@ -39,12 +39,13 @@
       {%- endif %}
       <tr>
         <td style="padding-left: 20px; width: 50%;">
-          <a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">
-            <a href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=dep.id) }}"
-              class="rmlink" rel="tooltip" title="Delete upload">
-              <i class="glyphicon glyphicon-trash"></i>&nbsp;
-            </a>
+          <a href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=dep.id) }}"
+            class="rmlink" rel="tooltip" title="Delete upload">
+            <i class="glyphicon glyphicon-trash"></i>&nbsp;
+          </a>
 
+
+          <a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">
             {% if dep.title %}
             {{ dep.title }}
             {% else %}
