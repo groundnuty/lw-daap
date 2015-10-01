@@ -37,7 +37,7 @@ define(function(require) {
                 $('#delegation_button').show()
                 $('#extend_delegation_button').hide()
                 $('#proxy-msg').html("No delegation found")
-                $('#proxy-msg').attr("class", "alert alert-info")
+                $('#proxy-msg').attr("class", "alert alert-warning")
             }
         };
 
