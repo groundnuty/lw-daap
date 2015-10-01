@@ -8,21 +8,12 @@
   border-radius: 0;
 }
 
-.btn-sunshine,
-.btn-sunshine:link,
-.btn-sunshine:visited,
-.btn-sunshine:hover,
-.btn-sunshine:active,
-.btn-forest,
-.btn-forest:link,
-.btn-forest:visited,
-.btn-forest:hover,
-.btn-forest:active,
-.btn-glassy,
-.btn-glassy:active,
-.btn-glassy:hover,
-.btn-glassy:link,
-.btn-glassy:visited {
+
+*[class^='btn'],
+*[class^='btn']:link,
+*[class^='btn']:hover,
+*[class^='btn']:active,
+*[class^='btn']:visited {
   letter-spacing: 0px;
   font-weight: 500;
   color: #FFFFFF;
@@ -33,17 +24,22 @@
  *  SUNSHINE
  */
 
+.btn-danger,
 .btn-sunshine {
   background: #FF5001;
   border: 1px solid #FF5001;
 }
 
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active
 .btn-sunshine:hover,
 .btn-sunshine:focus,
 .btn-sunshine:active {
   background: #FF7739;
 }
 
+.btn-danger.btn-raised,
 .btn-sunshine.btn-raised {
   border-bottom: 4px solid #B73C0B;
 }
@@ -52,17 +48,23 @@
  *  FOREST
  */
 
+.btn-primary,
 .btn-forest {
   background: #008035;
   border: 1px solid #008035;
 }
 
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
 .btn-forest:hover,
 .btn-forest:focus,
 .btn-forest:active {
   background: #0A9C45;
 }
 
+.btn-primary.btn-raised,
 .btn-forest.btn-raised {
   border-bottom: 4px solid #00401B;
 }
@@ -71,16 +73,23 @@
  * GLASSY
  */
 
+.btn-default,
 .btn-glassy {
   background: #999999;
+  border: 1px solid #999999;
 }
 
-.btn-glassy:hover,
-.btn-glassy:focus,
-.btn-glassy:active {
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active {
   background: #AAAAAA;
 }
 
+.btn-default.btn-raised,
 .btn-glassy.btn-raised {
   border-bottom: 4px solid #666666;
 }
