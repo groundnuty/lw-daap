@@ -14,9 +14,8 @@ from cryptography.x509.oid import NameOID
 import humanize
 import pytz
 
-from flask import current_app, request
+from flask import current_app, request, abort
 
-CFG_PRIV_KEY_PASSWD = b'lwdaap-passwd'
 import re
 CERT_RE = re.compile("-----BEGIN CERTIFICATE-----\r?\n"
                      ".+?\r?\n"
@@ -40,8 +39,8 @@ def get_client_proxy_info(profile):
             profile.user_proxy.encode('ascii', 'ignore'),
             default_backend()
         )
-        time_left = (px.not_valid_after.replace(tzinfo=pytz.utc)
-                     - datetime.now(tz=pytz.utc))
+        not_after = px.not_valid_after.replace(tzinfo=pytz.utc)
+        time_left = not_after - datetime.now(tz=pytz.utc)
         # let's consider a valid proxy if you have at least 10 min
         if time_left.total_seconds > 600:
             info['user_proxy'] = True
@@ -84,6 +83,7 @@ def build_proxy(user_proxy, csr_priv_key):
                   for c in pem_chain]
     if len(x509_chain) < 2:
         # should have 2 certs in the chain
+        current_app.logger.debug("HEY!")
         abort(400)
 
     proxy = x509_chain[0]
@@ -94,8 +94,12 @@ def build_proxy(user_proxy, csr_priv_key):
 
     # should be the same but the last CN
     if issuer_names != subject_names[:-1]:
+        current_app.logger.debug("not same name!")
+        current_app.logger.debug("%s" % issuer_names)
+        current_app.logger.debug("%s" % subject_names)
         abort(400)
     if subject_names[-1].oid != NameOID.COMMON_NAME:
+        current_app.logger.debug("not a CN!")
         abort(400)
 
     private_key = serialization.load_pem_private_key(
@@ -108,16 +112,16 @@ def build_proxy(user_proxy, csr_priv_key):
 
     if p_mod != priv_mod:
         # signed with a different key!?
+        current_app.logger.debug("DIFFERENT KEY!")
         abort(400)
 
-    # build the new proxy
+
     new_proxy_chain = [pem_chain[0], csr_priv_key]
     new_proxy_chain.extend(pem_chain[1:])
 
     time_left = (proxy.not_valid_after.replace(tzinfo=pytz.utc)
                  - datetime.now(tz=pytz.utc))
- 
-    return ''.join(new_proxy_chain), time_left
+    return '\n'.join(new_proxy_chain), humanize.naturaldelta(time_left)
 
 
 def add_voms_info(user_proxy, vo):
@@ -131,7 +135,6 @@ def add_voms_info(user_proxy, vo):
             old_proxy.write(user_proxy)
             old_proxy.flush()
 
-            current_app.logger.debug("PROXY\n%s" % user_proxy)
             cmd = ['voms-proxy-init',
                    '--out', new_proxy.name,
                    '--voms', vo,
@@ -147,4 +150,5 @@ def add_voms_info(user_proxy, vo):
             if proc.returncode != 0: #  and not _check_proxy_validity(new_proxy):
                 current_app.logger.debug("Failed to generate a proxy (%d): %s" % (proc.returncode, out))
             return new_proxy.read()
-    return user_proxy
+    current_app.logger.debug("VOMS proxy failed!")
+    abort(400)

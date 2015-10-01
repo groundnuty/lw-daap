@@ -26,18 +26,18 @@ define(function(require) {
 
         this.updateButtons = function(ev, data) {
             if (data.user_proxy) {
-                $('#remove_delegation_button').show()
-                $('#delegation_button').hide()
-                $('#extend_delegation_button').show()
-                $('#proxy-msg').html("Your proxy is valid for " + data.time_left)
-                $('#proxy-msg').attr("class", "alert alert-success")
-                if ( that.attr.nextUrl != '' ) { window.location=that.attr.nextUrl }
+                $('#remove_delegation_button').show();
+                $('#delegation_button').hide();
+                $('#extend_delegation_button').show();
+                $('#proxy-msg').html("Your proxy is valid for " + data.time_left);
+                $('#proxy-msg').attr("class", "alert alert-success");
+                if ( that.attr.nextUrl != '' ) { window.location=that.attr.nextUrl; }
             } else {
-                $('#remove_delegation_button').hide()
-                $('#delegation_button').show()
-                $('#extend_delegation_button').hide()
-                $('#proxy-msg').html("No delegation found")
-                $('#proxy-msg').attr("class", "alert alert-warning")
+                $('#remove_delegation_button').hide();
+                $('#delegation_button').show();
+                $('#extend_delegation_button').hide();
+                $('#proxy-msg').html("No delegation found");
+                $('#proxy-msg').attr("class", "alert alert-warning");
             }
         };
 
@@ -46,20 +46,34 @@ define(function(require) {
                 .done(function() {
                     that.trigger("proxyUpdate", {user_proxy: false});
                 });
-        }
+        };
 
         this.doDelegate = function() {
             $.get(that.attr.requestUrl, function(data) {
                 var userCERT = that.select('userCERT').val();
                 var privateKey = that.select('privateKey').val();
-                var x509Proxy = signer(data.csr, privateKey, userCERT);
+                var x509Proxy = signer(data, privateKey, userCERT);
                 x509Proxy += "" + userCERT;
 
-                $.post(that.attr.delegateUrl, {x509Proxy: x509Proxy})
-                    .done(function(data) {
-                        that.$node.modal('hide')
-                        that.trigger('proxyUpdate', data);
-                    });
+                //var x509Proxy= data;
+
+                $.ajax({
+                    url : that.attr.delegateUrl,
+                    type : "POST",
+                    contentType : "text/plain; charset=UTF-8",
+                    dataType : 'text',
+                    data: x509Proxy,
+                    processData : false,
+                    beforeSend : function(xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    xhrFields : {
+                        withCredentials : true
+                    }
+                }).done(function(data) {
+                    that.$node.modal('hide');
+                    that.trigger('proxyUpdate', data);
+                });
             });
         };
 

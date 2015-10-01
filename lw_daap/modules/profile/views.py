@@ -2,22 +2,20 @@ from __future__ import absolute_import
 
 from datetime import datetime
 
-import humanize
-
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app
 from flask_login import current_user
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu, current_menu
 
 from invenio.base.i18n import _
+from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
 from invenio.ext.login import reset_password
 
 from lw_daap.ext.login import login_required
 
-from .forms import  *
-from .models import *
-
+from .forms import ProfileForm
+from .models import userProfile
 from .proxy_utils import add_voms_info, get_client_proxy_info, \
                          generate_proxy_request, build_proxy
 
@@ -82,16 +80,14 @@ def delegate():
     )
 
 
-@blueprint.route("/proxy_request")
+@blueprint.route("/proxy-request")
 @ssl_required
 @login_required
 def csr_request():
     profile = userProfile.get_or_create()
     priv_key, csr = generate_proxy_request()
     profile.update(csr_priv_key=priv_key)
-    return jsonify(dict(
-        csr=csr
-    ))
+    return csr
 
 
 @blueprint.route('/delegate-proxy', methods=['POST'])
@@ -100,19 +96,22 @@ def csr_request():
 def delegate_proxy():
     profile = userProfile.get_or_create()
     if not profile.csr_priv_key:
+        current_app.logger.debug("NO KEY!")
         abort(400)
     try:
-        proxy = request.form['x509Proxy']
+        proxy = request.data
     except KeyError:
+        current_app.logger.debug("NO proxy!")
         abort(400)
 
     new_proxy, time_left = build_proxy(proxy, profile.csr_priv_key)
-    add_voms_info(new_proxy, "fedcloud.egi.eu") 
+    if cfg.get('CFG_DELEGATION_VO'):
+        new_proxy = add_voms_info(new_proxy, cfg['CFG_DELEGATION_VO'])
     profile.update(user_proxy=new_proxy)
 
     return jsonify(dict(
         user_proxy=True,
-        time_left=humanize.naturaldelta(time_left),
+        time_left=time_left
     ))
 
 

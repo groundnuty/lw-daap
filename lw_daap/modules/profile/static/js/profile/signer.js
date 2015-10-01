@@ -49,10 +49,30 @@ define(function(require) {
             }
     }
 
+    // aeonium: this is here to enforce SHA256 signing
+    function sign(cert) {
+        cert.asn1SignatureAlg = cert.asn1TBSCert.asn1SignatureAlg;
+
+        var sig = new KJUR.crypto.Signature({'alg': 'SHA256withRSA'});
+        sig.init(cert.prvKey);
+        sig.updateHex(cert.asn1TBSCert.getEncodedHex());
+        cert.hexSig = sig.sign();
+
+        cert.asn1Sig = new KJUR.asn1.DERBitString({'hex': '00' + cert.hexSig});
+
+        var seq = new KJUR.asn1.DERSequence({'array': [cert.asn1TBSCert,
+                                                       cert.asn1SignatureAlg,
+                                                       cert.asn1Sig]});
+        cert.hTLV = seq.getEncodedHex();
+        cert.isModified = false;
+    };
+
 
     function signRequest(sCert, userPrivateKeyPEM, userCERT) {
         var defaultProxyHours = 12;
         var reHex = /^\s*(?:[0-9A-Fa-f][0-9A-Fa-f]\s*)+$/;
+
+
 
         // aeonium: put this here, otherwise YAHOO is not found :(
         var ProxyInfo = function(params) {
@@ -102,10 +122,10 @@ define(function(require) {
             ct.readCertPEM(userCERT);
             var userDN = ct.getSubjectString()
             var oIssuer = ct.getIssuerHex();
-            var oSerial = ct.getSerialNumberHex();
+            var oSerial = Math.floor(Math.random() * 6553600) + 6553600;
             console.log(oIssuer);
             // FIXME: use a better value here
-            var subject = userDN + '/CN=' + oSerial; // +  Math.floor(Math.random() * 65536) + 1024;
+            var subject = userDN + '/CN=' + oSerial;
             console.log(subject);
 
             var rsakey = new RSAKey();
@@ -185,7 +205,7 @@ define(function(require) {
             // TODO check times in all certificates involved to check that the
             // expiration in the
             // new one is not later than the others
-            cert.sign();
+            sign(cert);
 
             var pemCert = cert.getPEMString();
             //console.log(pemCert.replace(/^\s*$[\n\r]{1,}/gm, "\n"));
