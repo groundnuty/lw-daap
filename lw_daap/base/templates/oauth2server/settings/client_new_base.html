@@ -26,29 +26,22 @@
 <div class="panel-list-wrapper">
   <div class="panel panel-deposit panel-sharp">
     {% call hb.panel_head() %}
-    <i class="fa fa-fw fa-link"></i>Linked accounts
-    {% endcall %}
-    {% call hb.panel_body() %}
-    <p>Setup single sign-on with one or more of the services below (currently only available for
-    accounts with the same email):</p>
-    <ul class="list-group">
-      {%- for s in services %}
-      <li class="list-group-item">
-      <div class="pull-right">
-        {%- if s.account -%}
-        <a href="{{url_for('oauthclient.disconnect', remote_app=s.appid)}}" class="btn btn-forest btn-sharp btn-xs"><i class="fa fa-times-circle"></i> Disconnect</a>
-        {%- else -%}
-        <a href="{{url_for('oauthclient.login', remote_app=s.appid)}}" class="btn btn-forest btn-sharp btn-xs"><i class="fa fa-link"></i> Connect</a>
-        {%- endif -%}
-      </div>
-      {% if s.icon %}<i class="{{s.icon}}"></i> {% endif %}
-      {{s.title}}
-      {% if s.account %} <i class="fa fa-check" style="color: #5cb85c;"></i>{% endif %}<br/>
-      <small class="text-muted">{{s.description}}</small>
-      </li>
-      {%- endfor %}
-    </ul>
-    {% endcall %}
+      New OAuth Application
+      {% endcall %}
+      {% call hb.panel_body() %}
+      
+<form role="form" method="POST">
+{%- for field in form %}
+{{ render_field(field, show_description=True) }}
+{%- endfor %}
+<div class="form-group">
+    <div class="pull-right">
+      <a href="{{url_for('.index')}}" class="btn btn-sunshine btn-sharp btn-raised"><i class="fa fa-times"></i> Cancel</a>
+      <button type="submit" class="btn btn-forest btn-sharp btn-raised"><i class="fa fa-check"></i> Register</button>
+    </div>
   </div>
+</form>
+{% endcall %}
+</div>
 </div>
 {% endblock %}

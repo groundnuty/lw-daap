@@ -43,7 +43,7 @@ blueprint = Blueprint(
     blueprint, 'settings.profile',
     _('%(icon)s Profile', icon='<i class="fa fa-user fa-fw"></i>'),
     order=0,
-    active_when=lambda: request.endpoint.startswith("userProfile.")
+    active_when=lambda: request.endpoint.startswith("userProfile."),
 )
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def index():
@@ -79,7 +79,7 @@ def index():
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def delegate():
     profile = userProfile.get_or_create()
-    ctx = dict(profile=profile) 
+    ctx = dict(profile=profile)
     ctx.update(get_client_proxy_info(profile))
     return render_template(
         "profile/delegation.html",
@@ -96,7 +96,7 @@ def csr_request():
     profile.update(csr_priv_key=priv_key)
     return jsonify(dict(
         csr=csr
-    )) 
+    ))
 
 
 @blueprint.route('/delegate-proxy', methods=['POST'])
@@ -113,7 +113,7 @@ def delegate_proxy():
 
     new_proxy, time_left = build_proxy(proxy, profile.csr_priv_key)
     profile.update(user_proxy=new_proxy)
-    
+
     return jsonify(dict(
         user_proxy=True,
         time_left=humanize.naturaldelta(time_left),

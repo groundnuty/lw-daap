@@ -40,16 +40,22 @@ a:hover, a:focus {
   color: #FF5001;
 }
 
-#search-box-main .navbar {
+.searchform  {
   background: #F1F1F1;
   border: 1px solid #DDD;
   border-radius: 0px;
   box-shadow: 1px 1px 1px #EEE;
 }
 
-#search-box-main .btn {
+.searchform input,
+.searchform select {
   border-radius: 0px;
 }
+
+.searchform .btn {
+  border-radius: 0px;
+}
+
 
 #search-box-main .nav-tabs > li.active > a {
   background-color: #F1F1F1;
@@ -138,6 +144,34 @@ blockquote:after {
   vertical-align: -0.3em;
 }
 
+.list-group-item.active a:hover {
+  color: #FFF;
+  background-color: #FF9464;
+}
+
+
+.list-group-item.active a {
+  color: #FFF;
+  background-color: #FF9464;
+}
+
+.badge-sunshine {
+  background: #00F051; 
+}
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+  z-index: 2;
+  color: #FFF;
+  background-color: #FF9464;
+}
+.list-group-item.active {
+  background: #FF9464;
+  border: none;
+}
+
+.progress-bar-forest {
+  background-color: #287B4C;
+}
+
 #main {
   height: 100%;
 }
@@ -145,20 +179,6 @@ blockquote:after {
 blockquote p {
   display: inline;
 }
-
-.deposit-wrapper {
-  padding: 20px 50px;
-  background: #F1F1F1;
-  box-shadow: 1px 1px 4px #DDD;
-}
-
-.deposition-wrapper {
-  padding: 0px 15px;
-  padding-bottom: 15px;
-  background: #F1F1F1;
-  box-shadow: 1px 1px 4px #DDD;
-}
-
 
 #map-wrapper {
   border-radius: 4px;

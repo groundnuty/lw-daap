@@ -23,50 +23,57 @@
 {% endblock form_title %}
 
 
-{% block form_header scoped %}{{ super() }}{% endblock form_header%}
+{% block form_header scoped %}
+{{ super() }}
+{% endblock form_header%}
 
 {#
- # Add action bar in bottom, just before the file upload field
- #}
+# Add action bar in bottom, just before the file upload field
+#}
 {% block form_group_header scoped %}
-    {% if group %}
-        {{ form_group_accordion_start(group, grouploop.index) }}
-    {#
-    {% else %}
-        {{ form_action_bar(margin="0px") }}
-    #}
-    {% endif %}
+{% if group %}
+{{ form_group_accordion_start(group, grouploop.index) }}
+{% endif %}
 {% endblock %}
 
-{% block form_footer scoped %}{{ form_action_bar() }}{% endblock %}
+{% block form_footer scoped %}
+{{ form_action_bar() }}
+{% endblock %}
 
 {#
- # Custom display of upload_type field
- #}
+# Custom display of upload_type field
+# ##CLEARME
+#}
 {% block field_body scoped %}
-    {%- if field.name == 'upload_type' -%}
-        <div class="upload-type" align="center">
-            <div class="form-group {{ "error" if field.errors }}" id="state-group-{{ field.name }}">
-                {{field}}
-            </div>
-            {%- if field.description %}
-            <p class="text-muted field-desc"><small>{{field.description|urlize}}</small></p>
-            {%- endif %}
-            <div class="alert help-block {{ 'alert-error' if field.errors else 'collapse' }}" id="state-{{ field.name }}" style="margin-top: 5px;{% if field.errors %} display:block;{% endif %}">
-                {%- for error in field.errors %}
-                    <div>{{ error }}</div>
-                {%- endfor %}
-            </div>
-        </div>
-    {% elif field.short_name == 'prereserve_doi' %}
-        {{ field_display(field, field_class="btn  btn-default btn-xs") }}
-    {% elif field.short_name == 'plupload_file' %}
-        {{ field_display(field, field_size="col-md-12") }}
-    {% elif field.short_name == 'spaupload_file' %}
-        {{ field_display(field, field_size="col-md-12") }}
-    {% elif field.short_name == 'references' %}
-        {{ field_display(field, rows="30", wrap='off') }}
-    {% else %}
-        {{ field_display(field) }}
-    {% endif %}
+{%- if field.name == 'upload_type' -%}
+<div class="upload-type" align="center">
+  <div class="form-group {{ "error" if field.errors }}" id="state-group-{{ field.name }}">
+    aaaaaaaa {{field}}
+  </div>
+  
+  {%- if field.description %}
+  <p class="text-muted field-desc">
+  <small>{{field.description|urlize}}</small>
+  </p>
+  {%- endif %}
+
+  <div class="alert help-block {{ 'alert-error' if field.errors else 'collapse' }}"
+    id="state-{{ field.name }}"
+    style="margin-top: 5px;{% if field.errors %} display:block;{% endif %}">
+    {%- for error in field.errors %}
+    <div>{{ error }}</div>
+    {%- endfor %}
+  </div>
+</div>
+{% elif field.short_name == 'prereserve_doi' %}
+{{ field_display(field, field_class="btn  btn-default btn-xs") }}
+{% elif field.short_name == 'plupload_file' %}
+{{ field_display(field, field_size="col-md-12") }}
+{% elif field.short_name == 'spaupload_file' %}
+{{ field_display(field, field_size="col-md-12") }}
+{% elif field.short_name == 'references' %}
+{{ field_display(field, rows="30", wrap='off') }}
+{% else %}
+{{ field_display(field) }}
+{% endif %}
 {% endblock field_body %}

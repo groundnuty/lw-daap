@@ -59,7 +59,7 @@ open_panel_section, close_panel_section
     {% endif %}
 
     <div class="col-sm-12 col-md-9">
-      <div class="deposition-wrapper">
+      <div class="panel-list-wrapper">
         {{ open_panel_section(
         '<i class="fa fa-info"></i> Basic information', 1, True) }}
         {% if daap_record.description %}
