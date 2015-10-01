@@ -1,10 +1,24 @@
-<div class="well"{% if margin %}style="margin-top: {{margin}}"{% endif %}>
-    {# FIXME: Look for the proper back url #}
-    <a class="btn btn-default pull-left" href="#"><i class="fa fa-arrow-circle-left"></i> {{ _('Edit Metadata') }}</a>
-    <span class="pull-right">
-        <span class="loader collapse"><img src="{{ url_for('static', filename='img/loading.gif' ) }}" /></span>
-        <small><span class="status-indicator text-muted"></span></small>&nbsp;
-        <button title="{{_('Press Submit to create your entry.')}}" class="btn btn-primary form-submit"><i class="fa fa-arrow-circle-right fa-inverse "></i> {{ _('Submit') }}</button>
+<div>
+  {# FIXME: Look for the proper back url
+
+  <a class="btn btn-default pull-left" href="#">
+    <i class="fa fa-arrow-circle-left"></i>
+    {{ _('Edit Metadata') }}
+  </a>
+
+  #}
+  <span class="pull-right">
+    <span class="loader collapse">
+      <img src="{{ url_for('static', filename='img/loading.gif' ) }}" />
     </span>
-    <span class="clearfix"></span>
+    <small>
+      <span class="status-indicator text-muted"></span>
+    </small>&nbsp;
+    <button title="{{_('Press Submit to create your entry.')}}"
+      class="btn btn-forest btn-sharp btn-raised form-submit">
+      <i class="fa fa-arrow-circle-right fa-inverse "></i>
+      {{ _('Submit') }}
+    </button>
+  </span>
+  <span class="clearfix"></span>
 </div>

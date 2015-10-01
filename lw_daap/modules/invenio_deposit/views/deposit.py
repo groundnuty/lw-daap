@@ -160,8 +160,11 @@ def deposition_type_index(deposition_type):
 @register_menu(blueprint,
         'settings.myuploads',
         _('%(icon)s My Uploads', icon='<i class="fa fa-file fa-fw"></i>'),
-        order=0)
-@register_breadcrumb(blueprint, '.myuploads', _('My Uploads'))
+        order=0,
+        active_when=lambda: request.endpoint.startswith("webdeposit."),
+)
+
+@register_breadcrumb(blueprint, 'breadcrumbs.settings.myuploads', _('My Uploads'))
 @login_required
 def myuploads():
     ctx = dict(

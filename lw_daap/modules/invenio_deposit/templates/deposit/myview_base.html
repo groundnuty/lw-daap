@@ -17,51 +17,76 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-{% extends "deposit/index_base.html" %}
+{%- extends "accounts/settings/index_base.html" -%}
+{%- import "helpers_base.html" as hb -%}
 
-{% block body %}
-<div class="well">
-    <h2>{{ _('My uploads') }}</h2>
+{% block settings_body %}
+<div class="panel-list-wrapper">
+  <div class="panel panel-deposit panel-sharp">
+    {% call hb.panel_head() %}
+    <i class="fa fa-cloud-upload"></i>
+      {{ _('My uploads') }}
+    {% endcall %}
+    {% call hb.panel_body() %}
     {% if not my_depositions %}
     <p class="text-muted">{{ _('You currently have no uploads.') }}</p>
     {% else %}
     {% for dep in my_depositions if not dep.has_sip() %}
     {%- set deposition_type = None if dep.type.is_default() else dep.type.get_identifier() -%}
     {%- if loop.first %}
-    <h4>{{ _('Unsubmitted') }}</h4>
+    <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Unsubmitted') }}</h4>
     <table class="table table-striped">
-    {%- endif %}
-    <tr>
-        <td><a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">{% if dep.title %}
-                  {{ dep.title }}
-              {% else %}
-                  {{ _('Untitled') }}
-              {% endif %}</a></td><td>{{ dep.modified|invenio_pretty_date }}</td><td><a href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=dep.id) }}" class="rmlink" rel="tooltip" title="Delete upload"><i class="glyphicon glyphicon-trash"></i></a></td>
-    </tr>
-    {%- if loop.last %}
+      {%- endif %}
+      <tr>
+        <td style="padding-left: 20px; width: 50%;">
+          <a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">
+            <a href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=dep.id) }}"
+              class="rmlink" rel="tooltip" title="Delete upload">
+              <i class="glyphicon glyphicon-trash"></i>&nbsp;
+            </a>
+
+            {% if dep.title %}
+            {{ dep.title }}
+            {% else %}
+            {{ _('Untitled') }}
+            {% endif %}
+          </a>
+        </td>
+        <td>
+          {{ dep.modified|invenio_pretty_date }}
+        </td>
+      </tr>
+      {%- if loop.last %}
     </table>
     {%- endif %}
     {% else %}
-
     {% endfor %}
-
     {% for dep in my_depositions if dep.has_sip() %}
     {%- set deposition_type = None if dep.type.is_default() else dep.type.get_identifier() -%}
     {%- if loop.first %}
-    <h4>{{ _('Submitted') }}</h4>
+    <h4><i class="fa fa-fw fa-upload"></i> {{ _('Submitted') }}</h4>
     <table class="table table-striped">
-    {% endif %}
-    <tr>
-        <td><a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">{% if dep.title %}
-                  {{ dep.title }}
-              {% else %}
-                  {{ _('Untitled') }}
-              {% endif %}</a></td><td>{{ dep.modified|invenio_pretty_date }}</td><td></td>
-    </tr>
-    {%- if loop.last %}
+      {% endif %}
+      <tr>
+        <td style="padding-left: 20px; width: 50%;">
+          <a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">
+            {% if dep.title %}
+            {{ dep.title }}
+            {% else %}
+            {{ _('Untitled') }}
+            {% endif %}
+          </a>
+        </td>
+        <td>
+          {{ dep.modified|invenio_pretty_date }}
+        </td>
+      </tr>
+      {%- if loop.last %}
     </table>
     {%- endif %}
     {%- endfor %}
     {%- endif %}
+    {% endcall %}
+  </div>
 </div>
 {% endblock %}

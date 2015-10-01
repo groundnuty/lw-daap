@@ -168,6 +168,10 @@ blockquote:after {
   border: none;
 }
 
+.progress-bar-forest {
+  background-color: #287B4C;
+}
+
 #main {
   height: 100%;
 }

@@ -29,19 +29,20 @@
 
 {%- bundles "groups.css", "groups.js" -%}
 {%- block settings_body %}
+<div class="panel-list-wrapper">
 <div class="panel panel-deposit panel-sharp">
   {% call hb.panel_head() %}
   <i class="fa fa-group fa-fw"></i>My Groups
   <div class="pull-right">
-    <a class="btn btn-glassy btn-sharp btn-raised" href="{{ url_for('.invitations') }}">
+    <a class="btn btn-glassy btn-sharp" href="{{ url_for('.invitations') }}">
       <i class="fa fa-fw fa-envelope"></i> {{ _("Invitations") }}
       <span class="badge">{{ invitations }}</span>
     </a>
-    <a class="btn btn-glassy btn-sharp btn-raised" href="{{ url_for('.requests') }}">
+    <a class="btn btn-glassy btn-sharp" href="{{ url_for('.requests') }}">
       <i class="fa fa-fw fa-reply"></i> {{ _("Requests") }} 
       <span class="badge">{{ requests }}</span>
     </a>
-    <a class="btn btn-forest btn-sharp btn-raised" href="{{ url_for('.new') }}">
+    <a class="btn btn-forest btn-sharp" href="{{ url_for('.new') }}">
       <i class="fa fa-fw fa-plus"></i> {{ _("New") }} 
     </a>
 
@@ -80,20 +81,20 @@
       <td class="text-center vcenter">{{ group.members_count() }}</td>
       <td class="text-center btn-toolbar vcenter">
         {%- if group.is_member(current_user) and not group.is_unique_admin(current_user) %}
-        <button class="btn btn-xs btn-danger pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
+        <button class="btn btn-xs btn-sunshine btn-sharp pull-right" type="submit" form="leave-form" formaction="{{ url_for('.leave', group_id=group.id) }}" formmethod="POST">
           <i class="fa fa-fw fa-chain-broken"></i>{{ _("Leave") }}
         </button>
         {%- endif %}
         {%- if group.is_admin(current_user) %}
-        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.manage',  group_id=group.id) }}">
+        <a class="btn btn-xs btn-forest btn-sharp pull-right" href="{{ url_for('.manage',  group_id=group.id) }}">
           <i class="fa fa-fw fa fa-wrench"></i> {{ _("Manage") }}
         </a>
-        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.new_member', group_id=group.id) }}">
+        <a class="btn btn-xs btn-forest btn-sharp pull-right" href="{{ url_for('.new_member', group_id=group.id) }}">
           <i class="fa fa-fw fa fa-plus"></i> {{ _("Invite") }}
         </a>
         {%- endif %}
         {%- if group.can_see_members(current_user) %}
-        <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
+        <a class="btn btn-xs btn-forest btn-sharp pull-right" href="{{ url_for('.members', group_id=group.id) }}">
           <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
         </a>
         {%- endif %}
@@ -114,10 +115,9 @@
 </div>
 
 <div class="panel panel-deposit panel-sharp">
-  <div class="panel-heading">
-    <strong class="panel-title"><i class="fa fa-search fa-fw"></i> {{_('Search')}}</strong>
-    <span id="collapse" class="pull-right"><i class="fa fa-chevron-down"></i></span>
-  </div>
+    {% call hb.panel_head() %}
+    <i class="fa fa-search fa-fw"></i> {{_('Search')}}
+    {% endcall %}
   <div class="panel-body">
     {{ searchbar() }}
     {%- if q_groups.items|length == 0 and q %}
@@ -148,13 +148,13 @@
           <td class="text-center vcenter">{{ group.members_count() }}</td>
           <td class="text-center btn-toolbar vcenter">
             {%- if group.can_see_members(current_user) %}
-            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.members', group_id=group.id) }}">
+            <a class="btn btn-xs btn-forest btn-sharp pull-right" href="{{ url_for('.members', group_id=group.id) }}">
               <i class="fa fa-fw fa-users"></i> {{ _("Members") }}
             </a>
             {% endif %}
             {% if not group.is_admin(current_user)  %}
             {% if not group.subscription_policy == "Closed" %}
-            <a class="btn btn-xs btn-default pull-right" href="{{ url_for('.join', group_id=group.id) }}">
+            <a class="btn btn-xs btn-forest btn-sharp pull-right" href="{{ url_for('.join', group_id=group.id) }}">
               <i class="fa fa-fw fa-sign-in"></i> {{ _("Join") }}
             </a>
             {%- endif %}
@@ -175,5 +175,6 @@
     </ul>
     {%- endif %}
   </div>
+</div>
 </div>
 {%- endblock settings_body%}

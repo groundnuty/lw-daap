@@ -17,50 +17,55 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-<div id="uploader">
-    <div class="panel panel-primary">
-        <div class="panel-heading">Choose files</div>
-        <div class="panel-body">
-            {# TODO: set some instructions here #}
-            {% block instructions %}{% endblock instructions %}
-        </div>    
-        <ul class="list-group">
-            <li class="list-group-item text-center">
-                <br />
-                <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                    <a id="pluploader" href="javascript:;" class="btn btn-default"><i class="fa fa-upload"></i> Upload</a>
-                    {% if config.DEPOSIT_DROPBOX_API_KEY %}
-                    <a id="dropboxuploader" href="javascript:;" class="btn btn-default"><i class="fa fa-dropbox"></i> Import from Dropbox</a>
-                    {% endif %}
-                    <a id="githubuploader" href="javascript:;" class="btn btn-default" style="border-radius:0px 5px 5px 0px;">
-                        <i class="fa fa-github"></i> Import from GitHub
-                    </a>
-                </div>
-                <br />
-                <br />
-            </li>
-            <li class="list-group-item well">
-                <div class="pluploader-area">
-                    <div class="uploader-selection pluploader-area"></div>
-                    <p class="text-muted" align="center"><small>Drag and drop files <strong>here</strong> to upload</small></p>
-                </div>
-            </li>
-        </ul>
-    </div> 
-  <div id="uploader-errorlist" style="visibility: hidden;">
-        <div id="errorList"></div>
-    </div>
+{% import "helpers_base.html" as hb %}
 
-    <div id="uploader-filelist"> 
-        <div class="filelist-placeholder"></div>
-    </div> 
-    
-      {#
-    <div>
-        <a href="javascript:;" id="uploader-upload" class="btn btn-success" disabled>Start upload</a>
-        <a href="javascript:;" id="uploader-stop" class="btn btn-danger">Stop upload</a>
+<div class="spacer30"></div>
+<div id="uploader">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="panel panel-forest panel-sharp">
+        <div class="panel-heading">Choose files</div>
+        <ul class="list-group">
+          <li class="list-group-item text-center">
+          <div class="spacer30"></div>
+          <a id="pluploader" href="javascript:;" class="btn btn-sunshine btn-raised btn-sharp"><i class="fa fa-upload"></i> Upload</a>
+          {% if config.DEPOSIT_DROPBOX_API_KEY %}
+          <a id="dropboxuploader" href="javascript:;" class="btn btn-sunshine btn-sharp btn-raised"><i class="fa fa-dropbox"></i> Import from Dropbox</a>
+          {% endif %}
+          <a id="githubuploader" href="javascript:;" class="btn btn-sunshine btn-sharp btn-raised">
+            <i class="fa fa-github"></i> Import from GitHub
+          </a>
+          <div class="spacer30"></div>
+          </li>
+
+          <li class="list-group-item well">
+          <div class="pluploader-area">
+            <div class="uploader-selection pluploader-area"></div>
+            <p class="text-muted" align="center"><small>Drag and drop files <strong>here</strong> to upload</small></p>
+          </div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <small id="upload-speed" class="muted pull-right" style="margin-right: 10px; padding-top:5px;"></small>
-    #}
+    <div class="col-sm-1"></div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="spacer50"></div>
+  <div id="uploader-errorlist" style="visibility: hidden;">
+    <div id="errorList"></div>
+  </div>
+
+  <div id="uploader-filelist"> 
+    <div class="filelist-placeholder"></div>
+  </div> 
+
+  {#
+  <div>
+    <a href="javascript:;" id="uploader-upload" class="btn btn-success" disabled>Start upload</a>
+    <a href="javascript:;" id="uploader-stop" class="btn btn-danger">Stop upload</a>
+  </div>
+  <small id="upload-speed" class="muted pull-right" style="margin-right: 10px; padding-top:5px;"></small>
+  #}
 </div>
 
