@@ -31,9 +31,10 @@ def get_client_proxy_info(profile):
         'SSL_CLIENT_V_END' not in request.environ or
         'SSL_CLIENT_I_DN' not in request.environ or
         request.environ.get('SSL_CLIENT_VERIFY') != 'SUCCESS'):
-        return info 
-    info['user_dn'] = request.environ['SSL_CLIENT_S_DN']
-    info['user_cert'] = request.environ['SSL_CLIENT_CERT']
+        info['user_cert'] = False
+    else:
+        info['user_dn'] = request.environ['SSL_CLIENT_S_DN']
+        info['user_cert'] = request.environ['SSL_CLIENT_CERT']
     if profile.user_proxy:
         px = x509.load_pem_x509_certificate(
             profile.user_proxy.encode('ascii', 'ignore'),
