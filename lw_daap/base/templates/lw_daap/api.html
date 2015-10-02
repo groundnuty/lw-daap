@@ -1609,46 +1609,17 @@ r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/a
     <td>String</td>
     <td>Yes</td>
     <td>Controlled vocabulary:<ul>
-      <li><code>publication</code>: Publication</li>
-      <li><code>poster</code>: Poster</li>
-      <li><code>presentation</code>: Presentation</li>
       <li><code>dataset</code>: Dataset</li>
-      <li><code>image</code>: Image</li>
-      <li><code>video</code>: Video/Audio</li>
       <li><code>software</code>: Software</li>
+      <li><code>analysis</code>: Analysis</li>
     </ul></td>
 </tr>
 <tr>
-    <td><code>publication_type</code></td>
+    <td><code>doi</code></td>
     <td>String</td>
-    <td>Yes, if <code>upload_type</code> is <code>"publication"</code>.</td>
-    <td>Controlled vocabulary:<ul>
-      <li><code>book</code>: Book</li>
-<li><code>section</code>: Book section</li>
-<li><code>conferencepaper</code>: Conference paper</li>
-<li><code>article</code>: Journal article</li>
-<li><code>patent</code>: Patent</li>
-<li><code>preprint</code>: Preprint</li>
-<li><code>report</code>: Report</li>
-<li><code>softwaredocumentation</code>: Software documentation</li>
-<li><code>thesis</code>: Thesis</li>
-<li><code>technicalnote</code>: Technical note</li>
-<li><code>workingpaper</code>: Working paper</li>
-<li><code>other</code>: Other</li>
-    </ul></td>
-</tr>
-<tr>
-    <td><code>image_type</code></td>
-    <td>String</td>
-    <td>Yes, if <code>upload_type</code> is <code>"image"</code>.</td>
-    <td>Controlled vocabulary:<ul>
-      <li><code>figure</code>: Figure</li>
-<li><code>plot</code>: Plot</li>
-<li><code>drawing</code>: Drawing</li>
-<li><code>diagram</code>: Diagram</li>
-<li><code>photo</code>: Photo</li>
-<li><code>other</code>: Other</li>
-    </ul></td>
+    <td>No</td>
+    <td>Digital Object Identifier. Did a publisher already assign a DOI to your deposited files? If not, leave the field empty and we will register a new DOI f
+or you when you publish. A DOI allow others to easily and unambiguously cite your deposition.</td>
 </tr>
 <tr>
     <td><code>publication_date</code></td>
@@ -1670,19 +1641,27 @@ r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/a
     <ul>
       <li><code>name</code>: Name of creator in the format <em>Family name, Given names</em></li>
       <li><code>affiliation</code>: Affiliation of creator (optional).</li>
-      <li><code>orcid</code>: ORCID identifier of creator (optional).</li>
-      <li><code>gnd</code>: GND identifier of creator (optional).</li>
     </ul>
     <p>Example:</p>
-    <pre>[{'name':'Doe, John', 'affiliation': 'Institute for'},
-{'name':'Smith, Jane', 'affiliation': 'Institute for', 'orcid': '0000-0002-1694-233X'},
-{'name': 'Kowalski, Jack', 'affiliation': 'Institute for', 'gnd': '170118215'}]</pre></td>
+    <pre>[{'name':'Doe, John', 'affiliation': 'Institute for'}]</pre></td>
 </tr>
 <tr>
     <td><code>description</code></td>
     <td>String</td>
     <td>Yes</td>
     <td>Abstract or description for deposition. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td> </tr>
+<tr>
+    <td><code>notes</code></td>
+    <td>String</td>
+    <td>No</td>
+    <td>Additional notes. No HTML allowed.</td>
+</tr>
+<tr>
+    <td><code>keywords</code></td>
+    <td>Array of strings</td>
+    <td>No</td>
+    <td><p>Free form keywords for this deposition. Example: </p><code>["Keyword 1", "Keyword 2"]</code></td>
+</tr>
 <tr>
     <td><code>access_right</code></td>
     <td>String</td>
@@ -1715,32 +1694,22 @@ the conditions. Based on the justification, you decide who to grant/deny access.
 do. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td>
 </tr>
 <tr>
-    <td><code>doi</code></td>
+<tr>
+    <td><code>groups</code></td>
     <td>String</td>
-    <td>No</td>
-    <td>Digital Object Identifier. Did a publisher already assign a DOI to your deposited files? If not, leave the field empty and we will register a new DOI f
-or you when you publish. A DOI allow others to easily and unambiguously cite your deposition.</td>
+    <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
+    <td>Specify the groups you grant the access to the files in your upload.</td>
 </tr>
 <tr>
-    <td><code>prereserve_doi</code></td>
-    <td>Object/Bool</td>
+    <td><code>communities</code></td>
+    <td>Array of objects</td>
     <td>No</td>
-    <td>Set to <code>true</code>, to reserve a Digital Object Identifier (DOI). The DOI is automatically generated by our system and cannot be changed. Also, T
-he DOI is not registered with <a href="http://www.datacite.org">DataCite</a> until you publish your deposition, and thus cannot be used before then. Reserving 
-a DOI is useful, if you need to include it in the files you upload, or if you need to provide a dataset DOI to your publisher but not yet publish your dataset.
- The response from the REST API will include the reserved DOI.</td>
-</tr>
-<tr>
-    <td><code>keywords</code></td>
-    <td>Array of strings</td>
-    <td>No</td>
-    <td><p>Free form keywords for this deposition. Example: </p><code>["Keyword 1", "Keyword 2"]</code></td>
-</tr>
-<tr>
-    <td><code>notes</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Additional notes. No HTML allowed.</td>
+    <td><p>List of communities you wish the deposition to appear. The owner of the community will be notified, and can either accept or reject your request. Each array element is an object with the attributes:</p>
+    <ul>
+      <li><code>identifier</code>: Community identifier</li>
+    </ul>
+    <p>Example:</p>
+    <pre>[{'identifier':'ecfunded'}]</pre></td>
 </tr>
 <tr>
     <td><code>related_identifiers</code></td>
@@ -1757,164 +1726,6 @@ ledBy</code>, <code>isIdenticalTo</code>, <code>isAlternateIdentifier</code>).</
   {'relation': 'isSupplementTo', 'identifier':'10.1234/foo'},
   {'relation': 'cites', 'identifier':'http://dx.doi.org/10.1234/bar'}
 ]</pre><p>Note the identifier type (e.g. DOI) is automatically detected, and used to validate and normalize the identifier into a standard form.</p></td>
-</tr>
-<tr>
-    <td><code>contributors</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>The contributors of the deposition (e.g. editors, data curators, etc.). Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>name</code>: Name of creator in the format <em>Family name, Given names</em></li>
-      <li><code>type</code>: Contributor type. Controlled vocabulary ({% for x in config.get('DEPOSIT_CONTRIBUTOR_TYPES') %}<code>{{x['datacite']}}</code>{% if not loop.last %},{% endif %}{% endfor %}).</li>
-      <li><code>affiliation</code>: Affiliation of creator (optional).</li>
-      <li><code>orcid</code>: ORCID identifier of creator (optional).</li>
-      <li><code>gnd</code>: GND identifier of creator (optional).</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'name':'Doe, John', 'affiliation': 'Institute for', 'type': 'Editor' }, ...]</pre></td>
-</tr>
-<tr>
-    <td><code>references</code></td>
-    <td>Array of strings</td>
-    <td>No</td>
-    <td><p>List of references.</p>
-    <p>Example:</p>
-    <pre>[
-    "Doe J (2014). Title. Publisher. DOI",
-    "Smith J (2014). Title. Publisher. DOI"
-]</pre>
-    </td>
-</tr>
-<tr>
-    <td><code>communities</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>List of communities you wish the deposition to appear. The owner of the community will be notified, and can either accept or reject your request. Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>identifier</code>: Community identifier</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'identifier':'ecfunded'}]</pre></td>
-</tr>
-<tr>
-    <td><code>grants</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>List of European Commission FP7 grants which have funded the research for this deposition. Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>id</code>: FP7 grant number.</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'id':'283595'}]</pre></td>
-</tr>
-<tr>
-    <td><code>journal_title</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Journal title, if deposition is a published article.</td>
-</tr>
-<tr>
-    <td><code>journal_volume</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Journal volume, if deposition is a published article.</td>
-</tr>
-<tr>
-    <td><code>journal_issue</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Journal issue, if deposition is a published article.</td>
-</tr>
-<tr>
-    <td><code>journal_pages</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Journal pages, if deposition is a published article.</td>
-</tr>
-<tr>
-    <td><code>conference_title</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Title of conference (e.g. 20th International Conference on Computing in High Energy and Nuclear Physics).</td>
-</tr>
-<tr>
-    <td><code>conference_acronym</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Acronym of conference (e.g. CHEP'13).</td>
-</tr>
-<tr>
-    <td><code>conference_dates</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Dates of conference (e.g. 14-18 October 2013). Conference title or acronym must also be specified if this field is specified.</td>
-</tr>
-<tr>
-    <td><code>conference_place</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Place of conference in the format city, country (e.g. Amsterdam, The Netherlands). Conference title or acronym must also be specified if this field is 
-specified.</td>
-</tr>
-<tr>
-    <td><code>conference_url</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>URL of conference (e.g. http://www.chep2013.org/).</td>
-</tr>
-<tr>
-    <td><code>conference_session</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Number of session within the conference (e.g. VI).</td>
-</tr>
-<tr>
-    <td><code>conference_session_part</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Number of part within a session (e.g. 1).</td>
-</tr>
-<tr>
-    <td><code>imprint_publisher</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Publisher of a book/report/chapter</td>
-</tr>
-<tr>
-    <td><code>imprint_isbn</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>ISBN of a book/report</td>
-</tr>
-<tr>
-    <td><code>imprint_place</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Place of publication of a book/report/chapter in the format city, country.</td>
-</tr>
-<tr>
-    <td><code>partof_title</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Title of book for chapters</td>
-</tr>
-<tr>
-    <td><code>partof_pages</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Pages numbers of book</td>
-</tr>
-<tr>
-    <td><code>thesis_supervisors</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td>Supervisors of the thesis. Same format as for <code>creators</code>.</td>
-</tr>
-<tr>
-    <td><code>thesis_university</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Awarding university of thesis.</td>
 </tr>
 <tr>
     <td><code>subjects</code></td>
