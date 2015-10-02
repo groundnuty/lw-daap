@@ -73,7 +73,10 @@ class userProfile(db.Model):
                                nullable=True, default='',
                                info=dict(
                                    label=_("SSH public key"),
-                                   description=_('The ssh public key can be obtained ... COMPLETE THE INSTRUCTIONS!'),
+                                   description=_('Paste your SSH public key, '
+                                                 'it\'s important to copy the '
+                                                 'key exactly without adding '
+                                                 'newlines or whitespace.'),
                               ))
 
 
