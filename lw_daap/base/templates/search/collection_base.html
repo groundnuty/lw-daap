@@ -110,29 +110,33 @@ search_also, with context -%}
     </div>
   </div>
   {% else %}
-  <div class="col-md-{{ '4' if collection.collection_children_v else '8' }}">
-    {% if collection.is_restricted %}
-    <strong>{{ _('This collection is restricted. If you are authorized to access it, please click on the Search button.') }}</strong>
-    {% else %}
-    {% if collection.reclist %}
-    <div class="page-header">
-      <h3>{{ collection.name_ln + ":" }}</h3>
-    </div>
-    {% for recid in collection.reclist[-10:]|reverse %}
-    <div class="row">
-      <div class="col-md-12">
-        {{ format_record(recid, of, ln=g.ln)|safe }}
-        {{ '<hr/>'|safe if not loop.last }}
+      <div class="col-md-{{ '4' if collection.collection_children_v else '8' }}">
+      {% if collection.is_restricted %}
+        <strong>{{ _('This collection is restricted. If you are authorized to access it, please click on the Search button.') }}</strong>
+      {% else %}
+        {% if collection.reclist %}
+        <div class="page-header">
+          <h3>{{ collection.name_ln + ":" }}</h3>
+        </div>
+        {% for recid in collection.reclist[-10:]|reverse %}
+        <div class="row">
+          <div class="col-md-12">
+            {{ format_record(recid, of, ln=g.ln)|safe }}
+            {{ '<hr/>'|safe if not loop.last }}
+          </div>
+        </div>
+        {% endfor %}
+        {% if collection.reclist|length > 10 %}
+          <a href="{{ url_for('search.search', cc=collection.name, ln=g.ln, jrec=11)|safe }}"
+             class="pull-right text-muted">[&gt;&gt; {{ _('more')}}]</a>
+        {% endif %}
+        {% endif %}
+      {% endif %}
+      {% if collection.reclist|length > 0 and collection.name_ln.lower() == 'dataset' %}
+          <br/>
+          <a href="/collection/Dataset/dcat" class="btn btn-info clearfix">Download DCAT</a>
+      {% endif %}
       </div>
-    </div>
-    {% endfor %}
-    {% if collection.reclist|length > 10 %}
-    <a href="{{ url_for('search.search', cc=collection.name, ln=g.ln, jrec=11)|safe }}"
-      class="pull-right text-muted">[&gt;&gt; {{ _('more')}}]</a>
-    {% endif %}
-    {% endif %}
-    {% endif %}
-  </div>
   {% endif %}
   {%- endblock index_right -%}
 
