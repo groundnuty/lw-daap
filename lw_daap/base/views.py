@@ -12,18 +12,36 @@ from invenio.ext.template. \
 blueprint = Blueprint('lw_daap', __name__, url_prefix='',
                       template_folder='templates', static_folder='static')
 
-
+#
+# Footer
+#
 @blueprint.route('/about', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.about', _("About"))
 def about():
     return render_template('lw_daap/about.html')
-
 
 @blueprint.route('/dev', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.api', _("API"))
 def api():
     return render_template('lw_daap/api.html')
 
+@blueprint.route('/contact', methods=['GET', ])
+@register_breadcrumb(blueprint, 'breadcrumbs.contact', _("Contact"))
+def contact():
+    return render_template('lw_daap/contact.html')
+
+@blueprint.route('/privacypolicy', methods=['GET', ])
+@register_breadcrumb(blueprint, 'breadcrumbs.privacypolicy', _("Privacy Policy"))
+def privacypolicy():
+    return render_template('lw_daap/privacypolicy.html')
+
+@blueprint.route('/termsofservices', methods=['GET', ])
+@register_breadcrumb(blueprint, 'breadcrumbs.termsofservices', _("Terms of Services"))
+def termsofservices():
+    return render_template('lw_daap/termsofservices.html')
+#
+#
+#
 
 @blueprint.before_app_first_request
 def register_menu_items():
