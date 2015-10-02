@@ -96,9 +96,9 @@ def dcat():
 
     recids = perform_request_search(cc='Dataset')
     dcat =     """<rdf:RDF\n"""
-    dcat +=    """   xmlns:dc="http://purl.org/dc/elements/1.1/\n"""
-    dcat +=    """   xmlns:dcat="http://www.w3.org/ns/dcat#\n"""
-    dcat +=    """   xmlns:dct="http://purl.org/dc/terms/\n"""
+    dcat +=    """   xmlns:dc="http://purl.org/dc/elements/1.1/"\n"""
+    dcat +=    """   xmlns:dcat="http://www.w3.org/ns/dcat#"\n"""
+    dcat +=    """   xmlns:dct="http://purl.org/dc/terms/"\n"""
     dcat +=    """   xmlns:foaf="http://xmlns.com/foaf/0.1/"\n"""
     dcat +=    """   xmlns:xsd="http://www.w3.org/2001/XMLSchema#"\n"""
     dcat +=    """   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\n"""
@@ -108,7 +108,7 @@ def dcat():
     dcat +=    """   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n"""
     dcat +=    """      <dcat:Catalog rdf:about=\"""" + current_app.config['CFG_SITE_URL'] + """/collection/Dataset">\n"""
     dcat +=    """         <dc:language>""" + current_app.config['CFG_SITE_LANG'] + """</dc:language>\n"""
-    dcat +=    """         <dct:title xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_TITLE'] + """</dct:title>\n"""
+    dcat +=    """         <dct:title xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_NAME'] + """</dct:title>\n"""
     dcat +=    """         <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_DESCRIPTION'] + """</dct:description>\n"""
     dcat +=    """         <dct:extent>\n"""
     dcat +=    """            <dct:SizeOrDuration>\n"""
