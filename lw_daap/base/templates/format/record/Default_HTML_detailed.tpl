@@ -34,7 +34,7 @@ open_panel_section, close_panel_section
       data-toggle="modal" data-target="#doi-confirm-dialog">
       <i class="fa fa-barcode"></i> Mint Doi</button>
 {% endif %}
-      <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+      <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href="{{ url_for('webdeposit.edit', uuid=daap_record.owner.deposition_id|int) }}"><i class="fa fa-pencil-square-o"></i> Edit</a>
 {% endif %}
       <a class="btn btn-block btn-lg btn-sunshine btn-sharp btn-raised" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
       <div class="spacer20"></div>
