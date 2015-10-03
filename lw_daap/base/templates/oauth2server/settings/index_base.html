@@ -24,10 +24,10 @@
 
 {% block settings_body %}
 <div class="panel-list-wrapper">
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-deposit ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-cubes"></i> Developer Applications
-    <a class="btn btn-forest btn-sharp pull-right" href="{{ url_for('.client_new') }}">
+    <a class="btn btn-primary  pull-right" href="{{ url_for('.client_new') }}">
       <i class="fa fa-fw fa-plus"></i> New application
     </a>
     {% endcall %}
@@ -49,10 +49,10 @@
     {% endcall %}
   </div>
 
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-deposit ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-book"></i> Personal access tokens
-    <a class="btn btn-forest btn-sharp pull-right" href="{{ url_for('.token_new') }}">
+    <a class="btn btn-primary  pull-right" href="{{ url_for('.token_new') }}">
       <i class="fa fa-fw fa-plus"></i> New token
     </a>
     {% endcall %}
@@ -72,7 +72,7 @@
     {% endcall %}
   </div>
 
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-deposit ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-bookmark"></i> Authorized applications
     {% endcall %}

@@ -9,7 +9,6 @@ open_panel_section, close_panel_section
 {% if not daap_record %}
 {% set daap_record = record %}
 {% endif %}
-
 <div class="record-details">
   {% block header %}
   <div class="row">
@@ -28,17 +27,17 @@ open_panel_section, close_panel_section
     {% if daap_files and show_files %}
     <div class="col-sm-12 col-md-3">
 
-{% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
-{% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
-      <button class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" 
-      data-toggle="modal" data-target="#doi-confirm-dialog">
-      <i class="fa fa-barcode"></i> Mint Doi</button>
-{% endif %}
-      <a class="btn btn-block btn-lg btn-forest btn-sharp btn-raised" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
-{% endif %}
-      <a class="btn btn-block btn-lg btn-sunshine btn-sharp btn-raised" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
+      {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
+      {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
+      <button class="btn btn-block btn-lg btn-default" 
+        data-toggle="modal" data-target="#doi-confirm-dialog">
+        <i class="fa fa-barcode"></i> Mint Doi</button>
+      {% endif %}
+      <a class="btn btn-block btn-lg btn-primary" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+      {% endif %}
+      <a class="btn btn-block btn-lg btn-danger" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
       <div class="spacer20"></div>
-      <div class="panel-forest panel-sharp">
+      <div class="panel-primary ">
         <div class="panel-heading">
           <i class="fa fa-book"></i> Summary
         </div>
@@ -84,7 +83,7 @@ open_panel_section, close_panel_section
           </div>
           <div class="col-md-9">
             {% for keyword in daap_record['keywords'] %}
-            <span class="label label-forest" style="display: inline-block; margin: 5px 5px;">
+            <span class="label label-primary" style="display: inline-block; margin: 5px 5px;">
               <a href="{{ url_for('search.search', p='keyword:' + keyword) }}">{{ keyword }}</a>
             </span>
             {% endfor %}
@@ -197,7 +196,7 @@ open_panel_section, close_panel_section
           </div>
           <div class="col-md-9">
             {% for relid in daap_record.related_identifiers %}
-            <span class="label label-forest" style="display: inline-block; margin: 5px 5px;">
+            <span class="label label-primary" style="display: inline-block; margin: 5px 5px;">
               <a href="{{ url_for('search.search', p='relid.identifier:' + relid.identifier) }}">
                 {{ relid.identifier }}
               </a>
@@ -258,7 +257,7 @@ open_panel_section, close_panel_section
 
     {% for file in row %}
     <div class="col-md-6">
-      <a class="btn btn-forest btn-raised file-resource"  href="{{ file.url }}">
+      <a class="btn btn-primary btn-raised file-resource"  href="{{ file.url }}">
         <div class="col-xs-2 text-center">
           <span class="file-resource-type">
             <i class="fa fa-download fa-2x" aria-hidden="true"></i><br/>

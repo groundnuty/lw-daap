@@ -24,6 +24,10 @@ def about():
 def api():
     return render_template('lw_daap/api.html')
 
+@blueprint.route('/styles', methods=['GET', ])
+def styles():
+    return render_template('lw_daap/styles.html')
+
 
 @blueprint.before_app_first_request
 def register_menu_items():

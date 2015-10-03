@@ -142,10 +142,10 @@
 
             {%- set used_args = new_args.copy() -%}
             {%- do used_args.update({'so': so_alternative}) -%}
-            <a class="btn btn-glassy btn-raised btn-sharp" href="{{ url_for('search.search', **used_args) }}{{ '#'+request.form.get('filter','')|default('', true) }}" tooltip="{{_('Sort ascending') if so_alternative == 'a' else _('Sort descending')}}">
+            <a class="btn btn-default btn-raised " href="{{ url_for('search.search', **used_args) }}{{ '#'+request.form.get('filter','')|default('', true) }}" tooltip="{{_('Sort ascending') if so_alternative == 'a' else _('Sort descending')}}">
               <i class="fa fa-sort-alpha-{{'desc' if so_alternative == 'a' else 'asc'}}"></i>
             </a>
-            <a class="btn btn-glassy btn-sharp btn-raised dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="btn btn-default  btn-raised dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="fa fa-random"></i> {{ _('Sort by') }}
               <span class="caret"></span>
             </a>

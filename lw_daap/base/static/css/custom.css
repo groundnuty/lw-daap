@@ -40,6 +40,41 @@ a:hover, a:focus {
   color: #FF5001;
 }
 
+a.btn {
+  color: #FFFFFF;
+}
+
+.label a {
+  color: #FFF;
+}
+
+
+.alert-info {
+  background-color: #D6F8E4;
+  color: #50BB7B;
+  border-color: #31A25F;
+}
+
+.alert-warning {
+  background-color: #FFF3ED;
+  color: #AE6442;
+  border-color: #D89577;
+}
+
+
+.form-control:focus {
+  border-color: #DDD;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) inset;
+}
+
+.label-primary {
+      background-color: #0A9C45;
+      color: #FFFFFF;
+    }
+
+
+
+
 .searchform  {
   background: #F1F1F1;
   border: 1px solid #DDD;
@@ -158,10 +193,12 @@ blockquote:after {
 .badge-sunshine {
   background: #00F051; 
 }
-.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+
+.pagination > .active > a:hover, .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
   z-index: 2;
   color: #FFF;
   background-color: #FF9464;
+  border-color: #FF9464;
 }
 .list-group-item.active {
   background: #FF9464;
@@ -176,13 +213,6 @@ blockquote:after {
   background-color: #FF9464;
   border-color: #FF9464;
 }
-
-.alert-info {
-  background-color: #D9EDF7;
-  border-color: #BCE8F1;
-  color: #31708F;
-}
-
 
 #main {
   height: 100%;

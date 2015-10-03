@@ -24,7 +24,7 @@
 
 {% block settings_body %}
 <div class="panel-list-wrapper">
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-deposit ">
     {% call hb.panel_head() %}
     New personal access token
     {% endcall %}
@@ -35,9 +35,9 @@
 {%- endfor %}
 <div class="form-group">
     <div class="pull-right">
-      <a href="{{url_for('.index')}}" class="btn btn-sunshine btn-sharp btn-raised">
+      <a href="{{url_for('.index')}}" class="btn btn-danger  btn-raised">
         <i class="fa fa-times"></i> Cancel</a>
-      <button type="submit" class="btn btn-forest btn-sharp btn-raised">
+      <button type="submit" class="btn btn-primary  btn-raised">
         <i class="fa fa-check"></i> Create</button>
     </div>
   </div>

@@ -24,7 +24,7 @@
 
 {% block settings_body %}
 <div class="panel-list-wrapper">
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-deposit ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-link"></i>Linked accounts
     {% endcall %}
@@ -36,9 +36,9 @@
       <li class="list-group-item">
       <div class="pull-right">
         {%- if s.account -%}
-        <a href="{{url_for('oauthclient.disconnect', remote_app=s.appid)}}" class="btn btn-forest btn-sharp btn-xs"><i class="fa fa-times-circle"></i> Disconnect</a>
+        <a href="{{url_for('oauthclient.disconnect', remote_app=s.appid)}}" class="btn btn-primary  btn-xs"><i class="fa fa-times-circle"></i> Disconnect</a>
         {%- else -%}
-        <a href="{{url_for('oauthclient.login', remote_app=s.appid)}}" class="btn btn-forest btn-sharp btn-xs"><i class="fa fa-link"></i> Connect</a>
+        <a href="{{url_for('oauthclient.login', remote_app=s.appid)}}" class="btn btn-primary  btn-xs"><i class="fa fa-link"></i> Connect</a>
         {%- endif -%}
       </div>
       {% if s.icon %}<i class="{{s.icon}}"></i> {% endif %}

@@ -32,7 +32,7 @@
     {% else %}
       New group
       {% endif %}
-    <a class="btn btn-forest btn-sharp pull-right"
+    <a class="btn btn-primary  pull-right"
       href={{url_for('.members', group_id=group.id)}}>
       <i class="fa fa-fw fa-users"></i>{{ "Members" if group else "" }}
     </a>
