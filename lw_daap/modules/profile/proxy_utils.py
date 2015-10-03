@@ -43,7 +43,7 @@ def get_client_proxy_info(profile):
         not_after = px.not_valid_after.replace(tzinfo=pytz.utc)
         time_left = not_after - datetime.now(tz=pytz.utc)
         # let's consider a valid proxy if you have at least 10 min
-        if time_left.total_seconds > 600:
+        if time_left.total_seconds() > 600:
             info['user_proxy'] = True
             info['user_proxy_time_left'] = humanize.naturaldelta(time_left)
     return info
