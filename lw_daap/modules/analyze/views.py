@@ -6,7 +6,7 @@ from flask_menu import register_menu
 from flask import Response
 
 from forms import LaunchForm
-from infra import launch_vm, list_vms, get_client
+from infra import launch_vm, list_vms, get_client, terminate_vm
 
 from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import userProfile 
@@ -49,3 +49,12 @@ def launch():
         form = form,
     )
     return render_template('analyze/launch.html', **ctx)
+
+
+@blueprint.route('/terminate/<vm_id>', methods=['POST'])
+@delegation_required()
+def terminate(vm_id):
+    profile = userProfile.get_or_create()
+    client = get_client(profile.user_proxy)
+    terminate_vm(client, vm_id)
+    return redirect(url_for('.index'))

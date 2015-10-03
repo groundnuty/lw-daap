@@ -34,10 +34,10 @@ def get_client(user_proxy):
                                            auth_plugin=auth_plugin,
                                            auth_system=auth_system,
                                            # XXX REMOVE THIS ASAP!
-                                           insecure=True)    
+                                           insecure=True)
         client.authenticate()
     return client
-    
+
 
 def launch_vm(client, name, image, flavor, app_env=''):
     try:
@@ -45,8 +45,14 @@ def launch_vm(client, name, image, flavor, app_env=''):
                                   flavor=flavor, meta={'lwdaap_vm': '',
                                                        'app_env': app_env})
     except Exception, e:
-        current_app.logger.debug("PUM!, %s" % e)  
-    return s 
+        current_app.logger.debug("PUM!, %s" % e)
+    return s
+
+def terminate_vm(client, vm_id):
+    try:
+        client.servers.delete(vm_id)
+    except Exception, e:
+        current_app.logger.debug("PUM!, %s" % e)
 
 
 def list_vms(client):
@@ -56,7 +62,7 @@ def list_vms(client):
     user_id = catalog['access']['user']['id']
 
     def _filter(vm):
-        return (vm.user_id == user_id and 
+        return (vm.user_id == user_id and
                 vm.metadata.get('lwdaap_vm', None) is not None)
 
     def _mapper(vm):

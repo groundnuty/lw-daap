@@ -1,7 +1,21 @@
 
 {% extends "page.html" %}
-{%- from "_formhelpers.html" import render_field with context %}
+{%- from "analyze/modals.html" import terminate_modal with context %}
 
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+  require(
+    [
+      "jquery",
+      "js/analyze/terminator"
+    ],
+    function($, terminator) {
+        terminator.attachTo(".vm-terminator")
+    });
+</script>
+{% endblock %}
 
 {% block body %}
 <div class="row">
@@ -27,8 +41,9 @@
           <td>{{ vm.status }}</td>
           <td>{{ vm.created }}</td>
           <td>
-            <a class="btn btn-sm btn-forest btn-sharp" href="#"><i class="fa fa-external-link"></i> Connect</a>
-            <a class="btn btn-sm btn-sunshine btn-sharp" href="#"><i class="fa fa-power-off"></i> Terminate</a>
+            <a class="btn btn-sm btn-primary" href="#"><i class="fa fa-external-link"></i> Connect</a>
+            <a class="btn btn-sm btn-warning vm-terminator" data-terminate-url="{{ url_for('.terminate', vm_id=vm.id) }}"
+               data-vm-name="{{ vm.name }}" href="#"><i class="fa fa-power-off"></i> Terminate</a>
           </td>
         </tr>
       {% endfor %}
@@ -46,7 +61,10 @@
   </div> 
 
   <div class="col-md-3">
-    <a href="{{ url_for('.launch') }}" class="btn btn-primary btn-raised ">Run a VM</a>
+    <a href="{{ url_for('.launch') }}" class="btn btn-primary btn-raised">Run a VM</a>
   </div> 
 </div>
+
+{{ terminate_modal() }}
+
 {% endblock body %}
