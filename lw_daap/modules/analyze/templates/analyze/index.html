@@ -11,11 +11,10 @@
         <tr>
           <th>Instance Name</th>
           <th>OS</th>
-          <th>IP Address</th>
           <th>Size</th>
           <th>Status</th>
-          <th>Time since created</th>
-          <th>Actions</th>
+          <th>Created</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -24,11 +23,13 @@
         <tr>
           <td>{{ vm.name }}</td>
           <td>{{ vm.image }}</td>
-          <td>{{ vm.addresses|join(' ') }}</td>
           <td>{{ vm.size }}</td>
           <td>{{ vm.status }}</td>
           <td>{{ vm.created }}</td>
-          <td>Actions</td>
+          <td>
+            <a class="btn btn-sm btn-forest btn-sharp" href="#"><i class="fa fa-external-link"></i> Connect</a>
+            <a class="btn btn-sm btn-sunshine btn-sharp" href="#"><i class="fa fa-power-off"></i> Terminate</a>
+          </td>
         </tr>
       {% endfor %}
         

@@ -30,11 +30,13 @@ import lw_daap.base.auth.facebook
 CFG_SITE_LANGS = ["en"]
 
 CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
+CFG_SITE_DESCRIPTION = "LifeWatch Data Access and Preservation DESC"
 CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
 CFG_SITE_SUPPORT_EMAIL = "support@aeonium.eu"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
+
 
 COMMUNITIES_PARENT_NAME=CFG_SITE_NAME
 COMMUNITIES_PARENT_NAME_PROVISIONAL=CFG_SITE_NAME

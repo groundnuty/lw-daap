@@ -21,15 +21,15 @@
 <div class="footer-container">
  <div class="col-sm-12 col-md-6">
     {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
-    <a href="">{{_("About")}}</a>
+    <a href="{{url_for("lw_daap.about")}}">{{_("About")}}</a>
     <span class="separator">|</span>
     <a href="{{url_for("lw_daap.api")}}">{{_("API")}}</a>
     <span class="separator">|</span>
-    <a href="">{{- _("Contact") -}}</a>
+    <a href="{{url_for("lw_daap.contact")}}">{{- _("Contact") -}}</a>
     <span class="separator">|</span>
-    <a href="">{{- _("Privacy Policy") -}}</a>
+    <a href="{{url_for("lw_daap.privacypolicy")}}">{{- _("Privacy Policy") -}}</a>
     <span class="separator">|</span>
-    <a href="">{{- _("Terms of Services") -}}</a>
+    <a href="{{url_for("lw_daap.termsofservices")}}">{{- _("Terms of Services") -}}</a>
   </div>
 
   <div class="col-sm-12 col-md-6 pull-right">

@@ -60,6 +60,12 @@
   <p>Your certificate was not detected, you will not be able to access the e-Infrastructure</p>
   {% endif %}
   {{ render_field(form.ssh_public_key, show_description=True) }}
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <p>If you don't have a ssh key, you can create one with the following command:</p>
+    <p class="text-center">$ ssh-keygen -t rsa</p>
+    <p>This will generate two files: $HOME/.ssh/id_rsa and $HOME/.ssh/id_rsa.pub.</p>
+    <p>Copy the contents of the id_rsa.pub above.</p>
+  </div>
   {{helpers.panel_end()}}
   {% endcall %}
 </div>

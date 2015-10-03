@@ -350,14 +350,21 @@ def discard(deposition_type=None, uuid=None):
     deposition.stop_workflow()
     deposition.save()
 
-    return redirect(url_for(
-        ".run",
-        deposition_type=(
-            None if deposition.type.is_default()
-            else deposition.type.get_identifier()
-        ),
-        uuid=deposition.id
-    ))
+    sip = deposition.get_latest_sip(sealed=True)
+    if sip and sip.metadata.get('recid'):
+        return redirect(url_for(
+            'record.metadata',
+            recid=sip.metadata.get('recid')
+        ))
+    else:
+        return redirect(url_for(
+            ".run",
+            deposition_type=(
+                None if deposition.type.is_default()
+                else deposition.type.get_identifier()
+            ),
+            uuid=deposition.id
+        ))
 
 
 @blueprint.route(

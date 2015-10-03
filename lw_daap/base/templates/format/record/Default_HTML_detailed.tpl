@@ -29,11 +29,11 @@ open_panel_section, close_panel_section
 
       {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
       {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
-      <button class="btn btn-block btn-lg btn-default" 
+      <button class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" 
         data-toggle="modal" data-target="#doi-confirm-dialog">
         <i class="fa fa-barcode"></i> Mint Doi</button>
       {% endif %}
-      <a class="btn btn-block btn-lg btn-primary" href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+      <a class="btn btn-block btn-lg btn-primary" href="{{ url_for('webdeposit.edit', uuid=daap_record.owner.deposition_id|int) }}"><i class="fa fa-pencil-square-o"></i> Edit</a>
       {% endif %}
       <a class="btn btn-block btn-lg btn-danger" href="#"><i class="fa fa-play-circle-o"></i> Run</a>
       <div class="spacer20"></div>

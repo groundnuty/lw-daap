@@ -49,35 +49,88 @@ define(function(require) {
             }
     }
 
+    // aeonium: this is here to enforce SHA256 signing
+    function sign(cert) {
+        cert.asn1SignatureAlg = cert.asn1TBSCert.asn1SignatureAlg;
+
+        var sig = new KJUR.crypto.Signature({'alg': 'SHA256withRSA'});
+        sig.init(cert.prvKey);
+        sig.updateHex(cert.asn1TBSCert.getEncodedHex());
+        cert.hexSig = sig.sign();
+
+        cert.asn1Sig = new KJUR.asn1.DERBitString({'hex': '00' + cert.hexSig});
+
+        var seq = new KJUR.asn1.DERSequence({'array': [cert.asn1TBSCert,
+                                                       cert.asn1SignatureAlg,
+                                                       cert.asn1Sig]});
+        cert.hTLV = seq.getEncodedHex();
+        cert.isModified = false;
+    };
+
+
     function signRequest(sCert, userPrivateKeyPEM, userCERT) {
         var defaultProxyHours = 12;
         var reHex = /^\s*(?:[0-9A-Fa-f][0-9A-Fa-f]\s*)+$/;
+
+
+
+        // aeonium: put this here, otherwise YAHOO is not found :(
+        var ProxyInfo = function(params) {
+            ProxyInfo.superclass.constructor.call(this, params);
+
+            this.setInfoArray = function(info) {
+                this.asn1ExtnValue = new KJUR.asn1.DERSequence();
+                if (typeof info['pathlen'] != "undefined") {
+                    var o = new KJUR.asn1.DERInteger(info['pathlen']);
+                    this.asn1ExtnValue.appendASN1Object(o);
+                }
+                if (typeof info['policy'] != "undefined") {
+                    var pcySeq = new KJUR.asn1.DERSequence();
+                    var o = new KJUR.asn1.DERObjectIdentifier(info['policy'])
+                    pcySeq.appendASN1Object(o);
+                    this.asn1ExtnValue.appendASN1Object(pcySeq);
+                }
+            };
+
+            this.getExtnValueHex = function() {
+                return this.asn1ExtnValue.getEncodedHex();
+            };
+
+            this.oid = '1.3.6.1.5.5.7.1.14';
+            if (typeof params != "undefined") {
+                if (typeof params['info'] != "undefined") {
+                    this.setInfoArray(params['info']);
+                }
+            }
+        };
+        YAHOO.lang.extend(ProxyInfo, KJUR.asn1.x509.Extension);
+
         try {
             var derServer = reHex.test(sCert) ? Hex.decode(sCert) : Base64
                     .unarmor(sCert);
 
             var derUser = reHex.test(userCERT) ? Hex.decode(userCERT) : Base64
                     .unarmor(userCERT);
-            
+
             var asn1 = ASN11.decode(derServer);
-            var pos = asn1.getCSRPubKey(); 
+            var pos = asn1.getCSRPubKey();
             //console.log(sCert);
-            
+
             // aeonium: try to get the subject string...
             X509.DN_ATTRHEX['060a0992268993f22c640119'] = "DC";
             var ct = new X509();
             ct.readCertPEM(userCERT);
             var userDN = ct.getSubjectString()
-            // FIXME: put here some random
-            var subject = userDN + '/CN=proxy';
-            console.log(subject);
             var oIssuer = ct.getIssuerHex();
-            var oSerial = ct.getSerialNumberHex();
+            var oSerial = Math.floor(Math.random() * 6553600) + 6553600;
             console.log(oIssuer);
+            // FIXME: use a better value here
+            var subject = userDN + '/CN=' + oSerial;
+            console.log(subject);
 
             var rsakey = new RSAKey();
-            //The replace is because other wise something like this was 
-            //found "01 00 01" and only the last part, "01", was converted. 
+            //The replace is because other wise something like this was
+            //found "01 00 01" and only the last part, "01", was converted.
             //It was returning 1 instead of 65537
             rsakey.setPublic(pos.modulus.replace(/ /g, ''), pos.exponent.replace(/ /g, ''));
 
@@ -89,14 +142,14 @@ define(function(require) {
                 'int' : oSerial
             });
             tbsc.setSignatureAlgByParam({
-                'name' : 'SHA512withRSA'
+                'name' : 'SHA256withRSA'
             });
             tbsc.setIssuerByParam({
                 'str' : userDN
             });
-            
+
             tbsc.asn1Issuer.hTLV = ct.getSubjectHex();
-            
+
             tbsc.setSubjectByParam({
                 'str' : subject
             });
@@ -114,40 +167,49 @@ define(function(require) {
             tbsc.setNotAfterByParam({
                 'str' : getUTCDate(ctime)
             });
-            
-            tbsc.appendExtension(new KJUR.asn1.x509.BasicConstraints({'cA': false, 'critical': true}));
-            // 101 to set 'Digital Signature, Key Encipherment'. 0 means disabled 'Non Repudiation'
-            tbsc.appendExtension(new KJUR.asn1.x509.KeyUsage({'bin':'101', 'critical':true}));
-            
-            // AEONIUM: RFC PROXY OID "1.3.6.1.5.5.7.1.14"
-            
+
+            //tbsc.appendExtension(new KJUR.asn1.x509.BasicConstraints({'cA': false, 'critical': true}));
+            // 1011 to set 'Digital Signature, Key Encipherment, Data Encipherment'. 0 means disabled 'Non Repudiation'
+            tbsc.appendExtension(new KJUR.asn1.x509.KeyUsage({'bin':'1011', 'critical':true}));
+
             var s = KEYUTIL.getPEM(rsakey);
             var sHashHex = getSubjectKeyIdentifier(derUser);
             var paramAKI = {'kid': {'hex': sHashHex }, 'issuer': oIssuer, 'critical': false};
-            tbsc.appendExtension(new KJUR.asn1.x509.AuthorityKeyIdentifier(paramAKI));
-            
+            //tbsc.appendExtension(new KJUR.asn1.x509.AuthorityKeyIdentifier(paramAKI));
+
+            // AEONIUM: RFC 3820 Proxy Info
+            var paramPI = {
+                'critical': true,
+                'info': {
+                    // inherit all, no pathlen
+                    'policy': {'oid': '1.3.6.1.5.5.7.21.1'}
+                }
+            }
+            tbsc.appendExtension(new ProxyInfo(paramPI));
+
+
             // Sign and get PEM certificate with CA private key
             var userPrivateKey = new RSAKey();
 
             // The private RSA key can be obtained from the p12 certificate by using:
-            // openssl pkcs12 -in yourCert.p12 -nocerts -nodes | openssl rsa 
+            // openssl pkcs12 -in yourCert.p12 -nocerts -nodes | openssl rsa
             userPrivateKey.readPrivateKeyFromPEMString(userPrivateKeyPEM);
-            
+
             var cert = new KJUR.asn1.x509.Certificate({
                 'tbscertobj' : tbsc,
                 'rsaprvkey' : userPrivateKey,
-                'prvkey' : userPrivateKey,          
+                'prvkey' : userPrivateKey,
                 'rsaprvpas' : "empty"
             });
 
             // TODO check times in all certificates involved to check that the
             // expiration in the
             // new one is not later than the others
-            cert.sign();
+            sign(cert);
 
             var pemCert = cert.getPEMString();
             //console.log(pemCert.replace(/^\s*$[\n\r]{1,}/gm, "\n"));
-            
+
             //In case blank new lines...
             return pemCert.replace(/^\s*$[\n\r]{1,}/gm, "\n");
         } catch (e) {
