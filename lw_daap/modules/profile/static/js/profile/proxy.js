@@ -19,6 +19,8 @@ define(function(require) {
             requestUrl: 'https://localhost/',
             delegateUrl: 'https://localhost/',  
             removeUrl: 'https://localhost/',
+            errorField: '#delegationModalError',
+            spinner: '#delegateButtonSpin',
             nextUrl: ''
         }); 
 
@@ -49,13 +51,12 @@ define(function(require) {
         };
 
         this.doDelegate = function() {
+            that.select('spinner').show();
             $.get(that.attr.requestUrl, function(data) {
                 var userCERT = that.select('userCERT').val();
                 var privateKey = that.select('privateKey').val();
                 var x509Proxy = signer(data, privateKey, userCERT);
                 x509Proxy += "" + userCERT;
-
-                //var x509Proxy= data;
 
                 $.ajax({
                     url : that.attr.delegateUrl,
@@ -72,8 +73,18 @@ define(function(require) {
                     }
                 }).done(function(data) {
                     that.$node.modal('hide');
-                    that.trigger('proxyUpdate', data);
+                    var obj_data = $.parseJSON(data);
+                    that.trigger('proxyUpdate', obj_data);
+                }).fail(function() {
+                    that.select('errorField').html("<b>ERROR:</b> Unable to delegate proxy to server");
+                    that.select('errorField').show();
+                }).always(function() {
+                    that.select('spinner').hide();
                 });
+            }).fail(function () {
+                that.select('errorField').html("<b>ERROR:</b> Unable to get the proxy request from server");
+                that.select('errorField').show();
+                that.select('spinner').hide();
             });
         };
 
