@@ -2,16 +2,44 @@
 {% extends "page.html" %}
 {%- from "_formhelpers.html" import render_field with context %}
 
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+  require(
+    [
+      "jquery",
+      "js/analyze/flavors"
+    ],
+    function($, flavors) {
+        opts = {
+            flavors: {
+            {% for flavor in flavors.items() %}
+                {{ flavor[0] }}: {
+                    name: "{{ flavor[1].id }}",
+                    ram: "{{ flavor[1].ram }}",
+                    vcpus: "{{ flavor[1].vcpus }}",
+                    disk: "{{ flavor[1].disk }}"
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}
+            }
+        }
+        flavors.attachTo("#flavor", opts)
+    });
+</script>
+{% endblock %}
+
+
+
 {% block body %}
 <div class="row">
-  <div class="col-md-2">
-  </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
   <div class="panel-list-wrapper">  
   <div class="panel panel-deposit panel-sharp">  
   <div class="panel-heading">  
-    <h3>Run a VM</h3>
-    <form name="launch" method="post" class="form-horizontal">
+    <h3>Run your analysis</h3>
+  </div>
+  <div class="panel-body">  
+    <form name="launch" method="post">
     {%- for field in form -%}
       {{ render_field(field) }}
     {%- endfor -%}
@@ -19,19 +47,35 @@
         <input type="submit" name="Run" value="{{ _("Run") }}" class="btn btn-primary btn-raised "/>
       </div>
     </form>
-  </div>
+  </div>  
   </div>
   </div>
   </div>
   <div class="col-md-1">
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
   <div class="panel-list-wrapper">  
   <div class="panel panel-deposit panel-sharp">  
   <div class="panel-heading">  
-    <h3>Instuctions</h3>
-     <p>Specify the details for running a VM.</p>
+    <h4>Specify the details for running your analysis</h4>
+    <h3>Flavor details</h3>
   </div>
+    <table class="table table-stripped">
+     <tbody>
+        <tr>
+          <td class="flavor_name">Name</td><td><span id="flavor_name"></span></td>
+        </tr>
+        <tr>
+          <td class="flavor_name">VCPUs</td><td><span id="flavor_vcpus"></span></td>
+        </tr>
+        <tr>
+          <td class="flavor_name">Disk</td><td><span id="flavor_disk"></span> GB</td>
+        </tr>
+        <tr>
+          <td class="flavor_name">RAM</td><td><span id="flavor_ram"></span> GB</td>
+        </tr>
+     </tbody>
+    </table>
   </div>
   </div>
   </div>

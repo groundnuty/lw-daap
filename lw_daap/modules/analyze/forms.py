@@ -1,7 +1,6 @@
 from invenio.utils.forms import InvenioBaseForm
 from wtforms import RadioField, SelectField, StringField, validators
 
-from .utils import get_requirements
 
 class LaunchForm(InvenioBaseForm):
     name = StringField(
@@ -30,12 +29,11 @@ class LaunchForm(InvenioBaseForm):
         description = 'Required. Some info?',
     )
 
-    def _build_choices(self, reqs, req_type):
-        return [(k, v['title']) for k, v in reqs.get(req_type, {}).items()]
+    def _build_choices(self, reqs, req_type, title_field='title'):
+        return [(k, v[title_field]) for k, v in reqs.get(req_type, {}).items()]
 
-    def fill_fields_choices(self):
-        reqs = get_requirements()
-        self.flavor.choices = self._build_choices(reqs, 'flavors')
+    def fill_fields_choices(self, reqs):
+        self.flavor.choices = self._build_choices(reqs, 'flavors', 'id')
         self.image.choices = self._build_choices(reqs, 'images')
         self.app_env.choices = self._build_choices(reqs, 'app_envs')
 

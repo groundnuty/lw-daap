@@ -23,6 +23,8 @@
   <div class="panel-list-wrapper">
   <div class="panel panel-deposit panel-sharp">
   <div class="panel-heading">
+    <h3>Your instances</h3>
+  </div> 
     <table class="table table-stripped">
       <thead>
         <tr>
@@ -43,7 +45,7 @@
           <td>{{ vm.size }}</td>
           <td>{{ vm.status }}</td>
           <td>{{ vm.created }}</td>
-          <td>
+          <td class="text-right">
             <a class="btn btn-sm btn-primary" href="#"><i class="fa fa-external-link"></i> Connect</a>
             <a class="btn btn-sm btn-warning vm-terminator" data-terminate-url="{{ url_for('.terminate', vm_id=vm.id) }}"
                data-vm-name="{{ vm.name }}" href="#"><i class="fa fa-power-off"></i> Terminate</a>
@@ -54,7 +56,7 @@
     {% else %} 
        <tr> 
         <td colspan=7 class="text-center">
-            <h2>You have no VM instances!</h2>
+            <h2>You have no analysis instances!</h2>
             <h3>Go and run some</h3>
         </td>
        </tr>
@@ -64,10 +66,9 @@
   </div> 
   </div> 
   </div> 
-  </div> 
 
   <div class="col-md-2">
-    <a href="{{ url_for('.launch') }}" class="btn btn-primary btn-raised">Run a VM</a>
+    <a href="{{ url_for('.launch') }}" class="btn btn-primary btn-raised">Run an analysis</a>
   </div> 
 </div>
 
