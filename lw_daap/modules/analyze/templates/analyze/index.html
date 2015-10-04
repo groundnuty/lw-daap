@@ -19,7 +19,10 @@
 
 {% block body %}
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-10">
+  <div class="panel-list-wrapper">
+  <div class="panel panel-deposit panel-sharp">
+  <div class="panel-heading">
     <table class="table table-stripped">
       <thead>
         <tr>
@@ -59,8 +62,11 @@
       </tbody>
     </table>
   </div> 
+  </div> 
+  </div> 
+  </div> 
 
-  <div class="col-md-3">
+  <div class="col-md-2">
     <a href="{{ url_for('.launch') }}" class="btn btn-primary btn-raised">Run a VM</a>
   </div> 
 </div>
