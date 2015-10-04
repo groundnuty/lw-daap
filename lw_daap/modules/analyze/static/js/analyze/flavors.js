@@ -30,6 +30,12 @@ define(function(require) {
             this.on('change', function() {
                 this.showFlavors(this.attr.flavors[this.$node.val()])
             });
+            this.on('keyup', function() {
+                this.showFlavors(this.attr.flavors[this.$node.val()])
+            });
+            this.on('keydown', function() {
+                this.showFlavors(this.attr.flavors[this.$node.val()])
+            });
         });
     }
 });
