@@ -29,7 +29,7 @@ open_panel_section, close_panel_section
 
       {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
       {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
-      <button class="btn btn-block btn-lg btn-glassy btn-sharp btn-raised" 
+      <button class="btn btn-block btn-lg btn-default btn-sharp btn-raised" 
         data-toggle="modal" data-target="#doi-confirm-dialog">
         <i class="fa fa-barcode"></i> Mint Doi</button>
       {% endif %}
