@@ -122,9 +122,13 @@
   {% if portalboxes %}
   <div {{ macrokwargs|xmlattr }}>
     {% for cp in portalboxes %}
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <h5>{{ cp.portalbox.title }}</h5>
+    <div class="panel panel-primary">
+      {% if cp.portabolx.title %}
+      <div class="panel-heading">
+        {{ cp.portalbox.title|safe }}
+      </div>
+      {% endif %}
+        <div class="panel-body">
         <p>{{ cp.portalbox.body|safe }}</p>
       </div>
     </div>

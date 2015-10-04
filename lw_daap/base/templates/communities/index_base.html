@@ -22,6 +22,8 @@ open_community_section,
 close_community_section
 %}
 
+{% import "helpers_base.html" as hb %}
+
 
 {% extends "page.html" %}
 
@@ -36,7 +38,6 @@ close_community_section
 <div class="row">
 
   <div class="col-xs-12 col-sm-12 col-md-12">
-
     <h1>
       <i class="fa fa-group"></i>
       {{ _("Communities") }} <small>{{ _("created and curated by ") + config.CFG_SITE_NAME + _(" users") }}</small>
@@ -94,7 +95,7 @@ close_community_section
     #}
   </div>
 </div>
-    <div class="spacer20"></div>
+<div class="spacer20"></div>
 
 <div class="row">
   {% if current_user.is_authenticated() %}
@@ -103,28 +104,55 @@ close_community_section
   </div>
   {% endif %}
 
-  <div {% if current_user.is_authenticated() %}class="col-sm-12 col-md-8"{%else%}class="col-sm-12 col-md-12" {%endif%}>
-    {% if communities %}
-    <div class="panel-list-wrapper">
 
-      {%- for obj in communities %}
-      {% if obj.id_user == current_user.id %}
-      {% set curate_url = obj.community_provisional_url %}
-      {% else %}
-      {% set curate_url = None %}
-      {% endif %}
-      {{ open_community_section(
-      obj.title,
-      obj.community_url,
-      curate_url, loop.index, False)|safe }}
-      {% if obj.despcription %}
-      <p>{{ obj.description|striptags|truncate }}</p>
-      {% endif %}
-      <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>
-      {{ close_community_section()|safe }}
-      {%- endfor %}
+  {% if current_user.is_authenticated() %}
+  <div class="col-sm-12 col-md-8">
+  <div class="panel-list-wrapper">
+    {%- for obj in communities %}
+    {% if obj.id_user == current_user.id %}
+    {% set curate_url = obj.community_provisional_url %}
+    {% else %}
+    {% set curate_url = None %}
+    {% endif %}
+    {{ open_community_section(
+    obj.title,
+    obj.community_url,
+    curate_url, loop.index, False)|safe }}
+    {% if obj.despcription %}
+    <p>{{ obj.description|striptags|truncate }}</p>
+    {% endif %}
+    <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>
+    {{ close_community_section()|safe }}
+    {%- endfor %}
+  </div>
+</div>
+  {% else %}
+  <div class="row">
+    {% for obj in communities %}
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="panel panel-primary">
+        {% call hb.panel_head() %}
+        {{ obj.title }}
+        <a href="{{ obj.community_url }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
+
+        {% endcall %}
+        {% call hb.panel_body() %}
+        {% if obj.despcription %}
+        <p>{{ obj.description|striptags|truncate }}</p>
+        {% endif %}
+        <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>
+
+        {% endcall %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
+
+
+  <div class="col-sm-12 col-md-8">
+    {% if communities %}
     {% if pagination.total_count > pagination.per_page %}
     <div align="center">
       <ul class="pagination">

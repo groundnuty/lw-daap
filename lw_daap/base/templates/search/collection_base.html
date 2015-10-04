@@ -140,7 +140,7 @@ search_also, with context -%}
   {% endif %}
   {%- endblock index_right -%}
 
-  <div class="col-md-2"></div>
+  <div class="col-md-4"></div>
   {%- block index_left -%}
   {% if collection.collection_children_v %}
   <div class="col-md-6 collection clearfix">
@@ -157,8 +157,7 @@ search_also, with context -%}
   </div>
   {% endif %}
   {%- endblock index_left -%}
-
-
+  
   {%- block portalbox_rt -%}
   {% if collection.externalcollections_2 %}
   {{ portalbox_sidebar(portalboxes.rt, class="col-md-2") }}
@@ -166,15 +165,19 @@ search_also, with context -%}
   {{ portalbox_sidebar(portalboxes.rt, class="col-md-offset-1 col-md-3") }}
   {% endif %}
   {%- endblock portalbox_rt -%}
+  
+  
 </div>
 {%- endblock index -%}
 {% endblock collection_records %}{%- endmacro -%}
 
+{#
 {% block title %}
 {{ portalboxes.tp }}
 {{ super() }}
 {{ portalboxes.te }}
 {% endblock %}
+#}
 
 {% block inner_content %}
 {% if collection.is_restricted %}
