@@ -31,8 +31,12 @@ from invenio.base.bundles import jquery as _j, invenio as _i
 #
 js = Bundle(
     "js/analyze/analyze.js",
+    "js/analyze/terminator.js",
     output="analyze.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     weight=60,
+    bower={
+        "flight": "latest",
+    }
 )
 

@@ -24,20 +24,20 @@
 <div class="col-sm-3 col-md-3 hidden-print">
 <ul class="nav nav-list well ">
   <li class="nav-header">API Documentation</li>
-  <li><a href="#">Introduction</i></a></li>
+  <li><a href="#">Introduction</a></li>
   <li class="nav-header">REST API</li>
-  <li><a href="#restapi-intro">Introduction</i></a></li>
-  <li><a href="#restapi-quick">Quick start</i></a></li>
-  <li><a href="#restapi-auth">Authentication</i></a></li>
-  <li><a href="#restapi-requests">Requests</i></a></li>
-  <li><a href="#restapi-responses">Responses</i></a></li>
-  <li><a href="#restapi-http">HTTP status codes</i></a></li>
-  <li><a href="#restapi-errors">Errors</i></a></li>
-  <li><a href="#restapi-res">Resources</i></a></li>
-  <li><a href="#restapi-res-dep"><i class="glyphicon glyphicon-chevron-right"></i> Depositions</i></a></li>
-  <li><a href="#restapi-res-files"><i class="glyphicon glyphicon-chevron-right"></i> Deposition files</i></a></li>
-  <li><a href="#restapi-res-actions"><i class="glyphicon glyphicon-chevron-right"></i> Deposition actions</i></a></li>
-  <li><a href="#restapi-rep">Representations</i></a></li>
+  <li><a href="#restapi-intro">Introduction</a></li>
+  <li><a href="#restapi-quick">Quick start</a></li>
+  <li><a href="#restapi-auth">Authentication</a></li>
+  <li><a href="#restapi-requests">Requests</a></li>
+  <li><a href="#restapi-responses">Responses</a></li>
+  <li><a href="#restapi-http">HTTP status codes</a></li>
+  <li><a href="#restapi-errors">Errors</a></li>
+  <li><a href="#restapi-res">Resources</a></li>
+  <li><a href="#restapi-res-dep"><i class="glyphicon glyphicon-chevron-right"></i> Depositions</a></li>
+  <li><a href="#restapi-res-files"><i class="glyphicon glyphicon-chevron-right"></i> Deposition files</a></li>
+  <li><a href="#restapi-res-actions"><i class="glyphicon glyphicon-chevron-right"></i> Deposition actions</a></li>
+  <li><a href="#restapi-rep">Representations</a></li>
 </ul>
 </div>
 <div class="col-sm-9 col-md-9" data-spy="scroll" data-target=".navmenu">
@@ -152,13 +152,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 <h2 id="restapi-auth">Authentication</h2>
 <p>All API requests must be authenticated and over HTTPS. Any request over plain HTTP will fail. We support authentication with via OAuth 2.0.</p>
 
-<p><strong>Acquiring a personal access token</strong>
+<p><strong>Acquiring a personal access token</strong></p>
 <ol>
 <li><a href="{{url_for('userProfile.index')}}">Sign up</a>.</li>
 <li>Go to your <a href="{{url_for('oauth2server_settings.index')}}">Applications</a>, to <a href="{{url_for('oauth2server_settings.token_new')}}">create a new token</a>.</li>
 <li>Select the OAuth scopes you need (for the quick start tutorial you need <code>deposit:write</code> and <code>deposit:actions</code>).</li>
 </ol>
-</p>
 
 <div class="alert alert-danger">
   <strong>Important!</strong> Do not share your personal access token with anyone else, and only use it over HTTPS.
@@ -450,12 +449,10 @@ print response.json()
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="curl-d-create">
-      <pre>$ curl -i -H "Content-Type: application/json" --data '{}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN
-
+      <pre>$ curl -i -H "Content-Type: application/json" --data '{}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre> 
 <em>or</em>
 
-$ curl -i -H "Content-Type: application/json" -X POST --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</
-pre>
+<pre>$ curl -i -H "Content-Type: application/json" -X POST --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre>
     </div>
     <div class="tab-pane" id="python-d-create">
       <pre>import json
@@ -1044,8 +1041,7 @@ r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/fi
   <div class="panel panel-default">
     <div class="panel-heading info">
         <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-update">
-          <h4 id="#restapi-obj-deposition-file">Update <small>PUT deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i c
-lass="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+          <h4 id="#restapi-obj-deposition-file">Update <small>PUT deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
         </a>
     </div>
     <div id="collapse-f-update" class="panel-collapse collapse">
@@ -1666,12 +1662,14 @@ or you when you publish. A DOI allow others to easily and unambiguously cite you
     <td><code>access_right</code></td>
     <td>String</td>
     <td>Yes</td>
-    <td>Controlled vocabulary:<ul>
+    <td>Controlled vocabulary:
+    <ul>
       <li><code>open</code>: Open Access</li>
 <li><code>embargoed</code>: Embargoed Access</li>
 <li><code>restricted</code>: Restricted Access</li>
 <li><code>closed</code>: Closed Access</li>
-    </ul>Defaults to <code>open</code>.</td>
+    </ul>
+    Defaults to <code>open</code>.</td>
 </tr>
 <tr>
     <td><code>license</code></td>
@@ -1693,7 +1691,6 @@ or you when you publish. A DOI allow others to easily and unambiguously cite you
 the conditions. Based on the justification, you decide who to grant/deny access. You are not allowed to charge users for granting access to data hosted on Zeno
 do. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td>
 </tr>
-<tr>
 <tr>
     <td><code>groups</code></td>
     <td>String</td>
@@ -1732,8 +1729,7 @@ ledBy</code>, <code>isIdenticalTo</code>, <code>isAlternateIdentifier</code>).</
     <td>Array of objects</td>
     <td>No</td>
     <td>
-        <p>Specify subjects from a taxonomy or controlled vocabulary. Each term must be uniquely identified (e.g. a URL). For free form text, use the keywords 
-field.
+        <p>Specify subjects from a taxonomy or controlled vocabulary. Each term must be uniquely identified (e.g. a URL). For free form text, use the keywords field.</p>
 
         Each array element is an object with the attributes:
         <ul>
@@ -1745,7 +1741,7 @@ field.
         Example:
         <pre>[{"term": "Astronomy",
  "id": "http://id.loc.gov/authorities/subjects/sh85009003",
- "scheme": "url"}]</pre></p>
+ "scheme": "url"}]</pre>
     </td>
 </tr>
 </tbody>
@@ -1801,6 +1797,7 @@ field.
 </div>
     </div>
   </div>
+</div>
 </div>
 
 {% endblock %}
