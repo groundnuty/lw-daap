@@ -5,7 +5,7 @@ from flask_menu import register_menu
 
 from flask import Response
 
-from forms import LaunchForm
+from forms import LaunchForm, LaunchFormData
 from infra import launch_vm, list_vms, get_client, terminate_vm
 
 from lw_daap.modules.profile.decorators import delegation_required
@@ -37,8 +37,9 @@ def index():
 @blueprint.route('/launch', methods=['GET', 'POST'])
 @delegation_required()
 def launch():
-    form = LaunchForm(request.form)
     reqs = get_requirements()
+    obj = LaunchFormData(reqs, **request.args)
+    form = LaunchForm(obj=obj)
     form.fill_fields_choices(reqs)
     if form.validate_on_submit():
         profile = userProfile.get_or_create()
