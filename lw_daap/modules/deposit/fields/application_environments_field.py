@@ -46,11 +46,9 @@ def _kb_requirements_choices():
             return (x['key'], requirements['title'])
         else:
             return None
-    return sorted(
-        filter(lambda x: x is not None,
-               map(_mapper, get_kb_mappings('requirements', '', ''))),
-        key=itemgetter(1),
-    )
+
+    return filter(lambda x: x is not None,
+               map(_mapper, get_kb_mappings('requirements', '', '')))
 
 
 class InlineListWidget(object):

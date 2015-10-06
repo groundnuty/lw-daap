@@ -42,11 +42,8 @@ def _kb_requirements_choices(domain_flavor=True, domain_os=True):
             return (x['key'], requirements['title'])
         else:
             return None
-    return sorted(
-        filter(lambda x: x is not None,
-               map(_mapper, get_kb_mappings('requirements', '', ''))),
-        key=itemgetter(1),
-    )
+    return filter(lambda x: x is not None,
+               map(_mapper, get_kb_mappings('requirements', '', '')))
 
 
 class RequirementsField(WebDepositField, SelectField):
@@ -56,7 +53,6 @@ class RequirementsField(WebDepositField, SelectField):
     def __init__(self, **kwargs):
         """Initialize requirements field."""
         kwargs.setdefault("icon", "icon-laptop")
-
         if 'choices' not in kwargs:
             requirements_filter = {}
             for opt in ['domain_flavor', 'domain_os']:
