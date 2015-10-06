@@ -5,12 +5,13 @@ from flask_menu import register_menu
 
 from flask import Response
 
-from forms import LaunchForm
+from forms import LaunchForm, LaunchFormData
 from infra import launch_vm, list_vms, get_client, terminate_vm
 
 from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import userProfile 
 
+from .utils import get_requirements
 
 blueprint = Blueprint(
     'lwdaap_analyze',
@@ -36,8 +37,10 @@ def index():
 @blueprint.route('/launch', methods=['GET', 'POST'])
 @delegation_required()
 def launch():
-    form = LaunchForm(request.form)
-    form.fill_fields_choices()
+    reqs = get_requirements()
+    obj = LaunchFormData(reqs, **request.args)
+    form = LaunchForm(obj=obj)
+    form.fill_fields_choices(reqs)
     if form.validate_on_submit():
         profile = userProfile.get_or_create()
         client = get_client(profile.user_proxy)
@@ -46,7 +49,8 @@ def launch():
         # XXX TODO error checking
         return redirect(url_for('.index'))
     ctx = dict(
-        form = form,
+        form=form,
+        flavors=reqs['flavors'],
     )
     return render_template('analyze/launch.html', **ctx)
 
