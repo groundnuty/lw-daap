@@ -1,12 +1,12 @@
-
+from collections import OrderedDict
 import json
 from invenio.modules.knowledge.api import get_kb_mappings
 
 def get_requirements(): 
     reqs = dict(
-        flavors={},
-        images={},
-        app_envs={},
+        flavors=OrderedDict(),
+        images=OrderedDict(),
+        app_envs=OrderedDict(),
     )
     for mapping in get_kb_mappings('requirements'):
         v = json.loads(mapping['value'])
