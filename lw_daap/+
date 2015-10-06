@@ -64,7 +64,7 @@ open_panel_section, close_panel_section
       <div class="panel-list-wrapper">
         <div class="panel panel-deposit">
           <div class="panel-heading">
-            <h3 class="uppercase"><i class="fa fa-thumb-tack"></i> {{ daap_record.upload_type }}</h3>
+            <h2 class="uppercase"><i class="fa fa-thumb-tack"></i>{{ daap_record.upload_type }}</h2>
           </div>
         </div>
         {{ open_panel_section(

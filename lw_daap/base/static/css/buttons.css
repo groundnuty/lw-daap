@@ -16,10 +16,18 @@
   padding: 3px 20px;
 }
 
+.btn.disabled, .btn[disabled] {
+  opacity: 0.6;
+}
+
+
+
+
 .btn-default {
   background: #AAA;
   border: 2px solid #AAA;
 }
+
 
 .btn-default.btn-raised {
   box-shadow: 0px 5px #4B4A4A;
@@ -28,7 +36,9 @@
 
 .btn-default:hover,
 .btn-default:focus,
-.btn-default:active {
+.btn-default:active,
+.btn-default.disabled,
+.btn-default[disabled] {
   background: #D6D6D6;
   color: #000;
   border: 2px solid #AAA;
@@ -64,7 +74,9 @@
 
 .btn-primary:hover,
 .btn-primary:focus,
-.btn-primary:active {
+.btn-primary:active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
   background: #0A9C45;
   color: #000;
   border: 2px solid #008035;
@@ -99,7 +111,9 @@
 
 .btn-info:hover,
 .btn-info:focus,
-.btn-info:active {
+.btn-info:active,
+.btn-info.disabled,
+.btn-info[disabled] {
   background: #2DAB60;
   color: #000;
   border: 2px solid #0A9C45;
@@ -136,7 +150,9 @@
 
 .btn-warning:hover,
 .btn-warning:focus,
-.btn-warning:active {
+.btn-warning:active,
+.btn-warning.disabled,
+.btn-warning[disabled] {
   background: #FF9464;
   color: #000;
   border: 2px solid #FF773A;
@@ -173,7 +189,9 @@
 
 .btn-danger:focus,
 .btn-danger:hover,
-.btn-danger:active {
+.btn-danger:active,
+.btn-danger.disabled,
+.btn-danger[disabled] {
   background: #FF7739;
   color: #000;
   border: 2px solid #FF5001;
