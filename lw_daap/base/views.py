@@ -3,7 +3,6 @@ from flask import Blueprint, render_template, make_response, current_app, reques
 from flask_menu import register_menu, current_menu
 from flask_breadcrumbs import register_breadcrumb
 
-
 from invenio.base.i18n import _
 from invenio.base.signals import pre_template_render
 from invenio.ext.template. \
@@ -11,6 +10,15 @@ from invenio.ext.template. \
 
 blueprint = Blueprint('lw_daap', __name__, url_prefix='',
                       template_folder='templates', static_folder='static')
+
+
+#
+# Main
+#
+@blueprint.route('/', methods=['GET', ])
+@register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
+def project():
+    return render_template('lw_daap/project.html')
 
 #
 # Footer

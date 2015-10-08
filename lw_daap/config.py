@@ -46,7 +46,14 @@ COMMUNITIES_PORTALBOXES = [
     'communities/portalbox_main.html',
 ]
 
+
 DISABLE_WARNINGS = True
+
+
+BLUEPRINTS_URL_PREFIXES = {
+   "search": "/search",
+} 
+
 
 PACKAGES = [
     "lw_daap.base",
