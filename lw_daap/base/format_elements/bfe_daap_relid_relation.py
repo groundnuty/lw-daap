@@ -32,6 +32,8 @@ def format_element(bfo, relation={}):
             'isPreviousVersionOf': 'is new version of this upload',
             'isPartOf': 'has this upload as part',
             'hasPart': 'is part of this upload',
+            'isAnaBy': 'is analyzed by this upload',
+            'analyzes': 'analyzes this upload',
             'isCompiledBy': 'compiled/created this upload',
             'compiles': 'is compiled/created by this upload',
             'isIdenticalTo': 'is identical to upload',
