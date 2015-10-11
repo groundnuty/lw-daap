@@ -192,6 +192,8 @@ class RelatedIdentifierForm(WebDepositForm):
             ('isPreviousVersionOf', 'is new version of this upload'),
             ('isPartOf', 'has this upload as part'),
             ('hasPart', 'is part of this upload'),
+            ('isAnaBy', 'is analyzed by this upload'),
+            ('analyzes', 'analyzes this upload'),
             ('isCompiledBy', 'compiled/created this upload'),
             ('compiles', 'is compiled/created by this upload'),
             ('isIdenticalTo', 'is identical to upload'),
@@ -406,6 +408,18 @@ class AccessGroupsForm(WebDepositForm):
         widget_classes='form-control',
     )
 
+
+class InputRecordFieldForm(WebDepositForm):
+    record_id = fields.StringField(
+                    label="",
+                    widget_classes='form-control',
+                    widget=ColumnInput(class_="col-xs-2"),
+                    validators=[
+                        validators.DataRequired(),
+                    ],
+                )
+
+
 class FileDescriptionForm(WebDepositForm):
     description = fields.StringField(
         label="",
@@ -419,6 +433,8 @@ class FileDescriptionForm(WebDepositForm):
 
 class FilesForm(WebDepositForm):
     template = 'deposit/files.html'
+  
+    files_require=True
 
     plupload_file = fields.FileUploadField(
         label="",
@@ -443,11 +459,18 @@ class FilesForm(WebDepositForm):
 
     def validate_plupload_file(form, field):
         """Ensure minimum one file is attached."""
+        if form.files_require:
+            if not getattr(request, 'is_api_request', False):
+                try: 
+                    # Tested in API by a separate workflow task.
+                    if len(form.files) == 0:
+                        raise ValidationError("You must provide minimum one file.")
+                except AttributeError:
+                    raise ValidationError("You must provide minimum one file.")
 
-        if not getattr(request, 'is_api_request', False):
-            # Tested in API by a separate workflow task.
-            if len(form.files) == 0:
-                raise ValidationError("You must provide minimum one file.")
+
+class AnalysisFilesForm(FilesForm):
+        files_require=False
 
 
 #
@@ -957,6 +980,34 @@ class AnalysisForm(BasicForm):
         widget=widgets.HiddenInput(),
         default="analysis",
     )
+    
+    # Inputs
+    rel_dataset = fields.DynamicFieldList(
+                        fields.FormField(
+                                InputRecordFieldForm,
+                                description='Required. Input dataset identifier.',
+                                widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+                        ),
+                        label="Input dataset",
+                        add_label="Add input dataset identifier",
+                        icon='fa fa-table fa-fw',
+                        widget_classes='',
+                        min_entries=1,
+                    )
+    
+    rel_software = fields.DynamicFieldList(
+                        fields.FormField(
+                                InputRecordFieldForm,
+                                description='Required. Input software identifier.',
+                                widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+                        ),
+                        label="Input software",
+                        add_label="Add input software identifier",
+                        icon='fa fa-cogs fa-fw',
+                        widget_classes='',
+                        min_entries=1,
+                    )
+
 
     # Requirements
     os = zfields.RequirementsField(
@@ -1003,6 +1054,18 @@ class AnalysisForm(BasicForm):
         ], {
             #'classes': '',
             'indication': 'required',
+        }),
+        ('Inputs', [
+            'rel_dataset', 'rel_software',
+        ], {
+            #'classes': '',
+            'indication': 'required',
+            'description': (
+                            'Specifiy the inputs of your analysis. Datasets and'
+                            ' softwares can  be associated to this upload using'
+                            ' the record id in this portal or the associated'
+                            ' internal or external DOI. At least a dataset'
+                            ' and a software must be specified.')
         }),
         ('Requirements', [
             'os', 'flavor', 'app_env',

@@ -52,6 +52,7 @@
   {{ form_action_bar() }}
   {% endblock form_header%}
 
+  {{ form.errors }}
   {% block form_title scoped %}
   <h1>{{ form._title }}</h1>
   {% if form._subtitle %}

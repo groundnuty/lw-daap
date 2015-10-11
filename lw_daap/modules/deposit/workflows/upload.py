@@ -663,7 +663,6 @@ class upload(DepositionType):
         keywords=fields.Raw(default=[]),
         subjects=fields.Raw(default=[]),
         license=fields.String,
-        os=fields.String,
         notes=fields.String(default=''),
         publication_date=ISODate,
         related_identifiers=fields.Raw(default=[]),

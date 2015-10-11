@@ -2,6 +2,12 @@
 # (c) 2015 aeonium. 
 #
 
+{%- macro render_rel_input(rel_inputs) %}
+{% for rel in rel_inputs %}
+  <p>{{ bfe_daap_record(bfo, rec_id=rel)}}</p>
+{% endfor %}
+{% endmacro -%}
+
 {# TODO: use the max parameter #}
 {%- macro render_authors(record, max=None) %}
 {% if record.authors %}
@@ -9,9 +15,9 @@
 <a href="{{ url_for('search.search', p='author:"' + author.name + '"') }}">
   {{ author.name }}
 </a>
-<a href="{{ url_for('search.search', p='affiliation:"' + author.affiliation + '"') }}">
-  {{ ' (<span class="text-muted">' ~ author.affiliation ~ '</span>)' if author.affiliation }}
-</a>
+{% if author.affiliation %}
+<a href="{{ url_for('search.search', p='affiliation:"' + author.affiliation + '"') }}">(<span class="text-muted">{{ author.affiliation }}</span>)</a>
+{% endif %}
 {% if not loop.last %};
 {% endif %}
 {% endfor %}
