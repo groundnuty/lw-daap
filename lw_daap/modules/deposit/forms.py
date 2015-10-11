@@ -433,8 +433,12 @@ class FileDescriptionForm(WebDepositForm):
 
 class FilesForm(WebDepositForm):
     template = 'deposit/files.html'
-  
-    files_require=True
+    files_require = True
+
+    files_errors = fields.StringField(
+        widget=widgets.HiddenInput(),
+        label=''
+    )
 
     plupload_file = fields.FileUploadField(
         label="",
@@ -457,20 +461,21 @@ class FilesForm(WebDepositForm):
         min_entries=0,
     )
 
-    def validate_plupload_file(form, field):
+    def validate_files_errors(form, field):
         """Ensure minimum one file is attached."""
         if form.files_require:
             if not getattr(request, 'is_api_request', False):
                 try: 
                     # Tested in API by a separate workflow task.
                     if len(form.files) == 0:
-                        raise ValidationError("You must provide minimum one file.")
+                        raise ValidationError("You must provide at least one file.")
                 except AttributeError:
-                    raise ValidationError("You must provide minimum one file.")
+                    # this should never happen
+                    pass
 
 
 class AnalysisFilesForm(FilesForm):
-        files_require=False
+    files_require = False
 
 
 #
