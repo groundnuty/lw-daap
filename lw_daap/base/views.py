@@ -15,7 +15,7 @@ blueprint = Blueprint('lw_daap', __name__, url_prefix='',
 #
 # Main
 #
-@blueprint.route('/', methods=['GET', ])
+@blueprint.route('/main', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
 def project():
     return render_template('lw_daap/project.html')

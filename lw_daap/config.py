@@ -50,9 +50,9 @@ COMMUNITIES_PORTALBOXES = [
 DISABLE_WARNINGS = True
 
 
-BLUEPRINTS_URL_PREFIXES = {
-   "search": "/search",
-} 
+#BLUEPRINTS_URL_PREFIXES = {
+#   "search": "/search",
+#} 
 
 
 PACKAGES = [
@@ -61,6 +61,7 @@ PACKAGES = [
     "lw_daap.modules.deposit",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
+    #"lw_daap.modules.project",
     "lw_daap.modules.github",
     "lw_daap.modules.analyze",
     "lw_daap.modules.pids",
