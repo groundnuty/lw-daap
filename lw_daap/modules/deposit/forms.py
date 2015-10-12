@@ -919,7 +919,7 @@ class SoftwareForm(BasicForm):
     # Grouping of fields
     #
     groups = [
-        ('Basic information', [
+        ('<i class="fa fa-info"></i> Basic information', [
             'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
@@ -1053,7 +1053,7 @@ class AnalysisForm(BasicForm):
     # Grouping of fields
     #
     groups = [
-        ('Basic information', [
+        ('<i class="fa fa-info"></i> Basic information', [
             'doi', 'publication_date', 'title',  'creators',
             'description', 'keywords', 'notes',
         ], {
