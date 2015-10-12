@@ -1,16 +1,18 @@
+from __future__ import absolute_import
+
 import json
 
 from flask import Blueprint, current_app, render_template, request, redirect, url_for
 from flask_menu import register_menu
 
-from flask import Response
+from flask import Response, jsonify
 
-from forms import LaunchForm, LaunchFormData
-from infra import launch_vm, list_vms, get_client, terminate_vm
 
 from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import userProfile 
 
+from . import infra
+from .forms import LaunchForm, LaunchFormData
 from .utils import get_requirements
 
 blueprint = Blueprint(
@@ -27,9 +29,9 @@ blueprint = Blueprint(
 @delegation_required()
 def index():
     profile = userProfile.get_or_create()
-    client = get_client(profile.user_proxy)
+    client = infra.get_client(profile.user_proxy)
     ctx = dict(
-        vms = list_vms(client),
+        vms = infra.list_vms(client),
     )
     return render_template('analyze/index.html', **ctx)
 
@@ -43,9 +45,10 @@ def launch():
     form.fill_fields_choices(reqs)
     if form.validate_on_submit():
         profile = userProfile.get_or_create()
-        client = get_client(profile.user_proxy)
-        launch_vm(client, name=form.name.data, image=form.image.data,
-                  flavor=form.flavor.data, app_env=form.app_env.data)
+        client = infra.get_client(profile.user_proxy)
+        infra.launch_vm(client, name=form.name.data, image=form.image.data,
+                        flavor=form.flavor.data, app_env=form.app_env.data,
+                        ssh_key=profile.ssh_public_key)
         # XXX TODO error checking
         return redirect(url_for('.index'))
     ctx = dict(
@@ -59,6 +62,13 @@ def launch():
 @delegation_required()
 def terminate(vm_id):
     profile = userProfile.get_or_create()
-    client = get_client(profile.user_proxy)
-    terminate_vm(client, vm_id)
+    client = infra.get_client(profile.user_proxy)
+    infra.terminate_vm(client, vm_id)
     return redirect(url_for('.index'))
+
+
+@blueprint.route('/connect/<vm_id>', methods=['GET'])
+def connect(vm_id):
+    profile = userProfile.get_or_create()
+    client = infra.get_client(profile.user_proxy)
+    return jsonify(infra.get_vm_connection(client, vm_id))
