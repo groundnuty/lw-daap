@@ -1,3 +1,9 @@
+{% block javascript %}
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+{% endblock %}
+
 {% from "format/record/record_macros.tpl" import render_authors,
 render_access_rights,
 render_deposition_type,
