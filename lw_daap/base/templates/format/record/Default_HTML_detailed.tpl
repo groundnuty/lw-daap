@@ -5,9 +5,12 @@
 {% endblock %}
 
 {% from "format/record/record_macros.tpl" import render_authors,
-render_access_rights,
-render_deposition_type,
-open_panel_section, close_panel_section
+                                                 render_access_rights,
+                                                 render_deposition_type,
+                                                 render_rel_input,
+                                                 open_panel_section,
+                                                 close_panel_section
+   with context
 %}
 
 {% include "lw_daap/pids/doi_modal.html" %}
@@ -75,11 +78,11 @@ open_panel_section, close_panel_section
           </div>
         </div>
         {{ open_panel_section(
-        '<i class="fa fa-info"></i> Basic information', 1, True) }}
+        '<i class="fa fa-info"></i> Basic information', 1, False) }}
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700;">
-              <i class="fa fa-barcode fa-fw"></i> Persistent Identifier
+              <i class="fa fa-barcode fa-fw"></i> Persistent Identifier 
             </span>
           </div>
           <div class="col-md-9">
@@ -158,7 +161,36 @@ open_panel_section, close_panel_section
         {% endif %}
         {{ close_panel_section() }}
 
-        {% if daap_record.os or daap_record.flavor or daap_record.app_env %}
+
+        {% if daap_record.rel_dataset or daap_record.rel_software %}
+        {{ open_panel_section(
+        '<i class="fa fa-laptop"></i> Inputs', 'inputs', True) }}
+        <div class="row" style="margin-bottom: 30px;">
+          <div class="col-md-3">
+            <span style="font-size: 1.3em; font-weight: 700; ">
+              <i class="fa fa-fw fa-laptop"></i> Input dataset
+            </span>
+          </div>
+          <div class="col-md-9">
+          {{ render_rel_input(daap_record.rel_dataset) }}
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 30px;">
+          <div class="col-md-3">
+            <span style="font-size: 1.3em; font-weight: 700; ">
+              <i class="fa fa-fw fa-laptop"></i> Input software
+            </span>
+          </div>
+          <div class="col-md-9">
+          {{ render_rel_input(daap_record.rel_software) }}
+          </div>
+        </div>
+
+        {{ close_panel_section() }}
+        {% endif %}
+
+
+        {% if daap_record.os != "os-notspec"  or daap_record.flavor != "flavor-notspec" or (daap_record.app_env != "appenv-notspec" and daap_record.app_env != "None") %}
         {{ open_panel_section(
         '<i class="fa fa-laptop"></i> Requirements', 'requirements', True) }}
         <div class="row" style="margin-bottom: 30px;">
@@ -174,7 +206,7 @@ open_panel_section, close_panel_section
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700; ">
-              <i class="fa fa-fw fa-laptop"></i> Flavor
+              <i class="fa fa-fw fa-laptop"></i> Flavor Oe
             </span>
           </div>
           <div class="col-md-9">
@@ -310,7 +342,9 @@ open_panel_section, close_panel_section
           </div>
           <div class="col-md-9">
             {% for term in daap_record.subjects %}
-            {{ term.term }} {{ ' (' ~ term.identifier ~ ')' if term.identifier }}{% if not loop.last %}; {% endif %}
+            <span class="label label-primary" style="display: inline-block; margin: 5px 5px;">
+            {{ term.term }} (<a href="{{ url_for('search.search', p='term.identifier:' + term.identifier) }}">{{ term.identifier }}</a>) {% if not loop.last %}; {% endif %}
+            </span>
             {% endfor %}
           </div>
         </div>

@@ -27,20 +27,14 @@ from os.path import dirname, join
 
 
 class KnwKBData(DataSet):
-    class json_projects:
-        id = 1
-        name = "json_projects"
-        description = ""
-        type = "w"
-
     class licenses:
-        id = 2
+        id = 1
         name = "licenses"
         description = ""
         type = "w"
 
     class requirements:
-        id = 3
+        id = 2
         name = "requirements"
         description = ""
         type = "w"
@@ -52,7 +46,6 @@ class KnwKBRVALData(DataSet):
 
 data = (
     ('kb_licenses.csv', KnwKBData.licenses.id),
-    ('kb_json_projects.csv', KnwKBData.json_projects.id),
     ('kb_requirements.csv', KnwKBData.requirements.id),
 )
 
