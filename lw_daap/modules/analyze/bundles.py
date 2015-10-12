@@ -32,6 +32,7 @@ from invenio.base.bundles import jquery as _j, invenio as _i
 js = Bundle(
     "js/analyze/analyze.js",
     "js/analyze/terminator.js",
+    "js/analyze/connector.js",
     "js/analyze/flavors.js",
     output="analyze.js",
     filters=RequireJSFilter(exclude=[_j, _i]),

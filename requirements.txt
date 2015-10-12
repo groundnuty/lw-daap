@@ -13,5 +13,7 @@ cryptography
 humanize
 python-novaclient
 voms-auth-system-openstack
+PyYaml
+python-etcd
 # v2.2.1 breaks everything :(
 intbitset==2.0

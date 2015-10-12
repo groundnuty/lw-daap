@@ -1,6 +1,6 @@
 
 {% extends "page.html" %}
-{%- from "analyze/modals.html" import terminate_modal with context %}
+{%- from "analyze/modals.html" import terminate_modal, connector_modal with context %}
 
 
 {% block javascript %}
@@ -9,10 +9,12 @@
   require(
     [
       "jquery",
-      "js/analyze/terminator"
+      "js/analyze/terminator",
+      "js/analyze/connector"
     ],
-    function($, terminator) {
+    function($, terminator, connector) {
         terminator.attachTo(".vm-terminator")
+        connector.attachTo(".vm-connector")
     });
 </script>
 {% endblock %}
@@ -46,9 +48,14 @@
           <td>{{ vm.status }}</td>
           <td>{{ vm.created }}</td>
           <td class="text-right">
-            <a class="btn btn-sm btn-primary" href="#"><i class="fa fa-external-link"></i> Connect</a>
-            <a class="btn btn-sm btn-warning vm-terminator" data-terminate-url="{{ url_for('.terminate', vm_id=vm.id) }}"
-               data-vm-name="{{ vm.name }}" href="#"><i class="fa fa-power-off"></i> Terminate</a>
+            <a class="btn btn-sm btn-primary vm-connector" data-vm-status="{{ vm.status.lower() }}"
+               data-connect-url="{{ url_for('.connect', vm_id=vm.id) }}" href="#">
+                <i class="fa fa-external-link" ></i> Connect
+            </a>
+            <a class="btn btn-sm btn-warning vm-terminator" data-vm-name="{{ vm.name }}" 
+               data-terminate-url="{{ url_for('.terminate', vm_id=vm.id) }}" href="#">
+                <i class="fa fa-power-off"></i> Terminate
+            </a>
           </td>
         </tr>
       {% endfor %}
@@ -73,5 +80,6 @@
 </div>
 
 {{ terminate_modal() }}
+{{ connector_modal() }}
 
 {% endblock body %}
