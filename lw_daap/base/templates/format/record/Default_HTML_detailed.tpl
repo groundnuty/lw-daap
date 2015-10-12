@@ -72,7 +72,7 @@
           </div>
         </div>
         {{ open_panel_section(
-        '<i class="fa fa-info"></i> Basic information', 1, True) }}
+        '<i class="fa fa-info"></i> Basic information', 1, False) }}
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700;">
