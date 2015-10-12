@@ -76,7 +76,7 @@
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700;">
-              <i class="fa fa-barcode fa-fw"></i> Persistent Identifier
+              <i class="fa fa-barcode fa-fw"></i> Persistent Identifier 
             </span>
           </div>
           <div class="col-md-9">
@@ -184,7 +184,7 @@
         {% endif %}
 
 
-        {% if daap_record.os != "os-notspec"  or daap_record.flavor != "flavor-notspec" or daap_record.app_env != "None" %}
+        {% if daap_record.os != "os-notspec"  or daap_record.flavor != "flavor-notspec" or (daap_record.app_env != "appenv-notspec" and daap_record.app_env != "None") %}
         {{ open_panel_section(
         '<i class="fa fa-laptop"></i> Requirements', 'requirements', True) }}
         <div class="row" style="margin-bottom: 30px;">
@@ -200,7 +200,7 @@
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700; ">
-              <i class="fa fa-fw fa-laptop"></i> Flavor
+              <i class="fa fa-fw fa-laptop"></i> Flavor Oe
             </span>
           </div>
           <div class="col-md-9">
