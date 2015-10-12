@@ -15,6 +15,11 @@ blueprint = Blueprint('lw_daap', __name__, url_prefix='',
 #
 # Main
 #
+@blueprint.route('/herebedragons', methods=['GET', ])
+def main():
+    return render_template('main.html')
+
+
 @blueprint.route('/', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
 def project():
