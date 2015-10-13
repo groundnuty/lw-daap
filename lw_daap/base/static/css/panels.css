@@ -38,7 +38,7 @@
   border-color: #00481D;
 }
 
-.panel-primary .btn-primary {
+.panel-primary > .panel-heading .btn-primary {
   border-color: #00481D;
 }
 
@@ -62,9 +62,13 @@
 
 .panel-primary > .panel-body {
   background: #F1F1F1;
+}
+
+.panel-primary > .panel-heading + .panel-body {
   border-top: 2px solid #00481D;
 
 }
+
 
 .panel-primary > .panel-body .nav-list .list-group-item {
   border-radius: 0px;

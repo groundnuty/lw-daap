@@ -11,16 +11,16 @@ from invenio.ext.template. \
 blueprint = Blueprint('lw_daap', __name__, url_prefix='',
                       template_folder='templates', static_folder='static')
 
-
 #
 # Main
 #
-@blueprint.route('/herebedragons', methods=['GET', ])
-def main():
+@blueprint.route('/', methods=['GET', ])
+def home():
     return render_template('main.html')
 
 
-@blueprint.route('/main', methods=['GET', ])
+
+@blueprint.route('/project', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
 def project():
     return render_template('lw_daap/project.html')
@@ -60,8 +60,40 @@ def termsofservices():
 #
 #
 
+from werkzeug.routing import Map
+import invenio.modules.search
+import lw_daap.modules.invenio_deposit
+
 @blueprint.before_app_first_request
 def register_menu_items():
+    # TODO: This is dirty, kinda ugly, but it works.
+    # try to make it pretty.
+    # Replace invenio routes
+    # search.index -> /            ==> /search/
+    # search.index -> /index.html  ==> Deleted
+    # search.index -> /index.py    ==> Deleted
+    def fix_search():
+        _new_rules = []
+
+        search_index_flag = False
+        for idx, rule in enumerate(current_app.url_map.iter_rules()):
+            if str(rule.endpoint) == 'search.index' and  not search_index_flag:
+                rule.rule = '/search/'
+                search_index_flag = True
+
+            _new_rules.append(rule.empty())
+        curr = current_app.url_map
+        current_app.url_map = Map(rules=_new_rules,
+                                  default_subdomain=curr.default_subdomain,
+                                  charset=curr.charset,
+                                  strict_slashes=curr.strict_slashes,
+                                  redirect_defaults=curr.redirect_defaults,
+                                  converters=curr.converters,
+                                  sort_parameters=curr.sort_parameters,
+                                  sort_key=curr.sort_key,
+                                  encoding_errors=curr.encoding_errors,
+                                  host_matching=curr.host_matching)
+
     def menu_fixup():
         item = current_menu.submenu('settings.profile')
         item.register(
@@ -69,8 +101,10 @@ def register_menu_items():
             order=0,
             active_when=lambda: request.endpoint.startswith("userProfile."),
         )
-    current_app.before_first_request_funcs.append(menu_fixup)
 
+
+    current_app.before_first_request_funcs.append(menu_fixup)
+    fix_search()
 
 def add_record_variables(sender, **kwargs):
     """Add a variable 'daap_files' and 'daap_record' into record templates."""
