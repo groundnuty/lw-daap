@@ -730,7 +730,6 @@ class BasicForm(WebDepositForm):
     related_identifiers = fields.DynamicFieldList(
         fields.FormField(
             RelatedIdentifierForm,
-            description="Optional. Format: e.g. 10.1234/foo.bar",
             widget=ExtendedListWidget(
                 item_widget=ItemWidget(),
                 html_tag='div'
@@ -738,6 +737,7 @@ class BasicForm(WebDepositForm):
         ),
         label="Related identifiers",
         add_label='Add another related identifier',
+        description="Optional. Format: e.g. 10.1234/foo.bar",
         icon='fa fa-barcode fa-fw',
         widget_classes='',
         min_entries=1,
@@ -775,32 +775,47 @@ class DatasetForm(BasicForm):
     period = fields.DynamicFieldList(
         fields.FormField(
             zfields.PeriodFieldForm,
-            description='Optional. Start and end dates.',
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
         ),
         label="Temporal coverage",
         add_label='Add another period',
+        description='Optional. Start and end dates.',
         icon='fa fa-calendar fa-fw',
         widget_classes='',
         min_entries=1,
     )
 
-    frequency = fields.FormField(
-        zfields.FrequencyFieldForm,
+    frequency = fields.DynamicFieldList(
+        fields.FormField(
+            zfields.FrequencyFieldForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+            #widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"), # when not in dynamic field
+        ),
         label="Frecuency",
-        icon='fa fa-clock-o fa-fw',
+        add_label='Add another frequency',
         description='Optional. Frecuency collection of your data.',
-        #widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        icon='fa fa-clock-o fa-fw',
         widget_classes='',
-        widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"),
+        min_entries=1,
     )
 
-    #spatial = zfields.MapField(
-    #    label="Spatial coverage",
-    #    description='Optional. Indicate the spatial coverage of your data. You can also upload a spatial map in the next step.',
-    #    widget_classes='form-control',
-    #    icon='fa fa-map-marker fa-fw',
-    #)
+    spatial = fields.DynamicFieldList(
+        fields.FormField(
+            zfields.SpatialFieldForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        ),            
+        label="Spatial coverage",
+        add_label='Add another location',
+        description='Optional. Spatial coverage of your data.'
+                    ' Coordinates: westernmost longitude, eastern most  longitude'
+                    ' northern most latitude, southern most latitude.'
+                    ' The coordinates must be recorded in the form hdddmmss'
+                    ' (hemisphere-degrees-minutes-seconds). The subelements'
+                    ' are each right justified and unused positions contain zeros.',
+        icon='fa fa-map-marker fa-fw',
+        widget_classes='',
+        min_entries=1,
+    )
 
     #
     # Form configuration
@@ -926,7 +941,7 @@ class SoftwareForm(BasicForm):
             #'classes': '',
             'indication': 'required',
         }),
-        ('Requirements', [
+        ('<i class="fa fa-laptop"></i> Requirements', [
             'os', 'flavor', 'app_env',
         ], {
             #'classes': '',
@@ -934,7 +949,7 @@ class SoftwareForm(BasicForm):
             'description': (
                 'Requirements are recommended in order to allow ...')
         }),
-        ('License', [
+        ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
@@ -947,7 +962,7 @@ class SoftwareForm(BasicForm):
                 ' publications have agreed to the terms of this waiver and'
                 ' license.')
         }),
-        ('Communities', [
+        ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
             #'classes': '',
@@ -960,13 +975,13 @@ class SoftwareForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Related Identifiers', [
+        ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Subjects', [
+        ('<i class="fa fa-tags"></i> Subjects', [
             'subjects'
         ], {
             'classes': '',
@@ -1060,7 +1075,7 @@ class AnalysisForm(BasicForm):
             #'classes': '',
             'indication': 'required',
         }),
-        ('Inputs', [
+        ('<i class="fa fa-asterisk"></i> Inputs', [
             'rel_dataset', 'rel_software',
         ], {
             #'classes': '',
@@ -1072,7 +1087,7 @@ class AnalysisForm(BasicForm):
                             ' internal or external DOI. At least a dataset'
                             ' and a software must be specified.')
         }),
-        ('Requirements', [
+        ('<i class="fa fa-laptop"></i> Requirements', [
             'os', 'flavor', 'app_env',
         ], {
             #'classes': '',
@@ -1080,7 +1095,7 @@ class AnalysisForm(BasicForm):
             'description': (
                 'Requirements are recommended in order to allow ...')
         }),
-        ('License', [
+        ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
         ], {
             #'classes': '',
@@ -1093,7 +1108,7 @@ class AnalysisForm(BasicForm):
                 ' publications have agreed to the terms of this waiver and'
                 ' license.')
         }),
-        ('Communities', [
+        ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
             #'classes': '',
@@ -1106,13 +1121,13 @@ class AnalysisForm(BasicForm):
                 ' be notified, and can either accept or reject your'
                 ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
-        ('Related Identifiers', [
+        ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
         ], {
             'classes': '',
             'indication': 'optional',
         }),
-        ('Subjects', [
+        ('<i class="fa fa-tags"></i> Subjects', [
             'subjects'
         ], {
             'classes': '',

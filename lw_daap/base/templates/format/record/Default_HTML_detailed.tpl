@@ -158,7 +158,7 @@
 
         {% if daap_record.rel_dataset or daap_record.rel_software %}
         {{ open_panel_section(
-        '<i class="fa fa-laptop"></i> Inputs', 'inputs', True) }}
+        '<i class="fa fa-asterisk"></i> Inputs', 'inputs', True) }}
         <div class="row" style="margin-bottom: 30px;">
           <div class="col-md-3">
             <span style="font-size: 1.3em; font-weight: 700; ">
@@ -184,6 +184,7 @@
         {% endif %}
 
 
+        {% if daap_record.os or daap_record.flavor or daap_record.app_env %}
         {% if daap_record.os != "os-notspec"  or daap_record.flavor != "flavor-notspec" or (daap_record.app_env != "appenv-notspec" and daap_record.app_env != "None") %}
         {{ open_panel_section(
         '<i class="fa fa-laptop"></i> Requirements', 'requirements', True) }}
@@ -220,6 +221,7 @@
 
         {{ close_panel_section() }}
         {% endif %}
+        {% endif %}
 
         {% if daap_record.__license_text__%}
         {{ open_panel_section('
@@ -251,9 +253,10 @@
           </div>
           <div class="col-md-9">
             {% for period in daap_record.period %}
-            <div class="col-xs-3"><span class="text-muted">from</span> {{ period.start }}</div>
-            <div class="col-xs-3"><span class="text-muted">to</span> {{ period.end }}</div>
-            <div class="col-xs-6">&nbsp;</div>
+            <span class="text-muted">from</span> {{ period.start }} <span class="text-muted">to</span> {{ period.end }}{% if not loop.last %}; {% endif %}
+            {#<div class="col-xs-3"><span class="text-muted">from</span> {{ period.start }}</div>#}
+            {#<div class="col-xs-3"><span class="text-muted">to</span> {{ period.end }}</div>#}
+            {#<div class="col-xs-6">&nbsp;</div>#}
             {% endfor %}
           </div>
         </div>
@@ -266,7 +269,9 @@
             </span>
           </div>
           <div class="col-md-9">
-            {{ daap_record.frequency.size }} {{ bfe_daap_unit(bfo, frequency=daap_record.frequency) }}
+            {% for frequency in daap_record.frequency %}
+                {{ frequency.size }} {{ bfe_daap_unit(bfo, frequency=frequency) }}{% if not loop.last %}; {% endif %}
+            {% endfor %}
           </div>
         </div>
         {% endif %}
@@ -280,7 +285,9 @@
             </span>
           </div>
           <div class="col-md-9">
-            {{ daap_record.spatial }}
+            {% for spatial in daap_record.spatial %}
+                {{ spatial.west }}, {{ spatial.east }}, {{ spatial.north }}, {{ spatial.south }}{% if not loop.last %}; {% endif %}
+            {% endfor %}
           </div>
         </div>
         {% endif %}

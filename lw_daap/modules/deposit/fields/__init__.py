@@ -28,6 +28,7 @@ from .reserve_doi_field import ReserveDOIField
 from .upload_subtype_field import UploadSubtypeField
 from .core import TextAreaListField
 from .period import PeriodFieldForm
+from .spatial import SpatialFieldForm
 from .frequency import FrequencyFieldForm
 from .file_field import FileField
 from .keywords_field import KeywordsField
@@ -44,6 +45,7 @@ __all__ = [
     'UploadSubtypeField',
     'TextAreaListField',
     'PeriodFieldForm',
+    'SpatialFieldForm',
     'FrequencyFieldForm',
     'FileField',
     'KeywordsField',
