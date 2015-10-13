@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Run the script every 5 minutes
+*/5 * * * *    root    {{ context_script_path }} 
+
