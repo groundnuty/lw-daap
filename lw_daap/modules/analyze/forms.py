@@ -1,5 +1,7 @@
+from wtforms import RadioField, SelectField, StringField, \
+                    validators, ValidationError
+
 from invenio.utils.forms import InvenioBaseForm
-from wtforms import RadioField, SelectField, StringField, validators
 
 
 class LaunchFormData:
@@ -50,6 +52,13 @@ class LaunchForm(InvenioBaseForm):
         description = 'Required. Some info?',
     )
 
+    def __init__(self, **kwargs):
+        if 'user_profile' in kwargs:
+            self.user_profile = kwargs['user_profile']
+        else:
+            self.user_profile = None
+        super(LaunchForm, self).__init__(**kwargs)
+
     def _build_choices(self, reqs, req_type, title_field='title'):
         return [(k, v[title_field]) for k, v in reqs.get(req_type, {}).items()]
 
@@ -57,3 +66,11 @@ class LaunchForm(InvenioBaseForm):
         self.flavor.choices = self._build_choices(reqs, 'flavors', 'id')
         self.image.choices = self._build_choices(reqs, 'images')
         self.app_env.choices = self._build_choices(reqs, 'app_envs')
+
+    def validate_app_env(form, field):
+        if field.data == 'ssh' and form.user_profile:
+            if not form.user_profile.ssh_public_key:
+                msg = ('You need a ssh key before using this application '
+                       'environment. You can set one at your profile '
+                       'settings.')
+                raise ValidationError(msg)

@@ -39,12 +39,12 @@ def index():
 @blueprint.route('/launch', methods=['GET', 'POST'])
 @delegation_required()
 def launch():
+    profile = userProfile.get_or_create()
     reqs = get_requirements()
     obj = LaunchFormData(reqs, **request.args)
-    form = LaunchForm(obj=obj)
+    form = LaunchForm(obj=obj, user_profile=profile)
     form.fill_fields_choices(reqs)
     if form.validate_on_submit():
-        profile = userProfile.get_or_create()
         client = infra.get_client(profile.user_proxy)
         infra.launch_vm(client, name=form.name.data, image=form.image.data,
                         flavor=form.flavor.data, app_env=form.app_env.data,
