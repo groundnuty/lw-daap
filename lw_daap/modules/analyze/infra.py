@@ -26,8 +26,6 @@ def _vm_mapper():
     reqs = get_requirements()
 
     def _mapper(vm):
-        addrs = [addr['addr']
-                 for addr in chain.from_iterable(vm.addresses.values())]
         created = now - parse(vm.created)
         return {
             'id': vm.id,
@@ -37,7 +35,7 @@ def _vm_mapper():
             'image': reqs['images'].get(vm.image['id'], {}).get('title'),
             'created': humanize.naturaltime(created),
             'seconds': created.seconds,
-            'addresses': addrs,
+            'metadata': vm.metadata,
         }
     return _mapper
 
@@ -54,6 +52,7 @@ def _vm_filter(user_id, daap_user=None):
 def _get_user_id(client):
     catalog = client.client.service_catalog.catalog
     return catalog['access']['user']['id']
+
 
 def get_client(user_proxy):
     username = password = None
@@ -77,7 +76,7 @@ def get_client(user_proxy):
     return client
 
 
-def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
+def nato_context():
     context_script = b64encode(
         render_template_to_string('analyze/etcd-updater.sh',
                                   etcd_url=cfg.get('CFG_ANALYZE_ETCD_URL'),
@@ -89,13 +88,13 @@ def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
         render_template_to_string('analyze/etcd_updater_cron',
                                   context_script_path=context_script_path)
     )
-    cloud_config = {
+    return {
         'write_files': [
             {
                 'encoding': 'b64',
                 'content': context_script,
                 'permissions': '755',
-                'path': context_script_path, 
+                'path': context_script_path,
             },
             {
                 'encoding': 'b64',
@@ -110,11 +109,13 @@ def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
         ],
     }
 
+
+def ssh_context(app_env, ssh_key, context):
     if ssh_key:
-        cloud_config['users'] = [
+        context['users'] = [
             "default",
             {
-                "name": "lw", 
+                "name": "lw",
                 "sudo": "ALL=(ALL) NOPASSWD:ALL",
                 "ssh-import-id": None,
                 "lock-passwd": True,
@@ -122,8 +123,37 @@ def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
             },
         ]
 
+
+def jupyter_context(app_env, ssh_key, context):
+    jupyter_script = b64encode(
+        # nothing to pass to the template?
+        render_template_to_string('analyze/jupyter.sh')
+    )
+    jupyter_script_path = '/usr/local/bin/start-jupyter.sh'
+    context['write_files'].append({
+        'encoding': 'b64',
+        'content': jupyter_script,
+        'permissions': '755',
+        'path': jupyter_script_path,
+    })
+    context['runcmd'].append([jupyter_script_path])
+
+
+CONTEXT_MAP = {
+    'ssh': ssh_context,
+    'jupyter-python': jupyter_context,
+    'jupyter-r': jupyter_context,
+}
+
+
+def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
+    context = nato_context()
+    app_env_context = CONTEXT_MAP.get(app_env, None)
+    if app_env_context:
+        app_env_context(app_env, ssh_key, context)
+
     userdata='\n'.join(['#cloud-config',
-                        yaml.safe_dump(cloud_config, 
+                        yaml.safe_dump(context,
                                        default_flow_style=False)])
     current_app.logger.debug(userdata)
     try:
@@ -160,6 +190,7 @@ def get_vm(client, vm_id):
         return None
 
 
+# XXX this needs some refactoring
 def get_vm_connection(client, vm_id):
     vm = get_vm(client, vm_id)
     if not vm:
@@ -184,14 +215,27 @@ def get_vm_connection(client, vm_id):
     try:
         r = etcd_client.read(vm_dir, recursive=True)
         d = {c.key.split('/')[-1]: c.value for c in r.children}
-        d['user'] = 'lw'
-        return dict(
-            error=False,
-            msg=('<p>You can connect via SSH to %(ip)s, port %(port)s with '
-                 'user "%(user)s":</p>'
-                 '<p>ssh -i &lt;your ssh key&gt; -p %(port)s '
-                 '%(user)s@%(ip)s</p>') % d
-        )
+        app_env = vm.get('metadata', {}).get('app_env')
+        if app_env == 'ssh':
+            d['user'] = 'lw'
+            return dict(
+                error=False,
+                msg=('<p>You can connect via SSH to %(ip)s, port %(port)s with '
+                     'user "%(user)s":</p>'
+                     '<p>ssh -i &lt;your ssh key&gt; -p %(port)s '
+                     '%(user)s@%(ip)s</p>') % d
+            )
+        elif app_env == 'jupyter-python':
+            return dict(
+                error=False,
+                msg='<p>You can connect to <a href="%(http)s">jupyter</a>.' % d
+            )
+
+        else:
+            return dict(
+                error=True,
+                msg='Uknown application environment "%s".' % app_env
+            )
     except etcd.EtcdKeyNotFound:
         return dict(
             error=True,
@@ -202,4 +246,3 @@ def get_vm_connection(client, vm_id):
             error=True,
             msg='Unable to get connection details (%s).' % e
         )
-    
