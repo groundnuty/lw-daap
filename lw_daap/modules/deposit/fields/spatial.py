@@ -23,8 +23,9 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(8, message="Field must be 8 characters long."),
-            validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
+            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Regexp(regex=r'([+-])(\d{3})([.])(\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            #validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
         ],
     )
     #Coordinates--easternmost longitude
@@ -39,8 +40,8 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(8, message="Field must be 8 characters long."),
-            validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
+            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
     #Coordinates--northernmost latitude
@@ -55,8 +56,8 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(8, message="Field must be 8 characters long."),
-            validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
+            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
     #Coordinates--southernmost latitude
@@ -71,7 +72,7 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(8, message="Field must be 8 characters long."),
-            validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
+            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )

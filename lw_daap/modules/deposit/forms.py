@@ -805,9 +805,11 @@ class DatasetForm(BasicForm):
         description='Optional. Spatial coverage of your data.'
                     ' Coordinates: western most longitude, eastern most  longitude'
                     ' northern most latitude, southern most latitude.'
-                    ' The coordinates must be recorded in the form hdddmmss'
-                    ' (hemisphere-degrees-minutes-seconds). The subelements'
-                    ' are each right justified and unused positions contain zeros.',
+                    ' The coordinates must be recorded in decimal degrees'
+                    ' (+ddd.dddddd). Unused positions must be filled with zeros.',
+                    #' The coordinates must be recorded in the form hdddmmss'
+                    #' (hemisphere-degrees-minutes-seconds). The subelements'
+                    #' are each right justified and unused positions contain zeros.',
         icon='fa fa-map-marker fa-fw',
         widget_classes='',
         min_entries=1,
