@@ -35,7 +35,9 @@ CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
 CFG_SITE_SUPPORT_EMAIL = "support@mail"
-CFG_SITE_ADMIN_EMAIL = "admin@mail"
+CFG_SITE_ADMIN_EMAIL = "support@mail"
+CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
+CFG_WEBCOMMENT_ALERT_ENGINE_EMAIL = "support@mail"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
 
 COMMUNITIES_PARENT_NAME=CFG_SITE_NAME
@@ -61,7 +63,6 @@ PACKAGES = [
     "lw_daap.modules.deposit",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
-    #"lw_daap.modules.project",
     "lw_daap.modules.github",
     "lw_daap.modules.analyze",
     "lw_daap.modules.pids",
