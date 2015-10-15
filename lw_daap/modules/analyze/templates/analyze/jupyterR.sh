@@ -17,8 +17,8 @@
 
 export DEBIAN_FRONTEND=noninteractive
 echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" > /etc/apt/sources.list.d/cran.list
-apt-get update
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+apt-get update
 apt-get -y install build-essential python3-dev python3-pip python-virtualenv libzmq3-dev r-base
 useradd -m jup
 
@@ -49,7 +49,7 @@ export R_LIBS_USER=~/.R
 R_INSTALLER=\`mktemp\`
 echo 'dir.create(Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)' > \$R_INSTALLER
 echo 'install.packages(c("rzmq","repr","IRkernel","IRdisplay"),' >> \$R_INSTALLER
-echo '                 repos = "http://irkernel.github.io/",' >> \$R_INSTALLER
+echo '                 repos = c("http://irkernel.github.io/", "http://cran.es.r-project.org/"),' >> \$R_INSTALLER
 echo '                 type = "source")' >> \$R_INSTALLER
 echo 'IRkernel::installspec()' >> \$R_INSTALLER
 
