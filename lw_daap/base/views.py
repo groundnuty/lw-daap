@@ -98,6 +98,8 @@ def register_menu_items():
             if str(rule.endpoint) == 'search.index' and  not search_index_flag:
                 rule.rule = '/search/'
                 search_index_flag = True
+            if str(rule.endpoint) == 'search.search':
+                rule.rule = '/q/search'
 
             _new_rules.append(rule.empty())
         curr = current_app.url_map
