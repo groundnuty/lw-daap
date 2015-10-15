@@ -36,7 +36,7 @@ from invenio.modules.formatter import format_record
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.ext.login import UserInfo
 from lw_daap.modules.invenio_deposit.models import DepositionType, Deposition, \
-    InvalidApiAction
+    InvalidApiAction, DraftDoesNotExists
 from lw_daap.modules.invenio_deposit.tasks import render_form, \
     create_recid, \
     prepare_sip, \
@@ -72,6 +72,9 @@ def has_doi(obj, eng):
         d = Deposition(obj)
         return d.is_minted()
     return False
+
+def is_api_request(obj, end):
+    return getattr(request, 'is_api_request', False)
 
 
 # =======
@@ -182,7 +185,7 @@ def process_recjson(deposition, recjson):
         recjson['access_groups_title'] = map(
             lambda x: x['title'], access_groups
         )
-        
+
 
     except TypeError:
         # Happens on re-run
@@ -538,8 +541,9 @@ def process_file_descriptions():
     """
     def _process_file_descriptions(obj, eng):
         d = Deposition(obj)
-        draft = d.get_draft("_files")
-        if not draft:
+        try:
+            draft = d.get_draft("_files")
+        except DraftDoesNotExists:
             return
         draft_files = draft.values.get('file_description', [])
         for f in d.files:
@@ -605,11 +609,11 @@ class upload(DepositionType):
         p.IF_NOT(
             has_doi,
             [
-                # now go for the files
-                render_form(draft_id='_files'),
-                # Test if all files are available for API
-                # XXX: what to do about this?
-                api_validate_files(),
+                p.IF_ELSE(is_api_request,
+                          # Test all files are availables for API
+                          api_validate_files(),
+                          # ELSE render the files form
+                          render_form(draft_id='_files')),
                 process_file_descriptions(),
             ],
         ),
@@ -656,7 +660,6 @@ class upload(DepositionType):
         access_conditions=fields.String,
         access_groups=fields.List(fields.Raw),
         communities=fields.List(fields.Raw),
-        creators=fields.Raw(default=[]),
         description=fields.String,
         doi=fields.String(default=''),
         embargo_date=ISODate,
@@ -691,7 +694,7 @@ class upload(DepositionType):
     def default_draft_id(cls, deposition):
         if deposition.has_sip() and '_edit' in deposition.drafts:
             return '_edit'
-        return '_maetadata'
+        return '_metadata'
 
     @classmethod
     def marshal_deposition(cls, deposition):
@@ -711,7 +714,7 @@ class upload(DepositionType):
             )
             metadata_fields = cls.marshal_metadata_edit_fields
         else:
-            draft = deposition.get_or_create_draft('_default')
+            draft = deposition.get_or_create_draft('_metadata')
             metadata_fields = cls.marshal_metadata_fields
 
         # Fix known differences in marshalling

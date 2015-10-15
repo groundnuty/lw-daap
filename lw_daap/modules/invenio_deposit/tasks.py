@@ -115,7 +115,7 @@ def authorize_user(action, **params):
     return _authorize_user
 
 
-def prefill_draft(draft_id='_default', clear=True):
+def prefill_draft(draft_id='_metadata', clear=True):
     """Fill draft values with values from pre-filled cache."""
     @wraps(prefill_draft)
     def _prefill_draft(obj, eng):
@@ -128,7 +128,7 @@ def prefill_draft(draft_id='_default', clear=True):
     return _prefill_draft
 
 
-def render_form(draft_id='_default'):
+def render_form(draft_id='_metadata'):
     """Render a form if the draft associated with it has not yet been completed.
 
     :param draft_id: The name of the draft to create. Must be specified if you
@@ -186,7 +186,7 @@ def render_form(draft_id='_default'):
     return _render_form
 
 
-def load_record(draft_id='_default', producer='json_for_form',
+def load_record(draft_id='_metadata', producer='json_for_form',
                 pre_process=None, post_process=None):
     """Load a record and map to draft data."""
     @wraps(load_record)
@@ -267,7 +267,7 @@ def merge_changes(deposition, dest, a, b):
     return dictdiffer.patch(patch, dest)
 
 
-def merge_record(draft_id='_default', pre_process_load=None,
+def merge_record(draft_id='_metadata', pre_process_load=None,
                  post_process_load=None, process_export=None,
                  merge_func=merge_changes):
     """Merge recjson with a record.
