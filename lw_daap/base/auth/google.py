@@ -30,7 +30,7 @@ REMOTE_APP = dict(
                        ":disconnect_handler",
     signup_handler=dict(
         info="lw_daap.base.auth.google:account_info",
-        view="invenio.modules.oauthclient.handlers:signup_handler",       
+        view="invenio.modules.oauthclient.handlers:signup_handler",
     ),
     params=dict(
         request_token_params={
