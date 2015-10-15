@@ -1,0 +1,198 @@
+{
+   "records":[
+   {
+      "metadata":{
+         "upload_type":"dataset",
+         "title":"API Test",
+         "creators":[
+         {
+            "name":"Doe, John",
+            "affiliation":"Whatever"
+         },
+         {
+            "name":"Markus, John",
+            "affiliation":"HappySec"
+         }
+         ],
+            "description":"Just a small description",
+            "notes":"Something here",
+            "keywords":"abcd, defg, hijk, lmn",
+            "access_right":"open",
+            "license":"cc-zero",
+            "communities":[
+            {
+               "identifier":"cuerdadelpozo"
+            }
+         ],
+            "related_identifiers":[
+            {
+               "identifier":"0167-6423",
+               "relation":"cites"
+            },
+            {
+               "identifier":"10.1234/foo.bar",
+               "relation":"isCitedBy"
+            }
+         ],
+            "subjects":[
+            {
+               "term":"term1",
+               "identifier":"0167-6423"
+            },
+            {
+               "term":"term2",
+               "identifier":"http://www.example.com"
+            }
+         ],
+            "period":[
+            {
+               "start":"2010-10-10",
+               "end":"2030-10-10"
+            },
+            {
+               "start":"3010-10-10",
+               "end":"3030-10-10"
+            }
+         ],
+            "frequency":[
+            {
+               "size":"20",
+               "unit":"minute"
+            },
+            {
+               "size":"1",
+               "unit":"year"
+            }
+         ],
+            "spatial":[
+            {
+               "west":"30.8457722555556",
+               "east":"-0.8457722555556",
+               "north":"3.8457722555556",
+               "south":"10.8457722555556"
+            },
+            {
+               "west":"0.8457722555556",
+               "east":"20.8457002555556",
+               "north":"30.8457722155556",
+               "south":"-2.8457722555556"
+            }
+         ]
+      },
+      "files":[
+      {
+         "filename":"Dataset.json",
+         "description":"Testcription"
+      },
+      {
+         "filename":"deposit.py",
+         "dDaescription":"Testcription"
+      }
+      ]
+   },
+
+
+
+   {
+      "metadata":{
+         "upload_type":"dataset",
+         "title":"API Test",
+         "creators":[
+         {
+            "name":"Doe, John",
+            "affiliation":"Whatever"
+         },
+         {
+            "name":"Markus, John",
+            "affiliation":"HappySec"
+         }
+         ],
+            "description":"Just a small description",
+            "notes":"Something here",
+            "keywords":"abcd, defg, hijk, lmn",
+            "access_right":"closed",
+            "license":"cc-zero"
+      },
+      "files":[
+      {
+         "filename":"Dataset.json",
+         "description":"Testcription"
+      },
+      {
+         "filename":"deposit.py",
+         "dDaescription":"Testcription"
+      }
+      ]
+   },
+
+
+
+   {
+      "metadata":{
+         "upload_type":"dataset",
+         "title":"API Test",
+         "creators":[
+         {
+            "name":"Doe, John",
+            "affiliation":"Whatever"
+         },
+         {
+            "name":"Markus, John",
+            "affiliation":"HappySec"
+         }
+         ],
+            "description":"Just a small description",
+            "notes":"Something here",
+            "keywords":"abcd, defg, hijk, lmn",
+            "access_right":"embargoed",
+            "embargo_date":"3333-12-12",
+            "license":"cc-zero"
+      },
+      "files":[
+      {
+         "filename":"Dataset.json",
+         "description":"Testcription"
+      },
+      {
+         "filename":"deposit.py",
+         "dDaescription":"Testcription"
+      }
+      ]
+   },
+
+
+
+   {
+      "metadata":{
+         "upload_type":"dataset",
+         "title":"API Test",
+         "creators":[
+         {
+            "name":"Doe, John",
+            "affiliation":"Whatever"
+         },
+         {
+            "name":"Markus, John",
+            "affiliation":"HappySec"
+         }
+         ],
+            "description":"Just a small description",
+            "notes":"Something here",
+            "keywords":"abcd, defg, hijk, lmn",
+            "access_right":"restricted",
+            "access_conditions":"This field es required",
+            "license":"cc-zero"
+      },
+      "files":[
+      {
+         "filename":"Dataset.json",
+         "description":"Testcription"
+      },
+      {
+         "filename":"deposit.py",
+         "dDaescription":"Testcription"
+      }
+      ]
+   }
+   ]
+}
