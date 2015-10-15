@@ -138,15 +138,19 @@ def ssh_context(app_env, ssh_key, context):
                 "ssh-import-id": None,
                 "lock-passwd": True,
                 "ssh-authorized-keys": [ssh_key],
-		"shell": "/bin/bash",
+		        "shell": "/bin/bash",
             },
         ]
 
 
 def jupyter_context(app_env, ssh_key, context):
+    if app_env == 'jupyter-python':
+        tpl = 'analyze/jupyter.sh'
+    elif app_env == 'jupyter-r':
+        tpl = 'analyze/jupyterR.sh'
     jupyter_script = b64encode(
         # nothing to pass to the template?
-        render_template_to_string('analyze/jupyter.sh')
+        render_template_to_string(tpl)
     )
     jupyter_script_path = '/usr/local/bin/start-jupyter.sh'
     context['write_files'].append({
@@ -244,16 +248,15 @@ def get_vm_connection(client, vm_id):
                      '<p>ssh -i &lt;your ssh key&gt; -p %(port)s '
                      '%(user)s@%(ip)s</p>') % d
             )
-        elif app_env == 'jupyter-python':
+        elif app_env in ['jupyter-python', 'jupyter-r']:
             return dict(
                 error=False,
                 msg='<p>You can connect to <a href="%(http)s">jupyter</a>.' % d
             )
-
         else:
             return dict(
                 error=True,
-                msg='Uknown application environment "%s".' % app_env
+                msg='Unknown application environment "%s".' % app_env
             )
     except etcd.EtcdKeyNotFound:
         return dict(
