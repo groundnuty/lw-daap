@@ -46,9 +46,9 @@ def get_client_proxy_info(profile):
     """
     info = {'user_proxy': False}
     if ('SSL_CLIENT_M_SERIAL' not in request.environ or
-        'SSL_CLIENT_V_END' not in request.environ or
-        'SSL_CLIENT_I_DN' not in request.environ or
-        request.environ.get('SSL_CLIENT_VERIFY') != 'SUCCESS'):
+            'SSL_CLIENT_V_END' not in request.environ or
+            'SSL_CLIENT_I_DN' not in request.environ or
+            request.environ.get('SSL_CLIENT_VERIFY') != 'SUCCESS'):
         info['user_cert'] = False
     else:
         info['user_dn'] = request.environ['SSL_CLIENT_S_DN']
@@ -106,7 +106,6 @@ def build_proxy(user_proxy, csr_priv_key):
         abort(400)
 
     proxy = x509_chain[0]
-    issuer = x509_chain[1]
 
     issuer_names = [n for n in proxy.issuer]
     subject_names = [n for n in proxy.subject]
@@ -134,19 +133,18 @@ def build_proxy(user_proxy, csr_priv_key):
         current_app.logger.debug("DIFFERENT KEY!")
         abort(400)
 
-
     new_proxy_chain = [pem_chain[0], csr_priv_key]
     new_proxy_chain.extend(pem_chain[1:])
 
-    time_left = (proxy.not_valid_after.replace(tzinfo=pytz.utc)
-                 - datetime.now(tz=pytz.utc))
+    time_left = (proxy.not_valid_after.replace(tzinfo=pytz.utc) -
+                 datetime.now(tz=pytz.utc))
     return '\n'.join(new_proxy_chain), humanize.naturaldelta(time_left)
 
 
 def add_voms_info(user_proxy, vo):
     """
     Adds voms information to existing proxy.
-    
+
     Uses the voms-proxy-init command (no voms API for Python)
     """
     with NamedTemporaryFile() as old_proxy:
@@ -166,8 +164,10 @@ def add_voms_info(user_proxy, vo):
             current_app.logger.debug("CMD %s" % ' '.join(cmd))
             out = ''.join([l for l in proc.stdout])
             proc.wait()
-            if proc.returncode != 0: #  and not _check_proxy_validity(new_proxy):
-                current_app.logger.debug("Failed to generate a proxy (%d): %s" % (proc.returncode, out))
+            if proc.returncode != 0:
+                # and not _check_proxy_validity(new_proxy):
+                current_app.logger.debug("Failed to generate a proxy (%d): %s"
+                                         % (proc.returncode, out))
             return new_proxy.read()
     current_app.logger.debug("VOMS proxy failed!")
     abort(400)

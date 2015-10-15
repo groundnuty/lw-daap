@@ -31,4 +31,3 @@ js = Bundle(
         "jquery-validation": "latest",
     },
 )
-

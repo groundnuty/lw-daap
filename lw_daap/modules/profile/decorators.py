@@ -26,6 +26,7 @@ from flask_login import current_user
 from .proxy_utils import get_client_proxy_info
 from .models import userProfile
 
+
 def delegation_required():
     """
     Checks if a valid delegation is available for the user
@@ -40,6 +41,7 @@ def delegation_required():
             if info.get('user_proxy', False):
                 return func(*args, **kwargs)
             else:
-                return redirect(url_for('userProfile.delegate', next_url=request.base_url))
+                return redirect(url_for('userProfile.delegate',
+                                        next_url=request.base_url))
         return decorated_view
     return delegation

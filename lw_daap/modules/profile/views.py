@@ -18,24 +18,21 @@
 
 from __future__ import absolute_import
 
-from datetime import datetime
-
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app
-from flask_login import current_user
+from flask import abort, Blueprint, current_app, flash, jsonify, \
+    render_template, request
 from flask_breadcrumbs import register_breadcrumb
-from flask_menu import register_menu, current_menu
+from flask_menu import register_menu
 
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
-from invenio.ext.login import reset_password
 
 from lw_daap.ext.login import login_required
 
 from .forms import ProfileForm
 from .models import userProfile
 from .proxy_utils import add_voms_info, get_client_proxy_info, \
-                         generate_proxy_request, build_proxy
+    generate_proxy_request, build_proxy
 
 
 blueprint = Blueprint(
@@ -71,7 +68,7 @@ def index():
             for error in errors:
                 current_app.logger.debug("Error in the %s field - %s" % (
                                          getattr(form, field).label.text,
-                                        error))
+                                         error))
 
     ctx = dict(
         form=form,
