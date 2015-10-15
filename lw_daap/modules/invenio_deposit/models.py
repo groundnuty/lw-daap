@@ -175,7 +175,7 @@ class DepositionType(object):
     compatible with the API).
     """
 
-    draft_definitions = {'_default': None}
+    draft_definitions = {'_metadata': None}
     """
     Dictionary of all drafts for this deposition type
     """
@@ -211,7 +211,7 @@ class DepositionType(object):
 
     @classmethod
     def default_draft_id(cls, deposition):
-        return '_default'
+        return '_metadata'
 
     @classmethod
     def render_error(cls, dummy_deposition):

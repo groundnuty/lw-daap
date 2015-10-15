@@ -711,7 +711,7 @@ class upload(DepositionType):
             )
             metadata_fields = cls.marshal_metadata_edit_fields
         else:
-            draft = deposition.get_or_create_draft('_default')
+            draft = deposition.get_or_create_draft('_metadata')
             metadata_fields = cls.marshal_metadata_fields
 
         # Fix known differences in marshalling

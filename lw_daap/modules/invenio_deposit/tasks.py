@@ -115,7 +115,8 @@ def authorize_user(action, **params):
     return _authorize_user
 
 
-def prefill_draft(draft_id='_default', clear=True):
+#def prefill_draft(draft_id='_default', clear=True):
+def prefill_draft(draft_id='_metadata', clear=True):
     """Fill draft values with values from pre-filled cache."""
     @wraps(prefill_draft)
     def _prefill_draft(obj, eng):
