@@ -29,8 +29,8 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
 
 
-class userProfile(db.Model):
-    __tablename__ = 'userProfile'
+class UserProfile(db.Model):
+    __tablename__ = 'UserProfile'
 
     """ Fields """
     user_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(User.id),
@@ -109,7 +109,7 @@ class userProfile(db.Model):
     """ Relationships """
 
     user = db.relationship(
-        User, backref=db.backref("userProfile", uselist=False,
+        User, backref=db.backref("UserProfile", uselist=False,
                                  cascade="all, delete-orphan"))
 
     @classmethod

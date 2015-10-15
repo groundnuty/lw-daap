@@ -21,13 +21,13 @@ from __future__ import absolute_import, print_function, unicode_literals
 from invenio.utils.forms import InvenioBaseForm
 
 from wtforms_alchemy import model_form_factory
-from .models import userProfile
+from .models import UserProfile
 
 ModelForm = model_form_factory(InvenioBaseForm)
 
 
 class ProfileForm(ModelForm):
     class Meta:
-        model = userProfile
+        model = UserProfile
         only = ['name', 'institution', 'email', 'social_profiles',
                 'ssh_public_key']

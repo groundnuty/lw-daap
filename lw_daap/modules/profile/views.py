@@ -30,13 +30,13 @@ from invenio.ext.sslify import ssl_required
 from lw_daap.ext.login import login_required
 
 from .forms import ProfileForm
-from .models import userProfile
+from .models import UserProfile
 from .proxy_utils import add_voms_info, get_client_proxy_info, \
     generate_proxy_request, build_proxy
 
 
 blueprint = Blueprint(
-    'userProfile',
+    'userprofile',
     __name__,
     url_prefix="/account/settings",
     static_folder="static",
@@ -51,11 +51,11 @@ blueprint = Blueprint(
     blueprint, 'settings.profile',
     _('%(icon)s Profile', icon='<i class="fa fa-user fa-fw"></i>'),
     order=0,
-    active_when=lambda: request.endpoint.startswith("userProfile."),
+    active_when=lambda: request.endpoint.startswith("userprofile."),
 )
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def index():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
@@ -86,7 +86,7 @@ def index():
 @login_required
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def delegate():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     ctx = dict(profile=profile)
     ctx.update(get_client_proxy_info(profile))
     return render_template(
@@ -99,7 +99,7 @@ def delegate():
 @ssl_required
 @login_required
 def csr_request():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     priv_key, csr = generate_proxy_request()
     profile.update(csr_priv_key=priv_key)
     return csr
@@ -109,7 +109,7 @@ def csr_request():
 @ssl_required
 @login_required
 def delegate_proxy():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     if not profile.csr_priv_key:
         current_app.logger.debug("NO KEY!")
         abort(400)
@@ -134,6 +134,6 @@ def delegate_proxy():
 @ssl_required
 @login_required
 def delete_proxy():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     profile.update(user_proxy=None)
     return ''
