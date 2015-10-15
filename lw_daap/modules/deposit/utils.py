@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-## aeonium ######
-## Copied from zenodo/legacy/utils/zenodoutils.py
-
 def create_doi(recid=None):
     if recid == None:
         recid = 12345
