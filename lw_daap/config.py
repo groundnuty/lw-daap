@@ -1,9 +1,27 @@
+# -*- coding: utf-8 -*-
 #
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#
+
 # LifeWatch Data Access and Preservation
 # Configuration
 
 import sys
-reload(sys)  
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 from invenio.base.config import EXTENSIONS
@@ -35,7 +53,9 @@ CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
 CFG_SITE_SUPPORT_EMAIL = "support@mail"
-CFG_SITE_ADMIN_EMAIL = "admin@mail"
+CFG_SITE_ADMIN_EMAIL = "support@mail"
+CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
+CFG_WEBCOMMENT_ALERT_ENGINE_EMAIL = "support@mail"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
 
 COMMUNITIES_PARENT_NAME=CFG_SITE_NAME
@@ -52,16 +72,14 @@ DISABLE_WARNINGS = True
 
 #BLUEPRINTS_URL_PREFIXES = {
 #   "search": "/search",
-#} 
+#}
 
 
 PACKAGES = [
     "lw_daap.base",
-    "lw_daap.modules.communities",
     "lw_daap.modules.deposit",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
-    #"lw_daap.modules.project",
     "lw_daap.modules.github",
     "lw_daap.modules.analyze",
     "lw_daap.modules.pids",

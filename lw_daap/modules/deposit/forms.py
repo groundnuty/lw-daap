@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of Zenodo.
-# Copyright (C) 2012, 2013, 2014, 2015 CERN.
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 CSIC.
 #
-# Zenodo is free software; you can redistribute it and/or modify
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Zenodo is distributed in the hope that it will be useful,
+# Lifewatch DAAP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Zenodo. If not, see <http://www.gnu.org/licenses/>.
-#
-# In applying this licence, CERN does not waive the privileges and immunities
-# granted to it by virtue of its status as an Intergovernmental Organization
-# or submit itself to any jurisdiction.
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
 
@@ -807,11 +803,13 @@ class DatasetForm(BasicForm):
         label="Spatial coverage",
         add_label='Add another location',
         description='Optional. Spatial coverage of your data.'
-                    ' Coordinates: westernmost longitude, eastern most  longitude'
+                    ' Coordinates: western most longitude, eastern most  longitude'
                     ' northern most latitude, southern most latitude.'
-                    ' The coordinates must be recorded in the form hdddmmss'
-                    ' (hemisphere-degrees-minutes-seconds). The subelements'
-                    ' are each right justified and unused positions contain zeros.',
+                    ' The coordinates must be recorded in decimal degrees'
+                    ' (+ddd.dddddd). Unused positions must be filled with zeros.',
+                    #' The coordinates must be recorded in the form hdddmmss'
+                    #' (hemisphere-degrees-minutes-seconds). The subelements'
+                    #' are each right justified and unused positions contain zeros.',
         icon='fa fa-map-marker fa-fw',
         widget_classes='',
         min_entries=1,
