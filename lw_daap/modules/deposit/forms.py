@@ -26,6 +26,7 @@ from flask import request
 from jinja2 import Markup
 from wtforms import FormField, validators, widgets
 from wtforms.validators import ValidationError
+from wtforms_components import DateRange
 
 from invenio.base.globals import cfg
 from invenio.base.i18n import _
@@ -511,7 +512,10 @@ class BasicForm(WebDepositForm):
         'was already published elsewhere, please use the date of first'
         ' publication.',
         default=date.today(),
-        validators=[validators.DataRequired()],
+        validators=[
+            validators.DataRequired(),
+            DateRange(max=date.today, message="Date must be at most today."),
+        ],
         widget=date_widget,
         widget_classes='input-sm',
     )
@@ -688,14 +692,14 @@ class BasicForm(WebDepositForm):
         fields.FormField(
             AccessGroupsForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-            description='Specify the groups you will grant the access',
+            description='Optional. Specify the groups you will grant the access',
         ),
         validators=[
-            required_if('access_right', ['restricted']),
+            #required_if('access_right', ['restricted']),
             validators.optional()
         ],
         label=_('Access groups'),
-        description='Specify the groups you will grant the access.',
+        description='Optional. Specify the groups you will grant the access.',
         default="",
         widget=TagListWidget(template="{{title}}"),
         widget_classes=' dynamic-field-list',
