@@ -20,13 +20,12 @@
 
 {% block body %}
   <div class="col-sm-12">
-  <div class="jumbotron" style="border-radius: 0px;">
+    <div class="jumbotron" style="border-radius: 0px; background: #F1F1F1 url('{{url_for('static', filename="img/wave.png")}}') no-repeat 100% 100%;">
 
     <div class="row">
-      <div class="col-sm-12 col-md-6">
-      <img class="pull-left" style="width: 100%; margin-top: -20px; margin-right: 10px;" src="{{url_for('static', filename="img/whatis.png")}}" />
+      <div class="col-sm-12 col-md-5" style="min-height: 140px; background: url('{{url_for('static', filename="img/whatis2.png")}}') no-repeat 50% 50%;">
     </div>
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-7">
     <p style="font-size: 1.2em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehicula eros, sed aliquet purus leo eu est. </p>
   </div>
   <div class="col-sm-12">
