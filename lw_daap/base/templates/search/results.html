@@ -1,20 +1,20 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 {#
 ## This file is part of Invenio.
@@ -42,8 +42,7 @@
 
 {% block render_search_results %}
 {% if collection.id != 1 %}
-{#    {% include 'provisional_warning.html' %} #}
-    <h1>{{collection.name_ln}}</h1>
+<h1>{{collection.name_ln}}</h1>
 {% endif %}{{ super() }}{% endblock %}
 
 
@@ -58,11 +57,7 @@
 {%- endblock search_result_prefix -%}
 
 {%- block search_result_record scoped -%}
-{%- if not collection.name.startswith('provisional-') %}
 <div class="col-sm-10 col-xs-10">
-{% else %}
-<div class="col-sm-11 col-xs-11">
-{% endif %}
   {{ format_record(recid, of, ln=g.ln, qid=qid, collection=collection)|safe }}
   {% if not recordloop.last %}<hr/>{% endif %}
 </div>
@@ -70,7 +65,7 @@
 {%- if not collection.name.startswith('provisional-') %}
 <div class="col-sm-1 col-xs-1">
   <div class="view-record hidden-sm">
-    <a href="{{ url_for('record.metadata', recid=recid, ln=g.ln) }}" class="btn btn-danger  btn-raised pull-right">{{ _('View')}}</a>
+    <a href="{{ url_for('record.metadata', recid=recid, ln=g.ln) }}" class="btn btn-primary pull-right">{{ _('View')}}</a>
   </div>
 </div>
 {%- endif %}
