@@ -18,6 +18,7 @@
 
 
 from wtforms import validators, widgets
+from wtforms_components import DateRange
 
 from invenio.base.i18n import _
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
