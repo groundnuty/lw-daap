@@ -35,7 +35,6 @@ __all__ = ['PeriodField']
 class PeriodFieldForm(WebDepositForm):
     start = Date(
         label=_('Start date'),
-        placeholder='Start date',
         description='Start date.',
         validators=[
             required_if(
@@ -50,7 +49,6 @@ class PeriodFieldForm(WebDepositForm):
         )
     end = Date(
         label=_('End date'),
-        placeholder='End date',
         description='End date.',
         validators=[
             required_if(
@@ -59,7 +57,7 @@ class PeriodFieldForm(WebDepositForm):
                 message="End date required if you specify a start date."
              ),	
              validators.optional(),	
-             DateRange(max=date.today(), message="Date must be at most today."),   	
+             DateRange(max=date.today(), message="End date must be at most today."),   	
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',

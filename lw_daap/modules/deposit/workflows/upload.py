@@ -203,11 +203,26 @@ def process_recjson(deposition, recjson):
         recjson['access_groups_title'] = map(
             lambda x: x['title'], access_groups
         )
-
-
     except TypeError:
         # Happens on re-run
         pass
+
+    # ==============
+    # Related inputs
+    # ==============
+    for rel_input_type in ['rel_dataset', 'rel_software']:
+        try:
+            rel_input = recjson.get(rel_input_type,  [])
+
+            # Extract identifier (i.e. elements are mapped from dict ->
+            # string)
+            recjson[rel_input_type] = map(
+                lambda x: x['identifier'], rel_input 
+            )
+        except TypeError:
+            # Happens on re-run
+            pass
+
 
     # =============================
     # Related/alternate identifiers
