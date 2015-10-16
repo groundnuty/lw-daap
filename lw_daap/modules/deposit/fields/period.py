@@ -54,7 +54,8 @@ class PeriodFieldForm(WebDepositForm):
                 [lambda x: x is not None, ],  # non-empty
                 message="End date required if you specify a start date."
              ),	
-             validators.optional(),		
+             validators.optional(),	
+             DateRange(max=date.today(), message="Date must be at most today."),   	
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',
