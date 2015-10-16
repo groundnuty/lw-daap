@@ -37,13 +37,12 @@ class SpatialFieldForm(WebDepositForm):
         validators=[
             required_if(
                 'north',
-                [lambda x: x is not None, ],  # non-empty
+                [lambda x: bool(x.strip()), ],  # non-empty
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
             validators.Regexp(regex=r'([+-])(\d{3})([.])(\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
-            #validators.Regexp(regex=r'([WENS])(\d{3})(\d{2})(\d{2})', message="Field must be introduced in the form hdddmmss (hemisphere-degrees-minutes-seconds). The subelements are each right justified and unused positions contain zeros.")
         ],
     )
     #Coordinates--easternmost longitude
@@ -54,11 +53,11 @@ class SpatialFieldForm(WebDepositForm):
         validators=[
             required_if(
                 'south',
-                [lambda x: x is not None, ],  # non-empty
+                [lambda x: bool(x.strip()), ],  # non-empty
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
             validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
@@ -70,11 +69,11 @@ class SpatialFieldForm(WebDepositForm):
         validators=[
             required_if(
                 'east',
-                [lambda x: x is not None, ],  # non-empty
+                [lambda x: bool(x.strip()), ],  # non-empty
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
             validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
@@ -86,11 +85,11 @@ class SpatialFieldForm(WebDepositForm):
         validators=[
             required_if(
                 'west',
-                [lambda x: x is not None, ],  # non-empty
+                [lambda x: bool(x.strip()), ],  # non-empty
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="Field must be 11 characters long."),
+            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
             validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
