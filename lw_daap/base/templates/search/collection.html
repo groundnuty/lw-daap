@@ -17,3 +17,102 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 {%- extends "search/collection_base.html" -%}
+
+{%- block extra_style %}{% endblock extra_style -%}
+
+{%- block portalbox_lt -%}{%- endblock -%}
+
+{%- block portalbox_rt -%}
+{%- endblock portalbox_rt -%}
+
+{%- block index_left -%}
+{%- endblock index_left -%}
+
+{%- block index_right -%}
+<div class="container">
+  <div class="col-md-12">
+    {%- if collection.id != 1 %}
+    <div class="row">
+      <div class="col-sm-12 col-md-8">
+        <h1>
+        {% if collection.name.startswith("community-") %}
+          <i class="fa fa-fw fa-users"></i>
+        {% endif %}
+        {{collection.name_ln}} (<span class="text-muted" style="font-size: 0.8em;">Recent Uploads</span>)</h1>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        {% if collection.reclist|length > 0 and collection.name_ln.lower() == 'dataset' %}
+        <br/>
+        <a href="/collection/Dataset/dcat" class="btn btn-info pull-right">Download DCAT</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="spacer50"></div>
+    {%- endif %}
+
+    {% if collection.collection_children_r %}
+    <div class="collection panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a class="panel-toggle" data-toggle="collapse" data-idx="0" href="#collapse0">
+            <i class="fa fa-fw fa-filter"></i>{{ _("Filter by types") }}
+            <span class="pull-right show-on-collapsed">
+              <i class="glyphicon glyphicon-chevron-right"></i>
+            </span>
+            <span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></a>
+        </div>
+        <div id="collapse0" class="panel-collapse collapse">
+          <div class="panel-body">
+            {{ collection_tree(collection.collection_children_r, limit=2, class="nav nav-list clearfix") }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+
+    {% if collection.is_restricted %}
+    <div class="row">
+      <div class="col-lg-offset-1 col-sm-6 col-md-6">
+        <div class="alert alert-info" style="margin-top: 50px">
+          <strong><i class="icon-ban-circle"></i> {{ _('This collection is restricted. If you are authorized to access it, please click on the Search button.') }}</strong>
+        </div>
+      </div>
+    </div>
+    {% else %}
+
+    {% if collection.reclist %}
+    {%- if collection.name.startswith("community-") %}
+      {%- set reclist = collection.reclist|curated_only|reverse -%}
+    {% else %}
+      {%- set reclist = collection.reclist|reverse -%}
+    {% endif %}
+    {% for recid in reclist %}
+    <div class="row">
+      <div class="col-md-12 record-list-elem">
+        <div class="pull-right view-record hidden-sm">
+          <a href="{{ url_for('record.metadata', recid=recid) }}" class="btn btn-info">{{ _('View')}}</a>
+        </div>
+        {{ format_record(recid, 'hb', ln=g.ln)|safe }}
+        {% if not loop.last %}<hr>{% endif %}
+      </div>
+    </div>
+    {%- endfor %}
+    {%- if collection.reclist|length > 10 %}
+    </br>
+    <div class="row" align="center">
+      <a href="{{ url_for('search.search', cc=collection.name, jrec=11)|safe }}" class="btn btn-info">{{ _('View all')}}  &rarr;</a>
+    </div>
+    </br>
+    {%- endif %}
+    {%- else %}
+    <div class="row">
+      <div class="col-md-12" align="center" style="margin-top: 40px;">
+        <em class="text-muted">This collection is currently empty.</em>
+      </div>
+    </div>
+    {%- endif %}
+    {%- endif %}
+  </div>
+</div>
+{%- endblock index_right -%}
