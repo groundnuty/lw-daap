@@ -420,23 +420,15 @@ class InputRecordFieldForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
         processors=[
-            replace_field_data('title', accessgroups_obj_value('name')),
+            replace_field_data('title', inputrecords_obj_value('name')),
         ],
     )
     title = fields.StringField(
         placeholder="Start typing a record title...",
-        autocomplete_fn=accessgroups_autocomplete,
+        autocomplete_fn=inputrecords_autocomplete,
         widget=TagInput(),
         widget_classes='form-control',
     )
-    #record_id = fields.StringField(
-    #                label="",
-    #                widget_classes='form-control',
-    #                widget=ColumnInput(class_="col-xs-2"),
-    #                validators=[
-    #                    validators.DataRequired(),
-    #                ],
-    #            )
 
 
 class FileDescriptionForm(WebDepositForm):
@@ -536,7 +528,7 @@ class BasicForm(WebDepositForm):
         default=date.today(),
         validators=[
             validators.DataRequired(),
-            DateRange(max=date.today, message="Date must be at most today."),
+            DateRange(max=date.today(), message="Date must be at most today."),
         ],
         widget=date_widget,
         widget_classes='input-sm',
@@ -1031,9 +1023,7 @@ class AnalysisForm(BasicForm):
                                 InputRecordFieldForm,
                                 widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
                         ),
-                        validators=[
-                                validators.DataRequired()
-                        ],
+                        validators=[validators.DataRequired(message="This filed is required."),],                       
                         label="Input dataset",
                         add_label="Add input dataset identifier",
                         description='Required. Input dataset identifier.',
@@ -1048,9 +1038,7 @@ class AnalysisForm(BasicForm):
                                 InputRecordFieldForm,
                                 widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
                         ),
-                        validators=[
-                                validators.DataRequired()
-                        ],
+                        validators=[validators.DataRequired(message="This field is required."),],                       
                         label="Input dataset",
                         add_label="Add input dataset identifier",
                         description='Required. Input dataset identifier.',
