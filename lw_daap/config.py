@@ -17,7 +17,7 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #
 
-# LifeWatch Data Access and Preservation
+# LifeWatch Open Science Framework
 # Configuration
 
 import sys
@@ -47,8 +47,8 @@ import lw_daap.base.auth.facebook
 # Global config
 CFG_SITE_LANGS = ["en"]
 
-CFG_SITE_NAME = "LifeWatch Data Access and Preservation"
-CFG_SITE_DESCRIPTION = "LifeWatch Data Access and Preservation DESC"
+CFG_SITE_NAME = "LifeWatch Open Science Framework"
+CFG_SITE_DESCRIPTION = "LifeWatch Open Science Framework DESC"
 CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }

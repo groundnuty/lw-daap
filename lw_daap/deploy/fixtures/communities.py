@@ -25,7 +25,7 @@ from fixture import DataSet
 class CommunityData(DataSet):
     class daap:
         id = 'daap'
-        title = 'LifeWatch DAAP'
+        title = 'LifeWatch Open Science Framework'
         id_user = 1
 
     class cuerda_del_pozo:
