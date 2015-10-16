@@ -36,13 +36,13 @@ class SpatialFieldForm(WebDepositForm):
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
             required_if(
-                'north',
+                'east',
                 [lambda x: bool(x.strip()), ],  # non-empty
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})([.])(\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
+            validators.Regexp(regex=r'([+-])(\d{3})([.])(\d{6})', message="The coordinates (Western most longitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
     #Coordinates--easternmost longitude
@@ -57,8 +57,8 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Eastern most longitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
     #Coordinates--northernmost latitude
@@ -73,8 +73,8 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Northern most latitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
     #Coordinates--southernmost latitude
@@ -89,7 +89,7 @@ class SpatialFieldForm(WebDepositForm):
                 message="All coordinates required if you specify one."
             ),
             validators.optional(),
-            validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
+            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Southern most latitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
         ],
     )
