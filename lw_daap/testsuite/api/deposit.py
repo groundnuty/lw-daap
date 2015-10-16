@@ -24,18 +24,18 @@ import json
 import codecs
 import sys
 
-site_url = "https://daap-prod.aeonium.eu/"
+site_url = "https://daap.aeonium.eu/"
 create_url = site_url + "api/deposit/depositions/?access_token=%s"
 files_url = site_url + "api/deposit/depositions/%d/files?access_token=%s"
 publish_url = site_url + "api/deposit/depositions/%d/actions/publish?access_token=%s"
-access_token="VKUvgwp7NTyxD1McAIGUHoiAHdKTalE7NOvhggSnAQ9pC51v8TgaAUSDkO45"
+access_token="fJl6r7be2jl3l4qhL7mSvbLWPBMcD4mAnfqpWMO5RbGrVUDmpYEwwXborSEf"
 
 def create(metadata):
   try:
     data = '{ "metadata": ' + metadata + '}'
     r = requests.post(create_url % access_token,
 			  data=data, headers={"Content-Type": "application/json"},
-        verify=False)
+              verify=False)
     if 'id' in r.json():
       recid = r.json()['id']
       print "RECORD %d => %s, %s" % (recid, r.status_code, r.reason)

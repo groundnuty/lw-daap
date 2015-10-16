@@ -16,10 +16,6 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-#
-# (c) 2015 aeonium. 
-#
-
 {%- macro open_community_section (heading, view_url, curate_url, key, collapse=False) %}
 <div class="panel panel-deposit ">
   <div class="panel-heading">

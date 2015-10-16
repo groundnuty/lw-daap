@@ -128,9 +128,9 @@ def register_menu_items():
     def menu_fixup():
         item = current_menu.submenu('settings.profile')
         item.register(
-            'userProfile.index', _('%(icon)s Profile', icon='<i class="fa fa-user fa-fw"></i>'),
+            'userprofile.index', _('%(icon)s Profile', icon='<i class="fa fa-user fa-fw"></i>'),
             order=0,
-            active_when=lambda: request.endpoint.startswith("userProfile."),
+            active_when=lambda: request.endpoint.startswith("userprofile."),
         )
 
 

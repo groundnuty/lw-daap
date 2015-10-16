@@ -52,7 +52,7 @@ from lw_daap.modules.invenio_groups.models import Group
 
 from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
-from .autocomplete import community_autocomplete, accessgroups_autocomplete
+from .autocomplete import community_autocomplete, accessgroups_autocomplete, inputrecords_autocomplete
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
 
@@ -95,6 +95,16 @@ def community_obj_value(key_name):
 
 
 def accessgroups_obj_value(key_name):
+    def _getter(field):
+        if field.data:
+            obj = Group.query.filter_by(id=field.data).first()
+            if obj:
+                return getattr(obj, key_name)
+        return None
+    return _getter
+
+
+def inputrecords_obj_value(key_name):
     def _getter(field):
         if field.data:
             obj = Group.query.filter_by(id=field.data).first()
@@ -407,14 +417,26 @@ class AccessGroupsForm(WebDepositForm):
 
 
 class InputRecordFieldForm(WebDepositForm):
-    record_id = fields.StringField(
-                    label="",
-                    widget_classes='form-control',
-                    widget=ColumnInput(class_="col-xs-2"),
-                    validators=[
-                        validators.DataRequired(),
-                    ],
-                )
+    identifier = fields.StringField(
+        widget=widgets.HiddenInput(),
+        processors=[
+            replace_field_data('title', accessgroups_obj_value('name')),
+        ],
+    )
+    title = fields.StringField(
+        placeholder="Start typing a record title...",
+        autocomplete_fn=accessgroups_autocomplete,
+        widget=TagInput(),
+        widget_classes='form-control',
+    )
+    #record_id = fields.StringField(
+    #                label="",
+    #                widget_classes='form-control',
+    #                widget=ColumnInput(class_="col-xs-2"),
+    #                validators=[
+    #                    validators.DataRequired(),
+    #                ],
+    #            )
 
 
 class FileDescriptionForm(WebDepositForm):
@@ -1007,29 +1029,37 @@ class AnalysisForm(BasicForm):
     rel_dataset = fields.DynamicFieldList(
                         fields.FormField(
                                 InputRecordFieldForm,
-                                description='Required. Input dataset identifier.',
                                 widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
                         ),
+                        validators=[
+                                validators.DataRequired()
+                        ],
                         label="Input dataset",
                         add_label="Add input dataset identifier",
+                        description='Required. Input dataset identifier.',
                         icon='fa fa-table fa-fw',
-                        widget_classes='',
-                        min_entries=1,
+                        default='',
+                        widget=TagListWidget(template="{{title}}"),
+                        widget_classes=' dynamic-field-list',
                     )
-    
+
     rel_software = fields.DynamicFieldList(
                         fields.FormField(
                                 InputRecordFieldForm,
-                                description='Required. Input software identifier.',
                                 widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
                         ),
-                        label="Input software",
-                        add_label="Add input software identifier",
-                        icon='fa fa-cogs fa-fw',
-                        widget_classes='',
-                        min_entries=1,
+                        validators=[
+                                validators.DataRequired()
+                        ],
+                        label="Input dataset",
+                        add_label="Add input dataset identifier",
+                        description='Required. Input dataset identifier.',
+                        icon='fa fa-table fa-fw',
+                        default='',
+                        widget=TagListWidget(template="{{title}}"),
+                        widget_classes=' dynamic-field-list',
                     )
-
+    
 
     # Requirements
     os = zfields.RequirementsField(
@@ -1095,7 +1125,7 @@ class AnalysisForm(BasicForm):
             #'classes': '',
             'indication': 'recommended',
             'description': (
-                'Requirements are recommended in order to allow ...')
+                'Requirements are recommended in order to best fit the needs of your analysis.')
         }),
         ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',

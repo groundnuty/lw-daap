@@ -27,7 +27,7 @@ from flask import Response, jsonify
 
 
 from lw_daap.modules.profile.decorators import delegation_required
-from lw_daap.modules.profile.models import userProfile 
+from lw_daap.modules.profile.models import UserProfile
 
 from . import infra
 from .forms import LaunchForm, LaunchFormData
@@ -46,7 +46,7 @@ blueprint = Blueprint(
 @register_menu(blueprint, 'main.analyze', 'Analyze', order=3)
 @delegation_required()
 def index():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
     ctx = dict(
         vms = infra.list_vms(client),
@@ -57,7 +57,7 @@ def index():
 @blueprint.route('/launch', methods=['GET', 'POST'])
 @delegation_required()
 def launch():
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     reqs = get_requirements()
     obj = LaunchFormData(reqs, **request.args)
     form = LaunchForm(obj=obj, user_profile=profile)
@@ -79,7 +79,7 @@ def launch():
 @blueprint.route('/terminate/<vm_id>', methods=['POST'])
 @delegation_required()
 def terminate(vm_id):
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
     infra.terminate_vm(client, vm_id)
     return redirect(url_for('.index'))
@@ -87,6 +87,6 @@ def terminate(vm_id):
 
 @blueprint.route('/connect/<vm_id>', methods=['GET'])
 def connect(vm_id):
-    profile = userProfile.get_or_create()
+    profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
     return jsonify(infra.get_vm_connection(client, vm_id))
