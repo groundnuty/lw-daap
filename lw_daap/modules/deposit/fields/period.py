@@ -35,6 +35,7 @@ __all__ = ['PeriodField']
 class PeriodFieldForm(WebDepositForm):
     start = Date(
         label=_('Start date'),
+        placeholder='Start date',
         description='Start date.',
         validators=[
             required_if(
@@ -49,6 +50,7 @@ class PeriodFieldForm(WebDepositForm):
         )
     end = Date(
         label=_('End date'),
+        placeholder='End date',
         description='End date.',
         validators=[
             required_if(
