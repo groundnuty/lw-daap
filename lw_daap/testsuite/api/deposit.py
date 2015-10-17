@@ -24,11 +24,11 @@ import json
 import codecs
 import sys
 
-site_url = "https://daap-prod.aeonium.eu/"
+from deposit_conf import *
+
 create_url = site_url + "api/deposit/depositions/?access_token=%s"
 files_url = site_url + "api/deposit/depositions/%d/files?access_token=%s"
 publish_url = site_url + "api/deposit/depositions/%d/actions/publish?access_token=%s"
-access_token="KoxunfKJ4qpJpce1dCk1eoy7y1yEwAA3fg60vvt1KcnHu6Az8LKqurzMEAPv"
 
 def create(metadata):
   try:
