@@ -1520,18 +1520,6 @@ r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/a
     <td>Creation time of deposition (in ISO8601 format).</td>
 </tr>
 <tr>
-    <td><code>doi</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Digital Object Identifier (DOI). When you publish your deposition, we register a DOI in <a href="http://www.datacite.org">DataCite</a> for your upload, unless you manually provided us with one. This field is only present for published depositions.</td>
-</tr>
-<tr>
-    <td><code>doi_url</code></td>
-    <td>URL</td>
-    <td>No</td>
-    <td>Persistent link to your published deposition. This field is only present for published depositions.</td>
-</tr>
-<tr>
     <td><code>files</code></td>
     <td>Array</td>
     <td>Yes</td>
@@ -1714,6 +1702,87 @@ do. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</c
     <td>String</td>
     <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
     <td>Specify the groups you grant the access to the files in your upload.</td>
+</tr>
+<tr>
+    <td><code>period</code></td>
+    <td>Array of objects</td>
+    <td>No</td>
+    <td>Available for upload_type dataset. Start and end date of data in ISO8601 format (YYYY-MM-DD).</td>
+</tr>
+<tr>
+    <td><code>frequency</code></td>
+    <td>Arrayof objects</td>
+    <td>No</td>
+    <td>Available for upload_type dataset. Frequency collection of your data. 
+    <ul>
+      <li><code>unit</code>: Time </li>
+      <li><code>size</code>: <code>year</code>, <code>month</code>, <code>day</code>, <code>minute</code>, <code>day</code>.</li>
+    </ul>
+    <p>Example:</p>
+    <pre>[{'unit': '5', 'size':'year'},]</pre>
+    </td>
+</tr>
+<tr>
+    <td><code>spatial</code></td>
+    <td>Array of objects</td>
+    <td>No</td>
+    <td><p>Available for upload_type dataset. Spatial coverage of your data. Coordinates: western most longitude, eastern most longitude, northern most latitude, southern most latitude. The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.</p>
+    <ul>
+      <li><code>west</code>: western most longitude </li>
+      <li><code>east</code>: eastern most longitude </li>
+      <li><code>north</code>: northern most latitude </li>
+      <li><code>south</code>: southern most latitude </li>
+    </ul>
+    </td>
+</tr>
+<tr>
+    <td><code>rel_dataset</code></td>
+    <td>Array of objects</td>
+    <td>Yes</td>
+    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
+    <ul>
+      <li><code>identifier</code>: Dataset identifier</li>
+    </ul>
+    <p>Example:</p>
+    <pre>[{'identifier':'8'}]</pre></td>
+</tr>
+<tr>
+    <td><code>rel_software</code></td>
+    <td>Array of objects</td>
+    <td>Yes</td>
+    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
+    <ul>
+      <li><code>identifier</code>: Software identifier</li>
+    </ul>
+    <p>Example:</p>
+    <pre>[{'identifier':'10'}]</pre></td>
+</tr>
+<tr>
+    <td><code>os</code></td>
+    <td>String</td>
+    <td>No</td>
+    <td><p>Available for upload_type software and analysis. Operating system required/recommended to run your software of analysis.</p>
+    <ul>
+      <li><code>os</code>: <code>ubuntu</code>, <code>centos-7</code>, <code>centos-6</code></li>
+    </ul>
+</tr>
+<tr>
+    <td><code>flavor</code></td>
+    <td>String</td>
+    <td>No</td>
+    <td><p>Available for upload_type software and analysis. Flavor required/recommended to run your software of analysis: tiny (1 VCPU, 0.5 GB RAM), small (1 VCPU, 10 GB Disk, 2 GB RAM), medium (2 VCPUS, 10 GB Disk, 4 GB RAM), large (4 VCPUS, 20 GB Disk, 7 GB RAM), xlarge (8 VCPUS, 30 GB Disk, 14 GB RAM).</p>
+    <ul>
+      <li><code>flavor</code>: <code>tiny</code>, <code>small</code>, <code>medium</code>, <code>large</code>, <code>xlarge</code></li>
+    </ul>
+</tr>
+<tr>
+    <td><code>app_env</code></td>
+    <td>String</td>
+    <td>No</td>
+    <td><p>Available for upload_type software and analysis. Application environment required/recommended to run your software of analysis.</p>
+    <ul>
+      <li><code>app_env</code>: <code>ssh</code>, <code>jupyter-python</code>, <code>jupyter-r</code></li>
+    </ul>
 </tr>
 <tr>
     <td><code>communities</code></td>

@@ -539,7 +539,10 @@ class BasicForm(WebDepositForm):
         widget_classes='input-sm',
     )
     title = fields.TitleField(
-        validators=[validators.DataRequired()],
+        validators=[
+            validators.DataRequired(),
+            validators.Length(min=5),
+        ],
         description='Required.',
         filters=[
             strip_string,
@@ -826,7 +829,7 @@ class DatasetForm(BasicForm):
         label="Spatial coverage",
         add_label='Add another location',
         description='Optional. Spatial coverage of your data.'
-                    ' Coordinates: western most longitude, eastern most  longitude'
+                    ' Coordinates: western most longitude, eastern most  longitude,'
                     ' northern most latitude, southern most latitude.'
                     ' The coordinates must be recorded in decimal degrees'
                     ' (+ddd.dddddd). Unused positions must be filled with zeros.',
@@ -1014,6 +1017,7 @@ class SoftwareForm(BasicForm):
         }),
     ]
 
+
 class AnalysisForm(BasicForm):
 
     """Analysis Upload Form."""
@@ -1114,7 +1118,7 @@ class AnalysisForm(BasicForm):
             'description': (
                             'Specifiy the inputs of your analysis. Datasets and'
                             ' softwares can  be associated to this upload using'
-                            ' the record id in this portal or the associated'
+                            ' the record title in this portal or the associated'
                             ' internal or external DOI. At least a dataset'
                             ' and a software must be specified.')
         }),
