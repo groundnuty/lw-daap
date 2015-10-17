@@ -16,8 +16,7 @@
  * along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@import url(https://fonts.googleapis.com/css?family=Lato:400,100,300,900italic,900,700italic,700,400italic,300italic,100italic);
-@import url(https://fonts.googleapis.com/css?family=Lato:400,100,300,900italic,900,700italic,700,400italic,300italic,100italic|Open+Sans+Condensed:300,300italic,700);
+
 * {
   margin: 0;
 }
@@ -29,18 +28,24 @@ body {
 
 body {
   background: #FFF;
-  font-family: 'Lato', sans-serif;
   display: table;
   width: 100%;
   /* Fix for Firefox and IE to keep correct max-width behaviour on images: */
   table-layout: fixed;
 }
 
-input {
-  font-family: 'Helvetica Neue', sans-serif;
-  letter-spacing: -1px;
-  font-size: 0.9em;
+pre, .alert {
+  border-radius: 0px;
 }
+
+input {
+  letter-spacing: -0.5px;
+}
+
+#searchform {
+  box-shadow: none;
+}
+
 .page-row {
   display: table-row;
   height: 1px;
@@ -50,6 +55,13 @@ input {
   height: 100%;
 }
 
+table {
+  table-layout: fixed;
+}
+
+table tr th {
+  width: 20%;
+}
 a,
 a:link,
 a:visited,
@@ -90,9 +102,9 @@ a.btn {
 }
 
 .label-primary {
-      background-color: #0A9C45;
-      color: #FFFFFF;
-    }
+  background-color: #0A9C45;
+  color: #FFFFFF;
+}
 
 
 

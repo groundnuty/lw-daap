@@ -17,7 +17,7 @@
  #}
 
 {%- macro open_community_section (heading, view_url, curate_url, key, collapse=False) %}
-<div class="panel panel-deposit ">
+<div class="panel panel-default ">
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-{{key}}">
       <span class="show-on-collapsed pull-left">

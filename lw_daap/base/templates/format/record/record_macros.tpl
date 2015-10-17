@@ -71,7 +71,7 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 
 
 {%- macro open_panel_section (heading, key, collapse=False) %}
-<div class="panel panel-deposit ">
+<div class="panel panel-default ">
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-{{key}}">
       {{ heading|safe }}

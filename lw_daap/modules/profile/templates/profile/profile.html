@@ -23,7 +23,7 @@
 
 {% block settings_body %}
 <div class="panel-list-wrapper">
-<div class="panel panel-deposit panel-sharp">
+<div class="panel panel-default panel-sharp">
   {% call hb.panel_head() %}
   <div class="row">
     <div class="col-sm-2 col-md-2" align="center"><i class="fa fa-user fa-3x"></i></div>
@@ -36,7 +36,7 @@
 </div>
 <form method="POST" role="form">
   {{form.csrf_token}}
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(1) %}
     <i class="fa fa-info-circle fa-fw"></i> Personal info
     {% endcall %}
@@ -48,7 +48,7 @@
     {% endcall %}
   </div>
 
-  <div class="panel panel-deposit panel-sharp">
+  <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(2) %}
      <i class="fa fa-cloud fa-fw"></i> e-Insfracture info
      {% endcall %}

@@ -97,7 +97,7 @@
 
       <div class="panel-list-wrapper">
         {% if not is_new %}
-        <div class="panel panel-deposit ">
+        <div class="panel panel-default ">
           <div class="panel-heading">
             <a class="panel-toggle" data-toggle="collapse" data-idx="0" href="#collapse0">
               <span class="show-on-collapsed pull-right">
@@ -142,7 +142,7 @@
         {% endif %}
 
         {%- for title, fieldnames, conf in form.field_sets %}
-        <div class="panel panel-deposit">
+        <div class="panel panel-default">
           {%- if title %}
           <div class="panel-heading">
             <a class="panel-toggle" data-toggle="collapse" data-idx="{{loop.index}}" href="#collapse{{loop.index}}">

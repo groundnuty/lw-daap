@@ -17,7 +17,7 @@
  #}
 
 <div class="well">
-  <a class="btn btn-danger  btn-raised pull-left"
+  <a class="btn btn-danger pull-left"
     href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=uuid) }}">
     <i class="fa fa-trash-o fa-inverse"></i> {{ _('Delete') }}
   </a>
@@ -28,13 +28,13 @@
     <small>
       <span class="status-indicator text-muted"></span>
     </small>&nbsp;
-    <button class="btn btn-default btn-raised  form-save"
+    <button class="btn btn-default form-save"
       data-toggle="tooltip"
       title="{{_('Press Save to save your upload for editing later, as many times you like.')}}"
       type="button">
       <i class="fa fa-floppy-o"></i> Save
     </button>
-    <button  class="btn btn-primary  btn-raised form-submit"
+    <button  class="btn btn-primary form-submit"
       title="{{_('Press Next to upload your files.')}}">
       <i class="fa fa-arrow-right"></i> {{ _('Next: upload files') }}
     </button>

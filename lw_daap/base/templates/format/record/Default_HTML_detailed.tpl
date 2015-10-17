@@ -89,7 +89,7 @@
 
     <div class="col-sm-12 col-md-9">
       <div class="panel-list-wrapper">
-        <div class="panel panel-deposit">
+        <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="uppercase"><i class="fa fa-thumb-tack"></i> {{ daap_record.upload_type }}</h3>
           </div>
