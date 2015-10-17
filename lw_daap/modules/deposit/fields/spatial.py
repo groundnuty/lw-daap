@@ -40,7 +40,7 @@ def coord_validator(coord):
 
 class SpatialFieldForm(WebDepositForm):
     #Coordinates--westernmost longitude
-    west = fields.DecimalField(
+    west = fields.FloatField(
         label="Western most longitude",
         placeholder="West",
         widget_classes='form-control',
@@ -52,7 +52,7 @@ class SpatialFieldForm(WebDepositForm):
         ],
     )
     #Coordinates--easternmost longitude
-    east = fields.DecimalField(
+    east = fields.FloatField(
         label="Eastern most longitude",
         placeholder="East",
         widget_classes='form-control',
@@ -64,7 +64,7 @@ class SpatialFieldForm(WebDepositForm):
         ],
     )
     #Coordinates--northernmost latitude
-    north = fields.DecimalField(
+    north = fields.FloatField(
         label="Northern most latitude",
         placeholder="North",
         widget_classes='form-control',
@@ -76,7 +76,7 @@ class SpatialFieldForm(WebDepositForm):
         ],
     )
     #Coordinates--southernmost latitude
-    south = fields.DecimalField(
+    south = fields.FloatField(
         label="Southern most latitude",
         placeholder="South",
         widget_classes='form-control',

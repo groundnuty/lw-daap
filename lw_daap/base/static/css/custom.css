@@ -368,3 +368,6 @@ blockquote p {
   padding-top: 60px;
 }
 
+.map {
+  height: 280px;
+}

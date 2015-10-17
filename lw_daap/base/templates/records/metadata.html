@@ -18,6 +18,51 @@
 
 {%- extends "records/metadata_base.html" -%}
 
+{%- block global_stylesheets %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename="vendors/leaflet/dist/leaflet.css") }}" />
+{% endblock %}
+
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    if ($('#spatial').length != 0) {
+        require(["leaflet/leaflet"], function(leaflet) {
+            var center = $('#spatial').data('center')
+            if (center == undefined) {
+                center = [0, 0]
+            }
+            var map = L.map('spatial').setView(center, 11);
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18,
+                id: "{{ config["MAPBOX_API_APP"] }}",
+                accessToken: "{{ config["MAPBOX_API_TOKEN"] }}"
+            }).addTo(map);
+            var polygons = $('#spatial').data('polygons');
+            for (var i = 0; i < polygons.length; i++) {
+                L.polygon(polygons[i]).addTo(map);
+            }
+            var markers = $('#spatial').data('markers');
+            for (var i = 0; i < markers.length; i++) {
+                L.marker(markers[i]).addTo(map);
+            }
+
+            /* this fixes map on the panel when collapsed,
+               collapse-3 should be something nicer */
+            $('#collapse-3').on('shown.bs.collapse', function() {
+                map.invalidateSize(false);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
+
+
+
 {# remove the record tabs above the record... #}
 {% block record_tabs %}{% endblock %}
 
