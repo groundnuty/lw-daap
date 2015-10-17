@@ -20,9 +20,9 @@ from flask import url_for
 from invenio.modules.records.api import get_record
 
 
-def format_element(bfo, rec_id={}):
+def format_element(bfo, rec_id=''):
     try:
-        rec_id = int(rec_id.get('record_id'))
+        rec_id = int(rec_id)
         r = get_record(rec_id)
         d = dict(
             title=r['title'],
@@ -30,14 +30,11 @@ def format_element(bfo, rec_id={}):
         )
     except ValueError:
         # doi ?
-        d = dict(
-            title=rec_id.get('record_id'),
-            link='http://doi.org/' + rec_id.get('record_id')
-        )
+        d = dict(title=rec_id, link='http://doi.org/' + rec_id)
     except TypeError:
         return ''
 
-    return '<a href="%(link)s">%(title)s</a>' % d
+    return '<a href="%(link)s"><span class="label label-primary">%(title)s</span></a>' % d
 
 
 def escape_values(bfo):

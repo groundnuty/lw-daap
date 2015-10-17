@@ -36,6 +36,12 @@
 ## granted to it by virtue of its status as an Intergovernmental Organization
 ## or submit itself to any jurisdiction.
 
+import re
+
+from flask import current_app
+
+from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator 
+
 
 def community_autocomplete(dummy_form, dummy_field, term, limit=50):
     from invenio.modules.communities.models import Community
@@ -88,23 +94,35 @@ def accessgroups_autocomplete(dummy_form, dummy_field, term, limit=50):
 
 
 def inputrecords_autocomplete(dummy_form, dummy_field, term, limit=50):
-    from lw_daap.modules.invenio_groups.models import Groups
+    from invenio.legacy.search_engine import search_pattern_parenthesised
+    from invenio.modules.records.models import Record
+    from invenio.modules.records.api import get_record
 
     if not term:
-        objs = Groups.query.limit(limit).all()
+        objs = Record.query.limit(limit).all()
     else:
-        term = '%' + term + '%'
-        objs = Groups.query.filter(
-            Groups.name.like(term)
+        recids = search_pattern_parenthesised(
+            p='title:%%%s%%' % term.encode('utf-8'))
+        objs = Record.query.filter(
+            Record.id.in_(recids)
         ).filter_by().limit(limit).all()
+        if not objs:
+            if re.match(DOISyntaxValidator.pattern, term, re.I):
+                return [{
+                    'value': "%s (doi)" % term,
+                    'fields': {
+                        'identifier': term,
+                        'title': "%s (doi)" %  term,
+                    }
+                }] 
 
     return map(
         lambda o: {
-            'value': o.name,
+            'value': "%s (record id: %s)" % (o[1], o[0]),
             'fields': {
-                'identifier': o.id,
-                'title': o.name,
+                'identifier': o[0],
+                'title': "%s (record id: %s)" % (o[1], o[0]),
             }
         },
-        objs
+        map(lambda o: (o.id, get_record(o.id)['title']), objs)
     )

@@ -18,6 +18,7 @@
 
 
 from wtforms import validators, widgets
+from wtforms.validators import StopValidation, ValidationError
 
 from invenio.base.i18n import _
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
@@ -28,68 +29,71 @@ from lw_daap.modules.invenio_deposit.validation_utils import required_if
 
 __all__ = ['SpatialField']
 
+
+def coord_validator(coord):
+    return validators.Regexp(
+        regex=r'([+-])(\d{3})([.])(\d{6})',
+        message=('%s must be recorded in decimal degrees (+/-ddd.dddddd). '
+                 'Unused positions must be filled with zeros.' %coord)
+    )
+                            
+
+
+
 class SpatialFieldForm(WebDepositForm):
     #Coordinates--westernmost longitude
     west = fields.StringField(
         label="Western most longitude",
+        placeholder="West",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
-            required_if(
-                'east',
-                [lambda x: bool(x.strip()), ],  # non-empty
-                message="All coordinates required if you specify one."
-            ),
             validators.optional(),
-            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})([.])(\d{6})', message="The coordinates (Western most longitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            coord_validator('Western most longitude'),
         ],
     )
     #Coordinates--easternmost longitude
     east = fields.StringField(
         label="Eastern most longitude",
+        placeholder="East",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
-            required_if(
-                'south',
-                [lambda x: bool(x.strip()), ],  # non-empty
-                message="All coordinates required if you specify one."
-            ),
             validators.optional(),
-            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Eastern most longitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            coord_validator('Eastern most longitude'),
         ],
     )
     #Coordinates--northernmost latitude
     north = fields.StringField(
         label="Northern most latitude",
+        placeholder="North",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
-            required_if(
-                'east',
-                [lambda x: bool(x.strip()), ],  # non-empty
-                message="All coordinates required if you specify one."
-            ),
             validators.optional(),
-            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Northern most latitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            coord_validator('Northern most latitude'),
         ],
     )
     #Coordinates--southernmost latitude
     south = fields.StringField(
         label="Southern most latitude",
+        placeholder="South",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
-            required_if(
-                'west',
-                [lambda x: bool(x.strip()), ],  # non-empty
-                message="All coordinates required if you specify one."
-            ),
             validators.optional(),
-            #validators.Length(11, message="The coordinates must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros."),
-            validators.Regexp(regex=r'([+-])(\d{3})[.](\d{6})', message="The coordinates (Southern most latitude) must be recorded in decimal degrees (+ddd.dddddd). Unused positions must be filled with zeros.")
+            coord_validator('Southern most latitude'),
         ],
     )
+
+    def validate(self, **kwargs):
+        r = super(SpatialFieldForm, self).validate(**kwargs)
+        fields = [f for f in self] 
+        if any(bool(f.data.strip()) for f in fields):
+            if not all(bool(f.data.strip()) for f in fields):
+                err = self.errors.get('south', [])
+                err.append('All coordinates must be filled.')
+                self.errors['south'] = err
+                return False
+        return r
+

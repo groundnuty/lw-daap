@@ -53,7 +53,7 @@
   <div class="spacer30"></div>
 
   <div class="row">
-    {% if daap_files and show_files %}
+    {% if summary_view %}
     <div class="col-sm-12 col-md-3">
 
       {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}     {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
@@ -82,7 +82,6 @@
           {{ daap_files|length }}
           (<span class="text-muted">{{ bfe_daap_filesize(bfo, files=daap_files) | filesizeformat }}</span>)
           {% endif %}
-
         </div>
       </div>
     </div>

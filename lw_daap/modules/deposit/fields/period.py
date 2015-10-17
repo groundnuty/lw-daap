@@ -18,6 +18,8 @@
 
 
 from wtforms import validators, widgets
+from wtforms_components import DateRange
+from datetime import date
 
 from invenio.base.i18n import _
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
@@ -54,7 +56,8 @@ class PeriodFieldForm(WebDepositForm):
                 [lambda x: x is not None, ],  # non-empty
                 message="End date required if you specify a start date."
              ),	
-             validators.optional(),		
+             validators.optional(),	
+             DateRange(max=date.today(), message="End date must be at most today."),   	
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',

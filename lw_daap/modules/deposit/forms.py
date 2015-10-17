@@ -59,7 +59,6 @@ from .utils import create_doi, filter_empty_helper
 
 __all__ = ('BasicForm', 'DatasetForm', 'SoftwareForm', 'AnalysisForm', )
 
-
 #
 # Local processors
 #
@@ -104,12 +103,18 @@ def accessgroups_obj_value(key_name):
     return _getter
 
 
-def inputrecords_obj_value(key_name):
+def inputrecords_obj_value():
+    from invenio.modules.records.api import get_record
+
     def _getter(field):
         if field.data:
-            obj = Group.query.filter_by(id=field.data).first()
+            try:
+               obj = get_record(int(field.data))
+            except ValueError:
+                return field.data
             if obj:
-                return getattr(obj, key_name)
+                return "%s (record id: %s)" % (obj.get('title', None),
+                                               field.data)
         return None
     return _getter
 
@@ -420,7 +425,7 @@ class InputRecordFieldForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
         processors=[
-            replace_field_data('title', inputrecords_obj_value('name')),
+            replace_field_data('title', inputrecords_obj_value()),
         ],
     )
     title = fields.StringField(
@@ -534,7 +539,10 @@ class BasicForm(WebDepositForm):
         widget_classes='input-sm',
     )
     title = fields.TitleField(
-        validators=[validators.DataRequired()],
+        validators=[
+            validators.DataRequired(),
+            validators.Length(min=5),
+        ],
         description='Required.',
         filters=[
             strip_string,
@@ -821,7 +829,7 @@ class DatasetForm(BasicForm):
         label="Spatial coverage",
         add_label='Add another location',
         description='Optional. Spatial coverage of your data.'
-                    ' Coordinates: western most longitude, eastern most  longitude'
+                    ' Coordinates: western most longitude, eastern most  longitude,'
                     ' northern most latitude, southern most latitude.'
                     ' The coordinates must be recorded in decimal degrees'
                     ' (+ddd.dddddd). Unused positions must be filled with zeros.',
@@ -1009,6 +1017,7 @@ class SoftwareForm(BasicForm):
         }),
     ]
 
+
 class AnalysisForm(BasicForm):
 
     """Analysis Upload Form."""
@@ -1019,35 +1028,41 @@ class AnalysisForm(BasicForm):
     
     # Inputs
     rel_dataset = fields.DynamicFieldList(
-                        fields.FormField(
-                                InputRecordFieldForm,
-                                widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-                        ),
-                        validators=[validators.DataRequired(message="This filed is required."),],                       
-                        label="Input dataset",
-                        add_label="Add input dataset identifier",
-                        description='Required. Input dataset identifier.',
-                        icon='fa fa-table fa-fw',
-                        default='',
-                        widget=TagListWidget(template="{{title}}"),
-                        widget_classes=' dynamic-field-list',
-                    )
+        fields.FormField(
+            InputRecordFieldForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        ),
+        validators=[
+            validators.DataRequired(message="This field is required."),
+            list_length(min_num=1),
+        ],
+        label="Input dataset",
+        add_label="Add input dataset identifier",
+        description='Required. Input dataset title/identifier.',
+        icon='fa fa-table fa-fw',
+        default='',
+        widget=TagListWidget(template="{{title}}"),
+        widget_classes=' dynamic-field-list',
+    )
 
     rel_software = fields.DynamicFieldList(
-                        fields.FormField(
-                                InputRecordFieldForm,
-                                widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-                        ),
-                        validators=[validators.DataRequired(message="This field is required."),],                       
-                        label="Input dataset",
-                        add_label="Add input dataset identifier",
-                        description='Required. Input dataset identifier.',
-                        icon='fa fa-table fa-fw',
-                        default='',
-                        widget=TagListWidget(template="{{title}}"),
-                        widget_classes=' dynamic-field-list',
-                    )
-    
+        fields.FormField(
+            InputRecordFieldForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+        ),
+        validators=[
+            validators.DataRequired(message="This field is required."),
+            list_length(min_num=1),
+        ],
+        label="Input software",
+        add_label="Add input software identifier",
+        description='Required. Input software title/identifier.',
+        icon='fa fa-table fa-fw',
+        default='',
+        widget=TagListWidget(template="{{title}}"),
+        widget_classes=' dynamic-field-list',
+    )
+
 
     # Requirements
     os = zfields.RequirementsField(
@@ -1103,7 +1118,7 @@ class AnalysisForm(BasicForm):
             'description': (
                             'Specifiy the inputs of your analysis. Datasets and'
                             ' softwares can  be associated to this upload using'
-                            ' the record id in this portal or the associated'
+                            ' the record title in this portal or the associated'
                             ' internal or external DOI. At least a dataset'
                             ' and a software must be specified.')
         }),

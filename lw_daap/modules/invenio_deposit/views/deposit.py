@@ -288,7 +288,7 @@ def save(deposition_type=None, uuid=None, draft_id=None):
     if draft.is_completed():
         abort(400)
     dummy_form, validated, result = draft.process(
-        data, complete_form=is_complete_form
+        data, complete_form=is_complete_form or is_submit
     )
 
 
