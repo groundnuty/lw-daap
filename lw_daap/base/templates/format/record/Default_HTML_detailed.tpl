@@ -179,6 +179,7 @@
         {{ close_panel_section() }}
 
 
+        {% if daap_record.upload_type == "analysis" %}
         {% if daap_record.rel_dataset or daap_record.rel_software %}
         {{ open_panel_section(
         '<i class="fa fa-asterisk"></i> Inputs', 'inputs', True) }}
@@ -204,6 +205,7 @@
         </div>
 
         {{ close_panel_section() }}
+        {% endif %}
         {% endif %}
 
 
