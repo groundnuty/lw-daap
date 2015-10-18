@@ -61,6 +61,7 @@ _i.contents += [
 ]
 _i.bower.update({
     "zeroclipboard": "~2.1.6",
+    "leaflet": "latest"
 })
 
 # Remove MathJax (served from CDN instead).

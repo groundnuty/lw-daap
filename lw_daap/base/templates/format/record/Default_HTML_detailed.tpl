@@ -179,6 +179,7 @@
         {{ close_panel_section() }}
 
 
+        {% if daap_record.upload_type == "analysis" %}
         {% if daap_record.rel_dataset or daap_record.rel_software %}
         {{ open_panel_section(
         '<i class="fa fa-asterisk"></i> Inputs', 'inputs', True) }}
@@ -204,6 +205,7 @@
         </div>
 
         {{ close_panel_section() }}
+        {% endif %}
         {% endif %}
 
 
@@ -305,9 +307,12 @@
             </span>
           </div>
           <div class="col-md-9">
+            {{ bfe_daap_spatial(bfo, spatial=daap_record.spatial) }}
+            <p>
             {% for spatial in daap_record.spatial %}
-                {{ spatial.west }}, {{ spatial.east }}, {{ spatial.north }}, {{ spatial.south }}{% if not loop.last %}; {% endif %}
+                {{ spatial.west }} (western most longitude), {{ spatial.east }} (eastern most longitude), {{ spatial.north }} (northern most latitude), {{ spatial.south }} (southern most latitude) {% if not loop.last %}; {% endif %}
             {% endfor %}
+            </p>
           </div>
         </div>
         {% endif %}

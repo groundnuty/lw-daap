@@ -36,61 +36,63 @@ def coord_validator(coord):
         message=('%s must be recorded in decimal degrees (+/-ddd.dddddd). '
                  'Unused positions must be filled with zeros.' %coord)
     )
-                            
-
 
 
 class SpatialFieldForm(WebDepositForm):
     #Coordinates--westernmost longitude
-    west = fields.StringField(
+    west = fields.FloatField(
         label="Western most longitude",
         placeholder="West",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
             validators.optional(),
-            coord_validator('Western most longitude'),
+            #coord_validator('Western most longitude'),
+            validators.NumberRange(min=-180, max=180, message="The western most longitude values are bounded by +/-180 degrees.")
         ],
     )
     #Coordinates--easternmost longitude
-    east = fields.StringField(
+    east = fields.FloatField(
         label="Eastern most longitude",
         placeholder="East",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
             validators.optional(),
-            coord_validator('Eastern most longitude'),
+            #coord_validator('Eastern most longitude'),
+            validators.NumberRange(min=-180, max=180, message="The eastern most longitude values are bounded by +/-180 degrees.")
         ],
     )
     #Coordinates--northernmost latitude
-    north = fields.StringField(
+    north = fields.FloatField(
         label="Northern most latitude",
         placeholder="North",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
             validators.optional(),
-            coord_validator('Northern most latitude'),
+            #coord_validator('Northern most latitude'),
+            validators.NumberRange(min=-90, max=90, message="The northern most latitude values are bounded by +/-90 degrees.")
         ],
     )
     #Coordinates--southernmost latitude
-    south = fields.StringField(
+    south = fields.FloatField(
         label="Southern most latitude",
         placeholder="South",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
         validators=[
             validators.optional(),
-            coord_validator('Southern most latitude'),
+            #coord_validator('Southern most latitude'),
+            validators.NumberRange(min=-90, max=90, message="The southern most latitude values are bounded by +/-90 degrees.")
         ],
     )
 
     def validate(self, **kwargs):
         r = super(SpatialFieldForm, self).validate(**kwargs)
         fields = [f for f in self] 
-        if any(bool(f.data.strip()) for f in fields):
-            if not all(bool(f.data.strip()) for f in fields):
+        if any(bool(f.data is not None) for f in fields):
+            if not all(bool(f.data is not None) for f in fields):
                 err = self.errors.get('south', [])
                 err.append('All coordinates must be filled.')
                 self.errors['south'] = err
