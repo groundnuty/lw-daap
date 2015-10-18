@@ -264,7 +264,7 @@ class DepositionListResource(Resource, InputProcessorMixin):
     def post(self):
         """Create a new deposition."""
         # Create deposition (uses default deposition type unless type is given)
-        d = Deposition.create(current_user, request.json.get('type', None))
+        d = Deposition.create(current_user, request.json['metadata'].get('upload_type', None))
         # Validate input data according to schema
         self.validate_input(d)
         # Process input data
