@@ -80,20 +80,19 @@
 <div class="row">
   <div id="file_container" class="col-sm-12 col-md-12">
     <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
-      <div>
+      <div class="well">
         <button type="button" role="button" data-toggle="modal"
-          class="btn  btn-danger btn-raised pull-left {% if is_new %} hide{% endif %}"
+          class="btn  btn-danger pull-left {% if is_new %} hide{% endif %}"
           data-target="#deletemodal">
           <i class="fa fa-trash-o fa-fw"></i> Delete
         </button>
-        <button type="submit" class="btn btn-primary pull-right btn-raised  edit-form-submit">
+        <button type="submit" class="btn btn-primary pull-right edit-form-submit">
           <i class="fa fa-floppy-o fa-fw"></i>
           {% if is_new %}Create{% else %}Save{% endif %}
         </button>
         <div class="clearfix"></div>
 
       </div>
-      <div class="spacer30"></div>
 
       <div class="panel-list-wrapper">
         {% if not is_new %}
@@ -217,11 +216,11 @@
     <!--<div class="row">
       <div class="col-sm-12">
         <button type="button" role="button" data-toggle="modal"
-          class="btn  btn-danger btn-raised pull-left {% if is_new %} hide{% endif %}"
+          class="btn  btn-danger  pull-left {% if is_new %} hide{% endif %}"
           data-target="#deletemodal">
           <i class="fa fa-trash-o fa-fw"></i> Delete
         </button>
-        <button type="submit" class="btn btn-primary pull-right btn-raised  edit-form-submit">
+        <button type="submit" class="btn btn-primary pull-right   edit-form-submit">
           <i class="fa fa-floppy-o fa-fw"></i>
           {% if is_new %}Create{% else %}Save{% endif %}
         </button>

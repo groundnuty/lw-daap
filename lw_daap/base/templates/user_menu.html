@@ -26,13 +26,10 @@
 <li class="dropdown">
 <a class="fa fa-user fa-3x valign dropdown-toggle" data-toggle="dropdown" href="#"></a>
 <ul id="usermenu" class="dropdown-menu">
-  <li>
-  <strong>
-    {{ current_user.nickname|default(current_user.email) }}
-  </strong>
-  </li>
   {%- for item in current_menu.submenu('settings').children if item.visible %}
-  <li><a href="{{ item.url }}">{{ item.text|safe }}</a></li>
+  <li>
+    <a href="{{ item.url }}">{{ item.text|safe }}</a>
+  </li>
   {%- endfor %}
   <li>
   <a href="{{ url_for('webaccount.logout') }}">

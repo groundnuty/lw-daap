@@ -62,6 +62,33 @@ table {
 table tr th {
   width: 20%;
 }
+
+#usermenu {
+  top: 99%;
+  border-top: None;
+  box-shadow: None;
+  border-width: 2px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  padding: 15px 15px;
+  font-size: 1.2em;
+  line-height: 1.4em;
+  transition: all .25 ease;
+}
+
+.dropdown-menu {
+  -webkit-transition: height 0.3s ease-in;
+  -moz-transition: height 0.3s ease-in;
+  -o-transition: height 0.3s ease-in;
+  -ms-transition: height 0.3s ease-in;
+  transition: height 0.3s ease-in;
+}
+
+#usermenu i {
+  margin-right: 10px;
+  font-size: 1.4em;
+}
+
+
 a,
 a:link,
 a:visited,

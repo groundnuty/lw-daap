@@ -38,15 +38,15 @@
   <div class="col-md-7 col-md-offset-5">
     <div class="pull-right">
     <button id="delegation_button" type="button" data-toggle="modal" data-target="#delegationModal"
-            class="btn btn-primary btn-raised " {% if user_proxy %}style="display: none;"{% endif %}>
+            class="btn btn-primary  " {% if user_proxy %}style="display: none;"{% endif %}>
         Delegate
     </button>
     <button id="remove_delegation_button" type="button"
-            class="btn btn-danger btn-raised " {% if not user_proxy %}style="display: none;"{% endif %}>
+            class="btn btn-danger  " {% if not user_proxy %}style="display: none;"{% endif %}>
         Remove Delegation
     </button>
     <button id="extend_delegation_button" type="button" data-toggle="modal" data-target="#delegationModal"
-            class="btn btn-primary btn-raised " {% if not user_proxy %}style="display: none;"{% endif %}>
+            class="btn btn-primary  " {% if not user_proxy %}style="display: none;"{% endif %}>
         Extend Delegation
     </button>
     </div>
@@ -84,8 +84,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-raised " data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary btn-raised " id="delegateButton"><i class="fa fa-spinner fa-spin" style="display: none;" id="delegateButtonSpin"></i> Delegate</button>
+        <button type="button" class="btn btn-default  " data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary  " id="delegateButton"><i class="fa fa-spinner fa-spin" style="display: none;" id="delegateButtonSpin"></i> Delegate</button>
       </div>
     </div>
     </form>

@@ -391,7 +391,7 @@
 
     {% for file in row %}
     <div class="col-md-6">
-      <a class="btn btn-primary btn-raised file-resource"  href="{{ file.url }}">
+      <a class="btn btn-primary  file-resource"  href="{{ file.url }}">
         <div class="col-xs-2 text-center">
           <span class="file-resource-type">
             <i class="fa fa-download fa-2x" aria-hidden="true"></i><br/>
