@@ -54,6 +54,7 @@ require(['jquery'], function($) {
                collapse-3 should be something nicer */
             $('#collapse-3').on('shown.bs.collapse', function() {
                 map.invalidateSize(false);
+                map.fitBounds($('#spatial').data('bounds'));
             });
         });
     }
