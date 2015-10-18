@@ -34,14 +34,16 @@ def create(metadata):
   try:
     data = '{ "metadata": ' + metadata + '}'
     r = requests.post(create_url % access_token,
-			  data=data, headers={"Content-Type": "application/json"},
-              verify=False)
+                      data=data, headers={"Content-Type": "application/json"},
+                      verify=False)
+    print r
     if 'id' in r.json():
       recid = r.json()['id']
       print "RECORD %d => %s, %s" % (recid, r.status_code, r.reason)
       return recid
     else:
       print "CANT CREATE RECORD"
+
       print json.dumps(r.json(), indent=3)
       return None
   except:

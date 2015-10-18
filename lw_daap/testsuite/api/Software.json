@@ -1,0 +1,53 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"software",
+            "title":"(API) Software Open",
+            "creators":[
+               {
+                  "name":"Doe, John",
+                  "affiliation":"Whatever"
+               },
+               {
+                  "name":"Markus, John",
+                  "affiliation":"Aelabs"
+               }
+            ],
+            "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus fringilla malesuada felis, at varius arcu venenatis sed. Integer scelerisque libero at porta interdum. Donec velit ex, aliquet vel elit id, dictum aliquam ante. Suspendisse vehicula felis at feugiat lobortis. Vivamus faucibus sollicitudin lectus id laoreet. Ut lorem risus, tempor et velit a, porttitor porttitor velit. Vivamus lectus nulla, eleifend sed euismod in, pulvinar sit amet risus. ",
+            "notes":"Donec laoreet semper justo, in eleifend nibh vehicula ut. Aenean ac sodales dui. Donec aliquam vulputate mollis. Praesent nibh dui, posuere sit amet interdum nec, pellentesque ac dolor.",
+            "keywords":"facilisis ex, eget ornare, tortor, Duis, ultrices, euismod, fermentum. Fusce gravida, diam faucibus, rutrum quam eu, sodales ex.",
+            "access_right":"open",
+            "license":"cc-zero",
+            "communities":[
+               {
+                  "identifier":"cuerdadelpozo"
+               }
+            ],
+            "related_identifiers":[
+               {
+                  "identifier":"0167-6423",
+                  "relation":"cites"
+               }
+            ],
+            "subjects":[
+               {
+                  "term":"term1",
+                  "identifier":"0167-6423"
+               }
+            ],
+            "os": "ubuntu",
+            "flavor": "tiny",
+            "app_env": "ssh"
+         },
+         "files":[
+            {
+               "filename":"Software.json"
+            },
+            {
+               "filename":"deposit.py"
+            }
+         ]
+      }
+   ]
+}

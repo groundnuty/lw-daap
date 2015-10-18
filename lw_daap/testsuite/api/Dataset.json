@@ -3,7 +3,7 @@
       {
          "metadata":{
             "upload_type":"dataset",
-            "title":"API Test",
+            "title":"(API) Dataset Open",
             "creators":[
                {
                   "name":"Doe, John",
@@ -46,12 +46,8 @@
             ],
             "period":[
                {
-                  "start":"2010-10-10",
-                  "end":"2030-10-10"
-               },
-               {
-                  "start":"3010-10-10",
-                  "end":"3030-10-10"
+                  "start":"3000-12-12",
+                  "end":"2014-10-10"
                }
             ],
             "frequency":[
@@ -88,108 +84,6 @@
                "dDaescription":"Testcription"
             }
          ]
-      },
-      {
-         "metadata":{
-            "upload_type":"dataset",
-            "title":"API Test",
-            "creators":[
-               {
-                  "name":"Doe, John",
-                  "affiliation":"Whatever"
-               },
-               {
-                  "name":"Markus, John",
-                  "affiliation":"HappySec"
-               }
-            ],
-            "description":"Just a small description",
-            "notes":"Something here",
-            "keywords":"abcd, defg, hijk, lmn",
-            "access_right":"closed",          
-            "license":"cc-zero"            
-         },
-         "files":[
-            {
-               "filename":"Dataset.json",
-               "description":"Testcription"
-            },
-            {
-               "filename":"deposit.py",
-               "dDaescription":"Testcription"
-            }
-         ]
-      },
-   
-   
-   
-      {
-         "metadata":{
-            "upload_type":"dataset",
-            "title":"API Test",
-            "creators":[
-               {
-                  "name":"Doe, John",
-                  "affiliation":"Whatever"
-               },
-               {
-                  "name":"Markus, John",
-                  "affiliation":"HappySec"
-               }
-            ],
-            "description":"Just a small description",
-            "notes":"Something here",
-            "keywords":"abcd, defg, hijk, lmn",
-            "access_right":"embargoed",
-            "embargo_date":"3333-12-12",      
-            "license":"cc-zero"            
-         },
-         "files":[
-            {
-               "filename":"Dataset.json",
-               "description":"Testcription"
-            },
-            {
-               "filename":"deposit.py",
-               "dDaescription":"Testcription"
-            }
-         ]
-      },
-  
-  
-  
-      {
-         "metadata":{
-            "upload_type":"dataset",
-            "title":"API Test",
-            "creators":[
-               {
-                  "name":"Doe, John",
-                  "affiliation":"Whatever"
-               },
-               {
-                  "name":"Markus, John",
-                  "affiliation":"HappySec"
-               }
-            ],
-            "description":"Just a small description",
-            "notes":"Something here",
-            "keywords":"abcd, defg, hijk, lmn",
-            "access_right":"restricted",            
-            "access_conditions":"This field es required",
-                
-            "license":"cc-zero"               
-         },
-         "files":[
-            {
-               "filename":"Dataset.json",
-               "description":"Testcription"
-            },
-            {
-               "filename":"deposit.py",
-               "dDaescription":"Testcription"
-            }
-         ]
-      }      
+      }
    ]
 }
