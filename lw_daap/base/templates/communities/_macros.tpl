@@ -31,7 +31,7 @@
     <div class="pull-right">
     <a href="{{ view_url }}" class="btn btn-danger ">{{ _('View') }}</a>
     {% if curate_url %}
-    <a href="../q{{ curate_url }}" class="btn btn-primary ">{{ _('Curate') }}</a>
+    <a href="../search{{ curate_url }}" class="btn btn-primary ">{{ _('Curate') }}</a>
     {% endif %}
   </div>
   </div>
