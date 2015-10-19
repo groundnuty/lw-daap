@@ -95,7 +95,9 @@ def restricted_collection(collection):
     from invenio.modules.access.engine import acc_authorize_action
     from invenio.modules.access.local_config import VIEWRESTRCOLL
     from flask_login import current_user
-    auth, _x = acc_authorize_action(current_user, VIEWRESTRCOLL, collection=collection.name)
+    if not collection.is_restricted:
+        return False
+    auth, _ = acc_authorize_action(current_user, VIEWRESTRCOLL, collection=collection.name)
     return auth != 0
 
 
