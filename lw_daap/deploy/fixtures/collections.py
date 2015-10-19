@@ -24,21 +24,27 @@ from invenio.modules.search import fixtures as default
 
 siteCollection = default.CollectionData.siteCollection
 
+siteCollection.dbquery = '980__a:community-*'
+
 class CollectionData(DataSet):
     class analysis(object):
         id = 2
         name = 'Analysis'
-        dbquery = '980__a:analysis'
+        dbquery = '980__a:analysis AND 980__a:community-*' 
 
     class dataset(object):
         id = 3
         name = 'Dataset'
-        dbquery = '980__a:dataset'
+        dbquery = '980__a:dataset AND 980__a:community-*'
 
     class software(object):
         id = 4
         name = 'Software'
-        dbquery = '980__a:software'
+        dbquery = '980__a:software AND 980__a:community-*'
+
+    class communityparent(object):
+        id = 5
+        name = 'Communities'
 
 
 class CollectionCollectionData(DataSet):
