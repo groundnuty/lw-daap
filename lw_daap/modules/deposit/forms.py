@@ -204,7 +204,7 @@ class RelatedIdentifierForm(WebDepositForm):
             ('isPreviousVersionOf', 'is new version of this upload'),
             ('isPartOf', 'has this upload as part'),
             ('hasPart', 'is part of this upload'),
-            ('isAnaBy', 'is analyzed by this upload'),
+            ('isAnalyzeBy', 'is analyzed by this upload'),
             ('analyzes', 'analyzes this upload'),
             ('isCompiledBy', 'compiled/created this upload'),
             ('compiles', 'is compiled/created by this upload'),
@@ -481,7 +481,7 @@ class FilesForm(WebDepositForm):
         """Ensure minimum one file is attached."""
         if form.files_require:
             if not getattr(request, 'is_api_request', False):
-                try: 
+                try:
                     # Tested in API by a separate workflow task.
                     if len(form.files) == 0:
                         raise ValidationError("You must provide at least one file.")
@@ -825,7 +825,7 @@ class DatasetForm(BasicForm):
         fields.FormField(
             zfields.SpatialFieldForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-        ),            
+        ),
         label="Spatial coverage",
         add_label='Add another location',
         description='Optional. Spatial coverage of your data.'
@@ -1024,7 +1024,7 @@ class AnalysisForm(BasicForm):
         widget=widgets.HiddenInput(),
         default="analysis",
     )
-    
+
     # Inputs
     rel_dataset = fields.DynamicFieldList(
         fields.FormField(
