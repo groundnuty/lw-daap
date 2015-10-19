@@ -209,7 +209,7 @@ with context
 
           <tr>
             <th class="col-md-3"><i class="fa fa-calendar fa-fw"></i> Temporal Coverage</th>
-            <td class="col-md-3">{% for period in daap_record.period %}
+            <td class="col-md-9">{% for period in daap_record.period %}
               <span class="text-muted">from</span> {{ period.start }} <span class="text-muted">to</span> {{ period.end }}{% if not loop.last %}; {% endif %}
               {% endfor %}</td>
           </tr>
