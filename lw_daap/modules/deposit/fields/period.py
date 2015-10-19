@@ -27,6 +27,7 @@ from lw_daap.modules.invenio_deposit.fields import Date
 from lw_daap.modules.invenio_deposit.field_widgets import ColumnInput
 from lw_daap.modules.deposit.field_widgets import date_widget
 from lw_daap.modules.invenio_deposit.validation_utils import required_if
+from lw_daap.modules.deposit.validation_utils import StartEndDate
 
 from flask import current_app
 
@@ -43,6 +44,7 @@ class PeriodFieldForm(WebDepositForm):
                 message="Start date required if you specify an end date."
             ),
             validators.optional(),		
+            StartEndDate(max_from='end', message='%(field_label)s must be previous to end date.'),
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',
@@ -57,7 +59,8 @@ class PeriodFieldForm(WebDepositForm):
                 message="End date required if you specify a start date."
              ),	
              validators.optional(),	
-             DateRange(max=date.today(), message="End date must be at most today."),   	
+             StartEndDate(max=date.today(), min_from='start',
+                          message='%(field_label)s must be between start date and today.'),
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',

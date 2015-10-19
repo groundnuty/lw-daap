@@ -53,10 +53,10 @@ with context
   <div class="spacer30"></div>
 
   <div class="row">
-    {% if summary_view %}
     <div class="col-sm-12 col-md-3">
 
-      {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}     {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
+      {% if metadata_view %}
+      {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %} {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
       <button class="btn btn-block btn-lg btn-default" 
         data-toggle="modal" data-target="#doi-confirm-dialog">
         <i class="fa fa-barcode"></i> Mint Doi</button>
@@ -67,6 +67,7 @@ with context
       <a class="btn btn-block btn-lg btn-danger" href="{{ url_for('analyze.launch', title=daap_record.title, flavor=daap_record.flavor, os=daap_record.os, app_env=daap_record.app_env) }}"><i class="fa fa-play-circle-o"></i> Run</a>
       {% endif %}
       <div class="spacer20"></div>
+    {% endif %}
 
       <div class="panel-primary ">
         <div class="panel-heading">
@@ -85,7 +86,6 @@ with context
         </div>
       </div>
     </div>
-    {% endif %}
 
     <div class="col-sm-12 col-md-9">
       <div class="panel-list-wrapper">
@@ -227,12 +227,13 @@ with context
           {% if daap_record.spatial %}
           <tr>
             <th class="col-md-3"><i class="fa fa-globe fa-fw"></i> Spatial Coverage</th>
-            <td class="col-md-9">{{ bfe_daap_spatial(bfo, spatial=daap_record.spatial) }}
-              <p>
-              {% for spatial in daap_record.spatial %}
-              {{ spatial.west }} (western most longitude), {{ spatial.east }} (eastern most longitude), {{ spatial.north }} (northern most latitude), {{ spatial.south }} (southern most latitude) {% if not loop.last %}; {% endif %}
-              {% endfor %}
-              </p>
+            <td class="col-md-9">
+ {{ bfe_daap_spatial(bfo, spatial=daap_record.spatial) if metadata_view }}
+            {% for spatial in daap_record.spatial %}
+                <p>P1 ({{ spatial.north }},  {{ spatial.west }}), P2 ({{ spatial.south }}, {{ spatial.east }}){% if not loop.last %}; {% endif %}</p>
+            {% endfor %}
+
+
             </td>
           </tr>
           {% endif %}

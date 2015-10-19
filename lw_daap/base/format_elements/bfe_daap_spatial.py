@@ -44,11 +44,13 @@ def format_element(bfo, spatial=[]):
             polygons.append(((n, w), (s, w), (s, e), (n, e)))
     center = (((max(norths) + min(souths)) / 2.),
               ((max(easts) + min(wests)) / 2.))
+    bounds = ((min(souths), min(wests)), (max(norths), max(easts)))    
     r = ["<div id='spatial'",
          "class='map'",
          "data-center='%s'" % json.dumps(center),
          "data-polygons='%s'" % json.dumps(polygons),
          "data-markers='%s'" % json.dumps(markers),
+         "data-bounds='%s'" % json.dumps(bounds),   
          "></div>",
         ]
     return ' '.join(r)

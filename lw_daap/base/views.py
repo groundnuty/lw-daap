@@ -29,7 +29,6 @@ from invenio.ext.template. \
 from werkzeug.routing import Map
 
 
-
 blueprint = Blueprint('lw_daap', __name__, url_prefix='',
                       template_folder='templates', static_folder='static')
 
@@ -38,14 +37,15 @@ blueprint = Blueprint('lw_daap', __name__, url_prefix='',
 #
 @blueprint.route('/', methods=['GET', ])
 def home():
-    return render_template('main.html')
+    return render_template('lw_daap/main.html')
 
-
-
-@blueprint.route('/project', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
 def project():
     return render_template('lw_daap/project.html')
+
+@blueprint.route('/styles', methods=['GET', ])
+def styles():
+    return render_template('lw_daap/styles.html')
 
 #
 # Footer
@@ -59,10 +59,6 @@ def about():
 @register_breadcrumb(blueprint, 'breadcrumbs.api', _("API"))
 def api():
     return render_template('lw_daap/api.html')
-
-@blueprint.route('/styles', methods=['GET', ])
-def styles():
-    return render_template('lw_daap/styles.html')
 
 @blueprint.route('/contact', methods=['GET', ])
 @register_breadcrumb(blueprint, 'breadcrumbs.contact', _("Contact"))

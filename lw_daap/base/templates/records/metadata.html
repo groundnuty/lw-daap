@@ -54,6 +54,7 @@ require(['jquery'], function($) {
                collapse-3 should be something nicer */
             $('#collapse-3').on('shown.bs.collapse', function() {
                 map.invalidateSize(false);
+                map.fitBounds($('#spatial').data('bounds'));
             });
         });
     }
@@ -69,5 +70,5 @@ require(['jquery'], function($) {
 {% block record_content %}
   {{ format_record(recid, of=of, ln=g.ln, verbose=0, on_the_fly=true,
                    daap_record=daap_record, daap_files=daap_files,
-                   show_files=true, summary_view=true)|safe }}
+                   show_files=true, metadata_view=true)|safe }}
 {% endblock %}

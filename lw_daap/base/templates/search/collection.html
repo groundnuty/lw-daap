@@ -82,8 +82,8 @@
     {% else %}
 
     {% if collection.reclist %}
-    {%- set reclist = collection.reclist|curated_only|reverse -%}
-    {% for recid in reclist %}
+    {%- set reclist = collection.reclist|curated_only -%}
+    {% for recid in reclist[-10:]|reverse %}
     <div class="row">
       <div class="col-md-12 record-list-elem">
         <div class="pull-right view-record hidden-sm">
