@@ -59,8 +59,12 @@ table {
   table-layout: fixed;
 }
 
-table tr th {
-  width: 20%;
+.table {
+  margin-bottom: 0px;
+}
+.table > tbody > tr:first-child > th,
+.table > tbody > tr:first-child > td {
+  border: none;
 }
 
 #usermenu {

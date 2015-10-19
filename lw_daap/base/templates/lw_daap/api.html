@@ -1,20 +1,20 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 {#
 ## This file is part of Invenio.
@@ -39,196 +39,216 @@
 {% block body %}
 
 <div class="row">
-<div class="col-sm-3 col-md-3 hidden-print">
-<ul class="nav nav-list well ">
-  <li class="nav-header">API Documentation</li>
-  <li><a href="#">Introduction</a></li>
-  <li class="nav-header">REST API</li>
-  <li><a href="#restapi-intro">Introduction</a></li>
-  <li><a href="#restapi-quick">Quick start</a></li>
-  <li><a href="#restapi-auth">Authentication</a></li>
-  <li><a href="#restapi-requests">Requests</a></li>
-  <li><a href="#restapi-responses">Responses</a></li>
-  <li><a href="#restapi-http">HTTP status codes</a></li>
-  <li><a href="#restapi-errors">Errors</a></li>
-  <li><a href="#restapi-res">Resources</a></li>
-  <li><a href="#restapi-res-dep"><i class="glyphicon glyphicon-chevron-right"></i> Depositions</a></li>
-  <li><a href="#restapi-res-files"><i class="glyphicon glyphicon-chevron-right"></i> Deposition files</a></li>
-  <li><a href="#restapi-res-actions"><i class="glyphicon glyphicon-chevron-right"></i> Deposition actions</a></li>
-  <li><a href="#restapi-rep">Representations</a></li>
-</ul>
-</div>
-<div class="col-sm-9 col-md-9" data-spy="scroll" data-target=".navmenu">
-<h1 id="intro"><strong>API Documentation</strong> <small>for developers</small></h1>
-<hr />
-{{config.CFG_SITE_NAME}} currently offers a <strong>REST API</strong> that includes support for uploading your research outputs.
+  <div class="col-sm-12 col-md-3 hidden-print">
+    <ul class="nav nav-list">
+      <li class="nav-header"><h4>API Documentation</h4></li>
+      <li><a href="#">Introduction</a></li>
+      <li class="nav-header"><h4>REST API</h4></li>
+      <li><a href="#restapi-intro">Introduction</a></li>
+      <li><a href="#restapi-quick">Quick start</a></li>
+      <li><a href="#restapi-auth">Authentication</a></li>
+      <li><a href="#restapi-requests">Requests</a></li>
+      <li><a href="#restapi-responses">Responses</a></li>
+      <li><a href="#restapi-http">HTTP status codes</a></li>
+      <li><a href="#restapi-errors">Errors</a></li>
+      <li><a href="#restapi-res">Resources</a></li>
+      <li><a href="#restapi-res-dep">Depositions</a></li>
+      <li><a href="#restapi-res-files">Deposition files</a></li>
+      <li><a href="#restapi-res-actions">Deposition actions</a></li>
+      <li><a href="#restapi-rep">Representations</a></li>
+    </ul>
+  </div>
 
-<h2 id="restapi"><strong>REST API</strong> <small>upload your research outputs</small></h2><hr />
-<h2 id="restapi-intro">Introduction</h2>
-<p>The REST API allows you to programmatically upload and publish research outputs on {{config.CFG_SITE_NAME}}, with the same functionality which is available 
-in our <a href="{{url_for('webdeposit.index')}}">Upload</a> user interface.</p>
+  <div class="col-sm-9 col-md-9" data-spy="scroll" data-target=".navmenu">
+    <h1>API Documentation <small>for developers</small></h1>
+    <hr/>
+    <h2 id="restapi-intro">Introduction</h2>
+    <p>The REST API allows you to programmatically upload and publish research outputs on {{config.CFG_SITE_NAME}}, with the same functionality which is available 
+    in our <a href="{{url_for('webdeposit.index')}}">Upload</a> user interface.</p>
 
-<div class="panel-group dep-accord" id="dep-accord-0">
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-list0">
-          <h4 id="restapi-res-">Quick start <small></small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-list0" class="panel-collapse collapse">
-      <div style="padding: 9px 15px;">
-          <p>This short guide will give a quick overview of how to upload and publish on {{config.CFG_SITE_NAME}}, and will be using Python together with the <a href="http://www.python-requests.org/en/latest/user/install/">Requests</a> package.</p>
+    <div class="panel-group dep-accord" id="dep-accord-0">
+      <div class="panel panel-default">
+        <div class="panel-heading info">
+          <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-list0">
+            <h4 id="restapi-res-">Quick start <small></small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+          </a>
+        </div>
+        <div id="collapse-list0" class="panel-collapse collapse">
+          <div style="padding: 9px 15px;">
+            <p>This short guide will give a quick overview of how to upload and publish on {{config.CFG_SITE_NAME}}, and will be using Python together with the <a href="http://www.python-requests.org/en/latest/user/install/">Requests</a> package.</p>
 
-<ol>
+            <ol>
+              <li>
+              <p>First, make sure you have the <a href="http://www.python-requests.org/en/latest/user/install/">Requests</a> module installed:</p>
+              <pre>$ pip install requests</pre>
+              </li>
 
-<li>
-<p>First, make sure you have the <a href="http://www.python-requests.org/en/latest/user/install/">Requests</a> module installed:</p>
-<pre>$ pip install requests</pre>
-</li>
-
-<li><p>Next, fire up a Python command prompt:</p>
-<pre>$ python
+              <li>
+              <p>Next, fire up a Python command prompt:</p>
+              <pre>
+$ python
 Python 2.7.5+
 [GCC 4.8.1] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
->>></pre>
-</li>
+>>>
+              </pre>
+              </li>
 
-<li><p>Import the <code>requests</code> and <code>json</code> modules (don't type the <code>>>></code>-part):</p>
-<pre>>>> import requests
->>> import json</pre>
-</li>
+              <li>
+              <p>
+              Import the <code>requests</code> and <code>json</code> modules (don't type the <code>>>></code>-part):
+              </p>
+              <pre>
+>>> import requests
+>>> import json
+              </pre>
+              </li>
 
-<li><p>Try to access the API:</p>
-<pre>>>> r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions")
+              <li><p>Try to access the API:</p>
+              <pre>
+>>> r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions")
 >>> r.status_code
 401
 >>> r.json()
 {u'status': 401, u'message': u'Unauthorized'}
-</pre>
-</li>
+              </pre>
+              </li>
 
-<li>All API access requires an access token, so <a href="#restapi-auth">create</a> one.</li>
+              <li>
+              All API access requires an access token, so <a href="#restapi-auth">create</a> one.
+              </li>
 
-<li><p>Let's try again (replace <code>ACCESS_TOKEN</code> with your newly created personal access token):</p>
-<pre>>>> r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions?access_token=ACCESS_TOKEN")
+              <li>
+              <p>
+              Let's try again (replace <code>ACCESS_TOKEN</code> with your newly created personal access token):
+              </p>
+              <pre>
+>>> r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions?access_token=ACCESS_TOKEN")
 >>> r.status_code
 200
 >>> r.json()
-[]</pre>
-<p class="muted"><small>Note, if you already uploaded something, the output will be different.</small></p>
-</li>
+[]
+              </pre>
+              <p class="muted">
+              <small>Note, if you already uploaded something, the output will be different.</small>
+              </p>
+              </li>
 
-<li><p>Next, let's create a new empty upload:</p>
-<pre>>>> headers = {"Content-Type": "application/json"}
+              <li>
+              <p>Next, let's create a new empty upload:</p>
+              <pre>
+>>> headers = {"Content-Type": "application/json"}
 >>> r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions?access_token=ACCESS_TOKEN", data="{}", headers=headers)
 >>> r.status_code
 201
 >>> r.json()
 {u'files': [], u'title': u'', u'created': u'2013-11-14T18:34:08+00:00', u'modified': u'2013-11-14T18:34:08+00:00', u'state': u'unsubmitted', u'owner': 1, u'id': 1234, u'metadata': {}}
 >>> deposition_id = r.json()['id']
-</pre>
-</li>
+              </pre>
+              </li>
 
-<li><p>Now, let's upload a new file:</p>
-<pre>>>> data = {'filename': 'myfirstfile.csv'}
+              <li>
+              <p>Now, let's upload a new file:</p>
+              <pre>
+>>> data = {'filename': 'myfirstfile.csv'}
 >>> files = {'file': open('/path/to/myfirstfile.csv', 'rb')}
 >>> r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/%s/files?access_token=ACCESS_TOKEN" % deposition_id, data=data, files=files)
 >>> r.status_code
 201
 >>> r.json()
 {u'checksum': u'2b70e04bb31f2656ce967dc07103297f', u'filename': u'myfirstfile.csv', u'id': u'eb78d50b-ecd4-407a-9520-dfc7a9d1ab2c', u'filesize': u'27'}
-</pre>
-<p class="muted"><small>Maximum file size is 2GB per file.</small></p>
-</li>
+              </pre>
+              <p class="muted"><small>Maximum file size is 2GB per file.</small></p>
+              </li>
 
-<li><p>Last thing missing, is just to add some metadata:</p>
-<pre>
+              <li>
+              <p>Last thing missing, is just to add some metadata:</p>
+              <pre>
 >>> data = {"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}
 >>> r = requests.put("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/%s?access_token=ACCESS_TOKEN" % deposition_id, data=json.dumps(data), headers=headers)
 >>> r.status_code
 200
-</pre>
-</li>
+              </pre>
+              </li>
 
-<li><p>and, we're ready to publish:</p>
-<div class="alert alert-danger">Don't execute this last step - it will put your test upload straight online.</div>
-<pre>
+              <li>
+              <p>and, we're ready to publish:</p>
+              <div class="alert alert-danger">Don't execute this last step - it will put your test upload straight online.</div>
+              <pre>
 >>> r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/%s/actions/publish?access_token=ACCESS_TOKEN" % deposition_id)
 >>> r.status_code
 202
-</pre>
-</li>
-</ol>
-
+              </pre>
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
-<h2 id="restapi-auth">Authentication</h2>
-<p>All API requests must be authenticated and over HTTPS. Any request over plain HTTP will fail. We support authentication with via OAuth 2.0.</p>
+    <h2 id="restapi-auth">Authentication</h2>
+    <p>All API requests must be authenticated and over HTTPS. Any request over plain HTTP will fail. We support authentication with via OAuth 2.0.</p>
 
-<p><strong>Acquiring a personal access token</strong></p>
-<ol>
-<li><a href="{{url_for('userprofile.index')}}">Sign up</a>.</li>
-<li>Go to your <a href="{{url_for('oauth2server_settings.index')}}">Applications</a>, to <a href="{{url_for('oauth2server_settings.token_new')}}">create a new token</a>.</li>
-<li>Select the OAuth scopes you need (for the quick start tutorial you need <code>deposit:write</code> and <code>deposit:actions</code>).</li>
-</ol>
+    <p><strong>Acquiring a personal access token</strong></p>
+    <ol>
+      <li><a href="{{url_for('userprofile.index')}}">Sign up</a>.</li>
+      <li>Go to your <a href="{{url_for('oauth2server_settings.index')}}">Applications</a>, to <a href="{{url_for('oauth2server_settings.token_new')}}">create a new token</a>.</li>
+      <li>Select the OAuth scopes you need (for the quick start tutorial you need <code>deposit:write</code> and <code>deposit:actions</code>).</li>
+    </ol>
 
-<div class="alert alert-danger">
-  <strong>Important!</strong> Do not share your personal access token with anyone else, and only use it over HTTPS.
-</div>
+    <div class="alert alert-danger">
+      <strong>Important!</strong> Do not share your personal access token with anyone else, and only use it over HTTPS.
+    </div>
 
-<p><strong>Using access tokens</strong></p>
-<p>An access token must be included in all requests as a URL parameter:</p>
+    <p><strong>Using access tokens</strong></p>
+    <p>An access token must be included in all requests as a URL parameter:</p>
 
-<pre>
+    <pre>
 {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions?access_token=ACCESS_TOKEN
-</pre>
+    </pre>
 
-<p><strong>Scopes</strong></p>
-Scopes assigns permissions to your access token to limit access to data and actions in {{config.CFG_SITE_NAME}}.
+    <p><strong>Scopes</strong></p>
+    Scopes assigns permissions to your access token to limit access to data and actions in {{config.CFG_SITE_NAME}}.
 
-The following scopes exists:
+    The following scopes exists:
 
-<table class="table table-striped">
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>deposit:write</code></td>
-<td>Grants write access to depositions, but does not allow publishing the upload.</td>
-</tr>
-<tr>
-<td><code>deposit:actions</code></td>
-<td>Grants access to publish, edit and discard edits for depositions.</td>
-</tr>
-</tbody>
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><code>deposit:write</code></td>
+        <td>Grants write access to depositions, but does not allow publishing the upload.</td>
+      </tr>
+      <tr>
+        <td><code>deposit:actions</code></td>
+        <td>Grants access to publish, edit and discard edits for depositions.</td>
+      </tr>
+      </tbody>
+    </table>
 
 
 
-<h2 id="restapi-requests">Requests</h2>
-<p>The base URL of the API is <code>{{config.CFG_SITE_SECURE_URL}}/api/</code>.</p>
+    <h2 id="restapi-requests">Requests</h2>
+    <p>The base URL of the API is <code>{{config.CFG_SITE_SECURE_URL}}/api/</code>.</p>
 
-<p>All <code>POST</code> and <code>PUT</code> request bodies must be JSON encoded, and must have content type of <code>application/json</code> unless specified otherwise in the specific resource (e.g. in the case of file uploads). The API will return a <code>415</code> error (see <a href="#restapi-http">HTTP status codes</a> and <a href="#restapi-errors">error responses</a>) if the wrong content type is provided.</p> 
+    <p>All <code>POST</code> and <code>PUT</code> request bodies must be JSON encoded, and must have content type of <code>application/json</code> unless specified otherwise in the specific resource (e.g. in the case of file uploads). The API will return a <code>415</code> error (see <a href="#restapi-http">HTTP status codes</a> and <a href="#restapi-errors">error responses</a>) if the wrong content type is provided.</p> 
 
-<h2 id="restapi-responses">Responses</h2>
-<p>All response bodies are JSON encoded (UTF-8 encoded). A single resource is represented as a JSON object:</p>
-<pre>
+    <h2 id="restapi-responses">Responses</h2>
+    <p>All response bodies are JSON encoded (UTF-8 encoded). A single resource is represented as a JSON object:</p>
+    <pre>
 {
     "field1": <em>value</em>,
     <em>...</em>
 }
-</pre>
-<p>A collection of resources is represented as a JSON array of objects:</p>
-<pre>
+    </pre>
+    <p>A collection of resources is represented as a JSON array of objects:</p>
+    <pre>
 [
     {
         "field1": <em>value</em>,
@@ -236,108 +256,108 @@ The following scopes exists:
     },
     <em>...</em>
 ]
-</pre>
+    </pre>
 
-<p>Timestamps are in UTC and formatted according to <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>:</p>
-<pre align="center">YYYY-MM-DDTHH:MM:SS+00:00</pre>
+    <p>Timestamps are in UTC and formatted according to <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>:</p>
+    <pre align="center">YYYY-MM-DDTHH:MM:SS+00:00</pre>
 
-<h2 id="restapi-http">HTTP status codes</h2>
-We use the following HTTP status codes to indicate success or failure of a request.
+    <h2 id="restapi-http">HTTP status codes</h2>
+    We use the following HTTP status codes to indicate success or failure of a request.
 
-<table class="table table-striped">
-<thead>
-<tr>
-<th>Code</th>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>200</code></td>
-<td>OK</td>
-<td>Request succeeded. Response included. Usually sent for GET/PUT/PATCH requests.</td>
-</tr>
-<tr>
-<td><code>201</code></td>
-<td>Created</td>
-<td>Request succeeded. Response included. Usually sent for POST requests.</td>
-</tr>
-<tr>
-<td><code>202</code></td>
-<td>Accepted</td>
-<td>Request succeeded. Response included. Usually sent for POST requests, where background processing is needed to fulfill the request.</td>
-</tr>
-<tr>
-<td><code>204</code></td>
-<td>No Content</td>
-<td>Request succeeded. No response included. Usually sent for DELETE requests.</td>
-</tr>
-<tr>
-<td><code>400</code></td>
-<td>Bad Request</td>
-<td>Request failed. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>401</code></td>
-<td>Unauthorized</td>
-<td>Request failed, due to an invalid access token. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>403</code></td>
-<td>Forbidden</td>
-<td>Request failed, due to missing authorization (e.g. deleting an already submitted upload or missing scopes for your access token). <a href="#restapi-errors">Error response</a> included.
-</td>
-</tr>
-<tr>
-<td><code>404</code></td>
-<td>Not Found</td>
-<td>Request failed, due to the resource not being found. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>405</code></td>
-<td>Method Not Allowed</td>
-<td>Request failed, due to unsupported HTTP method. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>409</code></td>
-<td>Conflict</td>
-<td>Request failed, due to the current state of the resource (e.g. edit a deopsition which is not fully integrated). <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>415</code></td>
-<td>Unsupported Media Type</td>
-<td>Request failed, due to missing or invalid request header <code>Content-Type</code>. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>429</code></td>
-<td>Too Many Requests</td>
-<td>Request failed, due to rate limiting. <a href="#restapi-errors">Error response</a> included.</td>
-</tr>
-<tr>
-<td><code>500</code></td>
-<td>Internal Server Error</td>
-<td>Request failed, due to an internal server error. Error response <em>NOT</em> included. Don't worry, {{config.CFG_SITE_NAME}} admins have been notified and will be dealing with the problem ASAP.</td>
-</tr>
-</tbody>
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1">Code</th>
+          <th class="col-md-3">Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><code>200</code></td>
+        <td>OK</td>
+        <td>Request succeeded. Response included. Usually sent for GET/PUT/PATCH requests.</td>
+      </tr>
+      <tr>
+        <td><code>201</code></td>
+        <td>Created</td>
+        <td>Request succeeded. Response included. Usually sent for POST requests.</td>
+      </tr>
+      <tr>
+        <td><code>202</code></td>
+        <td>Accepted</td>
+        <td>Request succeeded. Response included. Usually sent for POST requests, where background processing is needed to fulfill the request.</td>
+      </tr>
+      <tr>
+        <td><code>204</code></td>
+        <td>No Content</td>
+        <td>Request succeeded. No response included. Usually sent for DELETE requests.</td>
+      </tr>
+      <tr>
+        <td><code>400</code></td>
+        <td>Bad Request</td>
+        <td>Request failed. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>401</code></td>
+        <td>Unauthorized</td>
+        <td>Request failed, due to an invalid access token. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>403</code></td>
+        <td>Forbidden</td>
+        <td>Request failed, due to missing authorization (e.g. deleting an already submitted upload or missing scopes for your access token). <a href="#restapi-errors">Error response</a> included.
+        </td>
+      </tr>
+      <tr>
+        <td><code>404</code></td>
+        <td>Not Found</td>
+        <td>Request failed, due to the resource not being found. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>405</code></td>
+        <td>Method Not Allowed</td>
+        <td>Request failed, due to unsupported HTTP method. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>409</code></td>
+        <td>Conflict</td>
+        <td>Request failed, due to the current state of the resource (e.g. edit a deopsition which is not fully integrated). <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>415</code></td>
+        <td>Unsupported Media Type</td>
+        <td>Request failed, due to missing or invalid request header <code>Content-Type</code>. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>429</code></td>
+        <td>Too Many Requests</td>
+        <td>Request failed, due to rate limiting. <a href="#restapi-errors">Error response</a> included.</td>
+      </tr>
+      <tr>
+        <td><code>500</code></td>
+        <td>Internal Server Error</td>
+        <td>Request failed, due to an internal server error. Error response <em>NOT</em> included. Don't worry, {{config.CFG_SITE_NAME}} admins have been notified and will be dealing with the problem ASAP.</td>
+      </tr>
+      </tbody>
+    </table>
 
-<h2 id="restapi-errors">Errors</h2>
-<p>
-Error responses for 400 series errors (e.g. 400, 401, 403, ...) are returned as a JSON object with two attributes <code>message</code> and <code>status</code> (HTTP status code), and possibly an attribute <code>errors</code> with a list of more detailed errors.</p>
+    <h2 id="restapi-errors">Errors</h2>
+    <p>
+    Error responses for 400 series errors (e.g. 400, 401, 403, ...) are returned as a JSON object with two attributes <code>message</code> and <code>status</code> (HTTP status code), and possibly an attribute <code>errors</code> with a list of more detailed errors.</p>
 
-<p>Example of a simple error message without further detailed errors:</p>
+    <p>Example of a simple error message without further detailed errors:</p>
 
-<pre>
+    <pre>
 {
     "message": "Deposition not found",
     "status": 404
 }
-</pre>
+    </pre>
 
-<p>Example of an error message with additional detailed error messages:</p>
+    <p>Example of an error message with additional detailed error messages:</p>
 
-<pre>
+    <pre>
 {
     "message": "Validation error",
     "status": 400,
@@ -345,135 +365,132 @@ Error responses for 400 series errors (e.g. 400, 401, 403, ...) are returned as 
         {"code": 10, "message":"Not a valid choice", "field": "access_right"}
     ]
 }
-</pre>
-<p>The attribute <code>errors</code> is a JSON array of objects, with the attributes <code>message</code> and <code>code</code>, and possibly <code>field</code> for validation errors.</p>
+    </pre>
+    <p>The attribute <code>errors</code> is a JSON array of objects, with the attributes <code>message</code> and <code>code</code>, and possibly <code>field</code> for validation errors.</p>
 
-<h2 id="restapi-res">Resources</h2>
+    <h2 id="restapi-res">Resources</h2>
 
-<h3 id="restapi-res-dep">Depositions</h3>
+    <h3 id="restapi-res-dep">Depositions</h3>
 
-<div class="panel-group dep-accord" id="dep-accord-1">
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-list">
-          <h4 id="restapi-res-">List <small>GET deposit/depositions</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-list" class="panel-collapse collapse">
-      <div class="panel-body">
-          <table class="table table-striped">
-          <tbody>
-          <tr>
-              <th class="span2">Description</th>
-              <td>List all depositions for the currently authenticated user</td>
-          </tr>
-          <tr>
-              <th class="span2">URL</th>
-              <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions</td>
-          </tr>
-          <tr>
-              <th>Method</th>
-              <td>GET</td>
-          </tr>
-          <tr>
-              <th>Success response</th>
-              <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-dep">deposition</a> resources.</li></ul></td>
-          </tr>
-          <tr>
-              <th>Error response</th>
-              <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-          </tr>
-          <tr>
-              <th>Example</th>
-              <td>
-          <div class="tabbable">
-            <ul class="nav nav-pills">
-              <li class="active"><a href="#curl" data-toggle="tab">cURL</a></li>
-              <li ><a href="#python" data-toggle="tab">Python</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="curl">
-                <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre>
-              </div>
-              <div class="tab-pane" id="python">
-                <pre>import requests
+    <div class="panel-group dep-accord" id="dep-accord-1">
+      <div class="panel panel-default">
+        <div class="panel-heading info">
+          <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-list">
+            <h4 id="restapi-res-">List <small>GET deposit/depositions</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+          </a>
+        </div>
+        <div id="collapse-list" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th class="col-md-3">Description</th>
+                <td>List all depositions for the currently authenticated user</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">URL</th>
+                <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Method</th>
+                <td>GET</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Success response</th>
+                <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-dep">deposition</a> resources.</li></ul></td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Error response</th>
+                <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Example</th>
+                <td>
+                    <ul class="nav nav-tabs">
+                      <li class="active"><a href="#curl" data-toggle="tab">cURL</a></li>
+                      <li ><a href="#python" data-toggle="tab">Python</a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="curl">
+                        <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre>
+                      </div>
+                      <div class="tab-pane" id="python">
+                        <pre>import requests
 response = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN")
 print response.json()
-                </pre>
-              </div>
-            </div>
+                        </pre>
+                      </div>
+                    </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
-              </td>
-          </tr>
-          </tbody>
-          </table>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-create"> <h4 id="restapi-res-">Create <small>POST deposit/depositions</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-create" class="panel-collapse collapse">
-      <div class="panel-body">
-<table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Create a new deposition resource.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>POST</td>
-</tr>
-<tr>
-    <th>Request headers</th>
-    <td>Content-Type: application/json</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>Data parameters</th>
-    <td><p>An empty JSON object <code>{}</code> or a <a href="#restapi-rep-meta">deposition metadata</a> resource. Example:</p>
-    <pre>{
+      <div class="panel panel-default">
+        <div class="panel-heading info">
+          <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-create"> <h4 id="restapi-res-">Create <small>POST deposit/depositions</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+          </a>
+        </div>
+        <div id="collapse-create" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th class="col-md-3">Description</th>
+                <td>Create a new deposition resource.</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">URL</th>
+                <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Method</th>
+                <td>POST</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Request headers</th>
+                <td>Content-Type: application/json</td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Scopes</th>
+                <td><code>deposit:write</code></td>
+              </tr>
+              <tr>
+                <th class="col-md-3">Data parameters</th>
+                <td><p>An empty JSON object <code>{}</code> or a <a href="#restapi-rep-meta">deposition metadata</a> resource. Example:</p>
+                  <pre>{
     "metadata": {
         "upload_type": "presentation",
         <em>...</em>
     }
 }</pre></td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-d-create" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-d-create" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-d-create">
-      <pre>$ curl -i -H "Content-Type: application/json" --data '{}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre> 
-<em>or</em>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Success response</th>
+                  <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Error response</th>
+                  <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Example</th>
+                  <td>
+                      <ul class="nav nav-tabs">
+                        <li class="active"><a href="#curl-d-create" data-toggle="tab">cURL</a></li>
+                        <li ><a href="#python-d-create" data-toggle="tab">Python</a></li>
+                      </ul>
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="curl-d-create">
+                          <pre>$ curl -i -H "Content-Type: application/json" --data '{}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre> 
+                          <em>or</em>
 
-<pre>$ curl -i -H "Content-Type: application/json" -X POST --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-d-create">
-      <pre>import json
+                          <pre>$ curl -i -H "Content-Type: application/json" -X POST --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN</pre>
+                        </div>
+                        <div class="tab-pane" id="python-d-create">
+                          <pre>import json
 import requests
 
 url = "{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/?access_token=ACCESS_TOKEN"
@@ -484,158 +501,154 @@ r = requests.post(url, data="{}", headers=headers)
 
 data = {"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}
 r = requests.post(url, data=json.dumps(data), headers=headers)</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-   <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-get">
-          <h4 id="restapi-res-">Retrieve <small>GET deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-get" class="panel-collapse collapse">
-      <div class="panel-body">
-          <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Retrieve a single deposition resource.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>GET</td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-d-get" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-d-get" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-d-get">
-      <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-d-get">
-      <pre>import requests
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading info">
+            <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-get">
+              <h4 id="restapi-res-">Retrieve <small>GET deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+            </a>
+          </div>
+          <div id="collapse-get" class="panel-collapse collapse">
+            <div class="panel-body">
+              <table class="table table-striped">
+                <tbody>
+                <tr>
+                  <th class="col-md-3">Description</th>
+                  <td>Retrieve a single deposition resource.</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">URL</th>
+                  <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Method</th>
+                  <td>GET</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">URL parameters</th>
+                  <td>
+                    <ul>
+                      <li><strong>Required:</strong>
+                      <ul>
+                        <li><strong>id:</strong> Deposition identifier</li>
+                      </ul>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Success response</th>
+                  <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Error response</th>
+                  <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Example</th>
+                  <td>
+                      <ul class="nav nav-tabs">
+                        <li class="active"><a href="#curl-d-get" data-toggle="tab">cURL</a></li>
+                        <li ><a href="#python-d-get" data-toggle="tab">Python</a></li>
+                      </ul>
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="curl-d-get">
+                          <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
+                        </div>
+                        <div class="tab-pane" id="python-d-get">
+                          <pre>import requests
 
 r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-update">
-          <h4 id="restapi-res-">Update <small>PUT deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-update" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Update an existing deposition resource.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>PUT</td>
-</tr>
-<tr>
-    <th>Request headers</th>
-    <td>Content-Type: application/json</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Data parameters</th>
-    <td><p>A <a href="#restapi-rep-meta">deposition metadata</a> resource. Example:</p>
-    <pre>{
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading info">
+            <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-update">
+              <h4 id="restapi-res-">Update <small>PUT deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+            </a>
+          </div>
+          <div id="collapse-update" class="panel-collapse collapse">
+            <div class="panel-body">
+              <table class="table table-striped">
+                <tbody>
+                <tr>
+                  <th class="col-md-3">Description</th>
+                  <td>Update an existing deposition resource.</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">URL</th>
+                  <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Method</th>
+                  <td>PUT</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Request headers</th>
+                  <td>Content-Type: application/json</td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Scopes</th>
+                  <td><code>deposit:write</code></td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">URL parameters</th>
+                  <td>
+                    <ul>
+                      <li><strong>Required:</strong>
+                      <ul>
+                        <li><strong>id:</strong> Deposition identifier</li>
+                      </ul>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-md-3">Data parameters</th>
+                  <td><p>A <a href="#restapi-rep-meta">deposition metadata</a> resource. Example:</p>
+                    <pre>{
     "metadata": {
         "upload_type": "presentation",
         <em>...</em>
     }
 }</pre></td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-d-put" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-d-put" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-d-put">
-      <pre>$ curl -i -H "Content-Type: application/json" -X PUT --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-d-put">
-      <pre>import json
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Success response</th>
+                    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Error response</th>
+                    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Example</th>
+                    <td>
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#curl-d-put" data-toggle="tab">cURL</a></li>
+                          <li ><a href="#python-d-put" data-toggle="tab">Python</a></li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="curl-d-put">
+                            <pre>$ curl -i -H "Content-Type: application/json" -X PUT --data '{"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
+                          </div>
+                          <div class="tab-pane" id="python-d-put">
+                            <pre>import json
 import requests
 
 url = "{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN"
@@ -643,333 +656,325 @@ headers = {"Content-Type": "application/json"}
 data = {"metadata": {"title": "My first upload", "upload_type": "poster", "description": "This is my first upload", "creators": [{"name": "Doe, John", "affiliation": "Institute for"}]}}
 
 r = requests.put(url, data=json.dumps(data), headers=headers)</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-delete">
-          <h4 id="restapi-res-">Delete <small>DELETE deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-delete" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Delete an existing deposition resource. Note, only unpublished depositions may be deleted.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>DELETE</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>204 No Content</code></li><li><strong>Body</strong>: Empty.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>
-    <ul>
-    <li><code>404 Not found</code>: Deposition does not exist.</li>
-      <li><code>403 Forbidden</code>: Deleting an already published deposition.</li>
-    </ul>
+                          </div>
+                        </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading info">
+              <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-delete">
+                <h4 id="restapi-res-">Delete <small>DELETE deposit/depositions/:id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+              </a>
+            </div>
+            <div id="collapse-delete" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <tbody>
+                  <tr>
+                    <th class="col-md-3">Description</th>
+                    <td>Delete an existing deposition resource. Note, only unpublished depositions may be deleted.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL</th>
+                    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Method</th>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Scopes</th>
+                    <td><code>deposit:write</code></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL parameters</th>
+                    <td>
+                      <ul>
+                        <li><strong>Required:</strong>
+                        <ul>
+                          <li><strong>id:</strong> Deposition identifier</li>
+                        </ul>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Success response</th>
+                    <td><ul><li><strong>Code:</strong> <code>204 No Content</code></li><li><strong>Body</strong>: Empty.</li></ul></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Error response</th>
+                    <td>
+                      <ul>
+                        <li><code>404 Not found</code>: Deposition does not exist.</li>
+                        <li><code>403 Forbidden</code>: Deleting an already published deposition.</li>
+                      </ul>
 
-    <p>See also <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</p>
-    </td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-d-del" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-d-del" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-d-del">
-      <pre>$ curl -i -X DELETE {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-d-del">
-      <pre>import requests
+                      <p>See also <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Example</th>
+                    <td>
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#curl-d-del" data-toggle="tab">cURL</a></li>
+                          <li ><a href="#python-d-del" data-toggle="tab">Python</a></li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="curl-d-del">
+                            <pre>$ curl -i -X DELETE {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN</pre>
+                          </div>
+                          <div class="tab-pane" id="python-d-del">
+                            <pre>import requests
 
 r = requests.delete("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
+                          </div>
+                        </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
 
-      </div>
-    </div>
-  </div>
-</div>
-
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 
 
 
-<h3 id="restapi-res-files">Deposition files</h3>
 
-<div class="panel-group dep-accord">
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-list">
-          <h4 id="restapi-res-">List <small>GET deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-list" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>List all deposition files for a given deposition.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>GET</td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-files">deposition file</a> resources.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-list" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-list" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-list">
-      <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-f-list">
-      <pre>import requests
+        <h3 id="restapi-res-files">Deposition files</h3>
+
+        <div class="panel-group dep-accord">
+          <div class="panel panel-default">
+            <div class="panel-heading info">
+              <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-list">
+                <h4 id="restapi-res-">List <small>GET deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+              </a>
+            </div>
+            <div id="collapse-f-list" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <tbody>
+                  <tr>
+                    <th class="col-md-3">Description</th>
+                    <td>List all deposition files for a given deposition.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL</th>
+                    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Method</th>
+                    <td>GET</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL parameters</th>
+                    <td>
+                      <ul>
+                        <li><strong>Required:</strong>
+                        <ul>
+                          <li><strong>id:</strong> Deposition identifier</li>
+                        </ul>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Success response</th>
+                    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-files">deposition file</a> resources.</li></ul></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Error response</th>
+                    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Example</th>
+                    <td>
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#curl-f-list" data-toggle="tab">cURL</a></li>
+                          <li ><a href="#python-f-list" data-toggle="tab">Python</a></li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="curl-f-list">
+                            <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN</pre>
+                          </div>
+                          <div class="tab-pane" id="python-f-list">
+                            <pre>import requests
 
 r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-create">
-          <h4 id="restapi-res-">Create (upload) <small>POST deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-create" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Upload a new file.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>POST</td>
-</tr>
-<tr class="warning">
-    <th>Request headers</th>
-    <td>Content-Type: multipart/form-data</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Data parameters</th>
-    <td></td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li
-></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-post" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-post" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-post">
-      <pre>$ curl -i -F name=myfirstfile.csv -F file=@path/to/local_file.csv {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-f-post">
-      <pre>import json
+                          </div>
+                        </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading info">
+              <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-create">
+                <h4 id="restapi-res-">Create (upload) <small>POST deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+              </a>
+            </div>
+            <div id="collapse-f-create" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <tbody>
+                  <tr>
+                    <th class="col-md-3">Description</th>
+                    <td>Upload a new file.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL</th>
+                    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Method</th>
+                    <td>POST</td>
+                  </tr>
+                  <tr class="warning">
+                    <th class="col-md-3">Request headers</th>
+                    <td>Content-Type: multipart/form-data</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Scopes</th>
+                    <td><code>deposit:write</code></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL parameters</th>
+                    <td>
+                      <ul>
+                        <li><strong>Required:</strong>
+                        <ul>
+                          <li><strong>id:</strong> Deposition identifier</li>
+                        </ul>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Data parameters</th>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Success response</th>
+                    <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li
+                        ></ul></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Error response</th>
+                    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Example</th>
+                    <td>
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#curl-f-post" data-toggle="tab">cURL</a></li>
+                          <li ><a href="#python-f-post" data-toggle="tab">Python</a></li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="curl-f-post">
+                            <pre>$ curl -i -F name=myfirstfile.csv -F file=@path/to/local_file.csv {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN</pre>
+                          </div>
+                          <div class="tab-pane" id="python-f-post">
+                            <pre>import json
 import requests
 
 url = "{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN"
 data = {'filename': 'myfirstfile.csv'}
 files = {'file': open('path/to/local_file.csv', 'rb')}
 r = requests.post(url, data=data, files=files)</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-sort">
-          <h4 id="restapi-res-">Sort <small>PUT deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-sort" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Sort the files for a deposition. By default, the first file is shown in the file preview.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>PUT</td>
-</tr>
-<tr>
-    <th>Request headers</th>
-    <td>Content-Type: application/json</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Data parameters</th>
-    <td><p>A JSON array of partial <a href="#restapi-rep-files">deposition file</a> resources with only the <code>id</code> attribute. Example:</p>
-    <pre>[
+                          </div>
+                        </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading info">
+              <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-sort">
+                <h4 id="restapi-res-">Sort <small>PUT deposit/depositions/:id/files</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+              </a>
+            </div>
+            <div id="collapse-f-sort" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <tbody>
+                  <tr>
+                    <th class="col-md-3">Description</th>
+                    <td>Sort the files for a deposition. By default, the first file is shown in the file preview.</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL</th>
+                    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Method</th>
+                    <td>PUT</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Request headers</th>
+                    <td>Content-Type: application/json</td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Scopes</th>
+                    <td><code>deposit:write</code></td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">URL parameters</th>
+                    <td>
+                      <ul>
+                        <li><strong>Required:</strong>
+                        <ul>
+                          <li><strong>id:</strong> Deposition identifier</li>
+                        </ul>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-md-3">Data parameters</th>
+                    <td><p>A JSON array of partial <a href="#restapi-rep-files">deposition file</a> resources with only the <code>id</code> attribute. Example:</p>
+                      <pre>[
     {"id": "<em>&lt;file id 1&gt;</em>"},
     {"id": "<em>&lt;file id 2&gt;</em>"},
     <em>...</em>
 ]</pre></td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-files">deposition file</a> resources.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-put" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-put" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-put">
-      <pre>$ curl -i -X PUT -H "Content-Type: application/json" --data '[{"id":"21fedcba-9876-5432-1fed-cba987654321"}, {"id":"12345678-9abc-def1-2345-6789abcdef12"}]' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN
-</pre>
-    </div>
-    <div class="tab-pane" id="python-f-put">
-      <pre>import json
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: an array of <a href="#restapi-rep-files">deposition file</a> resources.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-f-put" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-f-put" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-f-put">
+                              <pre>$ curl -i -X PUT -H "Content-Type: application/json" --data '[{"id":"21fedcba-9876-5432-1fed-cba987654321"}, {"id":"12345678-9abc-def1-2345-6789abcdef12"}]' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN
+                              </pre>
+                            </div>
+                            <div class="tab-pane" id="python-f-put">
+                              <pre>import json
 import requests
 
 url = "{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files?access_token=ACCESS_TOKEN"
@@ -977,158 +982,154 @@ headers = {"Content-Type": "application/json"}
 data = [{'id': '21fedcba-9876-5432-1fed-cba987654321'}, {'id': '12345678-9abc-def1-2345-6789abcdef12'}]
 
 r = requests.put(url, data=json.dumps(data), headers=headers)</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-get">
-          <h4 id="restapi-res-">Retrieve <small>GET deposit/depositions/:id/files/:file_id</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-get" class="panel-collapse collapse">
-      <div class="panel-body">
-<table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Retrieve a single deposition file.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>GET</td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-            <li><strong>file_id:</strong> Deposition file identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-get" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-get" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-get">
-      <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/12345678-9abc-def1-2345-6789abcdef12?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-f-get">
-      <pre>import requests
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-get">
+                  <h4 id="restapi-res-">Retrieve <small>GET deposit/depositions/:id/files/:file_id</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-f-get" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Retrieve a single deposition file.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>GET</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                            <li><strong>file_id:</strong> Deposition file identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-f-get" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-f-get" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-f-get">
+                              <pre>$ curl -i {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/12345678-9abc-def1-2345-6789abcdef12?access_token=ACCESS_TOKEN</pre>
+                            </div>
+                            <div class="tab-pane" id="python-f-get">
+                              <pre>import requests
 
 r = requests.get("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/12345678-9abc-def1-2345-6789abcdef12?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-update">
-          <h4 id="#restapi-obj-deposition-file">Update <small>PUT deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-update" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Update a deposition file resource. Currently the only use is renaming an already uploaded file. If you one to replace the actual file, please delete the file and upload a new file.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>PUT</td>
-</tr>
-<tr>
-    <th>Request headers</th>
-    <td>Content-Type: application/json</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-            <li><strong>file_id:</strong> Deposition file identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Data parameters</th>
-    <td><p>A partial <a href="#restapi-rep-files">deposition file</a> resources with only the <code>filename</code> attributes. Example:</p>
-    <pre>{
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-update">
+                  <h4 id="#restapi-obj-deposition-file">Update <small>PUT deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-f-update" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Update a deposition file resource. Currently the only use is renaming an already uploaded file. If you one to replace the actual file, please delete the file and upload a new file.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>PUT</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Request headers</th>
+                      <td>Content-Type: application/json</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Scopes</th>
+                      <td><code>deposit:write</code></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                            <li><strong>file_id:</strong> Deposition file identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Data parameters</th>
+                      <td><p>A partial <a href="#restapi-rep-files">deposition file</a> resources with only the <code>filename</code> attributes. Example:</p>
+                        <pre>{
     "filename": "<em>&lt;new name&gt;</em>"
 }
-</pre></td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-put-1" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-put-1" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-put-1">
-      <pre>$ curl -i -X PUT -H "Content-Type: application/json" --data '{"filename": "someothername.csv"}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-f-put-1">
-      <pre>import json
+                      </pre></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>200 OK</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-files">deposition file</a> resource.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-f-put-1" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-f-put-1" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-f-put-1">
+                              <pre>$ curl -i -X PUT -H "Content-Type: application/json" --data '{"filename": "someothername.csv"}' {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN</pre>
+                            </div>
+                            <div class="tab-pane" id="python-f-put-1">
+                              <pre>import json
 import requests
 
 url = "{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN"
@@ -1136,760 +1137,752 @@ headers = {"Content-Type": "application/json"}
 data = {"filename": "someothername.csv"}
 
 r = requests.put(url, data=json.dumps(data), headers=headers)</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-delete">
-          <h4 id="restapi-res-">Delete <small>DELETE deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-f-delete" class="panel-collapse collapse">
-      <div class="panel-body">
-        <table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Delete an existing deposition file resource. Note, only deposition files for unpublished depositions may be deleted.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>DELETE</td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:write</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-            <li><strong>file_id:</strong> Deposition file identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>204 No Content</code></li><li><strong>Body</strong>: Empty.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>
-    <ul>
-      <li><code>404 Not found</code>: Deposition file does not exist.</li>
-      <li><code>403 Forbidden</code>: Deleting an already published deposition.</li>
-    </ul>
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-f-delete">
+                  <h4 id="restapi-res-">Delete <small>DELETE deposit/depositions/:id/files/:file_id</small><span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-f-delete" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Delete an existing deposition file resource. Note, only deposition files for unpublished depositions may be deleted.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/files/:file_id</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>DELETE</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Scopes</th>
+                      <td><code>deposit:write</code></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                            <li><strong>file_id:</strong> Deposition file identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>204 No Content</code></li><li><strong>Body</strong>: Empty.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>
+                        <ul>
+                          <li><code>404 Not found</code>: Deposition file does not exist.</li>
+                          <li><code>403 Forbidden</code>: Deleting an already published deposition.</li>
+                        </ul>
 
-    <p>See also <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</p>
-    </td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-f-del" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-f-del" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-f-del">
-      <pre>$ curl -i -X DELETE {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN
-</pre>
-    </div>
-    <div class="tab-pane" id="python-f-del">
-      <pre>import requests
+                        <p>See also <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-f-del" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-f-del" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-f-del">
+                              <pre>$ curl -i -X DELETE {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN
+                              </pre>
+                            </div>
+                            <div class="tab-pane" id="python-f-del">
+                              <pre>import requests
 
 r = requests.delete("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/files/21fedcba-9876-5432-1fed-cba987654321?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-</div>
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
-<h3 id="restapi-res-actions">Deposition actions</h3>
+          <h3 id="restapi-res-actions">Deposition actions</h3>
 
 
-<div class="panel-group dep-accord">
-<div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-publish">
-          <h4 id="restapi-res-">Publish <small>POST deposit/depositions/:id/actions/publish</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-a-publish" class="panel-collapse collapse">
-      <div class="panel-body">
+          <div class="panel-group dep-accord">
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-publish">
+                  <h4 id="restapi-res-">Publish <small>POST deposit/depositions/:id/actions/publish</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-a-publish" class="panel-collapse collapse">
+                <div class="panel-body">
 
-<table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Publish a deposition. Note, once a deposition is published, you can no longer delete it.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/publish</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>POST</td>
-</tr>
-<tr class="warning">
-    <th>Request headers</th>
-    <td><em>None</em></td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:actions</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>202 Accepted</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul>
-</td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-a-pub" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-a-pub" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-a-pub">
-      <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/publish?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-a-pub">
-      <pre>import requests
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Publish a deposition. Note, once a deposition is published, you can no longer delete it.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/publish</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>POST</td>
+                    </tr>
+                    <tr class="warning">
+                      <th class="col-md-3">Request headers</th>
+                      <td><em>None</em></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Scopes</th>
+                      <td><code>deposit:actions</code></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>202 Accepted</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-a-pub" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-a-pub" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-a-pub">
+                              <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/publish?access_token=ACCESS_TOKEN</pre>
+                            </div>
+                            <div class="tab-pane" id="python-a-pub">
+                              <pre>import requests
 
 r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/publish?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
 
 
 
 
-<div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-edit">
-          <h4 id="restapi-a-edit">Edit <small>POST deposit/depositions/:id/actions/edit</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-a-edit" class="panel-collapse collapse">
-      <div class="panel-body">
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-edit">
+                  <h4 id="restapi-a-edit">Edit <small>POST deposit/depositions/:id/actions/edit</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-a-edit" class="panel-collapse collapse">
+                <div class="panel-body">
 
-<table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Unlock already submitted deposition for editing.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/edit</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>POST</td>
-</tr>
-<tr class="warning">
-    <th>Request headers</th>
-    <td><em>None</em></td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:actions</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>
-    <ul>
-      <li><code>400 Bad Request</code>: Deposition state does not allow for editing (e.g. depositions in state <code>inprogress</code>).</li>
-      <li><code>409 Conflict</code>: Deposition is in the process of being integrated, please wait 5 minutes before trying again.</li>
-    </ul>
-    See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-a-edit" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-a-edit" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-a-edit">
-      <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/edit?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-a-edit">
-      <pre>import requests
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Unlock already submitted deposition for editing.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/edit</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>POST</td>
+                    </tr>
+                    <tr class="warning">
+                      <th class="col-md-3">Request headers</th>
+                      <td><em>None</em></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Scopes</th>
+                      <td><code>deposit:actions</code></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>
+                        <ul>
+                          <li><code>400 Bad Request</code>: Deposition state does not allow for editing (e.g. depositions in state <code>inprogress</code>).</li>
+                          <li><code>409 Conflict</code>: Deposition is in the process of being integrated, please wait 5 minutes before trying again.</li>
+                        </ul>
+                        See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#curl-a-edit" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-a-edit" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-a-edit">
+                              <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/edit?access_token=ACCESS_TOKEN</pre>
+                            </div>
+                            <div class="tab-pane" id="python-a-edit">
+                              <pre>import requests
 
 r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/edit?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
 
 
 
 
-<div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-discard">
-          <h4 id="restapi-a-discard">Discard <small>POST deposit/depositions/:id/actions/discard</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-a-discard" class="panel-collapse collapse">
-      <div class="panel-body">
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-a-discard">
+                  <h4 id="restapi-a-discard">Discard <small>POST deposit/depositions/:id/actions/discard</small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-a-discard" class="panel-collapse collapse">
+                <div class="panel-body">
 
-<table class="table table-striped">
-<tbody>
-<tr>
-    <th class="span2">Description</th>
-    <td>Discard changes in the current editing session.</td>
-</tr>
-<tr>
-    <th class="span2">URL</th>
-    <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/discard</td>
-</tr>
-<tr>
-    <th>Method</th>
-    <td>POST</td>
-</tr>
-<tr class="warning">
-    <th>Request headers</th>
-    <td><em>None</em></td>
-</tr>
-<tr>
-    <th>Scopes</th>
-    <td><code>deposit:actions</code></td>
-</tr>
-<tr>
-    <th>URL parameters</th>
-    <td>
-      <ul>
-        <li><strong>Required:</strong>
-          <ul>
-            <li><strong>id:</strong> Deposition identifier</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-</tr>
-<tr>
-    <th>Success response</th>
-    <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
-</tr>
-<tr>
-    <th>Error response</th>
-    <td>
-    <ul>
-      <li><code>400 Bad Request</code>: Deposition is not being edited.</li>
-    </ul>
-    See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
-</tr>
-<tr>
-    <th>Example</th>
-    <td>
-<div class="tabbable">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="#curl-a-discard" data-toggle="tab">cURL</a></li>
-    <li ><a href="#python-a-discard" data-toggle="tab">Python</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="curl-a-discard">
-      <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/discard?access_token=ACCESS_TOKEN</pre>
-    </div>
-    <div class="tab-pane" id="python-a-discard">
-      <pre>import requests
+                  <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                      <th class="col-md-3">Description</th>
+                      <td>Discard changes in the current editing session.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL</th>
+                      <td>{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/:id/actions/discard</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Method</th>
+                      <td>POST</td>
+                    </tr>
+                    <tr class="warning">
+                      <th class="col-md-3">Request headers</th>
+                      <td><em>None</em></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Scopes</th>
+                      <td><code>deposit:actions</code></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">URL parameters</th>
+                      <td>
+                        <ul>
+                          <li><strong>Required:</strong>
+                          <ul>
+                            <li><strong>id:</strong> Deposition identifier</li>
+                          </ul>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Success response</th>
+                      <td><ul><li><strong>Code:</strong> <code>201 Created</code></li><li><strong>Body</strong>: a <a href="#restapi-rep-dep">deposition</a> resource.</li></ul></td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Error response</th>
+                      <td>
+                        <ul>
+                          <li><code>400 Bad Request</code>: Deposition is not being edited.</li>
+                        </ul>
+                        See <a href="#restapi-http">HTTP status codes</a> (400 and 500 series errors) and <a href="#restapi-errors">error responses</a>.</td>
+                    </tr>
+                    <tr>
+                      <th class="col-md-3">Example</th>
+                      <td>
+                          <ul class="nav nav-tabss">
+                            <li class="active"><a href="#curl-a-discard" data-toggle="tab">cURL</a></li>
+                            <li ><a href="#python-a-discard" data-toggle="tab">Python</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="curl-a-discard">
+                              <pre>$ curl -i -X POST {{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/discard?access_token=ACCESS_TOKEN</pre>
+                            </div>
+                            <div class="tab-pane" id="python-a-discard">
+                              <pre>import requests
 
 r = requests.post("{{config.CFG_SITE_SECURE_URL}}/api/deposit/depositions/1234/actions/discard?access_token=ACCESS_TOKEN")</pre>
-    </div>
-  </div>
-</div>
-    </td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
 
 
 
 
-</div>
+          </div>
 
 
-<h2 id="restapi-rep">Representations</h2>
+          <h2 id="restapi-rep">Representations</h2>
 
-<p>The following section documents all the object attributes for the above documented resources.</p>
+          <p>The following section documents all the object attributes for the above documented resources.</p>
 
-<div class="panel-group dep-accord">
-<div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-dep">
-          <h4 id="restapi-rep-dep">Deposition <small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-r-dep" class="panel-collapse collapse">
-      <div class="panel-body">
-<table class="table table-striped">
-<thead>
-<tr>
-  <th class="span2">Attribute</th>
-  <th>Type</th>
-  <th>Editable</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td><code>created</code></td>
-    <td>Timestamp</td>
-    <td>No</td>
-    <td>Creation time of deposition (in ISO8601 format).</td>
-</tr>
-<tr>
-    <td><code>files</code></td>
-    <td>Array</td>
-    <td>Yes</td>
-    <td>A list of <a href="#restapi-rep-files">deposition files</a> resources.</td>
-</tr>
-<tr>
-    <td><code>id</code></td>
-    <td>Integer</td>
-    <td>No</td>
-    <td>Deposition identifier</td>
-</tr>
-<tr>
-    <td><code>metadata</code></td>
-    <td>Object</td>
-    <td>Yes</td>
-    <td>A <a href="#restapi-rep-meta">deposition metadata</a> resource</td>
-</tr>
-<tr>
-    <td><code>modified</code></td>
-    <td>Timestamp</td>
-    <td>No</td>
-    <td>Last modification time of deposition (in ISO8601 format).</td>
-</tr>
-<tr>
-    <td><code>owner</code></td>
-    <td>Integer</td>
-    <td>No</td>
-    <td>User identifier of the owner of the deposition.</td>
-</tr>
-<tr>
-    <td><code>record_id</code></td>
-    <td>Integer</td>
-    <td>No</td>
-    <td>Record identifier.  This field is only present for published depositions.</td>
-</tr>
-<tr>
-    <td><code>record_url</code></td>
-    <td>URL</td>
-    <td>No</td>
-    <td>URL to public version of record for this deposition. This field is only present for published depositions.</td>
-</tr>
-<tr>
-    <td><code>state</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>One of the values:<ul>
-      <li><code>"inprogress"</code>: Deposition metadata can be updated. If deposition is also unsubmitted (see <code>submitted</code>) files can be updated as well. </li>
-      <li><code>"done"</code>: Deposition has been published.</li></ul>
-      <li><code>"error"</code>: Deposition is in an error state - contact our support.</li></ul>
-    </td>
-</tr>
-<tr>
-    <td><code>submitted</code></td>
-    <td>Bool</td>
-    <td>No</td>
-    <td>True of deposition has been published, False otherwise.</td>
-</tr>
-<tr>
-    <td><code>title</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Title of deposition (automatically set from <code>metadata</code>). Defaults to empty string.</td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-meta">
-          <h4 id="restapi-rep-meta">Deposition metadata <small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-r-meta" class="panel-collapse collapse">
-      <div class="panel-body">
-<table class="table table-striped">
-<thead>
-<tr>
-  <th class="span2">Attribute</th>
-  <th>Type</th>
-  <th>Required</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td><code>upload_type</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Controlled vocabulary:<ul>
-      <li><code>dataset</code>: Dataset</li>
-      <li><code>software</code>: Software</li>
-      <li><code>analysis</code>: Analysis</li>
-    </ul></td>
-</tr>
-<tr>
-    <td><code>doi</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Digital Object Identifier. Did a publisher already assign a DOI to your deposited files? If not, leave the field empty and we will register a new DOI f
-or you when you publish. A DOI allow others to easily and unambiguously cite your deposition.</td>
-</tr>
-<tr>
-    <td><code>publication_date</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Date of publication in ISO8601 format (<code>YYYY-MM-DD</code>). Defaults to current date.</td>
-</tr>
-<tr>
-    <td><code>title</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Title of deposition.</td>
-</tr>
-<tr>
-    <td><code>creators</code></td>
-    <td>Array of objects</td>
-    <td>Yes</td>
-    <td><p>The creators/authors of the deposition. Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>name</code>: Name of creator in the format <em>Family name, Given names</em></li>
-      <li><code>affiliation</code>: Affiliation of creator (optional).</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'name':'Doe, John', 'affiliation': 'Institute for'}]</pre></td>
-</tr>
-<tr>
-    <td><code>description</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Abstract or description for deposition. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td> </tr>
-<tr>
-    <td><code>notes</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Additional notes. No HTML allowed.</td>
-</tr>
-<tr>
-    <td><code>keywords</code></td>
-    <td>Array of strings</td>
-    <td>No</td>
-    <td><p>Free form keywords for this deposition. Example: </p><code>"Keyword 1, Keyword 2"</code></td>
-</tr>
-<tr>
-    <td><code>access_right</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Controlled vocabulary:
-    <ul>
-      <li><code>open</code>: Open Access</li>
-<li><code>embargoed</code>: Embargoed Access</li>
-<li><code>restricted</code>: Restricted Access</li>
-<li><code>closed</code>: Closed Access</li>
-    </ul>
-    Defaults to <code>open</code>.</td>
-</tr>
-<tr>
-    <td><code>license</code></td>
-    <td>String</td>
-    <td>Yes, if <code>access_right</code> is <code>"open"</code> or <code>"embargoed"</code>.</td>
-    <td><p>Controlled vocabulary based on <a href="http://licenses.opendefinition.org/licenses/groups/all.json">http://licenses.opendefinition.org</a>. The selected license applies to all files in this deposition, but not to the metadata which is licensed under <a href="{{url_for('zenodo_base.terms')}}">Creative Commons Zero</a>. Further information about licenses is available at <a href="http://licenses.opendefinition.org/">Open Definition Licenses Service</a>.</p><p>Defaults to <code>cc-by</code> for non-datasets and <code>cc-zero</code> for datasets.</p></td>
-</tr>
-<tr>
-    <td><code>embargo_date</code></td>
-    <td></td>
-    <td>Yes, if <code>access_right</code> is <code>"embargoed"</code>.</td>
-    <td>Date in ISO8601 format (<code>YYYY-MM-DD</code>) when the deposited files will be made automatically made publicly available by the system. Defaults to current date.</td>
-</tr>
-<tr>
-    <td><code>access_conditions</code></td>
-    <td>String</td>
-    <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
-    <td>Specify the conditions under which you grant users access to the files in your upload. User requesting access will be asked to justify how they fulfil 
-the conditions. Based on the justification, you decide who to grant/deny access. You are not allowed to charge users for granting access to data hosted on Zeno
-do. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td>
-</tr>
-<tr>
-    <td><code>groups</code></td>
-    <td>String</td>
-    <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
-    <td>Specify the groups you grant the access to the files in your upload.</td>
-</tr>
-<tr>
-    <td><code>period</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td>Available for upload_type dataset. Start and end date of data in ISO8601 format (YYYY-MM-DD).
-    <ul>
-      <li><code>start</code>: Start date from data taken.</li>
-      <li><code>end</code>: End date from data taken.</li>
-    </ul>
-    </td>
-</tr>
-<tr>
-    <td><code>frequency</code></td>
-    <td>Arrayof objects</td>
-    <td>No</td>
-    <td>Available for upload_type dataset. Frequency collection of your data. 
-    <ul>
-      <li><code>unit</code>: Time </li>
-      <li><code>size</code>: <code>year</code>, <code>month</code>, <code>day</code>, <code>minute</code>, <code>day</code>.</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'unit': '5', 'size':'year'},]</pre>
-    </td>
-</tr>
-<tr>
-    <td><code>spatial</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>Available for upload_type dataset. Spatial coverage of your data. Coordinates: western most longitude, eastern most longitude, northern most latitude, southern most latitude. The coordinates must be recorded in decimal degrees.</p>
-    <ul>
-      <li><code>west</code>: western most longitude </li>
-      <li><code>east</code>: eastern most longitude </li>
-      <li><code>north</code>: northern most latitude </li>
-      <li><code>south</code>: southern most latitude </li>
-    </ul>
-    </td>
-</tr>
-<tr>
-    <td><code>rel_dataset</code></td>
-    <td>Array of objects</td>
-    <td>Yes</td>
-    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
-    <ul>
-      <li><code>identifier</code>: Dataset identifier</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'identifier':'8'}]</pre></td>
-</tr>
-<tr>
-    <td><code>rel_software</code></td>
-    <td>Array of objects</td>
-    <td>Yes</td>
-    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
-    <ul>
-      <li><code>identifier</code>: Software identifier</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'identifier':'10'}]</pre></td>
-</tr>
-<tr>
-    <td><code>os</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td><p>Available for upload_type software and analysis. Operating system required/recommended to run your software of analysis.</p>
-    <ul>
-      <li><code>os</code>: <code>ubuntu</code>, <code>centos-7</code>, <code>centos-6</code></li>
-    </ul>
-</tr>
-<tr>
-    <td><code>flavor</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td><p>Available for upload_type software and analysis. Flavor required/recommended to run your software of analysis: tiny (1 VCPU, 0.5 GB RAM), small (1 VCPU, 10 GB Disk, 2 GB RAM), medium (2 VCPUS, 10 GB Disk, 4 GB RAM), large (4 VCPUS, 20 GB Disk, 7 GB RAM), xlarge (8 VCPUS, 30 GB Disk, 14 GB RAM).</p>
-    <ul>
-      <li><code>flavor</code>: <code>tiny</code>, <code>small</code>, <code>medium</code>, <code>large</code>, <code>xlarge</code></li>
-    </ul>
-</tr>
-<tr>
-    <td><code>app_env</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td><p>Available for upload_type software and analysis. Application environment required/recommended to run your software of analysis.</p>
-    <ul>
-      <li><code>app_env</code>: <code>ssh</code>, <code>jupyter-python</code>, <code>jupyter-r</code></li>
-    </ul>
-</tr>
-<tr>
-    <td><code>communities</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>List of communities you wish the deposition to appear. The owner of the community will be notified, and can either accept or reject your request. Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>identifier</code>: Community identifier</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[{'identifier':'ecfunded'}]</pre></td>
-</tr>
-<tr>
-    <td><code>related_identifiers</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td><p>Persistent identifiers of related publications and datasets. Supported identifiers include: DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs and URLs. Each array element is an object with the attributes:</p>
-    <ul>
-      <li><code>identifier</code>: The persistent identifier</li>
-      <li><code>relation</code>: Relationship. Controlled vocabulary (<code>isCitedBy</code>, <code>cites</code>, <code>isSupplementTo</code>, <code>isSupplementedBy</code>, <code>isNewVersionOf</code>, <code>isPreviousVersionOf</code>, <code>isPartOf</code>, <code>hasPart</code>, <code>compiles</code>, <code>isCompi
-ledBy</code>, <code>isIdenticalTo</code>, <code>isAlternateIdentifier</code>).</li>
-    </ul>
-    <p>Example:</p>
-    <pre>[
+          <div class="panel-group dep-accord">
+            <div class="panel panel-default">
+              <div class="panel-heading info">
+                <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-dep">
+                  <h4 id="restapi-rep-dep">Deposition <small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                </a>
+              </div>
+              <div id="collapse-r-dep" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th class="col-md-3">Attribute</th>
+                        <th class="col-md-2">Type</th>
+                        <th class="col-md-2">Editable</th>
+                        <th class="col-md-5">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td><code>created</code></td>
+                      <td>Timestamp</td>
+                      <td>No</td>
+                      <td>Creation time of deposition (in ISO8601 format).</td>
+                    </tr>
+                    <tr>
+                      <td><code>files</code></td>
+                      <td>Array</td>
+                      <td>Yes</td>
+                      <td>A list of <a href="#restapi-rep-files">deposition files</a> resources.</td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>Integer</td>
+                      <td>No</td>
+                      <td>Deposition identifier</td>
+                    </tr>
+                    <tr>
+                      <td><code>metadata</code></td>
+                      <td>Object</td>
+                      <td>Yes</td>
+                      <td>A <a href="#restapi-rep-meta">deposition metadata</a> resource</td>
+                    </tr>
+                    <tr>
+                      <td><code>modified</code></td>
+                      <td>Timestamp</td>
+                      <td>No</td>
+                      <td>Last modification time of deposition (in ISO8601 format).</td>
+                    </tr>
+                    <tr>
+                      <td><code>owner</code></td>
+                      <td>Integer</td>
+                      <td>No</td>
+                      <td>User identifier of the owner of the deposition.</td>
+                    </tr>
+                    <tr>
+                      <td><code>record_id</code></td>
+                      <td>Integer</td>
+                      <td>No</td>
+                      <td>Record identifier.  This field is only present for published depositions.</td>
+                    </tr>
+                    <tr>
+                      <td><code>record_url</code></td>
+                      <td>URL</td>
+                      <td>No</td>
+                      <td>URL to public version of record for this deposition. This field is only present for published depositions.</td>
+                    </tr>
+                    <tr>
+                      <td><code>state</code></td>
+                      <td>String</td>
+                      <td>No</td>
+                      <td>One of the values:<ul>
+                          <li><code>"inprogress"</code>: Deposition metadata can be updated. If deposition is also unsubmitted (see <code>submitted</code>) files can be updated as well. </li>
+                          <li><code>"done"</code>: Deposition has been published.</li></ul>
+                        <li><code>"error"</code>: Deposition is in an error state - contact our support.</li></ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>submitted</code></td>
+                    <td>Bool</td>
+                    <td>No</td>
+                    <td>True of deposition has been published, False otherwise.</td>
+                  </tr>
+                  <tr>
+                    <td><code>title</code></td>
+                    <td>String</td>
+                    <td>No</td>
+                    <td>Title of deposition (automatically set from <code>metadata</code>). Defaults to empty string.</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading info">
+              <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-meta">
+                <h4 id="restapi-rep-meta">Deposition metadata <small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+              </a>
+            </div>
+            <div id="collapse-r-meta" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th class="col-md-3">Attribute</th>
+                      <th class="col-md-2">Type</th>
+                      <th class="col-md-2">Required</th>
+                      <th class="col-md-5">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><code>upload_type</code></td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Controlled vocabulary:<ul>
+                        <li><code>dataset</code>: Dataset</li>
+                        <li><code>software</code>: Software</li>
+                        <li><code>analysis</code>: Analysis</li>
+                    </ul></td>
+                  </tr>
+                  <tr>
+                    <td><code>doi</code></td>
+                    <td>String</td>
+                    <td>No</td>
+                    <td>Digital Object Identifier. Did a publisher already assign a DOI to your deposited files? If not, leave the field empty and we will register a new DOI f
+                      or you when you publish. A DOI allow others to easily and unambiguously cite your deposition.</td>
+                  </tr>
+                  <tr>
+                    <td><code>publication_date</code></td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Date of publication in ISO8601 format (<code>YYYY-MM-DD</code>). Defaults to current date.</td>
+                  </tr>
+                  <tr>
+                    <td><code>title</code></td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Title of deposition.</td>
+                  </tr>
+                  <tr>
+                    <td><code>creators</code></td>
+                    <td>Array of objects</td>
+                    <td>Yes</td>
+                    <td><p>The creators/authors of the deposition. Each array element is an object with the attributes:</p>
+                      <ul>
+                        <li><code>name</code>: Name of creator in the format <em>Family name, Given names</em></li>
+                        <li><code>affiliation</code>: Affiliation of creator (optional).</li>
+                      </ul>
+                      <p>Example:</p>
+                      <pre>[{'name':'Doe, John', 'affiliation': 'Institute for'}]</pre></td>
+                  </tr>
+                  <tr>
+                    <td><code>description</code></td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Abstract or description for deposition. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td> </tr>
+                  <tr>
+                    <td><code>notes</code></td>
+                    <td>String</td>
+                    <td>No</td>
+                    <td>Additional notes. No HTML allowed.</td>
+                  </tr>
+                  <tr>
+                    <td><code>keywords</code></td>
+                    <td>Array of strings</td>
+                    <td>No</td>
+                    <td><p>Free form keywords for this deposition. Example: </p><code>"Keyword 1, Keyword 2"</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>access_right</code></td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Controlled vocabulary:
+                      <ul>
+                        <li><code>open</code>: Open Access</li>
+                        <li><code>embargoed</code>: Embargoed Access</li>
+                        <li><code>restricted</code>: Restricted Access</li>
+                        <li><code>closed</code>: Closed Access</li>
+                      </ul>
+                      Defaults to <code>open</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>license</code></td>
+                    <td>String</td>
+                    <td>Yes, if <code>access_right</code> is <code>"open"</code> or <code>"embargoed"</code>.</td>
+                    <td><p>Controlled vocabulary based on <a href="http://licenses.opendefinition.org/licenses/groups/all.json">http://licenses.opendefinition.org</a>. The selected license applies to all files in this deposition, but not to the metadata which is licensed under <a href="{{url_for('zenodo_base.terms')}}">Creative Commons Zero</a>. Further information about licenses is available at <a href="http://licenses.opendefinition.org/">Open Definition Licenses Service</a>.</p><p>Defaults to <code>cc-by</code> for non-datasets and <code>cc-zero</code> for datasets.</p></td>
+                  </tr>
+                  <tr>
+                    <td><code>embargo_date</code></td>
+                    <td></td>
+                    <td>Yes, if <code>access_right</code> is <code>"embargoed"</code>.</td>
+                    <td>Date in ISO8601 format (<code>YYYY-MM-DD</code>) when the deposited files will be made automatically made publicly available by the system. Defaults to current date.</td>
+                  </tr>
+                  <tr>
+                    <td><code>access_conditions</code></td>
+                    <td>String</td>
+                    <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
+                    <td>Specify the conditions under which you grant users access to the files in your upload. User requesting access will be asked to justify how they fulfil 
+                      the conditions. Based on the justification, you decide who to grant/deny access. You are not allowed to charge users for granting access to data hosted on Zeno
+                      do. Following HTML tags are allowed: <code>a</code>, <code>p</code>, <code>br</code>, <code>blockquote</code>, <code>strong</code>, <code>b</code>, <code>u</code>, <code>i</code>, <code>em</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>sub</code>, <code>sup</code>, <code>div</code>, <code>strike</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>groups</code></td>
+                    <td>String</td>
+                    <td>Yes, if <code>access_right</code> is <code>"restricted"</code>.</td>
+                    <td>Specify the groups you grant the access to the files in your upload.</td>
+                  </tr>
+                  <tr>
+                    <td><code>period</code></td>
+                    <td>Array of objects</td>
+                    <td>No</td>
+                    <td>Available for upload_type dataset. Start and end date of data in ISO8601 format (YYYY-MM-DD).
+                      <ul>
+                        <li><code>start</code>: Start date from data taken.</li>
+                        <li><code>end</code>: End date from data taken.</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>frequency</code></td>
+                    <td>Arrayof objects</td>
+                    <td>No</td>
+                    <td>Available for upload_type dataset. Frequency collection of your data. 
+                      <ul>
+                        <li><code>unit</code>: Time </li>
+                        <li><code>size</code>: <code>year</code>, <code>month</code>, <code>day</code>, <code>minute</code>, <code>day</code>.</li>
+                      </ul>
+                      <p>Example:</p>
+                      <pre>[{'unit': '5', 'size':'year'},]</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>spatial</code></td>
+                    <td>Array of objects</td>
+                    <td>No</td>
+                    <td><p>Available for upload_type dataset. Spatial coverage of your data. Coordinates: western most longitude, eastern most longitude, northern most latitude, southern most latitude. The coordinates must be recorded in decimal degrees.</p>
+                      <ul>
+                        <li><code>west</code>: western most longitude </li>
+                        <li><code>east</code>: eastern most longitude </li>
+                        <li><code>north</code>: northern most latitude </li>
+                        <li><code>south</code>: southern most latitude </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>rel_dataset</code></td>
+                    <td>Array of objects</td>
+                    <td>Yes</td>
+                    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
+                      <ul>
+                        <li><code>identifier</code>: Dataset identifier</li>
+                      </ul>
+                      <p>Example:</p>
+                      <pre>[{'identifier':'8'}]</pre></td>
+                  </tr>
+                  <tr>
+                    <td><code>rel_software</code></td>
+                    <td>Array of objects</td>
+                    <td>Yes</td>
+                    <td><p>Available for upload_type analysis. Specifiy the inputs of your analysis. Datasets and softwares can be associated to this upload using the record id in this portal or the associated internal or external DOI. At least a dataset and a software must be specified.</p>
+                      <ul>
+                        <li><code>identifier</code>: Software identifier</li>
+                      </ul>
+                      <p>Example:</p>
+                      <pre>[{'identifier':'10'}]</pre></td>
+                  </tr>
+                  <tr>
+                    <td><code>os</code></td>
+                    <td>String</td>
+                    <td>No</td>
+                    <td><p>Available for upload_type software and analysis. Operating system required/recommended to run your software of analysis.</p>
+                      <ul>
+                        <li><code>os</code>: <code>ubuntu</code>, <code>centos-7</code>, <code>centos-6</code></li>
+                      </ul>
+                    </tr>
+                    <tr>
+                      <td><code>flavor</code></td>
+                      <td>String</td>
+                      <td>No</td>
+                      <td><p>Available for upload_type software and analysis. Flavor required/recommended to run your software of analysis: tiny (1 VCPU, 0.5 GB RAM), small (1 VCPU, 10 GB Disk, 2 GB RAM), medium (2 VCPUS, 10 GB Disk, 4 GB RAM), large (4 VCPUS, 20 GB Disk, 7 GB RAM), xlarge (8 VCPUS, 30 GB Disk, 14 GB RAM).</p>
+                        <ul>
+                          <li><code>flavor</code>: <code>tiny</code>, <code>small</code>, <code>medium</code>, <code>large</code>, <code>xlarge</code></li>
+                        </ul>
+                      </tr>
+                      <tr>
+                        <td><code>app_env</code></td>
+                        <td>String</td>
+                        <td>No</td>
+                        <td><p>Available for upload_type software and analysis. Application environment required/recommended to run your software of analysis.</p>
+                          <ul>
+                            <li><code>app_env</code>: <code>ssh</code>, <code>jupyter-python</code>, <code>jupyter-r</code></li>
+                          </ul>
+                        </tr>
+                        <tr>
+                          <td><code>communities</code></td>
+                          <td>Array of objects</td>
+                          <td>No</td>
+                          <td><p>List of communities you wish the deposition to appear. The owner of the community will be notified, and can either accept or reject your request. Each array element is an object with the attributes:</p>
+                            <ul>
+                              <li><code>identifier</code>: Community identifier</li>
+                            </ul>
+                            <p>Example:</p>
+                            <pre>[{'identifier':'ecfunded'}]</pre></td>
+                        </tr>
+                        <tr>
+                          <td><code>related_identifiers</code></td>
+                          <td>Array of objects</td>
+                          <td>No</td>
+                          <td><p>Persistent identifiers of related publications and datasets. Supported identifiers include: DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs and URLs. Each array element is an object with the attributes:</p>
+                            <ul>
+                              <li><code>identifier</code>: The persistent identifier</li>
+                              <li><code>relation</code>: Relationship. Controlled vocabulary (<code>isCitedBy</code>, <code>cites</code>, <code>isSupplementTo</code>, <code>isSupplementedBy</code>, <code>isNewVersionOf</code>, <code>isPreviousVersionOf</code>, <code>isPartOf</code>, <code>hasPart</code>, <code>compiles</code>, <code>isCompi
+                                ledBy</code>, <code>isIdenticalTo</code>, <code>isAlternateIdentifier</code>).</li>
+                            </ul>
+                            <p>Example:</p>
+                            <pre>[
   {'relation': 'isSupplementTo', 'identifier':'10.1234/foo'},
   {'relation': 'cites', 'identifier':'http://dx.doi.org/10.1234/bar'}
 ]</pre><p>Note the identifier type (e.g. DOI) is automatically detected, and used to validate and normalize the identifier into a standard form.</p></td>
-</tr>
-<tr>
-    <td><code>subjects</code></td>
-    <td>Array of objects</td>
-    <td>No</td>
-    <td>
-        <p>Specify subjects from a taxonomy or controlled vocabulary. Each term must be uniquely identified (e.g. a URL). For free form text, use the keywords field.</p>
+                          </tr>
+                          <tr>
+                            <td><code>subjects</code></td>
+                            <td>Array of objects</td>
+                            <td>No</td>
+                            <td>
+                              <p>Specify subjects from a taxonomy or controlled vocabulary. Each term must be uniquely identified (e.g. a URL). For free form text, use the keywords field.</p>
 
-        Each array element is an object with the attributes:
-        <ul>
-          <li><code>term</code>: Term from taxonomy or controlled vocabulary.</li>
-          <li><code>id</code>: Unique identifier for term.</li>
-          <li><code>scheme</code>: Persistent identifier scheme for id (automatically detected).</li>
-        </ul>
+                              Each array element is an object with the attributes:
+                              <ul>
+                                <li><code>term</code>: Term from taxonomy or controlled vocabulary.</li>
+                                <li><code>id</code>: Unique identifier for term.</li>
+                                <li><code>scheme</code>: Persistent identifier scheme for id (automatically detected).</li>
+                              </ul>
 
-        Example:
-        <pre>[{"term": "Astronomy",
+                              Example:
+                              <pre>[{"term": "Astronomy",
  "id": "http://id.loc.gov/authorities/subjects/sh85009003",
  "scheme": "url"}]</pre>
-    </td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading info">
-        <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-files">
-          <h4 id="restapi-rep-files">Deposition file<small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-        </a>
-    </div>
-    <div id="collapse-r-files" class="panel-collapse collapse">
-      <div class="panel-body">
-<table class="table table-striped">
-<thead>
-<tr>
-  <th class="span2">Attribute</th>
-  <th>Type</th>
-  <th>Editable</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td><code>id</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>Deposition file identifier</td>
-</tr>
-<tr>
-    <td><code>filename</code></td>
-    <td>String</td>
-    <td>Yes</td>
-    <td>Name of file</td>
-</tr>
-<tr>
-    <td><code>filesize</code></td>
-    <td>Integer</td>
-    <td>No</td>
-    <td>Size of files in bytes</td>
-</tr>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading info">
+                      <a class="panel-toggle collapsed" data-toggle="collapse" href="#collapse-r-files">
+                        <h4 id="restapi-rep-files">Deposition file<small></small> <span class="pull-right show-on-collapsed"><i class="glyphicon glyphicon-chevron-right"></i></span><span class="pull-right hide-on-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                      </a>
+                    </div>
+                    <div id="collapse-r-files" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th class="col-md-3">Attribute</th>
+                              <th class="col-md-2">Type</th>
+                              <th class="col-md-2">Editable</th>
+                              <th class="col-md-5">Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                            <td><code>id</code></td>
+                            <td>String</td>
+                            <td>No</td>
+                            <td>Deposition file identifier</td>
+                          </tr>
+                          <tr>
+                            <td><code>filename</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td>Name of file</td>
+                          </tr>
+                          <tr>
+                            <td><code>filesize</code></td>
+                            <td>Integer</td>
+                            <td>No</td>
+                            <td>Size of files in bytes</td>
+                          </tr>
 
-<tr>
-    <td><code>checksum</code></td>
-    <td>String</td>
-    <td>No</td>
-    <td>MD5 checksum of file, computed by our system. This allows you to check the integrity of the uploaded file.</td>
-</tr>
-</tbody>
-</table>
-</div>
-    </div>
-  </div>
-</div>
-</div>
+                          <tr>
+                            <td><code>checksum</code></td>
+                            <td>String</td>
+                            <td>No</td>
+                            <td>MD5 checksum of file, computed by our system. This allows you to check the integrity of the uploaded file.</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-{% endblock %}
+              {% endblock %}
