@@ -89,6 +89,15 @@ def curated_only(reclist):
     reclist = (reclist & search_pattern_parenthesised(p=p))
     return reclist
 
+
+@blueprint.app_template_filter('restricted_collection')
+def restricted_collection(collection):
+    from invenio.modules.access.engine import acc_authorize_action
+    from invenio.modules.access.local_config import VIEWRESTRCOLL
+    auth, _x = acc_authorize_action(current_user, VIEWRESTRCOLL, collection=collection.name)
+    return auth != 0
+
+
 @blueprint.before_app_first_request
 def register_menu_items():
     item = current_menu.submenu('main.communities')

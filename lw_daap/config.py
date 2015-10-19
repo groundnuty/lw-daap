@@ -78,6 +78,7 @@ DISABLE_WARNINGS = True
 PACKAGES = [
     "lw_daap.base",
     "lw_daap.modules.deposit",
+    "lw_daap.modules.communities",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
     "lw_daap.modules.github",

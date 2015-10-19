@@ -62,10 +62,11 @@ require(['jquery'], function($) {
 </script>
 {% endblock %}
 
-
-
 {# remove the record tabs above the record... #}
 {% block record_tabs %}{% endblock %}
+
+{# remove the restricted flag... #}
+{% block record_restriction_flag %}{% endblock %}
 
 {% block record_content %}
   {{ format_record(recid, of=of, ln=g.ln, verbose=0, on_the_fly=true,
