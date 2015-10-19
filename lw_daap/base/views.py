@@ -97,16 +97,20 @@ def register_menu_items():
     # search.index -> /            ==> /search/
     # search.index -> /index.html  ==> Deleted
     # search.index -> /index.py    ==> Deleted
+    # search.search -> ?           ==> /search/search
+    # search.collection -> /collection ==> /search/collection
     def fix_search():
         _new_rules = []
 
         search_index_flag = False
         for idx, rule in enumerate(current_app.url_map.iter_rules()):
-            if str(rule.endpoint) == 'search.index' and  not search_index_flag:
+            if str(rule.endpoint) == 'search.index' and not search_index_flag:
                 rule.rule = '/search/'
                 search_index_flag = True
             if str(rule.endpoint) == 'search.search':
-                rule.rule = '/q/search'
+                rule.rule = '/search/search'
+            #if str(rule.endpoint) == 'search.collection': # does not work
+            #    rule.rule = '/search/collection'
 
             _new_rules.append(rule.empty())
         curr = current_app.url_map
