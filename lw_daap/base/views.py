@@ -91,7 +91,13 @@ def curated_only(reclist):
 
 @blueprint.before_app_first_request
 def register_menu_items():
-    # TODO: This is dirty, kinda ugly, but it works.
+    item = current_menu.submenu('main.communities')
+    item.register(
+        '', _('Communities'),
+        active_when=lambda: request.endpoint.startswith("search.collection")
+    )
+
+    # TODO: This is dirty, kinda ugly, but it works;
     # try to make it pretty.
     # Replace invenio routes
     # search.index -> /            ==> /search/
