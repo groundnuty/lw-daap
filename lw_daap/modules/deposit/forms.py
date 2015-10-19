@@ -52,7 +52,7 @@ from lw_daap.modules.invenio_groups.models import Group
 
 from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
-from .autocomplete import community_autocomplete, accessgroups_autocomplete, inputrecords_autocomplete
+from .autocomplete import community_autocomplete, accessgroups_autocomplete, inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
 from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
 
@@ -421,7 +421,7 @@ class AccessGroupsForm(WebDepositForm):
     )
 
 
-class InputRecordFieldForm(WebDepositForm):
+class InputRecordDatasetFieldForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
         processors=[
@@ -430,7 +430,21 @@ class InputRecordFieldForm(WebDepositForm):
     )
     title = fields.StringField(
         placeholder="Start typing a record title...",
-        autocomplete_fn=inputrecords_autocomplete,
+        autocomplete_fn=inputrecords_autocomplete_dataset,
+        widget=TagInput(),
+        widget_classes='form-control',
+    )
+
+class InputRecordSoftwareFieldForm(WebDepositForm):
+    identifier = fields.StringField(
+        widget=widgets.HiddenInput(),
+        processors=[
+            replace_field_data('title', inputrecords_obj_value()),
+        ],
+    )
+    title = fields.StringField(
+        placeholder="Start typing a record title...",
+        autocomplete_fn=inputrecords_autocomplete_software,
         widget=TagInput(),
         widget_classes='form-control',
     )
@@ -1028,7 +1042,7 @@ class AnalysisForm(BasicForm):
     # Inputs
     rel_dataset = fields.DynamicFieldList(
         fields.FormField(
-            InputRecordFieldForm,
+            InputRecordDatasetFieldForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
         ),
         validators=[
@@ -1046,7 +1060,7 @@ class AnalysisForm(BasicForm):
 
     rel_software = fields.DynamicFieldList(
         fields.FormField(
-            InputRecordFieldForm,
+            InputRecordSoftwareFieldForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
         ),
         validators=[

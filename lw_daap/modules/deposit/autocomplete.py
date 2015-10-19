@@ -93,7 +93,7 @@ def accessgroups_autocomplete(dummy_form, dummy_field, term, limit=50):
     )
 
 
-def inputrecords_autocomplete(dummy_form, dummy_field, term, limit=50):
+def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
     from invenio.legacy.search_engine import search_pattern_parenthesised
     from invenio.modules.records.models import Record
     from invenio.modules.records.api import get_record
@@ -102,7 +102,7 @@ def inputrecords_autocomplete(dummy_form, dummy_field, term, limit=50):
         objs = Record.query.limit(limit).all()
     else:
         recids = search_pattern_parenthesised(
-            p='title:%%%s%%' % term.encode('utf-8'))
+            p='title:%%%s%% AND 980__:community-* AND 980__:dataset' % term.encode('utf-8'))
         objs = Record.query.filter(
             Record.id.in_(recids)
         ).filter_by().limit(limit).all()
@@ -125,4 +125,41 @@ def inputrecords_autocomplete(dummy_form, dummy_field, term, limit=50):
             }
         },
         map(lambda o: (o.id, get_record(o.id)['title']), objs)
+          #filter(lambda o: get_record(o.id)['upload_type'] == 'dataset', objs)
+    )
+
+
+def inputrecords_autocomplete_software(dummy_form, dummy_field, term, limit=50):
+    from invenio.legacy.search_engine import search_pattern_parenthesised
+    from invenio.modules.records.models import Record
+    from invenio.modules.records.api import get_record
+
+    if not term:
+        objs = Record.query.limit(limit).all()
+    else:
+        recids = search_pattern_parenthesised(
+            p='title:%%%s%% AND 980__:community-* AND 980__:software' % term.encode('utf-8'))
+        objs = Record.query.filter(
+            Record.id.in_(recids)
+        ).filter_by().limit(limit).all()
+        if not objs:
+            if re.match(DOISyntaxValidator.pattern, term, re.I):
+                return [{
+                    'value': "%s (doi)" % term,
+                    'fields': {
+                        'identifier': term,
+                        'title': "%s (doi)" %  term,
+                    }
+                }] 
+
+    return map(
+        lambda o: {
+            'value': "%s (record id: %s)" % (o[1], o[0]),
+            'fields': {
+                'identifier': o[0],
+                'title': "%s (record id: %s)" % (o[1], o[0]),
+            }
+        },
+        map(lambda o: (o.id, get_record(o.id)['title']), objs)
+          #filter(lambda o: get_record(o.id)['upload_type'] == 'software') 
     )
