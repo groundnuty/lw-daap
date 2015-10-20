@@ -461,8 +461,10 @@ class DepositionFileListResource(Resource):
             request.form.get('filename') or uploaded_file.filename
         )
 
+        description = request.form.get('description')
         df = DepositionFile(backend=DepositionStorage(d.id))
-        if df.save(uploaded_file, filename=filename):
+
+        if df.save(uploaded_file, filename=filename, description=description):
             try:
                 d.add_file(df)
                 d.save()
