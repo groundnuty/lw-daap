@@ -49,12 +49,17 @@ def create(metadata):
   except:
     raise
 
+import os
 def upload(recid, rfile):
   try:
     data = rfile
-    files = {'file': open(rfile['filename'], 'rb')}
+    fd = open(rfile['filename'], 'rb')
+    filename = os.path.basename(rfile['filename'])
+    files = {'file': (filename, fd)}
+    data = {'description': rfile['description']}
     r = requests.post(files_url % (recid, access_token), data=data, files=files, verify=False)
     print " --> FILE %s => %s, %s" % (rfile['filename'], r.status_code, r.reason)
+    print r.text
   except:
     raise
 

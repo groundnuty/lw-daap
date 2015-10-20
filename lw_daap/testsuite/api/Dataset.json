@@ -81,12 +81,7 @@
          "files":[
             {
                "filename":"Dataset.json",
-               "description":"Testcription"
-            },
-            {
-               "filename":"deposit.py",
-               "description":"Testcription",
-               "asd": "asd"
+               "description": "Whatever"
             }
          ]
       }
