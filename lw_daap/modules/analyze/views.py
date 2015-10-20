@@ -64,8 +64,16 @@ def launch():
     form.fill_fields_choices(reqs)
     if form.validate_on_submit():
         client = infra.get_client(profile.user_proxy)
-        infra.launch_vm(client, name=form.name.data, image=form.image.data,
-                        flavor=form.flavor.data, app_env=form.app_env.data,
+        image = reqs['images'][form.image.data]['image-id']
+        flavor = reqs['flavors'][form.flavor.data]['flavor-id']
+        app_env = reqs['app_envs'][form.app_env.data]['app-id']
+        current_app.logger.debug("%s %s %s", image, flavor, app_env)
+        infra.launch_vm(client,
+                        name=form.name.data,
+                        image=image,
+                        flavor=flavor,
+                        app_env=app_env,
+                        recid=form.recid.data,
                         ssh_key=profile.ssh_public_key)
         # XXX TODO error checking
         return redirect(url_for('.index'))

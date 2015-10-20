@@ -1,7 +1,7 @@
 "00","os-notspec","{\"image-id\": \"\", \"title\": \"Not specified\", \"id\": \"os-notspec\", \"domain_os\": true}"
 "01","centos-6","{\"image-id\": \"f3544cc8-421f-4d93-ac35-eba7fdc75329\", \"title\": \"Centos 6\", \"id\": \"centos-6\", \"domain_os\": true}"
 "02","centos-7","{\"image-id\": \"7f361fba-21d6-40ca-892d-17aa60b63a66\", \"title\": \"Centos 7\", \"id\": \"centos-7\", \"domain_os\": true}"
-"03","ubuntu","{\"image-id\": \"53ff0d74-074b-4ee5-a9a2-4e47552821d8\", \"title\": \"Ubuntu\", \"id\": \"ubuntu\", \"domain_os\": true}"
+"03","ubuntu","{\"image-id\": \"8a700834-04b4-4e91-a3d5-9246ef95167e\", \"title\": \"Ubuntu\", \"id\": \"ubuntu\", \"domain_os\": true}"
 "10","flavor-notspec","{\"flavor-id\": \"\",  \"title\": \"Not specified\", \"vcpus\": \"\", \"disk\": \"\", \"ram\": \"\", \"id\": \"flavor-notspec\", \"domain_flavor\": true}"
 "11","tiny","{\"flavor-id\": \"1\", \"title\": \"tiny: 1 VCPU, 0.5 GB RAM\", \"vcpus\": \"1\", \"disk\": \"0\", \"ram\": \"0.5\", \"id\": \"tiny\", \"domain_flavor\": true}"
 "12","small","{\"flavor-id\": \"2\", \"title\": \"small: 1 VCPU, 10 GB Disk, 2 GB RAM\", \"vcpus\": \"1\", \"disk\": \"10\", \"ram\": \"2\", \"id\": \"small\", \"domain_flavor\": true}"

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-from wtforms import RadioField, SelectField, StringField, \
+from wtforms import RadioField, SelectField, StringField, HiddenField, \
                     validators, ValidationError
 
 from invenio.utils.forms import InvenioBaseForm
@@ -32,7 +32,7 @@ class LaunchFormData:
                 return k
         return None
 
-    def __init__(self, reqs, title=None, flavor=None, os=None, app_env=None, **kwargs):
+    def __init__(self, reqs, title=None, flavor=None, os=None, app_env=None, recid=None, **kwargs):
         if title:
             self.name = title[0]
         if flavor:
@@ -41,9 +41,13 @@ class LaunchFormData:
             self.image = self._get_value_from_id(reqs['images'], os[0])
         if app_env:
             self.app_env = self._get_value_from_id(reqs['app_envs'], app_env[0])
+        if recid:
+            self.recid = recid[0]
 
 
 class LaunchForm(InvenioBaseForm):
+    recid = HiddenField()
+
     name = StringField(
         label = 'Instance Name',
         description= 'Required. A name that helps to identify your instance',
@@ -84,6 +88,11 @@ class LaunchForm(InvenioBaseForm):
         self.flavor.choices = self._build_choices(reqs, 'flavors', 'id')
         self.image.choices = self._build_choices(reqs, 'images')
         self.app_env.choices = self._build_choices(reqs, 'app_envs')
+
+    def validate_image(form, field):
+        if field.data in ['centos-6', 'centos-7'] and form.app_env.data != 'ssh':
+            msg = ('Centos 6 and Centos 7 currently only support ssh.')
+            raise ValidationError(msg)
 
     def validate_app_env(form, field):
         if field.data == 'ssh' and form.user_profile:

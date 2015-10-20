@@ -42,6 +42,8 @@ from .utils import get_requirements
 def _vm_mapper():
     now = datetime.utcnow().replace(tzinfo=pytz.utc)
     reqs = get_requirements()
+    flavors = {v['flavor-id']: v['title'] for v in reqs['flavors'].values()}
+    images = {v['image-id']: v['title'] for v in reqs['images'].values()}
 
     def _mapper(vm):
         created = now - parse(vm.created)
@@ -49,13 +51,14 @@ def _vm_mapper():
             'id': vm.id,
             'name': vm.name,
             'status': vm.status,
-            'size': reqs['flavors'].get(vm.flavor['id'], {}).get('title'),
-            'image': reqs['images'].get(vm.image['id'], {}).get('title'),
+            'size': flavors.get(vm.flavor['id']),
+            'image': images.get(vm.image['id']),
             'created': humanize.naturaltime(created),
             'seconds': created.seconds,
             'metadata': vm.metadata,
         }
     return _mapper
+
 
 def _vm_filter(user_id, daap_user=None):
     def _filter(vm):
@@ -144,13 +147,9 @@ def ssh_context(app_env, ssh_key, context):
 
 
 def jupyter_context(app_env, ssh_key, context):
-    if app_env == 'jupyter-python':
-        tpl = 'analyze/jupyter.sh'
-    elif app_env == 'jupyter-r':
-        tpl = 'analyze/jupyterR.sh'
     jupyter_script = b64encode(
         # nothing to pass to the template?
-        render_template_to_string(tpl)
+        render_template_to_string('analyze/jupyter.sh', app_env=app_env)
     )
     jupyter_script_path = '/usr/local/bin/start-jupyter.sh'
     context['write_files'].append({
@@ -162,6 +161,10 @@ def jupyter_context(app_env, ssh_key, context):
     context['runcmd'].append([jupyter_script_path])
 
 
+def record_context(recid, context):
+    context['runcmd'].append(['/usr/bin/touch', '/tmp/comefrom%s' % recid])
+
+
 CONTEXT_MAP = {
     'ssh': ssh_context,
     'jupyter-python': jupyter_context,
@@ -169,11 +172,13 @@ CONTEXT_MAP = {
 }
 
 
-def launch_vm(client, name, image, flavor, app_env='', ssh_key=None):
+def launch_vm(client, name, image, flavor, app_env='', recid='', ssh_key=None):
     context = nato_context()
     app_env_context = CONTEXT_MAP.get(app_env, None)
     if app_env_context:
         app_env_context(app_env, ssh_key, context)
+    if recid:
+        record_context(recid, context)
 
     userdata='\n'.join(['#cloud-config',
                         yaml.safe_dump(context,

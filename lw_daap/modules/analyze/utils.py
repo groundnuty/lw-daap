@@ -20,22 +20,26 @@ from collections import OrderedDict
 import json
 from invenio.modules.knowledge.api import get_kb_mappings
 
-def get_requirements(): 
+
+def get_requirements():
     reqs = dict(
         flavors=OrderedDict(),
         images=OrderedDict(),
         app_envs=OrderedDict(),
     )
+    domains_to_reqs = {
+        # kb_mappings has 'domain-xxx' = True for each type of requirement
+        # the value of the key is a tuple: first the name of the OrderedDict
+        # to use, seconde
+        'domain_flavor': {'reqs': 'flavors', 'id': 'flavor-id'},
+        'domain_os': {'reqs': 'images', 'id': 'image-id'},
+        'domain_app_env': {'reqs': 'app_envs', 'id': 'app-id'},
+    }
     for mapping in get_kb_mappings('requirements'):
         v = json.loads(mapping['value'])
-        if v.get('domain_flavor', False):
-            if v['flavor-id']:
-                reqs['flavors'][v['flavor-id']] = v
-        elif v.get('domain_os', False):
-            if v['image-id']:
-                reqs['images'][v['image-id']] = v
-        elif v.get('domain_app_env', False):
-            if v['app-id']:
-                reqs['app_envs'][v['id']] = v
+        for d, r in domains_to_reqs.items():
+            if v.get(d, False):
+                if v.get(r['id']):
+                    reqs[r['reqs']][v['id']] = v
     return reqs
 
