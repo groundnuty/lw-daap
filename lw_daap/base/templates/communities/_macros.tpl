@@ -26,17 +26,17 @@
       <span class="hide-on-collapsed pull-left">
         <i class="fa fa-chevron-up"></i>
       </span>
+      <div class="pull-right">
+        <a href="{{ view_url }}" class="btn btn-danger ">{{ _('View') }}</a>
+        {% if curate_url %}
+            <a href="../search{{ curate_url }}" class="btn btn-primary ">{{ _('Curate') }}</a>
+        {% endif %}
+      </div>
       {{ heading }}
     </a>
-    <div class="pull-right">
-    <a href="{{ view_url }}" class="btn btn-danger ">{{ _('View') }}</a>
-    {% if curate_url %}
-    <a href="../search{{ curate_url }}" class="btn btn-primary ">{{ _('Curate') }}</a>
-    {% endif %}
-  </div>
   </div>
   <div id="collapse-{{key}}" class="panel-collapse collapse {%if not collapse %}in{%endif %}">
-    <div class="panel-body">
+<div class="panel-body">
 {% endmacro -%}
 
 {%- macro close_community_section() %}

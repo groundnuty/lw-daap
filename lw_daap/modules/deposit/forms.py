@@ -204,7 +204,7 @@ class RelatedIdentifierForm(WebDepositForm):
             ('isPreviousVersionOf', 'is new version of this upload'),
             ('isPartOf', 'has this upload as part'),
             ('hasPart', 'is part of this upload'),
-            ('isAnalyzeBy', 'is analyzed by this upload'),
+            ('isAnalyzedBy', 'is analyzed by this upload'),
             ('analyzes', 'analyzes this upload'),
             ('isCompiledBy', 'compiled/created this upload'),
             ('compiles', 'is compiled/created by this upload'),
