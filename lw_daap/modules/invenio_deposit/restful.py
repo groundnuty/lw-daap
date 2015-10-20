@@ -223,7 +223,7 @@ class InputProcessorMixin(object):
             # Process data
 
 
-            if request.json['metadata'['keywords']:
+            if request.json['metadata']['keywords']:
                 request.json['metadata']['keywords'] = ','.join(request.json['metadata']['keywords'])
 
             dummy_form, validated, result = draft.process(
