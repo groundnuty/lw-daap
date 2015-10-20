@@ -55,7 +55,7 @@
       {% if record['keywords']|length %} | <i class="fa fa-tags"></i>
       |
       {% for keyword in record['keywords'] %}
-      <span class="label label-default">
+      <span class="label label-default" style="display: inline-block; margin: 5px, 5px;">
         <a href="{{ url_for('search.search', p='keyword:' + keyword) }}">
           {{ keyword }}
         </a>
