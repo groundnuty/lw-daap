@@ -20,8 +20,7 @@
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014, 2015 CERN.
 #
-# Invenio is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it an# modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
@@ -222,6 +221,11 @@ class InputProcessorMixin(object):
                 draft = deposition.get_draft(draft_id)
 
             # Process data
+
+
+            if request.json['metadata'['keywords']:
+                request.json['metadata']['keywords'] = ','.join(request.json['metadata']['keywords'])
+
             dummy_form, validated, result = draft.process(
                 request.json.get('metadata', {}), complete_form=True
             )
@@ -458,7 +462,6 @@ class DepositionFileListResource(Resource):
         )
 
         df = DepositionFile(backend=DepositionStorage(d.id))
-
         if df.save(uploaded_file, filename=filename):
             try:
                 d.add_file(df)
