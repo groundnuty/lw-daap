@@ -150,9 +150,8 @@ close_community_section
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="panel panel-primary">
         {% call hb.panel_head() %}
-        {{ obj.title }}
         <a href="{{ obj.community_url }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
-
+        {{ obj.title }}
         {% endcall %}
         {% call hb.panel_body() %}
         {% if obj.despcription %}
