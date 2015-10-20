@@ -33,14 +33,16 @@
     </div>
   </div>
     <div class="text-right">
-      <a class="btn btn-primary" href="#" role="button">Start your Project</a>
+      <a class="btn btn-primary" href="{{url_for("lw_daap.project")}}" button">Start your Project</a>
     </div>
   </div>
 </div>
   <div class="col-sm-12 col-md-4">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <i class="fa fa-fw fa-search"></i>Discover
+        <a href="{{ url_for('search') }}">
+            <i class="fa fa-fw fa-search" ></i>Discover
+        </a>
       </div>
       <div class="panel-body">
          Nullam molestie ipsum, lacinia gravida urna suscipit id. Vivamus eu ligula mollis, posuere lorem eu, accumsan purus. Curabitur orci purus, dignissim sed maximus a, pretium rhoncus enim. Nunc quis est feugiat eros porta egestas.
@@ -50,7 +52,9 @@
   <div class="col-sm-12 col-md-4">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <i class="fa fa-fw fa-share"></i>Share
+        <a href="{{ url_for('deposit') }}">
+            <i class="fa fa-fw fa-share"></i>Share
+        </a>
       </div>
       <div class="panel-body">
          Nullam molestie ipsum, lacinia gravida urna suscipit id. Vivamus eu ligula mollis, posuere lorem eu, accumsan purus. Curabitur orci purus, dignissim sed maximus a, pretium rhoncus enim. Nunc quis est feugiat eros porta egestas.
@@ -61,7 +65,9 @@
   <div class="col-sm-12 col-md-4">
      <div class="panel panel-primary">
       <div class="panel-heading">
-        <i class="fa fa-fw fa-bar-chart-o"></i>Analyze
+        <a href="{{ url_for('analyze') }}">
+            <i class="fa fa-fw fa-bar-chart-o"></i>Analyze
+        </a>
       </div>
       <div class="panel-body">
          Nullam molestie ipsum, lacinia gravida urna suscipit id. Vivamus eu ligula mollis, posuere lorem eu, accumsan purus. Curabitur orci purus, dignissim sed maximus a, pretium rhoncus enim. Nunc quis est feugiat eros porta egestas.
