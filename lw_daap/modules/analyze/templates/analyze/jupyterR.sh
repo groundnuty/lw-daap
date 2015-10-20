@@ -19,7 +19,7 @@ export DEBIAN_FRONTEND=noninteractive
 echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" > /etc/apt/sources.list.d/cran.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 apt-get update
-apt-get -y install build-essential python3-dev python3-pip python-virtualenv libzmq3-dev r-base
+apt-get -y --force-yes install build-essential python3-dev python3-pip python-virtualenv libzmq3-dev r-base
 useradd -m jup
 
 JUP_INSTALLER=`mktemp`
@@ -41,7 +41,7 @@ echo "c.NotebookApp.base_url = '/\$ID'" >> \$CONFIG_FILE
 mkdir -p ~/.R
 echo 'CXX1X = g++' > ~/.R/Makeconf
 echo 'CXX1XSTD = -std=c++11' >> ~/.R/Makeconf
-echo 'SHLIB_CXX1XLD = $(CXX1X) $(CXX1XSTD)' >> ~/.R/Makeconf
+echo 'SHLIB_CXX1XLD = \$(CXX1X) \$(CXX1XSTD)' >> ~/.R/Makeconf
 echo 'CXX1XPICFLAGS = -fpic' >> ~/.R/Makeconf
 echo 'SHLIB_CXX1XLDFLAGS = -shared' >> ~/.R/Makeconf
 
