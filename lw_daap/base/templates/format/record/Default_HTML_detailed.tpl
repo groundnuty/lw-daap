@@ -129,7 +129,7 @@ with context
             <td class="col-md-9">
               {% for keyword in daap_record['keywords'] %}
               <span class="label label-primary" style="display: inline-block; margin: 5px 5px;">
-                <a href="{{ url_for('search.search', p='keyword:' + keyword) }}">{{ keyword }}</a>
+                <a href="{{ url_for('search.search', p='keyword: "' + keyword +'"') }}">{{ keyword }}</a>
               </span>
               {% endfor %}
             </td>
