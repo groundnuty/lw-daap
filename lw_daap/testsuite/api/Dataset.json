@@ -16,7 +16,7 @@
             ],
             "description":"Just a small description",
             "notes":"Something here",
-            "keywords":"abcd, defg, hijk, lmn",
+            "keywords":["abcd,asd", "defg", "hijk", "lmn"],
             "access_right":"open",
             "license":"cc-zero",
             "communities":[
@@ -85,7 +85,8 @@
             },
             {
                "filename":"deposit.py",
-               "dDaescription":"Testcription"
+               "description":"Testcription",
+               "asd": "asd"
             }
          ]
       }
