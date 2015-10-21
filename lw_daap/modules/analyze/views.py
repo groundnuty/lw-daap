@@ -25,6 +25,7 @@ from flask_menu import register_menu
 
 from flask import Response, jsonify, flash
 
+from invenio.ext.principal import permission_required
 
 from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import UserProfile
@@ -41,21 +42,34 @@ blueprint = Blueprint(
     static_folder='static',
 )
 
+from invenio.modules.access.control import acc_add_action, acc_get_action_id
+
+INFRA_ACCESS = 'infraaccess'
+
+@blueprint.before_app_first_request
+def create_infra_action_roles():
+    """Creates the infraaccess action in the DB"""
+    action_id = acc_get_action_id(INFRA_ACCESS)
+    if action_id == 0:
+        acc_add_action(INFRA_ACCESS, "Access to the infrastructure", "no")
+
 
 @blueprint.route('/')
 @register_menu(blueprint, 'main.analyze', 'Analyze', order=4)
-@delegation_required()
+@permission_required(INFRA_ACCESS)
 def index():
     profile = UserProfile.get_or_create()
-    client = infra.get_client(profile.user_proxy)
-    ctx = dict(
-        vms = infra.list_vms(client),
-    )
+    ctx = {}
+    try:
+        client = infra.get_client(profile.user_proxy)
+        ctx['vms'] = infra.list_vms(client)
+    except infra.InfraException, e:
+        flash(e.message, 'error')
     return render_template('analyze/index.html', **ctx)
 
 
 @blueprint.route('/launch', methods=['GET', 'POST'])
-@delegation_required()
+@permission_required(INFRA_ACCESS)
 def launch():
     profile = UserProfile.get_or_create()
     reqs = get_requirements()
@@ -89,7 +103,7 @@ def launch():
 
 
 @blueprint.route('/terminate/<vm_id>', methods=['POST'])
-@delegation_required()
+@permission_required(INFRA_ACCESS)
 def terminate(vm_id):
     profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
@@ -98,6 +112,7 @@ def terminate(vm_id):
 
 
 @blueprint.route('/connect/<vm_id>', methods=['GET'])
+@permission_required(INFRA_ACCESS)
 def connect(vm_id):
     profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)

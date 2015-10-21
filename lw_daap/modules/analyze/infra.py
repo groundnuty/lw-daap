@@ -30,6 +30,7 @@ import novaclient.auth_plugin
 import novaclient.client
 import humanize
 import pytz
+import requests.exceptions
 import yaml
 
 
@@ -109,7 +110,10 @@ def get_client(user_proxy=None):
                                                auth_system=auth_system,
                                                # XXX REMOVE THIS ASAP!
                                                insecure=True)
-    client.authenticate()
+    try:
+        client.authenticate()
+    except requests.exceptions.RequestException, e:
+        raise InfraException(e.message)
     return client
 
 
