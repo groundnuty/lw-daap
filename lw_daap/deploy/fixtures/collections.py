@@ -42,9 +42,15 @@ class CollectionData(DataSet):
         name = 'Software'
         dbquery = '980__a:software AND 980__a:community-*'
 
-    class communityparent(object):
+    class dmp(object):
         id = 5
+        name = 'DMP'
+        dbquery = '980__a:dmp AND 980__a:community-*'
+
+    class communityparent(object):
+        id = 6
         name = 'Communities'
+
 
 
 class CollectionCollectionData(DataSet):
@@ -63,5 +69,11 @@ class CollectionCollectionData(DataSet):
     class site_software:
         dad = siteCollection
         son = CollectionData.software
+        score = 0
+        type = 'r'
+
+    class site_dataset:
+        dad = siteCollection
+        son = CollectionData.dmp
         score = 0
         type = 'r'

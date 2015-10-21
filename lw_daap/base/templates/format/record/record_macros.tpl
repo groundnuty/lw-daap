@@ -62,6 +62,7 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 'software': 'label-success',
 'dataset': 'label-danger',
 'analysis': 'label-warning',
+'dmp': 'label-default',
 }
 %}
 {% if record.upload_type %}

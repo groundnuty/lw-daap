@@ -105,6 +105,7 @@ PACKAGES_EXCLUDE = [
 # EXTENSIONS.remove('invenio.ext.legacy')
 
 DEPOSIT_TYPES = [
+    "lw_daap.modules.deposit.workflows.dmp:dmp",
     "lw_daap.modules.deposit.workflows.dataset:dataset",
     "lw_daap.modules.deposit.workflows.software:software",
     "lw_daap.modules.deposit.workflows.analysis:analysis",

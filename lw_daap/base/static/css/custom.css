@@ -180,19 +180,6 @@ a.btn {
   background: #FF5001;
 }
 
-
-a[id^="btn-deposit"] {
-  padding:12px 10px;
-  width: 260px;
-  margin: 10px 10px;
-  font-size: 1.1em;
-}
-
-a[id^="btn-deposit"] i {
-  margin-right: 15px;
-  font-size: 1.6em;
-}
-
 .uppercase {
   text-transform: uppercase;
 }

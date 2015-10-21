@@ -46,13 +46,16 @@
       science are welcome.</p>
       <div class="spacer30"></div>
       <div class="text-center">
-        <a id="btn-deposit-dataset" class="btn btn-sm btn-danger   "
+        <a id="btn-deposit-dmp" class="btn btn-md btn-danger  "
+          href="{{ url_for(".create", deposition_type="dmp") }}"
+          role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register new DMP</a>
+        <a id="btn-deposit-dataset" class="btn btn-md btn-danger   "
           href="{{ url_for(".create", deposition_type="dataset" ) }}"
           role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
-        <a id="btn-deposit-software" class="btn btn-sm btn-danger  "
+        <a id="btn-deposit-software" class="btn btn-md btn-danger  "
           href="{{ url_for(".create", deposition_type="software") }}"
           role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
-        <a id="btn-deposit-analysis" class="btn btn-sm btn-danger  "
+        <a id="btn-deposit-analysis" class="btn btn-md btn-danger  "
           href="{{ url_for(".create", deposition_type="analysis") }}"
           role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
       </div>

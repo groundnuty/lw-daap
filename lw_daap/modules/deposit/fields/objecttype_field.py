@@ -45,6 +45,7 @@ from wtforms import RadioField
 __all__ = ['UploadTypeField']
 
 UPLOAD_TYPES = [
+    ('dmp', 'DMP', [], 'fa fa-book fa-2x fa-fw'),
     #('publication', 'Publication', [], 'fa fa-file-text-o fa-2x fa-fw'),
     #('poster', 'Poster', [], 'fa fa-columns fa-2x fa-fw'),
     #('presentation', 'Presentation', [], 'fa fa-group fa-2x fa-fw'),

@@ -57,7 +57,7 @@ from .validators import community_validator
 from .utils import create_doi, filter_empty_helper
 
 
-__all__ = ('BasicForm', 'DatasetForm', 'SoftwareForm', 'AnalysisForm', )
+__all__ = ('BasicForm', 'DMPForm', 'DatasetForm', 'SoftwareForm', 'AnalysisForm', )
 
 #
 # Local processors
@@ -800,6 +800,76 @@ class BasicForm(WebDepositForm):
 #
 # Form
 #
+class DMPForm(BasicForm):
+
+    """DMP Upload Form."""
+    upload_type = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="dmp",
+    )
+
+    #
+    # Form configuration
+    #
+    _title = _('New DMP')
+    _drafting = True   # enable and disable drafting
+
+    #
+    # Grouping of fields
+    #
+    groups = [
+        ('<i class="fa fa-info"></i> Basic information', [
+            'doi', 'publication_date', 'title',  'creators',
+            'description', 'keywords', 'notes',
+        ], {
+            #'classes': '',
+            'indication': 'required',
+        }),
+        ('<i class="fa fa-certificate"></i> License', [
+            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
+        ], {
+            #'classes': '',
+            'indication': 'required',
+            'description': (
+                'Unless you explicitly specify the license conditions below'
+                ' for Open Access and Embargoed Access uploads, you agree to'
+                ' release your data files under the terms of the Creative'
+                ' Commons Zero (CC0) waiver. All authors of the data and'
+                ' publications have agreed to the terms of this waiver and'
+                ' license.')
+        }),
+        ('<i class="fa fa-users"></i> Communities', [
+            'communities',
+        ], {
+            #'classes': '',
+            'indication': 'recommended',
+            'description': Markup(
+                'Any user can create a community on'
+                ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
+                ' communities</a>). Specify communities which you wish your'
+                ' upload to appear in. The owner of the community (and also the default community) will'
+                ' be notified, and can either accept or reject your'
+                ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+        }),
+        ('<i class="fa fa-bars"></i> Related Identifiers', [
+            'related_identifiers'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+        }),
+        ('<i class="fa fa-tags"></i> Subjects', [
+            'subjects'
+        ], {
+            'classes': '',
+            'indication': 'optional',
+            'description': 'Specify subjects from a taxonomy or controlled '
+            'vocabulary. Each term must be uniquely identified '
+            '(e.g. a URL). For free form text, use the keywords'
+            ' field in basic information section.',
+        }),
+    ]
+
+
 class DatasetForm(BasicForm):
 
     """Dataset Upload Form."""
@@ -1221,6 +1291,9 @@ class BasicEditForm(BasicForm, EditFormMixin):
     _title = _('Edit upload')
     template = "deposit/edit.html"
 
+
+class DMPEditForm(BasicEditForm, DatasetForm):
+    pass
 
 class DatasetEditForm(BasicEditForm, DatasetForm):
     pass

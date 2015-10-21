@@ -63,7 +63,7 @@ with context
       {% endif %}
       <a class="btn btn-block btn-lg btn-primary" href="{{ url_for('webdeposit.edit', uuid=daap_record.owner.deposition_id|int) }}"><i class="fa fa-pencil-square-o"></i> Edit</a>
       {% endif %}
-      {% if daap_record.upload_type != "dataset" %}
+      {% if daap_record.upload_type != "dataset" and daap_record.upload_type != "dmp" %}
       <a class="btn btn-block btn-lg btn-danger" href="{{ url_for('analyze.launch', title=daap_record.title, flavor=daap_record.flavor, os=daap_record.os, app_env=daap_record.app_env, recid=recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
       {% endif %}
       <div class="spacer20"></div>
