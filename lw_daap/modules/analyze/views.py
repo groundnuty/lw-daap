@@ -23,7 +23,7 @@ import json
 from flask import Blueprint, current_app, render_template, request, redirect, url_for
 from flask_menu import register_menu
 
-from flask import Response, jsonify
+from flask import Response, jsonify, flash
 
 
 from lw_daap.modules.profile.decorators import delegation_required
@@ -62,21 +62,25 @@ def launch():
     obj = LaunchFormData(reqs, **request.args)
     form = LaunchForm(obj=obj, user_profile=profile)
     form.fill_fields_choices(reqs)
+   
     if form.validate_on_submit():
         client = infra.get_client(profile.user_proxy)
         image = reqs['images'][form.image.data]['image-id']
         flavor = reqs['flavors'][form.flavor.data]['flavor-id']
         app_env = reqs['app_envs'][form.app_env.data]['app-id']
         current_app.logger.debug("%s %s %s", image, flavor, app_env)
-        infra.launch_vm(client,
-                        name=form.name.data,
-                        image=image,
-                        flavor=flavor,
-                        app_env=app_env,
-                        recid=form.recid.data,
-                        ssh_key=profile.ssh_public_key)
-        # XXX TODO error checking
-        return redirect(url_for('.index'))
+        try:
+            infra.launch_vm(client,
+                            name=form.name.data,
+                            image=image,
+                            flavor=flavor,
+                            app_env=app_env,
+                            recid=form.recid.data,
+                            ssh_key=profile.ssh_public_key)
+            return redirect(url_for('.index'))
+        except infra.InfraException, e:
+            flash(e.message, 'error')
+
     ctx = dict(
         form=form,
         flavors=reqs['flavors'],

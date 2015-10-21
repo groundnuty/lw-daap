@@ -39,6 +39,10 @@ from invenio.ext.template import render_template_to_string
 from .utils import get_requirements
 
 
+class InfraException(Exception):
+    pass
+
+
 def _vm_mapper():
     now = datetime.utcnow().replace(tzinfo=pytz.utc)
     reqs = get_requirements()
@@ -62,11 +66,10 @@ def _vm_mapper():
 
 def _vm_filter(user_id):
     daap_user = '%s' % current_user.get_id()
+
     def _filter(vm):
         return (vm.user_id == user_id and
                 vm.metadata.get('lwdaap_vm', None) is not None and
-                # XXX
-                # ONLY THIS USER VMS!!!
                 vm.metadata.get('lwdaap_user', None) == daap_user)
     return _filter
 
@@ -205,15 +208,14 @@ def launch_vm(client, name, image, flavor, app_env='', recid='', ssh_key=None):
                                   userdata=userdata,
                                   key_name='lwkey') # Robot Cert ('lw_wp' User Cert?)
     except Exception, e:
-        current_app.logger.debug("PUM!, %s" % e)
-        current_app.logger.debug(current_user.get_id())
+        raise InfraException(e.message)
     return s
 
 def terminate_vm(client, vm_id):
     try:
         client.servers.delete(vm_id)
     except Exception, e:
-        current_app.logger.debug("PUM!, %s" % e)
+        raise InfraException(e.message)
 
 
 def list_vms(client):
