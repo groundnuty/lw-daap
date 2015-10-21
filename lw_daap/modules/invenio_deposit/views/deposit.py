@@ -116,7 +116,7 @@ def deposition_error_handler(endpoint='.index'):
 
 @blueprint.route('/')
 @login_required
-@register_menu(blueprint, 'main.webdeposit', _('Deposit'), order=2)
+@register_menu(blueprint, 'main.webdeposit', _('Deposit'), order=3)
 @register_breadcrumb(blueprint, '.', _('Deposit'))
 def index():
     """Render the deposition index page.
@@ -177,7 +177,7 @@ def deposition_type_index(deposition_type):
 @register_menu(blueprint,
         'settings.myuploads',
         _('%(icon)s My Uploads', icon='<i class="fa fa-file fa-fw"></i>'),
-        order=0,
+        order=1,
         active_when=lambda: request.endpoint.startswith("webdeposit."),
 )
 

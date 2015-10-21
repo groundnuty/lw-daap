@@ -85,7 +85,7 @@ def get_group_name(id_group):
 @register_menu(
     blueprint, 'settings.groups',
     _('%(icon)s My Groups', icon='<i class="fa fa-users fa-fw"></i>'),
-    order=0,
+    order=2,
     active_when=lambda: request.endpoint.startswith("groups_settings.")
 )
 @register_breadcrumb(blueprint, '.', _('Groups'))

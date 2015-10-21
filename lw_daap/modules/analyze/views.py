@@ -43,7 +43,7 @@ blueprint = Blueprint(
 
 
 @blueprint.route('/')
-@register_menu(blueprint, 'main.analyze', 'Analyze', order=3)
+@register_menu(blueprint, 'main.analyze', 'Analyze', order=4)
 @delegation_required()
 def index():
     profile = UserProfile.get_or_create()
