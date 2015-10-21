@@ -24,6 +24,12 @@ CFG_OPENSTACK_AUTH_URL = 'https://keystone.ifca.es:5000/v2.0'
 CFG_OPENSTACK_TENANT = "VO:vo.lifewatch.eu"
 
 #
+# Configuration for Robot Certificate
+#
+
+CFG_LWDAAP_ROBOT_PROXY="/home/ubuntu/.virtualenvs/lwdaap/var/x509up_u1000"
+
+#
 # Configuration of the etcd host
 #
 CFG_ANALYZE_ETCD_URL = 'http://193.146.75.165:4001'

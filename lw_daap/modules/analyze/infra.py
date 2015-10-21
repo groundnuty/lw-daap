@@ -66,7 +66,7 @@ def _vm_filter(user_id, daap_user=None):
                 vm.metadata.get('lwdaap_vm', None) is not None and
                 # XXX
                 # ONLY THIS USER VMS!!!
-                vm.metadata.get('user', None) == daap_user)
+                vm.metadata.get('lwdaap_user', None) == daap_user)
     return _filter
 
 
@@ -75,7 +75,9 @@ def _get_user_id(client):
     return catalog['access']['user']['id']
 
 
-def get_client(user_proxy):
+def get_client(user_proxy=None):
+    # hack para forzar robot
+    user_proxy = None
     username = password = None
     tenant = cfg.get('CFG_OPENSTACK_TENANT', '')
     url = cfg.get('CFG_OPENSTACK_AUTH_URL', '')
@@ -83,17 +85,27 @@ def get_client(user_proxy):
     auth_system = "voms"
     novaclient.auth_plugin.discover_auth_systems()
     auth_plugin = novaclient.auth_plugin.load_plugin(auth_system)
-    with NamedTemporaryFile() as proxy_file:
-        proxy_file.write(user_proxy)
-        proxy_file.flush()
-        auth_plugin.opts["x509_user_proxy"] = proxy_file.name
+    if not user_proxy:
+        auth_plugin.opts["x509_user_proxy"] = cfg.get('CFG_LWDAAP_ROBOT_PROXY')
         client =  novaclient.client.Client(version, username, password,
                                            tenant, url,
                                            auth_plugin=auth_plugin,
                                            auth_system=auth_system,
                                            # XXX REMOVE THIS ASAP!
                                            insecure=True)
-        client.authenticate()
+    
+    else:
+        with NamedTemporaryFile() as proxy_file:
+            proxy_file.write(user_proxy)
+            proxy_file.flush()
+            auth_plugin.opts["x509_user_proxy"] = proxy_file.name
+            client =  novaclient.client.Client(version, username, password,
+                                               tenant, url,
+                                               auth_plugin=auth_plugin,
+                                               auth_system=auth_system,
+                                               # XXX REMOVE THIS ASAP!
+                                               insecure=True)
+    client.authenticate()
     return client
 
 
@@ -187,9 +199,10 @@ def launch_vm(client, name, image, flavor, app_env='', recid='', ssh_key=None):
     try:
         s = client.servers.create(name, image=image,
                                   flavor=flavor, meta={'lwdaap_vm': '',
+                                                       #'lwdaap_user': current_user.id,
                                                        'app_env': app_env},
                                   userdata=userdata,
-                                  key_name='lw_wp')
+                                  key_name='lwkey') # Robot Cert ('lw_wp' User Cert?)
     except Exception, e:
         current_app.logger.debug("PUM!, %s" % e)
     return s
