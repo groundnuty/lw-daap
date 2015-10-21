@@ -24,7 +24,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-from invenio.base.config import EXTENSIONS
+# from invenio.base.config import EXTENSIONS
+
 
 # MonkeyPatch the UserInfo so it gets our group stuff
 # must be done quite early!
@@ -58,7 +59,7 @@ CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
 CFG_WEBCOMMENT_ALERT_ENGINE_EMAIL = "support@mail"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
 
-COMMUNITIES_PARENT_NAME ='Communities'
+COMMUNITIES_PARENT_NAME = 'Communities'
 COMMUNITIES_PARENT_NAME_PROVISIONAL = COMMUNITIES_PARENT_NAME
 COMMUNITIES_ID_PREFIX = 'community'
 COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
@@ -70,9 +71,9 @@ COMMUNITIES_PORTALBOXES = [
 DISABLE_WARNINGS = True
 
 
-#BLUEPRINTS_URL_PREFIXES = {
-#   "search": "/search",
-#}
+# BLUEPRINTS_URL_PREFIXES = {
+#    "search": "/search",
+# }
 
 
 PACKAGES = [
@@ -85,13 +86,14 @@ PACKAGES = [
     "lw_daap.modules.analyze",
     "lw_daap.modules.pids",
     "lw_daap.modules.profile",
+    "lw_daap.modules.projects",
     "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
 ]
 
 
-PACKAGES_EXCLUDE= [
+PACKAGES_EXCLUDE = [
     "invenio.modules.deposit",
     "invenio.modules.groups",
     "invenio.modules.messages",
@@ -100,7 +102,7 @@ PACKAGES_EXCLUDE= [
     "invenio.modules.annotations",
 ]
 
-#EXTENSIONS.remove('invenio.ext.legacy')
+# EXTENSIONS.remove('invenio.ext.legacy')
 
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.dataset:dataset",
