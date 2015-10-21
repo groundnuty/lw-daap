@@ -7,6 +7,8 @@ bower.json
 **/vendors/*
 
 
+**/.ropeproject
+
 *.egg-info/
 .installed.cfg
 *.egg
