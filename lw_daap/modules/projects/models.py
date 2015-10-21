@@ -30,7 +30,7 @@ class Project(db.Model):
     """
     __tablename__ = 'project'
 
-    id = db.Column(db.Integer(15, unsigned=True))
+    id = db.Column(db.Integer(15, unsigned=True), primary_key=True)
     """Project id"""
 
     title = db.Column(db.String(length=255), nullable=False, default='')
@@ -40,19 +40,19 @@ class Project(db.Model):
     """ Project short description """
 
     # collection
-    id_collection = db.Column(
-        db.Integer(15, unsigned=True), db.ForeignKey(Collection.id),
-        nullable=True, default=None
-    )
-    collection = db.relationship(
-        Collection, uselist=False, backref='community',
-        foreign_keys=[id_collection]
-    )
+    #id_collection = db.Column(
+    #    db.Integer(15, unsigned=True), db.ForeignKey(Collection.id),
+    #    nullable=True, default=None
+    #)
+    #collection = db.relationship(
+    #    Collection, uselist=False, backref='community',
+    #    foreign_keys=[id_collection]
+    #)
 
     # owner
-    id_user = db.Column(
-        db.Integer(15, unsigned=True), db.ForeignKey(User.id),
-        nullable=False
-    )
-    owner = db.relationship(User, backref='communities',
-                            foreign_keys=[id_user])
+    #id_user = db.Column(
+    #    db.Integer(15, unsigned=True), db.ForeignKey(User.id),
+    #    nullable=False
+    #)
+    #owner = db.relationship(User, backref='communities',
+    #                        foreign_keys=[id_user])
