@@ -48,9 +48,10 @@
     <table class="table table-stripped">
       <thead>
         <tr>
-          <th class="col-md-2">Instance Name</th>
+          <th class="col-md-1">Instance Name</th>
           <th class="col-md-1">OS</th>
           <th class="col-md-3">Size</th>
+          <th class="col-md-2">Application Environment</th>
           <th class="col-md-1">Status</th>
           <th class="col-md-2">Created</th>
           <th class="col-md-3"></th>
@@ -63,6 +64,7 @@
           <td>{{ vm.name }}</td>
           <td>{{ vm.image }}</td>
           <td>{{ vm.size }}</td>
+          <td>{{ vm.metadata.app_env }}</td>
           <td>{{ vm.status }}</td>
           <td>{{ vm.created }}</td>
           <td class="text-right">

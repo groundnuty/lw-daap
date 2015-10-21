@@ -273,7 +273,7 @@ def get_vm_connection(client, vm_id):
         elif app_env in ['jupyter-python', 'jupyter-r']:
             return dict(
                 error=False,
-                msg='<p>You can connect to <a href="%(http)s">jupyter</a>.' % d
+                msg='<p>You can connect to <a href="%(http)s" class="btn btn-info">jupyter</a>.' % d
             )
         else:
             return dict(
