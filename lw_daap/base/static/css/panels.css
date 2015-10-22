@@ -68,11 +68,15 @@ box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.05) inset;
   border: None;
 }
 
-.panel-primary > .panel-heading .btn-primary {
+.panel-primary .panel-heading a {
+  color: #FFF;
+}
+
+.panel-primary .panel-heading .btn-primary {
   border-color: #00481D;
 }
 
-.panel-primary > .panel-heading {
+.panel-primary .panel-heading {
   color: #FFF;
   background-color: #008035;
   border: 1px solid #008035;
@@ -83,7 +87,7 @@ box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.05) inset;
   line-height: 1.4;
 }
 
-.panel-primary > .panel-heading .fa {
+.panel-primary .panel-heading .fa {
   font-weight: 100;
   font-size: 1.5em;
   margin-right: 8px;
