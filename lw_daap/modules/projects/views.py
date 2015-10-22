@@ -111,8 +111,16 @@ def new():
     )
 
 
+def project_breadcrumb(*args, **kwargs):
+    project_id = request.view_args['project_id']
+    project = Project.query.get(project_id)
+    # XXX  FIXME
+    return [{'text': "title", 'url': '.'}]
+
+
 @blueprint.route('/show/<int:project_id>', methods=['GET'])
-@register_breadcrumb(blueprint, '.show', _('Show'))
+@register_breadcrumb(blueprint, '.show', '',
+                     dynamic_list_constructor=project_breadcrumb)
 def show(project_id):
     ctx = {}
     return render_template("projects/show.html", **ctx)
