@@ -21,40 +21,125 @@
 
 
 {% block body %}
-<div class="well text-center">
+<h1>{{ project.title }}</h1>
+<div class="">
+<p>{{ project.description }}</p>
+</div>
+
+<div class="text-center well">
   <div id="dlc-nav" class="text-center">
-    <div class="button">
+    <a class="button active" href='#plan' aria-controls="plan" role="tab" data-toggle="tab">
       <span class="label">Plan</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button" href='#acquire' aria-controls="acquire" role="tab" data-toggle="tab">
       <span class="label">Acquire</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button active" href='#curate' aria-controls="curate" role="tab" data-toggle="tab">
       <span class="label">Curate</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button active" href='#integrate' aria-controls="integrate" role="tab" data-toggle="tab">
       <span class="label">Integrate</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button active" href='#analyze' aria-controls="analyze" role="tab" data-toggle="tab">
       <span class="label">Analyze</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button active" href='#preserve' aria-controls="preserve" role="tab" data-toggle="tab">
       <span class="label">Preserve</span>
       <span class="arrow"><span></span></span>
-    </div>
-    <div class="button">
+    </a>
+    <a class="button active" href='#publish' aria-controls="publish" role="tab" data-toggle="tab">
       <span class="label">Publish</span>
       <span class="arrow"><span></span></span>
-    </div>
+    </a>
   </div>
   <div class="spacer30"></div>
-  <div>
-    asdasn diaoslj daosidkh asildunhasiukdh asbu yjasyhdja8s9oidkg basn iu,a,sy hbu ash dha sukdhasadi kabsndl
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="plan">
+      <h3>Plan</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+        <a class="btn btn-md btn-danger"
+           href="http://pc90.viavansi.com/"
+           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
+        <a class="btn btn-md btn-danger"
+           href="{{ url_for("deposit.create", deposition_type="dmp") }}"
+           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
+      </div> 
+    </div>
+    <div role="tabpanel" class="tab-pane" id="acquire">
+      <h3>Acquire</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+        <a id="btn-deposit-dataset" class="btn btn-md btn-danger   "
+           href="{{ url_for("deposit.create", deposition_type="dataset" ) }}"
+           role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
+        <a id="btn-deposit-software" class="btn btn-md btn-danger  "
+           href="{{ url_for("deposit.create", deposition_type="software") }}"
+           role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="curate">
+      <h3>Curate</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="integrate">
+      <h3>Integrate</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+        <a id="btn-deposit-analysis" class="btn btn-md btn-danger  "
+           href="{{ url_for("deposit.create", deposition_type="analysis") }}"
+           role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="analyze">
+      <h3>Analyze</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+       <a class="btn btn-md btn-danger" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a> 
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="preserve">
+      <h3>Preserve</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+       <a class="btn btn-md btn-default"  data-toggle="modal" data-target="#doi-confirm-dialog" href="#">
+         <i class="fa fa-barcode"></i> Mint Doi</a>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="publish">
+      <h3>Publish</h3>
+      <p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      </p>
+      <div class="text-center">
+       <a class="btn btn-md btn-default"  data-toggle="modal" data-target="#doi-confirm-dialog" href="#">
+         <i class="fa fa-barcode"></i>Publish</a>
+      </div>
+
+    </div>
   </div>
+</div>
+
+<div class="spacer30"></div>
+<div>
+<h2>Project uploads</h2>
+
 </div>
 {% endblock body %}

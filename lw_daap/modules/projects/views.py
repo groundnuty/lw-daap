@@ -122,5 +122,10 @@ def project_breadcrumb(*args, **kwargs):
 @register_breadcrumb(blueprint, '.show', '',
                      dynamic_list_constructor=project_breadcrumb)
 def show(project_id):
-    ctx = {}
+    class P():
+        title = 'My test project'
+        description = 'This is some more longer text describing the project whatever' 
+    ctx = dict(
+        project=P(),
+    )
     return render_template("projects/show.html", **ctx)
