@@ -52,14 +52,14 @@ def index():
         **ctx
     )
 
+
 @blueprint.route('/myprojects')
 @register_menu(blueprint,
         'settings.myprojects',
-        _('%(icon)s My Projects', icon='<i class="fa fa-building fa-fw"></i>'),
+        _('%(icon)s My Projects', icon='<i class="fa fa-list-alt fa-fw"></i>'),
         order=0,
         active_when=lambda: request.endpoint.startswith("lwdaap_projects"),
 )
-
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects', _('My Projects'))
 @login_required
 def myprojects():
@@ -69,10 +69,12 @@ def myprojects():
         **ctx
     )
 
+
 @blueprint.app_template_filter('myprojects_ctx')
 def myprojects_ctx():
     """Helper method for return ctx used by many views."""
     return { 'myprojects': Project.query.filter_by().order_by(db.asc(Project.title)).all() }
+
 
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @ssl_required
@@ -108,3 +110,9 @@ def new():
         **ctx
     )
 
+
+@blueprint.route('/show/<int:project_id>', methods=['GET'])
+@register_breadcrumb(blueprint, '.show', _('Show'))
+def show(project_id):
+    ctx = {}
+    return render_template("projects/show.html", **ctx)
