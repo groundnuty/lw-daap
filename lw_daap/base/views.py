@@ -39,10 +39,11 @@ blueprint = Blueprint('lw_daap', __name__, url_prefix='',
 def home():
     return render_template('lw_daap/main.html')
 
-@blueprint.route('/project', methods=['GET', ])
+# Projects module in modules/projects
+#@blueprint.route('/project', methods=['GET', ])
 #@register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
-def project():
-    return render_template('lw_daap/project.html')
+#def project():
+#    return render_template('lw_daap/project.html')
 
 @blueprint.route('/styles', methods=['GET', ])
 def styles():
@@ -75,11 +76,10 @@ def privacypolicy():
 #@register_breadcrumb(blueprint, 'breadcrumbs.termsofservices', _("Terms of Services"))
 def termsofservices():
     return render_template('lw_daap/termsofservices.html')
-#
-#
-#
 
-
+#
+#
+#
 @blueprint.app_template_filter('curated_only')
 def curated_only(reclist):
     """Show only curated publications from reclist."""
