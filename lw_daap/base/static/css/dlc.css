@@ -18,11 +18,25 @@
 
 
 #dlc-nav {
-  border: 4px solid #DDD;
-  display: inline-block;
-  padding-right: 30px;
+  padding: 0;
 }
 
+#dlc-nav a:hover,
+#dlc-nav a:focus,
+#dlc-nav a:active {
+  color: #FFFFFF;
+  outline: none;
+  text-decoration: none;
+}
+
+
+#dlc-nav a {
+  }
+#dlc-nav a:hover {
+box-shadow: inset 0px -2px 10px rgba(0, 0, 0, 0.25);
+
+}
+#dlc-nav a:first-child { box-shadow: none; }
 
 .button {
   display: inline-block;
@@ -31,26 +45,30 @@
   margin-right: -30px;
 }
 
+.button.active, 
 .button:hover {
   background-color: #0A9C45;
 }
 
 #dlc-nav .label {
-  height: 60px;
-  width: 120px;
-  font-size: 1.2em;
-  line-height: 58px;
-  display: inline-block;
-  padding-left: 25px;
+  line-height: 60px;
+  padding-left:40px;
 }
 
-.button:first-child .label {
-  padding-left: 15px;
+#dlc-nav .button:first-child .label {
+  padding-left:20px;
 }
 
-.button:last-child .label {
-  padding-right: 15px;
-  margin-left: 20px;
+.button-last {
+  background: #FF5001;
+  min-width: 30px;
+}
+.button-last:hover {
+  background: #FF5001;
+}
+
+#dlc-nav a.button-last:hover {
+  box-shadow: none;
 }
 
 .button:last-child .arrow {
@@ -58,24 +76,29 @@
 }
 
 .arrow {
-  width: 27px;
+  width: 30px;
   height: 60px;
   display: inline-block;
   vertical-align: top;
   overflow: hidden;
+  position: relative;
+  left: 5px;
 }
 
 .arrow span {
   border-radius: 5px;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   display: inline-block;
   transform: rotate(45deg);
-  margin-left: -40px;
-  margin-top: 12px;
-  box-shadow: 2px -2px 2px rgba(0,0,0,0.25);
+  margin-left: -24px;
+  margin-top: 9px;
+  box-shadow: inset 1px 1px 0px rgba(255,255,255,0.25), 1px -1px 2px rgba(0,0,0,0.25);
   background-color: #008035;
 }
+
+.button.active .arrow span,
 .button:hover .arrow span {
   background-color: #0A9C45;
+   box-shadow: -1px 1px 2px rgba(255,255,255,0.25), inset -1px 1px 1px rgba(0,0,0,0.25);
 }

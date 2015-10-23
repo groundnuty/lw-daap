@@ -201,6 +201,10 @@ a.btn {
   padding: 0 4px;
 }
 
+.label {
+  cursor: default;
+}
+
 .jumbotron {
   background: #F1F1F1;
   border: 2px solid #DDD;

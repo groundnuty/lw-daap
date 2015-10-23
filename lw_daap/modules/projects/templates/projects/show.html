@@ -1,145 +1,304 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 
 {% extends "page.html" %}
 
 
 {% block body %}
-<h1>{{ project.title }}</h1>
-<div class="">
-<p>{{ project.description }}</p>
-</div>
+<div class="panel panel-primary">
+  <div class="panel-body">
+    <div class="col-md-12">
+    <h1><i class="fa fa-fw fa-list-alt"></i>{{ project.title }}</h1>
+    <p class="text-muted" style="padding: 20px;">{{ project.description }}</p></div>
+    <div class="spacer40"></div>
+  </div>
 
-<div class="text-center well">
-  <div id="dlc-nav" class="text-center">
-    <a class="button active" href='#plan' aria-controls="plan" role="tab" data-toggle="tab">
+  <div id="dlc-nav" class="panel-heading" style="background: #FF5001; padding-right: 30px;
+    border: none; box-shadow: 4px 0 4px solid rgba(0, 0, 0, 0.25);">
+    <a class="button " href='#plan' aria-controls="plan" role="tab" data-toggle="tab">
       <span class="label">Plan</span>
       <span class="arrow"><span></span></span>
     </a>
     <a class="button" href='#acquire' aria-controls="acquire" role="tab" data-toggle="tab">
-      <span class="label">Acquire</span>
+      <span class="label">Describe and Collect</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button active" href='#curate' aria-controls="curate" role="tab" data-toggle="tab">
+    <a class="button " href='#curate' aria-controls="curate" role="tab" data-toggle="tab">
       <span class="label">Curate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button active" href='#integrate' aria-controls="integrate" role="tab" data-toggle="tab">
+    <a class="button " href='#integrate' aria-controls="integrate" role="tab" data-toggle="tab">
       <span class="label">Integrate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button active" href='#analyze' aria-controls="analyze" role="tab" data-toggle="tab">
+    <a class="button " href='#analyze' aria-controls="analyze" role="tab" data-toggle="tab">
       <span class="label">Analyze</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button active" href='#preserve' aria-controls="preserve" role="tab" data-toggle="tab">
+    <a class="button " href='#preserve' aria-controls="preserve" role="tab" data-toggle="tab">
       <span class="label">Preserve</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button active" href='#publish' aria-controls="publish" role="tab" data-toggle="tab">
+    <a class="button " href='#publish' aria-controls="publish" role="tab" data-toggle="tab">
       <span class="label">Publish</span>
       <span class="arrow"><span></span></span>
     </a>
+    <a class="button button-last" disabled>
+      <span class="label">&nbsp;</span>
+    </a>
+    <span class="label uppercase pull-right">Data Life Cycle</span>
   </div>
-  <div class="spacer30"></div>
-  <div class="tab-content">
+  <div class="panel-body tab-content">
     <div role="tabpanel" class="tab-pane active" id="plan">
-      <h3>Plan</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <div class="text-center">
-        <a class="btn btn-md btn-danger"
-           href="http://pc90.viavansi.com/"
-           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
-        <a class="btn btn-md btn-danger"
-           href="{{ url_for("deposit.create", deposition_type="dmp") }}"
-           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
-      </div> 
+      <div class="col-md-9"><h3>Plan</h3>
+        <p>Map out the processes and resources for the entire data life cycle. Start with the project goals (desired outpus, outcomes, and impacts) and work backwards to build a data management plan, supporting data policies, and sustainability plans.
+        </p>
+      </div>
+      <div class="col-md-3">
+        <div class="spacer20"></div>
+        <a class="btn btn-block btn-danger"
+          href="http://pc90.viavansi.com/"
+          role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
+        <a class="btn btn-block btn-danger"
+          href="{{ url_for("deposit.create", deposition_type="dmp") }}"
+          role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
+      </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="acquire">
-      <h3>Acquire</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <div class="text-center">
-        <a id="btn-deposit-dataset" class="btn btn-md btn-danger   "
-           href="{{ url_for("deposit.create", deposition_type="dataset" ) }}"
-           role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
-        <a id="btn-deposit-software" class="btn btn-md btn-danger  "
-           href="{{ url_for("deposit.create", deposition_type="software") }}"
-           role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
+      <div class="col-md-9">
+        <h3>Describe and collect</h3>
+        <p>Document data by describing the why, who, what, when, where, and how of the data. Metadata, or data about data, are key to data sharing and reuse, and many tools such as standards and software are available to help describe data.Determine the best way to get information from participants into a usable data file. The end results of this decision process is a data model that describes the way the data is structured. </p>
+      </div>
+      <div class="col-md-3">
+        <div class="spacer20"></div>
+        <a id="btn-deposit-dataset" class="btn btn-block btn-danger   "
+          href="{{ url_for("deposit.create", deposition_type="dataset" ) }}"
+          role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
+        <a id="btn-deposit-software" class="btn btn-block btn-danger  "
+          href="{{ url_for("deposit.create", deposition_type="software") }}"
+          role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="curate">
-      <h3>Curate</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
+      <div class="col-md-12">
+        <h3>Curate</h3>
+        <p>Employ quality assurance and quality control procedures that enhance the quality of data (e.g., training participants, routine instrument calibration) and identify potential errors and techniques to address them.</p>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10">Title</th>
+              <th class="col-md-1">Type</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td>DataSet</td>
+            <td><a class="btn btn-default pull-right">Curate</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td>DataSet</td>
+            <td><a class="btn btn-default pull-right">Curate</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td>DataSet</td>
+            <td><a class="btn btn-default pull-right">Curate</a></td>
+          </tr>
+          <tr>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+            <td>DataSet</td>
+            <td><a class="btn btn-default pull-right">Curate</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td>DataSet</td>
+            <td><a class="btn btn-default pull-right">Curate</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="integrate">
-      <h3>Integrate</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <div class="text-center">
-        <a id="btn-deposit-analysis" class="btn btn-md btn-danger  "
-           href="{{ url_for("deposit.create", deposition_type="analysis") }}"
-           role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+      <div class="col-md-9">
+        <h3>Integrate</h3>
+        <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
       </div>
+      <div class="col-md-3">
+        <div class="spacer20"></div>
+        <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
+          href="{{ url_for("deposit.create", deposition_type="analysis") }}"
+          role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+      </div>
+      <div class="clearfix"></div>
+      <div class="spacer50"></div>
+      <div class="col-md-6">
+        <div class="panel">
+          <div class="panel-heading" style="background: #CCC; border: none;">
+            Datasets
+          </div>
+          <div class="panel-body">
+            <table class="table table-hover">
+              <tr>
+                <td class="col-md-1"><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel">
+          <div class="panel-heading" style="background: #CCC; border: none;">
+            Software
+          </div>
+          <div class="panel-body">
+            <table class="table table-hover">
+              <tr>
+                <td class="col-md-1"><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div role="tabpanel" class="tab-pane" id="analyze">
+      <div class="col-md-12">
       <h3>Analyze</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <div class="text-center">
-       <a class="btn btn-md btn-danger" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a> 
-      </div>
+      <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="col-md-10"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+        </tr>
+        <tr>
+          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
+    </div>
+
     <div role="tabpanel" class="tab-pane" id="preserve">
+      <div class="col-md-12">
       <h3>Preserve</h3>
-      <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <div class="text-center">
-       <a class="btn btn-md btn-default"  data-toggle="modal" data-target="#doi-confirm-dialog" href="#">
-         <i class="fa fa-barcode"></i> Mint Doi</a>
-      </div>
+      <p>Plan to preserve data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to preserve, where to preserve it, and what documentation needs to accompany the data.</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="col-md-10"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+        </tr>
+        <tr>
+          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="publish">
+      <div class="col-md-12">
       <h3>Publish</h3>
       <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
       </p>
-      <div class="text-center">
-       <a class="btn btn-md btn-default"  data-toggle="modal" data-target="#doi-confirm-dialog" href="#">
-         <i class="fa fa-barcode"></i>Publish</a>
-      </div>
-
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="col-md-10"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Publish</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Publish</a></td>
+        </tr>
+        <tr>
+          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Publish</a></td>
+        </tr>
+        <tr>
+          <td>Example Title Single Line</td>
+          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Publish</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     </div>
   </div>
-</div>
-
-<div class="spacer30"></div>
-<div>
-<h2>Project uploads</h2>
-
 </div>
 {% endblock body %}
