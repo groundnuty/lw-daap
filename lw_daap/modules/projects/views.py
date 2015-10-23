@@ -31,7 +31,7 @@ from invenio.ext.sqlalchemy import db
 
 from lw_daap.ext.login import login_required
 
-from .forms import ProjectForm
+from .forms import ProjectForm, SearchForm
 from .models import Project
 
 blueprint = Blueprint(
@@ -42,11 +42,23 @@ blueprint = Blueprint(
     template_folder="templates",
 )
 
+
+@blueprint.app_template_filter('myprojects_ctx')
+def myprojects_ctx():
+    """Helper method for return ctx used by many views."""
+    return { 'myprojects': Project.query.filter_by().order_by(db.asc(Project.title)).all() }
+
+
 @blueprint.route('/', methods=['GET', ])
-@register_breadcrumb(blueprint, '.', _('Projects'))
 @register_menu(blueprint, 'main.projects', _('Projects'), order=2)
+@register_breadcrumb(blueprint, '.', _('Projects'))
 def index():
     ctx = {}
+    form = SearchForm()
+    ctx = myprojects_ctx()
+    ctx.update({
+        'form': form,
+    })
     return render_template(
         "projects/index.html",
         **ctx
@@ -64,17 +76,15 @@ def index():
 @login_required
 def myprojects():
     ctx = {}
+    ctx = myprojects_ctx()
+    form = SearchForm(p=p)
+    ctx.update({
+        'form': form,
+    })
     return render_template(
         'projects/index.html',
         **ctx
     )
-
-
-@blueprint.app_template_filter('myprojects_ctx')
-def myprojects_ctx():
-    """Helper method for return ctx used by many views."""
-    return { 'myprojects': Project.query.filter_by().order_by(db.asc(Project.title)).all() }
-
 
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @ssl_required
@@ -98,7 +108,8 @@ def new():
         data = form.data
         #data['id'] = data['identifier']
         #del data['identifier']
-        p = Project(id_user=uid, **data)
+        #p = Project(id_user=uid, **data)
+        p = Project(**data)
         db.session.add(p)
         db.session.commit()
         p.save_collections()
@@ -106,7 +117,7 @@ def new():
         return redirect(url_for('.index'))
 
     return render_template(
-        "projects/new_base.html",
+        "projects/new.html",
         **ctx
     )
 
