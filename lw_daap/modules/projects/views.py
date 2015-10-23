@@ -19,7 +19,7 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, render_template, request, flash, url_for
+from flask import Blueprint, render_template, request, flash, url_for, redirect
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
@@ -106,7 +106,7 @@ def new():
         db.session.commit()
         #p.save_collections()
         flash("Project was successfully created.", category='success')
-        return redirect(url_for('.index'))
+        return redirect(url_for('.show', project_id=p.id))
 
     return render_template(
         "projects/new.html",
