@@ -75,14 +75,11 @@ def index():
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects', _('My Projects'))
 @login_required
 def myprojects():
-    ctx = {}
-    ctx = myprojects_ctx()
-    form = SearchForm(p=p)
-    ctx.update({
-        'form': form,
-    })
+    ctx = dict(
+        my_projects=Project.get_projects(current_user),
+    )
     return render_template(
-        'projects/index.html',
+        'projects/myview.html',
         **ctx
     )
 
