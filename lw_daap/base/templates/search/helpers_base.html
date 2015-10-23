@@ -180,7 +180,7 @@
 
 
 {% macro _search_simple_box(collection, easy_search_form) %}
-{#
+<!--
   {% block _search_simple_box scoped %}
     {% for f in easy_search_form if not f.name=='csrf_token' %}
     <div class="form-group">
@@ -206,7 +206,7 @@
       </div>
     </div>
   {% endblock _search_simple_box %}
-#}
+-->
 {% endmacro %}
 
 
@@ -295,7 +295,7 @@
 {% endmacro %}
 
 {% macro search_box(collection, easy_search_form) %}
-{#
+<!--
 {% block search_box scoped %}
   <div class="form-horizontal add_to_search-form">
     <div class="form-group _tab-form-group">
@@ -339,13 +339,13 @@
     </div>
   </div>
 {% endblock search_box %}
-#}
+-->
 {% endmacro %}
 
 
 {% macro searchsettings_form(collection) %}
 {% block searchsettings_form scoped %}
-{#
+<!--
   <form action="{{ url_for('search.search') }}"
     name="settings"
     method="get"
@@ -450,7 +450,7 @@
   </div>
 
   </form>
-#}
+-->
 {% endblock searchsettings_form %}{% endmacro %}
 
 
