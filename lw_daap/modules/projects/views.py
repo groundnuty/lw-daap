@@ -19,7 +19,7 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash, url_for
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
@@ -43,17 +43,16 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.app_template_filter('myprojects_ctx')
 def myprojects_ctx():
     """Helper method for return ctx used by many views."""
-    return { 'myprojects': Project.query.filter_by().order_by(db.asc(Project.title)).all() }
+    uid = current_user.get_id()
+    return { 'myprojects': Project.query.filter_by(id_user=uid).order_by(db.asc(Project.title)).all() }
 
 
 @blueprint.route('/', methods=['GET', ])
 @register_menu(blueprint, 'main.projects', _('Projects'), order=2)
 @register_breadcrumb(blueprint, '.', _('Projects'))
 def index():
-    ctx = {}
     form = SearchForm()
     ctx = myprojects_ctx()
     ctx.update({
@@ -75,13 +74,12 @@ def index():
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects', _('My Projects'))
 @login_required
 def myprojects():
-    ctx = dict(
-        my_projects=Project.get_projects(current_user),
-    )
+    ctx = myprojects_ctx()
     return render_template(
         'projects/myview.html',
         **ctx
     )
+
 
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @ssl_required
@@ -103,13 +101,10 @@ def new():
     if request.method == 'POST' and form.validate():
         # Map form
         data = form.data
-        #data['id'] = data['identifier']
-        #del data['identifier']
-        #p = Project(id_user=uid, **data)
-        p = Project(**data)
+        p = Project(id_user=uid, **data)
         db.session.add(p)
         db.session.commit()
-        p.save_collections()
+        #p.save_collections()
         flash("Project was successfully created.", category='success')
         return redirect(url_for('.index'))
 
@@ -123,17 +118,15 @@ def project_breadcrumb(*args, **kwargs):
     project_id = request.view_args['project_id']
     project = Project.query.get(project_id)
     # XXX  FIXME
-    return [{'text': "title", 'url': '.'}]
+    return [{'text': project.title,
+             'url': url_for('.show', project_id=project_id)}]
 
 
 @blueprint.route('/show/<int:project_id>', methods=['GET'])
-@register_breadcrumb(blueprint, '.show', '',
-                     dynamic_list_constructor=project_breadcrumb)
+@register_breadcrumb(blueprint, '.show', 'Show')
 def show(project_id):
-    class P():
-        title = 'My test project'
-        description = 'This is some more longer text describing the project whatever' 
+    project = Project.query.get_or_404(project_id)
     ctx = dict(
-        project=P(),
+        project=project,
     )
     return render_template("projects/show.html", **ctx)
