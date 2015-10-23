@@ -23,15 +23,6 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
 from invenio.modules.search.models import Collection
 
-from invenio.modules.workflows.models import BibWorkflowObject, Workflow
-
-class DepositionError(Exception):
-    """Base class for deposition errors."""
-    pass
-
-class InvalidDepositionType(DepositionError):
-    """Raise when a deposition type cannot be found."""
-    pass
 
 class Project(db.Model):
     """
@@ -49,51 +40,20 @@ class Project(db.Model):
     """ Project short description """
 
     # collection
-    #id_collection = db.Column(
-    #    db.Integer(15, unsigned=True), db.ForeignKey(Collection.id),
-    #    nullable=True, default=None
-    #)
-    #collection = db.relationship(
-    #    Collection, uselist=False, backref='community',
-    #    foreign_keys=[id_collection]
-    #)
+    id_collection = db.Column(
+        db.Integer(15, unsigned=True), db.ForeignKey(Collection.id),
+        nullable=True, default=None
+    )
+    collection = db.relationship(
+        Collection, uselist=False, backref='project',
+        foreign_keys=[id_collection]
+    )
 
     # owner
-    #id_user = db.Column(
-    #    db.Integer(15, unsigned=True), db.ForeignKey(User.id),
-    #    nullable=False
-    #)
-    #owner = db.relationship(User, backref='communities',
-    #                        foreign_keys=[id_user])
-
-    @classmethod
-    def get_projects(cls, user=None, type=None):
-        params = [
-            Workflow.module_name == 'webdeposit',
-        ]
-
-        if user:
-            params.append(BibWorkflowObject.id_user == user.get_id())
-        else:
-            params.append(BibWorkflowObject.id_user != 0)
-
-        if type:
-            params.append(Workflow.name == type.get_identifier())
-
-        objects = BibWorkflowObject.query.join("workflow").options(
-            db.contains_eager('workflow')).filter(*params).order_by(
-            BibWorkflowObject.modified.desc()).all()
-
-        #def _create_obj(o):
-        #    try:
-        #        obj = cls(o)
-        #    except InvalidDepositionType as err:
-        #        current_app.logger.exception(err)
-        #        return None
-        #    if type is None or obj.type == type:
-        #        return obj
-        #    return None
-
-        #return filter(lambda x: x is not None, map(_create_obj, objects))
-        return "myfirstproject"
+    id_user = db.Column(
+        db.Integer(15, unsigned=True), db.ForeignKey(User.id),
+        nullable=False
+    )
+    owner = db.relationship(User, backref='projects',
+                            foreign_keys=[id_user])
 
