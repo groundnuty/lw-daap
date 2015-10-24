@@ -20,8 +20,12 @@
 from __future__ import absolute_import
 
 from invenio.ext.sqlalchemy import db
+from invenio.base.globals import cfg
+from invenio.config import CFG_SITE_LANG
 from invenio.modules.accounts.models import User
-from invenio.modules.search.models import Collection
+from invenio.modules.search.models import \
+    Collection, CollectionCollection, \
+    CollectionFormat, Collectionname, Format
 
 
 class Project(db.Model):
@@ -57,3 +61,114 @@ class Project(db.Model):
     owner = db.relationship(User, backref='projects',
                             foreign_keys=[id_user])
 
+
+    #
+    # Collection management
+    #
+    def get_collection_name(self):
+        return '%s-%s' % (cfg['PROJECTS_COLLECTION_PREFIX'], self.id)
+
+    def get_collection_dbquery(self):
+        return '%s:%s' % ("980__a", self.get_collection_name())
+
+    def save_collectionname(self, collection, title):
+        if collection.id:
+            c_name = Collectionname.query.filter_by(
+                id_collection=collection.id, ln=CFG_SITE_LANG, type='ln'
+            ).first()
+            if c_name:
+                update_changed_fields(c_name, dict(value=title))
+                return c_name
+
+        c_name = Collectionname(
+            collection=collection,
+            ln=CFG_SITE_LANG,
+            type='ln',
+            value=title,
+        )
+        db.session.add(c_name)
+        return c_name
+    
+    def save_collectioncollection(self, collection):
+        """Create or update CollectionCollection object."""
+        dad = Collection.query.filter_by(
+            name=cfg['PROJECTS_PARENT_NAME']).first()
+
+        if collection.id:
+            c_tree = CollectionCollection.query.filter_by(
+                id_dad=dad.id,
+                id_son=collection.id
+            ).first()
+            if c_tree:
+                update_changed_fields(c_tree, dict(
+                    type=cfg['PROJECTS_COLLECTION_TYPE'],
+                    score=cfg['PROJECTS_COLLECTION_SCORE']))
+                return c_tree
+
+        c_tree = CollectionCollection(
+            dad=dad,
+            son=collection,
+            type=cfg['PROJECTS_COLLECTION_TYPE'],
+            score=cfg['PROJECTS_COLLECTION_SCORE'],
+        )
+        db.session.add(c_tree)
+        return c_tree
+
+    def save_collectionformat(self, collection):
+        """Create or update CollectionFormat object."""
+        fmt = Format.query.filter_by(code=cfg['PROJECTS_OUTPUTFORMAT']).first()
+
+        if collection.id:
+            c_fmt = CollectionFormat.query.filter_by(
+                id_collection=collection.id
+            ).first()
+            if c_fmt:
+                update_changed_fields(c_fmt, dict(id_format=fmt.id, score=1))
+                return c_fmt
+
+        c_fmt = CollectionFormat(
+            collection=collection,
+            id_format=fmt.id,
+        )
+        db.session.add(c_fmt)
+        return c_fmt
+
+    def save_collection(self):
+        collection_name = self.get_collection_name()
+        c = Collection.query.filter_by(name=collection_name).first()
+        fields = dict(
+            name=collection_name,
+            dbquery=self.get_collection_dbquery()
+        ) 
+        if c:
+            update_changed_fields(c, fields)
+        else:
+            c = Collection(**fields)
+            db.session.add(c)
+            db.session.commit()
+        self.collection = c
+        self.save_collectionname(c, self.title)
+        self.save_collectioncollection(c)
+        self.save_collectionformat(c)
+        db.session.commit()
+
+    @classmethod
+    def filter_projects(cls, p=None, so=None):
+        # TODO
+        return cls.query.filter()
+
+#
+#
+#
+def update_changed_fields(obj, fields):
+    """Utility method to update fields on an object if they have changed.
+
+    Will also report back if any changes where made.
+    """
+    dirty = False
+    for attr, newval in fields.items():
+        val = getattr(obj, attr)
+        if val != newval:
+            setattr(obj, attr, newval)
+            dirty = True
+    return dirty
