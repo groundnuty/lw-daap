@@ -51,6 +51,9 @@ class CollectionData(DataSet):
         id = 6
         name = 'Communities'
 
+    class projectparent(object):
+        id = 7
+        name = 'Projects'
 
 
 class CollectionCollectionData(DataSet):
