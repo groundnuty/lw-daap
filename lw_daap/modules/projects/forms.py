@@ -29,16 +29,13 @@ from .models import Project
 
 
 class SearchForm(Form):
-
     """Search Form."""
-
     p = StringField(
         validators=[validators.DataRequired()]
     )
 
 
 class ProjectForm(Form):
-
     """Project form."""
 
     field_sets = [
@@ -83,8 +80,6 @@ class ProjectForm(Form):
         """Check if field has state mapping."""
         return field.short_name in self.field_state_mapping
 
-
-
     def has_autocomplete(self, field):
         """Check if filed has autocomplete."""
         return hasattr(field, 'autocomplete')
@@ -110,17 +105,4 @@ class ProjectForm(Form):
 
 
 class EditProjectForm(ProjectForm):
-
-    """Edit community form.
-
-    Same as collection form, except identifier is removed.
-    """
-
-    identifier = None
-
-
-class DeleteProjectForm(InvenioBaseForm):
-
-    """Confirm deletion of a collection."""
-
-    delete = HiddenField(default='yes', validators=[validators.DataRequired()])
+    pass

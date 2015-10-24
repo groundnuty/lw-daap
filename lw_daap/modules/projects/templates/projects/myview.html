@@ -1,4 +1,22 @@
 {#
+ # This file is part of Lifewatch DAAP.
+ # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+ #
+ # Lifewatch DAAP is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Lifewatch DAAP is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{#
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014 CERN.
 #
@@ -17,48 +35,94 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-<div class="well">
-    <h2>{{ _('My uploads') }}</h2>
-    {% if not my_depositions %}
-    <p class="text-muted">{{ _('You currently have no uploads.') }}</p>
-    {% else %}
-    {% for dep in my_depositions if not dep.has_sip() %}
-    {%- set deposition_type = None if dep.type.is_default() else dep.type.get_identifier() -%}
-    {%- if loop.first %}
-    <h4>{{ _('Unsubmitted') }}</h4>
-    <table class="table table-striped">
-    {%- endif %}
-    <tr>
-        <td><a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">{% if dep.title %}
-                  {{ dep.title }}
-              {% else %}
-                  {{ _('Untitled') }}
-              {% endif %}</a></td><td>{{ dep.modified|invenio_pretty_date }}</td><td><a href="{{ url_for('webdeposit.delete', deposition_type=deposition_type, uuid=dep.id) }}" class="rmlink" rel="tooltip" title="Delete upload"><i class="glyphicon glyphicon-trash"></i></a></td>
-    </tr>
-    {%- if loop.last %}
-    </table>
-    {%- endif %}
-    {% else %}
+{%- extends "accounts/settings/index_base.html" -%}
+{%- import "helpers_base.html" as hb -%}
 
-    {% endfor %}
-
-    {% for dep in my_depositions if dep.has_sip() %}
-    {%- set deposition_type = None if dep.type.is_default() else dep.type.get_identifier() -%}
-    {%- if loop.first %}
-    <h4>{{ _('Submitted') }}</h4>
-    <table class="table table-striped">
-    {% endif %}
-    <tr>
-        <td><a href="{{ url_for('webdeposit.run', deposition_type=deposition_type, uuid=dep.id) }}">{% if dep.title %}
-                  {{ dep.title }}
-              {% else %}
-                  {{ _('Untitled') }}
-              {% endif %}</a></td><td>{{ dep.modified|invenio_pretty_date }}</td><td></td>
-    </tr>
-    {%- if loop.last %}
-    </table>
-    {%- endif %}
-    {%- endfor %}
-    {%- endif %}
+{% block settings_body %}
+<div id="deletemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deletemodal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="deletemodal_label">Delete project?</h3>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger"><h5>Warning</h5><ul><li>You will loose all connections to records currently attached to this project and you will not be able to recover them.</li></ul></div>
+      </div>
+      <div class="modal-footer">
+        {#<form action="{{url_for('.delete', project_id=project.id)}}" method="POST">#}
+        <form action="" method="POST">
+          {%- for field in deleteform %}{{ field }}{% endfor %}
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">No, thanks</button>
+          {#<button type="submit" href="{{ url_for('.delete', project_id=proj.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>#}
+          <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="panel-list-wrapper">
+  <div class="panel panel-default panel-sharp">
+    {% call hb.panel_head() %}
+    <i class="fa fa-list-al"></i>
+    {{ _('My projects') }}
+    {% endcall %}
+    {% call hb.panel_body() %}
+    {% if not myprojects %}
+      <p class="text-muted">{{ _('You currently have no projects') }}</p>
+    {% else %}
+      {% for proj in myprojects %}
+      {#{% for proj in myprojects if not proj.has_sip() %}#}
+      {#{%- set project_type = None if proj.type.is_default() else proj.type.get_identifier() -%}#}
+      {%- if loop.first %}
+      <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Private') }}</h4>
+      <table class="table table-striped">
+      {%- endif %}
+      <tr>
+        <td style="padding-left: 20px; width: 50%;">
+          <a href="{{ url_for('.delete', project_id=proj.id) }}"
+            class="rmlink" rel="tooltip" title="Delete project">
+            <i class="glyphicon glyphicon-trash"></i>&nbsp;
+          </a>  
+          <a href="{{ url_for('.show', project_id=proj.id) }}">
+            {{proj.title if proj.title else 'Untitled'}}
+          </a>
+        </td>
+        <td>
+          creation date?
+          {{ proj.modified|invenio_pretty_date }}
+        </td>
+      </tr>
+      {%- if loop.last %}
+      </table>
+      {%- endif %}
+      {% else %}
+      {% endfor %}
+      {% for proj in myprojects %}
+      {#{% for proj in myprojects if proj.has_sip() %}#}
+      {#{%- set project_type = None if proj.type.is_default() else proj.type.get_identifier() -%}#}
+      {%- if loop.first %}
+      <h4><i class="fa fa-fw fa-upload"></i> {{ _('Public') }}</h4>
+      <table class="table table-striped">
+      {% endif %}
+      <tr>
+        <td style="padding-left: 20px; width: 50%;">
+          <a href="{{ url_for('.show', project_id=proj.id) }}">
+            {{proj.title if proj.title else 'Untitled'}}
+          </a>
+        </td>
+        <td>
+          creation date?
+          {{ proj.modified|invenio_pretty_date }}
+        </td>
+      </tr>
+      {%- if loop.last %}
+      </table>
+      {%- endif %}
+      {%- endfor %}
+    {%- endif %}
+    {% endcall %}
+  </div>
+</div>
+{% endblock %}
