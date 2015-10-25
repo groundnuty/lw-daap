@@ -75,7 +75,7 @@ class CollectionCollectionData(DataSet):
         score = 0
         type = 'r'
 
-    class site_dataset:
+    class site_dmp:
         dad = siteCollection
         son = CollectionData.dmp
         score = 0
