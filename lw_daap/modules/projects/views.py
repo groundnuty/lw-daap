@@ -24,6 +24,7 @@ from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
 
+from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
@@ -33,7 +34,7 @@ from invenio.utils.pagination import Pagination
 
 from lw_daap.ext.login import login_required
 
-from .forms import ProjectForm, SearchForm, EditProjectForm
+from .forms import ProjectForm, SearchForm, EditProjectForm, DeleteProjectForm
 from .models import Project
 
 blueprint = Blueprint(
@@ -54,13 +55,11 @@ def myprojects_ctx():
 @blueprint.route('/', methods=['GET', ])
 @register_menu(blueprint, 'main.projects', _('Projects'), order=2)
 @register_breadcrumb(blueprint, '.', _('Projects'))
-def index():
-    ctx = myprojects_ctx()
-
-    # these should come as query params
-    p = so = None
-    page = 1
-    ###############
+@wash_arguments({'p': (unicode, ''),
+                 'so': (unicode, ''),
+                 'page': (int, 1),
+                 })
+def index(p, so, page):
     projects = Project.filter_projects(p, so)
     per_page = cfg.get('PROJECTS_DISPLAYED_PER_PAGE', 10)
     page = max(page, 1)
@@ -68,11 +67,11 @@ def index():
 
     form = SearchForm()
 
-    ctx.update({
-        'projects': projects,
-        'form': form,
-        'pagination': pagination,
-    })
+    ctx = dict(
+        projects=projects.slice(per_page*(page-1), per_page*page).all(),
+        form=form,
+        pagination=pagination,
+    )
     return render_template(
         "projects/index.html",
         **ctx
@@ -90,6 +89,9 @@ def index():
 @login_required
 def myprojects():
     ctx = myprojects_ctx()
+    ctx.update({
+        "deleteform": DeleteProjectForm()
+    })
     return render_template(
         'projects/myview.html',
         **ctx
@@ -154,16 +156,7 @@ def edit(project_id):
     return render_template(
         "projects/new.html",
         **ctx
-    ) 
-    
-
-
-def project_breadcrumb(*args, **kwargs):
-    project_id = request.view_args['project_id']
-    project = Project.query.get(project_id)
-    # XXX  FIXME
-    return [{'text': project.title,
-             'url': url_for('.show', project_id=project_id)}]
+    )
 
 
 @blueprint.route('/show/<int:project_id>', methods=['GET'])
@@ -174,3 +167,27 @@ def show(project_id):
         project=project,
     )
     return render_template("projects/show.html", **ctx)
+
+
+@blueprint.route('/delete/<int:project_id>', methods=['POST'])
+@ssl_required
+@login_required
+@permission_required('submit')
+def delete(project_id):
+    project = Project.query.get_or_404(project_id)
+    if current_user.get_id() != project.id_user:
+        flash('Only the owner of the project can delete it', category='error')
+        abort(404)
+    if project.is_public:
+        flash('Project has public records, cannot be deleted', category='error')
+        abort(404)
+
+    form = DeleteProjectForm(request.values)
+    if request.method == 'POST' and form.validate():
+        project.delete_collection()
+        db.session.delete(project)
+        db.session.commit()
+        flash("Project was successfully deleted.", category='success')
+    else:
+        flash("Project cannot be deleted.", category='warning')
+    return redirect(url_for('.myprojects'))

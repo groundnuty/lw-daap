@@ -19,6 +19,8 @@
 
 from __future__ import absolute_import
 
+from datetime import datetime
+
 from invenio.ext.sqlalchemy import db
 from invenio.base.globals import cfg
 from invenio.config import CFG_SITE_LANG
@@ -42,6 +44,17 @@ class Project(db.Model):
 
     description = db.Column(db.Text(), nullable=False, default='')
     """ Project short description """
+
+    creation_date = db.Column(db.DateTime(), nullable=False,
+                              default=datetime.now)
+    """ creation date of the project"""
+
+    modification_date = db.Column(db.DateTime(), nullable=False,
+                                  default=datetime.now)
+    """ date of last modification"""
+
+    is_public = db.Column(db.Boolean, nullable=False, default=False)
+    """ does the project have any public records?"""
 
     # collection
     id_collection = db.Column(
@@ -151,6 +164,17 @@ class Project(db.Model):
         self.save_collectioncollection(c)
         self.save_collectionformat(c)
         db.session.commit()
+
+    def delete_collection(self):
+        if self.collection:
+            CollectionFormat.query.filter_by(
+                id_collection=self.collection.id).delete()
+            Collectionname.query.filter_by(
+                id_collection=self.collection.id).delete()
+            CollectionCollection.query.filter_by(
+                id_son=self.collection.id).delete()
+            db.session.delete(self.collection)
+            db.session.commit()
 
     @classmethod
     def filter_projects(cls, p=None, so=None):

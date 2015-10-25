@@ -35,6 +35,10 @@ class SearchForm(Form):
     )
 
 
+class DeleteProjectForm(Form):
+    delete = HiddenField(default='yes', validators=[validators.DataRequired()])
+
+
 class ProjectForm(Form):
     """Project form."""
 

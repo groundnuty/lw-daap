@@ -38,6 +38,41 @@
 {%- extends "accounts/settings/index_base.html" -%}
 {%- import "helpers_base.html" as hb -%}
 
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $('#deletemodal').on('show.bs.modal', function (event) {
+        var a = $(event.relatedTarget)
+        var deleteUrl = a.data('deleteUrl') // Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('#deleteform').attr('action', deleteUrl);
+    });
+});
+</script>
+{% endblock %}
+
+{% macro project_row(p) %}
+<tr>
+  <td style="padding-left:20px; width: 50%;">
+    {% if not p.is_public %}
+    <a href="#" data-toggle="modal" data-target="#deletemodal"
+       data-delete-url="{{ url_for('.delete', project_id=p.id) }}"
+       class="rmlink" rel="tooltip" title="Delete project">
+       <i class="glyphicon glyphicon-trash"></i>&nbsp;
+    </a>
+    {% endif %}
+    <a href="{{ url_for('.show', project_id=p.id) }}">
+      {{p.title if p.title else 'Untitled'}}
+    </a>
+  </td>
+  <td>
+    {{ p.modification_date|invenio_pretty_date }}
+  </td>
+</tr>
+{% endmacro %}
+
 {% block settings_body %}
 <div id="deletemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deletemodal_label" aria-hidden="true">
   <div class="modal-dialog">
@@ -50,11 +85,9 @@
         <div class="alert alert-danger"><h5>Warning</h5><ul><li>You will loose all connections to records currently attached to this project and you will not be able to recover them.</li></ul></div>
       </div>
       <div class="modal-footer">
-        {#<form action="{{url_for('.delete', project_id=project.id)}}" method="POST">#}
-        <form action="" method="POST">
+        <form id="deleteform" action="#" method="POST">
           {%- for field in deleteform %}{{ field }}{% endfor %}
           <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">No, thanks</button>
-          {#<button type="submit" href="{{ url_for('.delete', project_id=proj.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>#}
           <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
         </form>
       </div>
@@ -72,51 +105,23 @@
     {% if not myprojects %}
       <p class="text-muted">{{ _('You currently have no projects') }}</p>
     {% else %}
-      {% for proj in myprojects %}
-      {#{% for proj in myprojects if not proj.has_sip() %}#}
-      {#{%- set project_type = None if proj.type.is_default() else proj.type.get_identifier() -%}#}
+      {% for proj in myprojects if not proj.is_public %}
       {%- if loop.first %}
       <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Private') }}</h4>
       <table class="table table-striped">
       {%- endif %}
-      <tr>
-        <td style="padding-left: 20px; width: 50%;">
-          <a href="{{ url_for('.delete', project_id=proj.id) }}"
-            class="rmlink" rel="tooltip" title="Delete project">
-            <i class="glyphicon glyphicon-trash"></i>&nbsp;
-          </a>  
-          <a href="{{ url_for('.show', project_id=proj.id) }}">
-            {{proj.title if proj.title else 'Untitled'}}
-          </a>
-        </td>
-        <td>
-          creation date?
-          {{ proj.modified|invenio_pretty_date }}
-        </td>
-      </tr>
+        {{ project_row(proj) }}
       {%- if loop.last %}
       </table>
       {%- endif %}
       {% else %}
       {% endfor %}
-      {% for proj in myprojects %}
-      {#{% for proj in myprojects if proj.has_sip() %}#}
-      {#{%- set project_type = None if proj.type.is_default() else proj.type.get_identifier() -%}#}
+      {% for proj in myprojects if proj.is_public %}
       {%- if loop.first %}
       <h4><i class="fa fa-fw fa-upload"></i> {{ _('Public') }}</h4>
       <table class="table table-striped">
       {% endif %}
-      <tr>
-        <td style="padding-left: 20px; width: 50%;">
-          <a href="{{ url_for('.show', project_id=proj.id) }}">
-            {{proj.title if proj.title else 'Untitled'}}
-          </a>
-        </td>
-        <td>
-          creation date?
-          {{ proj.modified|invenio_pretty_date }}
-        </td>
-      </tr>
+        {{ project_row(proj) }}
       {%- if loop.last %}
       </table>
       {%- endif %}
