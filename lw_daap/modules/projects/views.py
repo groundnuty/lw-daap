@@ -61,7 +61,7 @@ def myprojects_ctx():
                  })
 def index(p, so, page):
     projects = Project.filter_projects(p, so)
-    per_page = cfg.get('PROJECTS_DISPLAYED_PER_PAGE', 10)
+    per_page = cfg.get('PROJECTS_DISPLAYED_PER_PAGE', 9)
     page = max(page, 1)
     pagination = Pagination(page, per_page, projects.count())
 
