@@ -136,7 +136,7 @@ close_community_section
     obj.title,
     obj.community_url,
     curate_url, loop.index, False)|safe }}
-    {% if obj.despcription %}
+    {% if obj.description %}
     <p>{{ obj.description|striptags|truncate }}</p>
     {% endif %}
     <small class="text-muted">Curated by: {{ obj.owner.nickname }}</small>

@@ -42,29 +42,6 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-{% if not is_new %}
-<div id="deletemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deletemodal_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="deletemodal_label">Delete project?</h3>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-danger"><h5>Warning</h5><ul><li>You will loose all connections to records currently attached to this project and you will not be able to recover them.</li><li>Any external repository harvesting your project collection will stop working.</li></ul></div>
-      </div>
-      <div class="modal-footer">
-        <form action="{{url_for('.delete', project_id=project.id)}}" method="POST">
-          {%- for field in deleteform %}{{ field }}{% endfor %}
-          <button class="btn btn-large" data-dismiss="modal" aria-hidden="true">No, thanks</button>
-          <button type="submit" href="{{ url_for('.delete', project_id=project.id) }}" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
-
 <div class="row">
   <div class="col-md-12">
     <h1>{% if is_new -%}
@@ -81,11 +58,6 @@
   <div id="file_container" class="col-sm-12 col-md-12">
     <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
       <div class="well">
-        <button type="button" role="button" data-toggle="modal"
-          class="btn  btn-danger pull-left {% if is_new %} hide{% endif %}"
-          data-target="#deletemodal">
-          <i class="fa fa-trash-o fa-fw"></i> Delete
-        </button>
         <button type="submit" class="btn btn-primary pull-right edit-form-submit">
           <i class="fa fa-floppy-o fa-fw"></i>
           {% if is_new %}Create{% else %}Save{% endif %}
@@ -176,6 +148,6 @@ removeButtons: ''
 } 
 }
 
-init_ckeditor("description", 'simple');
+#init_ckeditor("description", 'simple');
 </script>
 {% endblock %}

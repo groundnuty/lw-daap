@@ -51,6 +51,9 @@ class CollectionData(DataSet):
         id = 6
         name = 'Communities'
 
+    class projectparent(object):
+        id = 7
+        name = 'Projects'
 
 
 class CollectionCollectionData(DataSet):
@@ -72,7 +75,7 @@ class CollectionCollectionData(DataSet):
         score = 0
         type = 'r'
 
-    class site_dataset:
+    class site_dmp:
         dad = siteCollection
         son = CollectionData.dmp
         score = 0
