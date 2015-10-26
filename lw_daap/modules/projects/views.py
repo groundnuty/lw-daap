@@ -206,7 +206,7 @@ def deposit(project_id, deposition_type):
 
     from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project'] = project_id
+    draft_cache.data['project-collection'] = project_id
     draft_cache.save() 
 
     return redirect(url_for('webdeposit.create', deposition_type=deposition_type))
