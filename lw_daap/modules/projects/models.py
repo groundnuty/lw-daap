@@ -84,6 +84,14 @@ class Project(db.Model):
     def get_collection_dbquery(self):
         return '%s:%s' % ("980__a", self.get_collection_name())
 
+    def get_project_records(self, record_type=None):
+        from invenio.legacy.search_engine import search_pattern_parenthesised
+        from invenio.modules.records.models import Record
+        """ Return all records of this project"""
+        recids = search_pattern_parenthesised(p='980__:%s' % self.get_collection_name())
+        records = Record.query.filter(Record.id.in_(recids)).filter_by().all()
+        return records
+
     def save_collectionname(self, collection, title):
         if collection.id:
             c_name = Collectionname.query.filter_by(

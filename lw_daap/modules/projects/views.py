@@ -165,8 +165,10 @@ def edit(project_id):
 @register_breadcrumb(blueprint, '.show', 'Show')
 def show(project_id):
     project = Project.query.get_or_404(project_id)
+    records = project.get_project_records()
     ctx = dict(
         project=project,
+        records=records
     )
     return render_template("projects/show.html", **ctx)
 
@@ -206,7 +208,7 @@ def deposit(project_id, deposition_type):
 
     from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project-collection'] = project_id
+    draft_cache.data['project_collection'] = project_id
     draft_cache.save() 
 
     return redirect(url_for('webdeposit.create', deposition_type=deposition_type))

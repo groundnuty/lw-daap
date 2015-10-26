@@ -99,10 +99,10 @@
       <div class="col-md-3">
         <div class="spacer20"></div>
         <a id="btn-deposit-dataset" class="btn btn-block btn-danger   "
-          href="{{ url_for("deposit.create", deposition_type="dataset" ) }}"
+          href="{{ url_for("lwdaap_projects.deposit", deposition_type="dataset" ) }}"
           role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
         <a id="btn-deposit-software" class="btn btn-block btn-danger  "
-          href="{{ url_for("deposit.create", deposition_type="software") }}"
+          href="{{ url_for("lwdaap_projects.deposit", deposition_type="software") }}"
           role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
       </div>
     </div>
@@ -156,7 +156,7 @@
       <div class="col-md-3">
         <div class="spacer20"></div>
         <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
-          href="{{ url_for("deposit.create", deposition_type="analysis") }}"
+          href="{{ url_for("lwdaap_projects.deposit", deposition_type="analysis") }}"
           role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
       </div>
       <div class="clearfix"></div>
@@ -312,4 +312,15 @@
     </div>
   </div>
 </div>
+
+{{ records }}
+
+<div class="col-sm-10 col-xs-10">
+{% for record in records %}
+  {{ record.title }}
+  {#{{ format_record(record, of, ln=g.ln, qid=qid, collection=collection)|safe }}#}
+  {#{% if not recordloop.last %}<hr/>{% endif %}#}
+{% endfor %}
+</div>
+
 {% endblock body %}
