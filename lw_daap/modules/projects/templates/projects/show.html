@@ -39,7 +39,7 @@
   </div>
 </div>
 
-
+{% if current_user.get_id() == project.owner.get_id() %}
 <div class="panel panel-primary">
   <div id="dlc-nav" class="panel-heading" style="background: #FF5001; padding-right: 30px;
     border: none; box-shadow: 4px 0 4px solid rgba(0, 0, 0, 0.25);">
@@ -100,10 +100,10 @@
       <div class="col-md-3">
         <div class="spacer20"></div>
         <a id="btn-deposit-dataset" class="btn btn-block btn-danger   "
-          href="{{ url_for("lwdaap_projects.deposit", deposition_type="dataset" ) }}"
+          href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dataset" ) }}"
           role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
         <a id="btn-deposit-software" class="btn btn-block btn-danger  "
-          href="{{ url_for("lwdaap_projects.deposit", deposition_type="software") }}"
+          href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
           role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
       </div>
     </div>
@@ -115,36 +115,16 @@
           <thead>
             <tr>
               <th class="col-md-10">Title</th>
-              <th class="col-md-1">Type</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
+          {% for rec in records %}
           <tr>
-            <td>Example Title Single Line</td>
-            <td>DataSet</td>
+            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-default pull-right">Curate</a></td>
           </tr>
-          <tr>
-            <td>Example Title Single Line</td>
-            <td>DataSet</td>
-            <td><a class="btn btn-default pull-right">Curate</a></td>
-          </tr>
-          <tr>
-            <td>Example Title Single Line</td>
-            <td>DataSet</td>
-            <td><a class="btn btn-default pull-right">Curate</a></td>
-          </tr>
-          <tr>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
-            <td>DataSet</td>
-            <td><a class="btn btn-default pull-right">Curate</a></td>
-          </tr>
-          <tr>
-            <td>Example Title Single Line</td>
-            <td>DataSet</td>
-            <td><a class="btn btn-default pull-right">Curate</a></td>
-          </tr>
+          {% endfor %}
           </tbody>
         </table>
       </div>
@@ -314,8 +294,8 @@
   </div>
 </div>
 
-
-
+{% endif %}
+{% if records %}
 <div class="panel panel-default ">
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-files">
@@ -335,13 +315,12 @@
         {% for record in records %}
         <tr><td>
         {{ format_record(record.id, of='hb', ln=g.ln)|safe }}
-    </td></tr>
-
+        </td></tr>
         {% endfor %}
       </table>
       </div>
     </div>
   </div>
 </div>
-
+{% endif %}
 {% endblock body %}
