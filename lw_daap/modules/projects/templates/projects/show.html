@@ -30,10 +30,11 @@
       </div>
     </div>
     <div class="col-md-1">
-        <a href="{{ url_for('.edit', project_id=project.id) }}" 
-           class="btn btn-lg btn-primary pull-right">
-           <i class="fa fa-pencil-square-o"></i> Edit
-        </a>
+      <a href="{{ url_for('.edit', project_id=project.id) }}" 
+        class="btn btn-lg btn-primary pull-right"
+        style="margin-top: 20px;">
+        <i class="fa fa-pencil-square-o"></i> Edit
+      </a>
     </div>
   </div>
 </div>
@@ -213,114 +214,134 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="analyze">
       <div class="col-md-12">
-      <h3>Analyze</h3>
-      <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
-      <table class="table table-hover">
-        <thead>
+        <h3>Analyze</h3>
+        <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10"></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           <tr>
-            <th class="col-md-10"></th>
-            <th></th>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
           </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-        </tr>
-        <tr>
-          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
-          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+          </tr>
+          <tr>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+            <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="preserve">
       <div class="col-md-12">
-      <h3>Preserve</h3>
-      <p>Plan to preserve data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to preserve, where to preserve it, and what documentation needs to accompany the data.</p>
-      <table class="table table-hover">
-        <thead>
+        <h3>Preserve</h3>
+        <p>Plan to preserve data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to preserve, where to preserve it, and what documentation needs to accompany the data.</p>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10"></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           <tr>
-            <th class="col-md-10"></th>
-            <th></th>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
           </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
-        </tr>
-        <tr>
-          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+          </tr>
+          <tr>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="publish">
       <div class="col-md-12">
-      <h3>Publish</h3>
-      <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-      </p>
-      <table class="table table-hover">
-        <thead>
+        <h3>Publish</h3>
+        <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
+        </p>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10"></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
           <tr>
-            <th class="col-md-10"></th>
-            <th></th>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
           </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-        </tr>
-        <tr>
-          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-        </tr>
-        <tr>
-          <td>Example Title Single Line</td>
-          <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
+          </tr>
+          <tr>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
+          </tr>
+          <tr>
+            <td>Example Title Single Line</td>
+            <td><a class="btn btn-md btn-default pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
-{{ records }}
 
-<div class="col-sm-10 col-xs-10">
-{% for record in records %}
-  {{ record.title }}
-  {#{{ format_record(record, of, ln=g.ln, qid=qid, collection=collection)|safe }}#}
-  {#{% if not recordloop.last %}<hr/>{% endif %}#}
-{% endfor %}
+
+<div class="panel panel-default ">
+  <div class="panel-heading">
+    <a data-toggle="collapse" class="panel-toggle" href="#collapse-files">
+      Project recods
+      <span class="pull-right show-on-collapsed">
+        <i class="fa fa-chevron-down"></i>
+      </span>
+      <span class="pull-right hide-on-collapsed">
+        <i class="fa fa-chevron-up"></i>
+      </span>
+    </a>
+  </div>
+  <div id="collapse-files" class="panel-collapse collapse in">
+    <div class="panel-body">
+      <div class="col-md-12">
+        <table class="table table-hover">
+        {% for record in records %}
+        <tr><td>
+        {{ format_record(record.id, of='hb', ln=g.ln)|safe }}
+    </td></tr>
+
+        {% endfor %}
+      </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock body %}

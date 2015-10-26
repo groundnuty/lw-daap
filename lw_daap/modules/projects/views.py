@@ -31,7 +31,7 @@ from invenio.ext.sslify import ssl_required
 from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
 from invenio.utils.pagination import Pagination
-
+from invenio.modules.formatter import format_record
 from lw_daap.ext.login import login_required
 
 from .forms import ProjectForm, SearchForm, EditProjectForm, DeleteProjectForm
@@ -168,7 +168,8 @@ def show(project_id):
     records = project.get_project_records()
     ctx = dict(
         project=project,
-        records=records
+        records=records,
+        format_record=format_record
     )
     return render_template("projects/show.html", **ctx)
 
@@ -209,7 +210,7 @@ def deposit(project_id, deposition_type):
     from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
     draft_cache.data['project_collection'] = project_id
-    draft_cache.save() 
+    draft_cache.save()
 
     return redirect(url_for('webdeposit.create', deposition_type=deposition_type))
 

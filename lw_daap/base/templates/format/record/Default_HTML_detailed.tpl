@@ -145,7 +145,20 @@ with context
         </table>
         {{ close_panel_section() }}
 
-
+        {% if daap_record.project_collection %}
+        {{ open_panel_section(
+        '<i class="fa fa-list-alt"></i> Related projects', 'projects', True) }}
+        <table class="table table-hover">
+        <tr>
+        <th class="col-md-3"><i class="fa fa-list-alt fa-fw"></i>Projects</th>
+        <td class="col-md-9">
+         {{ daap_record.project_collection }}
+        </td>
+        </tr>
+        </table>
+        {{ close_panel_section() }}
+        {% endif %}
+        
         {% if daap_record.upload_type == "analysis" %}
         {% if daap_record.rel_dataset or daap_record.rel_software %}
         {{ open_panel_section(

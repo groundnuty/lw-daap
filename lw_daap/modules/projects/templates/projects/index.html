@@ -1,20 +1,20 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 {#
 # This file is part of Invenio.
@@ -49,23 +49,22 @@
 {% block body %}
 <div class="row">
 
-  <div class="col-xs-12 col-sm-12 col-md-12">
-    <div class="row">
-      <div class="col-md-10">
-        <h1>
-          <i class="fa fa-list-alt"></i>
-          {{ _("Projects") }} <small>{{ _("created by") + config.CFG_SITE_NAME + _(" users") }}</small>
-        </h1>
-      </div>
-      <div class="col-md-2 center-block">
-        <a href="{{url_for('.new')}}" 
-           class="btn btn-lg btn-primary pull-right">
-           <i class="fa fa-plus-circle"></i> New Project
-        </a>
-      </div>
-    </div>
-
-    <div class="spacer20"></div>
+  <div class="col-md-10">
+    <h1>
+      <i class="fa fa-list-alt"></i>
+      {{ _("Projects") }} <small>{{ _("created by ") + config.CFG_SITE_NAME + _(" users") }}</small>
+    </h1>
+  </div>
+  <div class="col-md-2">
+    <a href="{{url_for('.new')}}" 
+      class="btn btn-primary btn-lg pull-right"
+      style="margin-top: 20px;">
+      <i class="fa fa-plus-circle"></i> New Project
+    </a>
+  </div>
+  <div class="clearfix"></div>
+  <div class="spacer50"></div>
+  <div class="col-md-12">
     <nav class="navbar searchform" role="navigation">
       <div class="navbar-collapse">
         <form action="." method="GET" id="search_form" class="navbar-form" role="form">
@@ -81,34 +80,31 @@
         </form>
       </div>
     </nav>
-
-    {%- set args = request.args.copy().to_dict() -%}
   </div>
-</div>
-<div class="spacer20"></div>
 
-<div class="row">
+  {%- set args = request.args.copy().to_dict() -%}
+  <div class="clearfix"></div>
+  <div class="spacer20"></div>
 
-  <div class="row">
-    {% for obj in projects %}
-    <div class="col-xs-12 col-sm-6 col-md-4">
-      <div class="panel panel-primary">
-        {% call hb.panel_head() %}
-        <a href="{{ url_for('.show', project_id=obj.id) }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
-        {{ obj.title }}
-        {% endcall %}
-        {% call hb.panel_body() %}
-        {% if obj.description %}
-        <p>{{ obj.description|striptags|truncate }}</p>
-        {% endif %}
-        <small class="text-muted">Created by: {{ obj.owner.nickname }}</small>
-        {% endcall %}
-      </div>
+
+  {% for obj in projects %}
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="panel panel-primary">
+      {% call hb.panel_head() %}
+      <a href="{{ url_for('.show', project_id=obj.id) }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
+      {{ obj.title }}
+      {% endcall %}
+      {% call hb.panel_body() %}
+      {% if obj.description %}
+      <p>{{ obj.description|striptags|truncate }}</p>
+      {% endif %}
+      <small class="text-muted">Created by: {{ obj.owner.nickname }}</small>
+      {% endcall %}
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
 
-  <div class="row text-center">
+  <div class="col-md-12">
     {% if projects %}
     {% if pagination.total_count > pagination.per_page %}
     <div align="center">
@@ -145,6 +141,7 @@
         </li>
       </ul>
     </div>
+
     {% endif %}
 
     {% else %}
