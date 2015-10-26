@@ -130,45 +130,6 @@ def authorform_mapper(obj, prefix):
     return obj
 
 
-def json_projects_kb_mapper(val):
-    data = json.loads(val['value'])
-    grant_id = data.get('grant_agreement_number', '')
-    acronym = data.get('acronym', '')
-    title = data.get('title', '')
-    return {
-        'value': "%s - %s (%s)" % (acronym, title, grant_id),
-        'fields': {
-            'id': grant_id,
-            'acronym': acronym,
-
-            'title': title,
-        }
-    }
-
-
-def grants_validator(form, field):
-    if field.data:
-        for item in field.data:
-            val = get_kb_mapping('json_projects', str(item['id']))
-            if val:
-                data = json_projects_kb_mapper(val)
-                item['acronym'] = data['fields']['acronym']
-                item['title'] = data['fields']['title']
-                continue
-            raise ValidationError("Invalid grant identifier %s" % item['id'])
-
-
-def grant_kb_value(key_name):
-    def _getter(field):
-        if field.data:
-            val = get_kb_mapping('json_projects', str(field.data))
-            if val:
-                data = json_projects_kb_mapper(val)
-                return data['fields'][key_name]
-        return ''
-    return _getter
-
-
 #
 # Subforms
 #
@@ -759,6 +720,13 @@ class BasicForm(WebDepositForm):
         export_key='provisional_communities',
     )
 
+    #
+    # Project
+    #
+    project_collection = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default=None,
+    )
 
     #
     # Related work

@@ -129,7 +129,7 @@ def new():
         **ctx
     )
 
-@blueprint.route('/edit/<int:project_id>/', methods=['GET', 'POST'])
+@blueprint.route('/<int:project_id>/edit/', methods=['GET', 'POST'])
 @ssl_required
 @login_required
 @register_breadcrumb(blueprint, '.edit', _('Edit'))
@@ -144,6 +144,7 @@ def edit(project_id):
         is_new=False,
         project=project,
     )
+    current_app.logger.debug("REDIRECT TO %s" % url_for('.show', project_id=project.id))
 
     if request.method == 'POST' and form.validate():
         for field, val in form.data.items():
@@ -151,6 +152,7 @@ def edit(project_id):
         db.session.commit()
         project.save_collection()
         flash("Project successfully edited.", category='success')
+        current_app.logger.debug("REDIRECT TO %s" % url_for('.show', project_id=project.id))
         return redirect(url_for('.show', project_id=project.id))
 
     return render_template(
@@ -159,7 +161,7 @@ def edit(project_id):
     )
 
 
-@blueprint.route('/show/<int:project_id>', methods=['GET'])
+@blueprint.route('/<int:project_id>', methods=['GET'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 def show(project_id):
     project = Project.query.get_or_404(project_id)
@@ -169,7 +171,7 @@ def show(project_id):
     return render_template("projects/show.html", **ctx)
 
 
-@blueprint.route('/delete/<int:project_id>', methods=['POST'])
+@blueprint.route('/<int:project_id>/delete', methods=['POST'])
 @ssl_required
 @login_required
 @permission_required('submit')
@@ -191,3 +193,22 @@ def delete(project_id):
     else:
         flash("Project cannot be deleted.", category='warning')
     return redirect(url_for('.myprojects'))
+
+@blueprint.route('/<int:project_id>/deposit/<depositions:deposition_type>', methods=['GET'])
+@ssl_required
+@login_required
+@permission_required('submit')
+def deposit(project_id, deposition_type):
+    project = Project.query.get_or_404(project_id)
+    if current_user.get_id() != project.id_user:
+        flash('Only the owner of the project can deposit records on it', category='error')
+        abort(404)
+
+    from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
+    draft_cache = DepositionDraftCacheManager.get()
+    draft_cache.data['project'] = project_id
+    draft_cache.save() 
+
+    return redirect(url_for('webdeposit.create', deposition_type=deposition_type))
+
+
