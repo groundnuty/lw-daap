@@ -30,7 +30,6 @@ from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
 from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
-from invenio.utils.pagination import Pagination
 from invenio.modules.formatter import format_record
 from lw_daap.ext.login import login_required
 
@@ -61,16 +60,18 @@ def myprojects_ctx():
                  })
 def index(p, so, page):
     projects = Project.filter_projects(p, so)
-    per_page = cfg.get('PROJECTS_DISPLAYED_PER_PAGE', 9)
+
     page = max(page, 1)
-    pagination = Pagination(page, per_page, projects.count())
+    per_page = cfg.get('PROJECTS_DISPLAYED_PER_PAGE', 9)
+    projects = projects.paginate(page, per_page=per_page)
 
     form = SearchForm()
 
     ctx = dict(
-        projects=projects.slice(per_page*(page-1), per_page*page).all(),
+        projects=projects,
         form=form,
-        pagination=pagination,
+        page=page,
+        per_page=per_page,
     )
     return render_template(
         "projects/index.html",
@@ -163,13 +164,24 @@ def edit(project_id):
 
 @blueprint.route('/<int:project_id>', methods=['GET'])
 @register_breadcrumb(blueprint, '.show', 'Show')
-def show(project_id):
+@wash_arguments({'p': (unicode, ''),
+                 'so': (unicode, ''),
+                 'page': (int, 1),
+                 })
+def show(project_id, p, so, page):
     project = Project.query.get_or_404(project_id)
     records = project.get_project_records()
+  
+    page = max(page, 1)
+    per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 1)
+    records = records.paginate(page, per_page=per_page)
+
     ctx = dict(
         project=project,
         records=records,
-        format_record=format_record
+        format_record=format_record,
+        page=page,
+        per_page=per_page,
     )
     return render_template("projects/show.html", **ctx)
 
