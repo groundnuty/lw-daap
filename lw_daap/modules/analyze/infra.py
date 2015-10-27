@@ -65,13 +65,17 @@ def _vm_mapper():
     return _mapper
 
 
-def _vm_filter(user_id):
-    daap_user = '%s' % current_user.get_id()
+def _vm_filter(user_id, one_user=True):
+    if one_user:
+        daap_user = '%s' % current_user.get_id()
+        user_filter = lambda x: x.metatada.get('lwdaap_user') == dapp_user
+    else:
+        user_filter = lambda x: True
 
     def _filter(vm):
         return (vm.user_id == user_id and
                 vm.metadata.get('lwdaap_vm', None) is not None and
-                vm.metadata.get('lwdaap_user', None) == daap_user)
+                user_filter)
     return _filter
 
 
@@ -98,7 +102,6 @@ def get_client(user_proxy=None):
                                            auth_system=auth_system,
                                            # XXX REMOVE THIS ASAP!
                                            insecure=True)
-    
     else:
         with NamedTemporaryFile() as proxy_file:
             proxy_file.write(user_proxy)
@@ -225,6 +228,16 @@ def terminate_vm(client, vm_id):
 def list_vms(client):
     user_id = _get_user_id(client)
     return  map(_vm_mapper(), filter(_vm_filter(user_id), client.servers.list()))
+
+
+def kill_old_vms(client, max_time):
+    user_id = _get_user_id(client)
+    all_vms = filter(_vm_filter(user_id, False), client.servers.list())
+    now = datetime.utcnow().replace(tzinfo=pytz.utc)
+    for vm in all_vms:
+        if now - parse(vm.created) > max_time:
+            current_app.logger.info("KILLING VM with ID: %s", vm.id)
+            # client.servers.delete(vm.id)
 
 
 def get_vm(client, vm_id):

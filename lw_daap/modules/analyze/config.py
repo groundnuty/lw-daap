@@ -16,6 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import timedelta
+import os
+
+import invenio.config as cfg
+
 #
 # Configuration for OpenStack
 #
@@ -26,8 +31,14 @@ CFG_OPENSTACK_TENANT = "VO:vo.lifewatch.eu"
 #
 # Configuration for Robot Certificate
 #
+CFG_LWDAAP_ROBOT_PROXY = os.path.join(cfg.CFG_PREFIX, 'var', 'robot_proxy')
+CFG_LWDAAP_ROBOT_RENEWAL_PERIOD = timedelta(hours=10)
 
-CFG_LWDAAP_ROBOT_PROXY="/home/ubuntu/.virtualenvs/lwdaap/var/x509up_u1000"
+#
+# VM Killer
+#
+CFG_LWDAAP_VMKILLER_PERIOD = timedelta(minutes=30)
+CFG_LWDAAP_VMKILLER_MAXLIFE = timedelta(hours=5)
 
 #
 # Configuration of the etcd host
