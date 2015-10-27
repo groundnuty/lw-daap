@@ -167,20 +167,45 @@ def edit(project_id):
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),
                  'page': (int, 1),
+                 'dmpage': (int, 1),
+                 'dtpage': (int, 1),
+                 'sfpage': (int, 1),
+                 'nlpage': (int, 1),
+                 'pbpage': (int, 1),
                  })
-def show(project_id, p, so, page):
+def show(project_id, p, so, page, dmpage, dtpage, sfpage, nlpage, pbpage):
     project = Project.query.get_or_404(project_id)
     records = project.get_project_records()
+    records_dmp = project.get_project_records_by_type('dmp')
+    records_dataset = project.get_project_records_by_type('dataset')
+    records_software = project.get_project_records_by_type('software')
+    records_analysis = project.get_project_records_by_type('analysis')
+    records_public = project.get_project_records_public()
   
     page = max(page, 1)
     per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 1)
     records = records.paginate(page, per_page=per_page)
+    records_dmp = records_dmp.paginate(dmpage, per_page=per_page)
+    records_dataset = records_dataset.paginate(dtpage, per_page=per_page)
+    records_software = records_software.paginate(sfpage, per_page=per_page)
+    records_analysis = records_analysis.paginate(nlpage, per_page=per_page)
+    records_public = records_public.paginate(pbpage, per_page=per_page)
 
     ctx = dict(
         project=project,
         records=records,
+        records_dmp=records_dmp,
+        records_dataset=records_dataset,
+        records_software=records_software,
+        records_analysis=records_analysis,
+        records_public=records_public,
         format_record=format_record,
         page=page,
+        dmpage=dmpage,
+        dtpage=dtpage,
+        sfpage=sfpage,
+        nlpage=nlpage,
+        pbpage=pbpage,
         per_page=per_page,
     )
     return render_template("projects/show.html", **ctx)

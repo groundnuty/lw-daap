@@ -117,32 +117,90 @@
       <div class="col-md-12">
         <h3>Curate</h3>
         <p>Employ quality assurance and quality control procedures that enhance the quality of data (e.g., training participants, routine instrument calibration) and identify potential errors and techniques to address them.</p>
+        {% if records_dmp.items %}
         <table class="table table-hover">
           <thead>
             <tr>
-              <th class="col-md-10">Title</th>
+              <th class="col-md-10">DMP records:</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-          {% for rec in records.items %}
+          {% for rec in records_dmp.items %}
           <tr>
             <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-danger pull-right">Curate</a></td>
           </tr>
           {% endfor %}
           </tbody>
-        </table>
-          {% if records.total > per_page %}
+         </table>
+          {% if records_dmp.total > per_page %}
           <div class="row">
           <ul class="list-group">
           <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
+          {{ list_status(records_dmp, dmpage) }}
+          {{ paginate(records_dmp, 'dmpage', small=True) if records_dmp.items|length }}
           </li>
           </ul>
           </div>
           {% endif %}  
+        {% endif %}  
+        {% if records_dataset.items %}
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10">Dataset records:</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for rec in records_dataset.items %}
+          <tr>
+            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
+            <td><a class="btn btn-danger pull-right">Curate</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+         </table>
+          {% if records_dataset.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records_dataset, dtpage) }}
+          {{ paginate(records_dataset, 'dtpage', small=True) if records_dataset.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
+        {% endif %}  
+        {% if records_software.items %}
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-10">Software records:</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for rec in records_software.items %}
+          <tr>
+            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
+            <td><a class="btn btn-danger pull-right">Curate</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+         </table>
+          {% if records_software.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records_software, sfpage) }}
+          {{ paginate(records_software, 'sfpage', small=True) if records_software.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
+        {% endif %}  
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="integrate">
