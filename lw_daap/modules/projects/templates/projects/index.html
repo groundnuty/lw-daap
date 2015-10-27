@@ -37,6 +37,9 @@
 
 {% import "helpers_base.html" as hb %}
 
+{%- from "paginate.html" import paginate with context -%}
+{%- from "paginate.html" import list_status with context -%}
+
 {% extends "page.html" %}
 
 {% block title %}{% endblock %}
@@ -87,7 +90,7 @@
   <div class="spacer20"></div>
 
 
-  {% for obj in projects %}
+  {% for obj in projects.items %}
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="panel panel-primary">
       {% call hb.panel_head() %}
@@ -105,45 +108,17 @@
   {% endfor %}
 
   <div class="col-md-12">
-    {% if projects %}
-    {% if pagination.total_count > pagination.per_page %}
-    <div align="center">
-      <ul class="pagination">
-        <li{{ ' class="disabled"'|safe if not pagination.has_prev }}>
-        {%- set new_args = args.copy() -%}
-        {%- do new_args.update({'page': 1}) -%}
-        <a title="first" href="{{ url_for('lwdaap_projects.index', **new_args) }}">&laquo;</a>
-        </li>
-        <li{{ ' class="disabled"'|safe if not pagination.has_prev }}>
-        {%- do args.update({'page': pagination.page-1 }) -%}
-        <a title="prev" href="{{ url_for('lwdaap_projects.index', **args) }}">&lsaquo;</a>
-        </li>
-        {%- for page_p in pagination.iter_pages() %}
-        {%- if page_p -%}
-        {%- set new_args = args.copy() -%}
-        {%- do new_args.update({'page': page_p}) -%}
-        <li{{ ' class="active"'|safe if page_p == pagination.page }}>
-        <a href="{{ url_for('lwdaap_projects.index', **new_args) }}">{{ page_p }}</a>
-        </li>
-        {%- else -%}
-        <li class="disabled"><a href="#">...</a></li>
-        {%- endif -%}
-        {%- endfor -%}
-        <li{{ ' class="disabled"'|safe if not pagination.has_next }}>
-        {%- set new_args = args.copy() -%}
-        {%- do new_args.update({'page': pagination.page+1}) -%}
-        <a href="{{ url_for('lwdaap_projects.index', **new_args) }}">&rsaquo;</a>
-        </li>
-        <li{{ ' class="disabled"'|safe if not pagination.has_next }}>
-        {%- set new_args = args.copy() -%}
-        {%- do new_args.update({'page': pagination.pages }) -%}
-        <a title="last" href="{{ url_for('lwdaap_projects.index', **new_args) }}">&raquo;</a>
-        </li>
+    {% if projects.items %}
+    {% if projects.total > per_page %}
+    <div class="row">
+      <ul class="list-group">
+      <li class="list-group-item text-center">
+      {{ list_status(projects, page) }}
+      {{ paginate(projects, 'page', small=True) if projects.items|length }}
+      </li>
       </ul>
     </div>
-
     {% endif %}
-
     {% else %}
     <p class="text-muted text-center well">
     <strong>{{ _('Your search did not match any projects. Please try again.') }}</strong>
