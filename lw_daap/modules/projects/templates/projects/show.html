@@ -125,7 +125,7 @@
             </tr>
           </thead>
           <tbody>
-          {% for rec in records %}
+          {% for rec in records.items %}
           <tr>
             <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-danger pull-right">Curate</a></td>
@@ -133,6 +133,16 @@
           {% endfor %}
           </tbody>
         </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="integrate">
@@ -169,6 +179,16 @@
               </tr>
 
             </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
           </div>
         </div>
       </div>
@@ -193,6 +213,16 @@
               </tr>
 
             </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
           </div>
         </div>
       </div>
@@ -210,7 +240,7 @@
             </tr>
           </thead>
           <tbody>
-          {% for rec in records %}
+          {% for rec in records.items %}
           <tr>
             <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
@@ -218,6 +248,16 @@
           {% endfor %}
           </tbody>
         </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
       </div>
     </div>
 
@@ -233,7 +273,7 @@
             </tr>
           </thead>
           <tbody>
-         {% for rec in records %}
+         {% for rec in records.items %}
           <tr>
             <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-md btn-danger pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
@@ -241,6 +281,16 @@
           {% endfor %}
           </tbody>
         </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="publish">
@@ -257,7 +307,7 @@
             </tr>
           </thead>
           <tbody>
-          {% for rec in records %}
+          {% for rec in records.items %}
           <tr>
             <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
             <td><a class="btn btn-md btn-danger pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
@@ -265,13 +315,23 @@
           {% endfor %}
           </tbody>
         </table>
+          {% if records.total > per_page %}
+          <div class="row">
+          <ul class="list-group">
+          <li class="list-group-item text-center">
+          {{ list_status(records, page) }}
+          {{ paginate(records, 'page', small=True) if records.items|length }}
+          </li>
+          </ul>
+          </div>
+          {% endif %}  
       </div>
     </div>
   </div>
 </div>
 
 {% endif %}
-{% if records %}
+{% if records.items %}
 <div class="panel panel-default ">
 {% if project.is_public %}
   <div class="panel-heading">
@@ -293,7 +353,7 @@
     </a>
   </div>
   
-  <div id="collapse-files" class="panel-collapse collapse">
+  <div id="collapse-files" class="panel-collapse collapse in">
     <div class="panel-body">
       <table class="table table-hover">
         {% for record in records.items %}
@@ -302,6 +362,7 @@
         </td></tr>
         {% endfor %}
       </table>
+      {% if records.total > per_page %}
       <div class="row">
       <ul class="list-group">
       <li class="list-group-item text-center">
@@ -310,8 +371,11 @@
       </li>
       </ul>
       </div>
+      {% endif %}  
     </div>
   </div>
  
 {% endif %}
 </div>
+{% endif %}
+{% endblock %}
