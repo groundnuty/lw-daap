@@ -20,6 +20,7 @@
 # LifeWatch Open Science Framework
 # Configuration
 
+from datetime import timedelta
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -66,6 +67,11 @@ COMMUNITIES_ID_PREFIX_PROVISIONAL = 'provisional-community'
 COMMUNITIES_PORTALBOXES = [
     'communities/portalbox_main.html',
 ]
+COMMUNITIES_PERIODIC_TASKS = {
+    'ranking_deamon': {
+        'run_every': timedelta(minutes=20),
+    },
+}
 
 
 DISABLE_WARNINGS = True
