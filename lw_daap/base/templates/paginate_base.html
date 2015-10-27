@@ -49,6 +49,7 @@ Returns:
 It assumes that page exists in the current context.
 #}
 {%- macro paginate(obj, page, small) %}
+{% if obj.total > per_page %}
 {%- set args = request.args.copy().to_dict() -%}
 {%- do args.update(request.view_args.copy()) -%}
 {%- set endpoint = request.endpoint -%}
@@ -102,6 +103,7 @@ It assumes that page exists in the current context.
     </li>
   </ul>
 </div>
+{% endif %}
 {%- endmacro %}
 
 
@@ -116,7 +118,9 @@ Returns:
 It assumes that page and per_page exists in the current context.
 #}
 {%- macro list_status(obj, page) %}
+{% if obj.total > per_page %}
 <span class="text-muted">
-  {{ _("Displaying items %(start)d - %(stop)d out of %(total)d", start=(page - 1) * per_page, stop=((page - 1) * per_page) + obj.items|count, total=obj.total) }}
+  {{ _("Displaying items %(start)d - %(stop)d out of %(total)d", start=1 + (page - 1) * per_page, stop=((page - 1) * per_page) + obj.items|count, total=obj.total) }}
 </span>
+{% endif %}
 {%- endmacro %}
