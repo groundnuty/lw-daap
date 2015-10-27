@@ -20,6 +20,10 @@
 {% extends "page.html" %}
 
 
+{%- from "paginate.html" import paginate with context -%}
+{%- from "paginate.html" import list_status with context -%}
+
+
 {% block body %}
 <div class="panel panel-primary">
   <div class="panel-body">
@@ -276,6 +280,7 @@
     </a>
   </div>
 {% else %}
+
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-files">
       Public view 
@@ -290,19 +295,23 @@
   
   <div id="collapse-files" class="panel-collapse collapse">
     <div class="panel-body">
-      <div class="col-md-12">
-        <table class="table table-hover">
-        {% for record in records %}
+      <table class="table table-hover">
+        {% for record in records.items %}
         <tr><td>
         {{ format_record(record.id, of='hb', ln=g.ln)|safe }}
         </td></tr>
         {% endfor %}
       </table>
+      <div class="row">
+      <ul class="list-group">
+      <li class="list-group-item text-center">
+      {{ list_status(records, page) }}
+      {{ paginate(records, 'page', small=True) if records.items|length }}
+      </li>
+      </ul>
       </div>
     </div>
   </div>
-
+ 
+{% endif %}
 </div>
-{% endif %}
-{% endif %}
-{% endblock body %}
