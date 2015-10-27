@@ -89,7 +89,7 @@ class Project(db.Model):
         from invenio.modules.records.models import Record
         """ Return all records of this project"""
         recids = search_pattern_parenthesised(p='980__:%s' % self.get_collection_name())
-        records = Record.query.filter(Record.id.in_(recids)).filter_by().all()
+        records = Record.query.filter(Record.id.in_(recids))
         return records
 
     def save_collectionname(self, collection, title):
@@ -190,12 +190,29 @@ class Project(db.Model):
         id = collection[collection.startswith(prefix) and len(prefix):]
         return self.query.get(id).title
 
-
-
     @classmethod
-    def filter_projects(cls, p=None, so=None):
-        # TODO
-        return cls.query.filter()
+    def filter_projects(cls, p, so):
+        """Search for projects.
+
+        Helper function which takes from database only those projects which
+        match search criteria. Uses parameter 'so' to set projects in the
+        correct order.
+
+        Parameter 'page' is introduced to restrict results and return only
+        slice of them for the current page. If page == 0 function will return
+        all projects that match the pattern.
+        """
+        query = cls.query
+        if p:
+            query = query.filter(db.or_(
+                cls.id.like("%" + p + "%"),
+                cls.title.like("%" + p + "%"),
+                cls.description.like("%" + p + "%"),
+            ))
+        if so in cfg['PROJECTS_SORTING_OPTIONS']:
+            order = so == 'title' and db.asc or db.desc
+            query = query.order_by(order(getattr(cls, so)))
+        return query
 
 #
 #
