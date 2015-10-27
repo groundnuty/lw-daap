@@ -109,7 +109,7 @@ class Project(db.Model):
         )
         db.session.add(c_name)
         return c_name
-    
+
     def save_collectioncollection(self, collection):
         """Create or update CollectionCollection object."""
         dad = Collection.query.filter_by(
@@ -160,7 +160,7 @@ class Project(db.Model):
         fields = dict(
             name=collection_name,
             dbquery=self.get_collection_dbquery()
-        ) 
+        )
         if c:
             update_changed_fields(c, fields)
         else:
@@ -183,6 +183,14 @@ class Project(db.Model):
                 id_son=self.collection.id).delete()
             db.session.delete(self.collection)
             db.session.commit()
+
+    @classmethod
+    def get_name_by_collection(self, collection):
+        prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
+        id = collection[collection.startswith(prefix) and len(prefix):]
+        return self.query.get(id).title
+
+
 
     @classmethod
     def filter_projects(cls, p=None, so=None):

@@ -152,7 +152,7 @@ with context
         <tr>
         <th class="col-md-3"><i class="fa fa-list-alt fa-fw"></i>Projects</th>
         <td class="col-md-9">
-         {{ daap_record.project_collection }}
+         {{ bfe_daap_project(bfo, pid=daap_record.project_collection) }}
         </td>
         </tr>
         </table>
