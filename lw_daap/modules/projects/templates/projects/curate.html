@@ -16,29 +16,114 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
+
+{% block javascript %}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $('#curatemodal').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      var curateUrl = a.data('curateUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#curateform').attr('action', curateUrl);
+      });
+    });
+</script>
+{% endblock %}
+
 <div class="col-md-12">
   <h3>Curate</h3>
   <p>Employ quality assurance and quality control procedures that enhance the quality of data (e.g., training participants, routine instrument calibration) and identify potential errors and techniques to address them.</p>
+  {% if records_dmp.items %}
   <table class="table table-hover">
-    <tbody> 
-    {% for rec in records.items %}
+    <thead>
+      <tr>
+        <th class="col-md-10">DMP records:</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for rec in records_dmp.items %}
     <tr>
       <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle;"><a class="btn btn-danger pull-right">Curate</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+          rel="tooltip" title="Curate record">Curate</a>
+      </td>
     </tr>
     {% endfor %}
     </tbody>
+    {% if records_dmp.total > per_page %}
     <tfoot>
       <tr>
-        <td colspan="2">
-          {% if records.total > per_page %}
-          <div class="text-center">
-            {{ list_status(records, page) }}
-            {{ paginate(records, 'page', small=True) if records.items|length }}
-          </div>
-          {% endif %}
+        <td class="text-center" colspan="2">
+          {{ list_status(records_dmp, dmpage) }}
+          {{ paginate(records_dmp, 'dmpage', small=True) if records_dmp.items|length }}
         </td>
-      </tr> 
+      </tr>
     </tfoot>
+    {% endif %}
   </table>
+  {% endif %}  
+  {% if records_dataset.items %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-10">Dataset records:</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for rec in records_dataset.items %}
+    <tr>
+      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
+      <td style="vertical-align: middle;"><a href="#" data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+          rel="tooltip" title="Curate record">Curate</a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    {% if records_dataset.total > per_page %}
+    <tfoot>
+      <tr>
+        <td class="text-center" colspan="2">
+          {{ list_status(records_dataset, dtpage) }}
+          {{ paginate(records_dataset, 'dtpage', small=True) if records_dataset.items|length }}
+        </td>
+      </tr>
+    </tfoot>
+    {% endif %}
+  </table>
+  {% endif %}  
+  {% if records_software.items %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-10">Software records:</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for rec in records_software.items %}
+    <tr>
+      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
+      <td style="vertical-align: middle"><a href="#" data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+          rel="tooltip" title="Curate record">Curate</a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+     {% if records_software.total > per_page %}
+    <tfoot>
+      <tr>
+        <td class="text-center" colspan="2">
+          {{ list_status(records_software, sfpage) }}
+          {{ paginate(records_software, 'sfpage', small=True) if records_software.items|length }}
+        </td>
+      </tr>
+    </tfoot>
+    {% endif %}
+  </table>
+  {% endif %}  
 </div>

@@ -106,12 +106,14 @@
         </tbody>
       </table>
       {% endblock members_list %}
+      {% if members.total > per_page %}
       <ul class="list-group">
         <li class="list-group-item text-center">
         {{ list_status(members, page) }}
         {{ paginate(members, 'page', small=True) if members.items|length }}
         </li>
       </ul>
+      {%- endif %}
       {%- endif %}
       {% endcall %}
     </div>

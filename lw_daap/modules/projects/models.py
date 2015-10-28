@@ -92,6 +92,24 @@ class Project(db.Model):
         records = Record.query.filter(Record.id.in_(recids))
         return records
 
+    def get_project_records_by_type(self, record_type):
+        from invenio.legacy.search_engine import search_pattern_parenthesised
+        from invenio.modules.records.models import Record
+        """ Return all records of this project by type"""
+        recids = search_pattern_parenthesised(p='980__:%s AND 980__:%s' % (self.get_collection_name(), record_type))
+        records = Record.query.filter(Record.id.in_(recids))
+        return records
+
+    # TODO ...
+    def get_project_records_public(self, record_type=None):
+        from invenio.legacy.search_engine import search_pattern_parenthesised
+        from invenio.modules.records.models import Record
+        """ Return all public records of this project"""
+        recids = search_pattern_parenthesised(p='980__:%s' % self.get_collection_name())
+        records = Record.query.filter(Record.id.in_(recids))
+        return records
+    # ... TODO
+
     def save_collectionname(self, collection, title):
         if collection.id:
             c_name = Collectionname.query.filter_by(
