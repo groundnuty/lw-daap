@@ -19,18 +19,29 @@
 {% set active='curate' %}
 
 
-{% block javascript %}
-<script type="text/javascript">
-require(['jquery'], function($) {
-    $('#curatemodal').on('show.bs.modal', function (event) {
-      var a = $(event.relatedTarget)
-      var curateUrl = a.data('curateUrl') // Extract info from data-* attributes
-      var modal = $(this)
-      modal.find('#curateform').attr('action', curateUrl);
-      });
-    });
-</script>
-{% endblock %}
+<div id="curatemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="curatemodal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="curatemodal_label">Curate record?</h3>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>Does this record fullfill the quality requirements asked for?</li> 
+            <li>If you curate it, the record will be accesible in the next data life cycle steps.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <form id="curateform" action="#" method="POST">
+          {%- for field in curateform %}{{ field }}{% endfor %}
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button type="submit" class="btn btn-primary">Curate</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% block project_body %}
@@ -49,8 +60,8 @@ require(['jquery'], function($) {
     {% for rec in records_dmp.items %}
     <tr>
       <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td><a href="#" data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
           rel="tooltip" title="Curate record">Curate</a>
       </td>
     </tr>
@@ -80,8 +91,8 @@ require(['jquery'], function($) {
     {% for rec in records_dataset.items %}
     <tr>
       <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle;"><a href="#" data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
           rel="tooltip" title="Curate record">Curate</a>
       </td>
     </tr>
@@ -111,8 +122,8 @@ require(['jquery'], function($) {
     {% for rec in records_software.items %}
     <tr>
       <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle"><a href="#" data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="#" class="btn btn-danger pull-right rmlink" 
+      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
+          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
           rel="tooltip" title="Curate record">Curate</a>
       </td>
     </tr>
