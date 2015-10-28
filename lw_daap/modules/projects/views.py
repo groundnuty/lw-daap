@@ -162,16 +162,16 @@ def edit(project_id):
     )
 
 
-@blueprint.route('/<int:project_id>', methods=['GET'])
+@blueprint.route('/<int:project_id>/show/<path:path>', methods=['GET'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),
-                 'page': (int, 1),
+                 'rpage': (int, 1),
                  })
-def show(project_id, p, so, page):
+def show(project_id, path, p, so, page):
     project = Project.query.get_or_404(project_id)
     records = project.get_project_records()
-  
+
     page = max(page, 1)
     per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 1)
     records = records.paginate(page, per_page=per_page)
@@ -179,6 +179,7 @@ def show(project_id, p, so, page):
     ctx = dict(
         project=project,
         records=records,
+        tab='projects/'+ path + '.html',
         format_record=format_record,
         page=page,
         per_page=per_page,

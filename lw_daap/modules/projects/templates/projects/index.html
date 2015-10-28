@@ -94,7 +94,7 @@
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="panel panel-primary">
       {% call hb.panel_head() %}
-      <a href="{{ url_for('.show', project_id=obj.id) }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
+      <a href="{{ url_for('.show', project_id=obj.id, path='plan') }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
       {{ obj.title }}
       {% endcall %}
       {% call hb.panel_body() %}

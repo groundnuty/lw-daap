@@ -1,0 +1,84 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+<div class="col-md-9">
+  <h3>Integrate</h3>
+  <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
+</div>
+<div class="col-md-3">
+  <div class="spacer20"></div>
+  <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
+    href="{{ url_for("lwdaap_projects.deposit", deposition_type="analysis") }}"
+    role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+</div>
+<div class="clearfix"></div>
+<div class="spacer50"></div>
+<div class="col-md-6">
+  <div class="panel">
+    <div class="panel-heading" style="background: #CCC; border: none;">
+      Datasets
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover">
+        <tbody>
+        <tr>
+          <td class="col-md-1"><input type="checkbox"></td>
+          <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+        </tr>
+        </tbody>
+        {% if records.total > per_page %}
+        <tfoot>
+          <tr>
+            <td class="text-center" colspan="2">
+              {{ list_status(records, page) }}
+              {{ paginate(records, 'dpage', small=True) if records.items|length }}
+            </td>
+          </tr>
+        </tfoot>
+        {% endif %}
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="panel">
+    <div class="panel-heading" style="background: #CCC; border: none;">
+      Software
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover">
+        <tr>
+          <td class="col-md-1"><input type="checkbox"></td>
+          <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
+        </tr>
+        {% if records.total > per_page %}
+        <tfoot>
+          <tr>
+            <td class="text-center" colspan="2">
+              {{ list_status(records, page) }}
+              {{ paginate(records, 'spage', small=True) if records.items|length }}
+            </td>
+          </tr>
+        </tfoot>
+        {% endif %}
+
+      </table>
+    </div>
+  </div>
+</div>
+

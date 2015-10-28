@@ -1,0 +1,33 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+
+<div class="col-md-9">
+  <h3>Describe and collect</h3>
+  <p>Document data by describing the why, who, what, when, where, and how of the data. Metadata, or data about data, are key to data sharing and reuse, and many tools such as standards and software are available to help describe data.Determine the best way to get information from participants into a usable data file. The end results of this decision process is a data model that describes the way the data is structured. </p>
+</div>
+<div class="col-md-3">
+  <div class="spacer20"></div>
+  <a id="btn-deposit-dataset" class="btn btn-block btn-danger   "
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dataset" ) }}"
+    role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
+  <a id="btn-deposit-software" class="btn btn-block btn-danger  "
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
+    role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
+</div>
+

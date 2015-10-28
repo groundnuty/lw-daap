@@ -1,0 +1,31 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+<div class="col-md-9"><h3>Plan</h3>
+  <p>Map out the processes and resources for the entire data life cycle. Start with the project goals (desired outpus, outcomes, and impacts) and work backwards to build a data management plan, supporting data policies, and sustainability plans.
+  </p>
+</div>
+<div class="col-md-3">
+  <div class="spacer20"></div>
+  <a class="btn btn-block btn-danger"
+    href="http://pc90.viavansi.com/"
+    role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
+  <a class="btn btn-block btn-danger"
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp") }}"
+    role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
+</div>

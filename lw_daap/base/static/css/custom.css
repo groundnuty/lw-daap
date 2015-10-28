@@ -176,6 +176,10 @@ a.btn {
   color: #FFF;
 }
 
+.pagination {
+  margin: 0px;
+}
+
 .label-forest:hover {
   background: #FF5001;
 }

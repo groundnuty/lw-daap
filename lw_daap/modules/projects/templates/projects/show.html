@@ -23,10 +23,9 @@
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
 
-
 {% block body %}
 <div class="panel panel-primary">
-  <div class="panel-body">
+  <div id="target" class="panel-body">
     <div class="col-md-11">
       <h1><i class="fa fa-fw fa-list-alt"></i>{{ project.title }}</h1>
       <div style="padding: 20px;">
@@ -49,297 +48,55 @@
 <div class="panel panel-primary">
   <div id="dlc-nav" class="panel-heading" style="background: #FF5001; padding-right: 30px;
     border: none; box-shadow: 4px 0 4px solid rgba(0, 0, 0, 0.25);">
-    <a class="button " href='#plan' aria-controls="plan" role="tab" data-toggle="tab">
+
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='plan') }}">
       <span class="label">Plan</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href='#acquire' aria-controls="acquire" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='collect') }}">
       <span class="label">Describe and Collect</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button " href='#curate' aria-controls="curate" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='curate') }}">
       <span class="label">Curate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button " href='#integrate' aria-controls="integrate" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='integrate') }}">
       <span class="label">Integrate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button " href='#analyze' aria-controls="analyze" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='analyze') }}">
       <span class="label">Analyze</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button " href='#preserve' aria-controls="preserve" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='preserve') }}">
       <span class="label">Preserve</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button " href='#publish' aria-controls="publish" role="tab" data-toggle="tab">
+    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='publish') }}">
       <span class="label">Publish</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button button-last" disabled>
+    <a class="button button-last">
       <span class="label">&nbsp;</span>
     </a>
     <span class="label uppercase pull-right">Data Life Cycle</span>
   </div>
-  <div class="panel-body tab-content">
-    <div role="tabpanel" class="tab-pane active" id="plan">
-      <div class="col-md-9"><h3>Plan</h3>
-        <p>Map out the processes and resources for the entire data life cycle. Start with the project goals (desired outpus, outcomes, and impacts) and work backwards to build a data management plan, supporting data policies, and sustainability plans.
-        </p>
-      </div>
-      <div class="col-md-3">
-        <div class="spacer20"></div>
-        <a class="btn btn-block btn-danger"
-          href="http://pc90.viavansi.com/"
-          role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
-        <a class="btn btn-block btn-danger"
-          href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp") }}"
-          role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="acquire">
-      <div class="col-md-9">
-        <h3>Describe and collect</h3>
-        <p>Document data by describing the why, who, what, when, where, and how of the data. Metadata, or data about data, are key to data sharing and reuse, and many tools such as standards and software are available to help describe data.Determine the best way to get information from participants into a usable data file. The end results of this decision process is a data model that describes the way the data is structured. </p>
-      </div>
-      <div class="col-md-3">
-        <div class="spacer20"></div>
-        <a id="btn-deposit-dataset" class="btn btn-block btn-danger   "
-          href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dataset" ) }}"
-          role="button"><i class="fa fa-table fa-2x fa-fw valign"></i>Register new dataset</a>
-        <a id="btn-deposit-software" class="btn btn-block btn-danger  "
-          href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
-          role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="curate">
-      <div class="col-md-12">
-        <h3>Curate</h3>
-        <p>Employ quality assurance and quality control procedures that enhance the quality of data (e.g., training participants, routine instrument calibration) and identify potential errors and techniques to address them.</p>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="col-md-10">Title</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for rec in records.items %}
-          <tr>
-            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-            <td><a class="btn btn-danger pull-right">Curate</a></td>
-          </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="integrate">
-      <div class="col-md-9">
-        <h3>Integrate</h3>
-        <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
-      </div>
-      <div class="col-md-3">
-        <div class="spacer20"></div>
-        <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
-          href="{{ url_for("lwdaap_projects.deposit", deposition_type="analysis") }}"
-          role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
-      </div>
-      <div class="clearfix"></div>
-      <div class="spacer50"></div>
-      <div class="col-md-6">
-        <div class="panel">
-          <div class="panel-heading" style="background: #CCC; border: none;">
-            Datasets
-          </div>
-          <div class="panel-body">
-            <table class="table table-hover">
-              <tr>
-                <td class="col-md-1"><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-
-            </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="panel">
-          <div class="panel-heading" style="background: #CCC; border: none;">
-            Software
-          </div>
-          <div class="panel-body">
-            <table class="table table-hover">
-              <tr>
-                <td class="col-md-1"><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-              </tr>
-
-            </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div role="tabpanel" class="tab-pane" id="analyze">
-      <div class="col-md-12">
-        <h3>Analyze</h3>
-        <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="col-md-10"></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for rec in records.items %}
-          <tr>
-            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-            <td><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-          </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-      </div>
-    </div>
-
-    <div role="tabpanel" class="tab-pane" id="preserve">
-      <div class="col-md-12">
-        <h3>Preserve</h3>
-        <p>Plan to preserve data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to preserve, where to preserve it, and what documentation needs to accompany the data.</p>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="col-md-10"></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-         {% for rec in records.items %}
-          <tr>
-            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-            <td><a class="btn btn-md btn-danger pull-right" href="#"><i class="fa fa-barcode"></i> Mint Doi</a></td>
-          </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-      </div>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="publish">
-      <div class="col-md-12">
-        <h3>Publish</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-        </p>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="col-md-10"></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for rec in records.items %}
-          <tr>
-            <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-            <td><a class="btn btn-md btn-danger pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-          </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-          {% if records.total > per_page %}
-          <div class="row">
-          <ul class="list-group">
-          <li class="list-group-item text-center">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-          </li>
-          </ul>
-          </div>
-          {% endif %}  
-      </div>
-    </div>
+  <div class="panel-body">
+    {% include tab ignore missing %}
   </div>
 </div>
 
 {% endif %}
 {% if records.items %}
 <div class="panel panel-default ">
-{% if project.is_public %}
+  {% if project.is_public %}
   <div class="panel-heading">
     <a class="panel-toggle">
       Public view - Currently, there are not public records in this project
     </a>
   </div>
-{% else %}
+  {% else %}
 
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-files">
@@ -352,30 +109,30 @@
       </span>
     </a>
   </div>
-  
+
   <div id="collapse-files" class="panel-collapse collapse in">
     <div class="panel-body">
       <table class="table table-hover">
         {% for record in records.items %}
         <tr><td>
-        {{ format_record(record.id, of='hb', ln=g.ln)|safe }}
+            {{ format_record(record.id, of='hb', ln=g.ln)|safe }}
         </td></tr>
         {% endfor %}
+        {% if records.total > per_page %}
+        <tfoot>
+          <tr>
+            <td class="text-center">
+              {{ list_status(records, page) }}
+              {{ paginate(records, 'rpage', small=True) if records.items|length }}
+            </td>
+          </tr>
+        </tfoot>
+        {% endif %}
       </table>
-      {% if records.total > per_page %}
-      <div class="row">
-      <ul class="list-group">
-      <li class="list-group-item text-center">
-      {{ list_status(records, page) }}
-      {{ paginate(records, 'page', small=True) if records.items|length }}
-      </li>
-      </ul>
-      </div>
-      {% endif %}  
     </div>
   </div>
- 
-{% endif %}
+
+  {% endif %}
 </div>
 {% endif %}
 {% endblock %}

@@ -60,8 +60,9 @@ box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.05) inset;
   border-radius: 0;
 }
 
-.panel-body .table-hover tr:hover td {
-  background: #FCFCFC;
+.table-hover tbody > tr:hover td,
+.table-hover > tr:hover td {
+  background: #FFFFFF;
 }
 
 /*
