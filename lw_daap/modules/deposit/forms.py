@@ -728,6 +728,16 @@ class BasicForm(WebDepositForm):
         default=None,
     )
 
+    record_curated_in_project = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default=False,
+    )
+
+    record_public_from_project = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default=False,
+    )
+
     #
     # Related work
     #
