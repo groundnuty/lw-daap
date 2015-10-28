@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+{% extends 'projects/show.html' %}
 
+{% set active='plan' %}
+{% block project_body %}
 <div class="col-md-9"><h3>Plan</h3>
   <p>Map out the processes and resources for the entire data life cycle. Start with the project goals (desired outpus, outcomes, and impacts) and work backwards to build a data management plan, supporting data policies, and sustainability plans.
   </p>
@@ -26,6 +29,7 @@
     href="http://pc90.viavansi.com/"
     role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
   <a class="btn btn-block btn-danger"
-    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp") }}"
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp", next='NEXTNEXT') }}"
     role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
 </div>
+{% endblock %}

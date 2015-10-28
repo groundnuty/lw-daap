@@ -21,7 +21,17 @@
 
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
-
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $('#dlc-nav a.button').click(function() {
+      $('#dlc-nav a.button').removeClass('active');
+      $(this).addClass('active');
+      });
+    });
+</script>
+{% endblock %}
 {% block body %}
 <div id="curatemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="curatemodal_label" aria-hidden="true">
   <div class="modal-dialog">
@@ -70,32 +80,38 @@
 <div class="panel panel-primary">
   <div id="dlc-nav" class="panel-heading" style="background: #FF5001; padding-right: 30px;
     border: none; box-shadow: 4px 0 4px solid rgba(0, 0, 0, 0.25);">
-
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='plan') }}">
+    <a class="button {{ 'active' if active == 'plan' }}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='plan') }}">
       <span class="label">Plan</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='collect') }}">
+    <a class="button {{'active' if active == 'collect'}}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='collect') }}">
       <span class="label">Describe and Collect</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='curate') }}">
+    <a class="button {{ 'active' if active == 'curate'}}" 
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='curate') }}">
       <span class="label">Curate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='integrate') }}">
+    <a class="button {{'active' if active  == 'integrate'}}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='integrate') }}">
       <span class="label">Integrate</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='analyze') }}">
+    <a class="button {{'active' if active == 'analyze'}}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='analyze') }}">
       <span class="label">Analyze</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='preserve') }}">
+    <a class="button {{ 'active' if active == 'preserve' }}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='preserve') }}">
       <span class="label">Preserve</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button" href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='publish') }}">
+    <a class="button {{ 'active' if active == 'publish' }}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='publish') }}">
       <span class="label">Publish</span>
       <span class="arrow"><span></span></span>
     </a>
@@ -105,7 +121,8 @@
     <span class="label uppercase pull-right">Data Life Cycle</span>
   </div>
   <div class="panel-body">
-    {% include tab ignore missing %}
+    {% block project_body %}
+    {% endblock %}
   </div>
 </div>
 

@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+{% extends 'projects/show.html' %}
+{% set active='integrate' %}
 
+{% block project_body %}
 <div class="col-md-9">
   <h3>Integrate</h3>
   <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
@@ -81,4 +84,4 @@
     </div>
   </div>
 </div>
-
+{% endblock %}

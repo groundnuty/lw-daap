@@ -16,7 +16,10 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
+{% extends 'projects/show.html' %}
+{% set active='collect' %}
 
+{% block project_body %}
 <div class="col-md-9">
   <h3>Describe and collect</h3>
   <p>Document data by describing the why, who, what, when, where, and how of the data. Metadata, or data about data, are key to data sharing and reuse, and many tools such as standards and software are available to help describe data.Determine the best way to get information from participants into a usable data file. The end results of this decision process is a data model that describes the way the data is structured. </p>
@@ -30,4 +33,4 @@
     href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
     role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
 </div>
-
+{% endblock %}

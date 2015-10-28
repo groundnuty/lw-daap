@@ -16,6 +16,11 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
+{% extends 'projects/show.html' %}
+
+{% set active='analyze' %}
+{% block project_body %}
+
 <div class="col-md-12">
   <h3>Analyze</h3>
   <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
@@ -41,4 +46,4 @@
 
   </table>
 </div>
-
+{% endblock %}

@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+{% extends 'projects/show.html' %}
+{% set active='publish' %}
+
+{% block project_body %}
 <div class="col-md-12">
   <h3>Publish</h3>
   <p>
@@ -42,4 +46,4 @@
 
   </table>
 </div>
-
+{% endblock %}

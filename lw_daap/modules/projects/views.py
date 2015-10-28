@@ -23,6 +23,7 @@ from flask import Blueprint, render_template, request, flash, url_for, redirect,
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
+from flask_restful import abort
 
 from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
@@ -161,7 +162,7 @@ def edit(project_id):
         **ctx
     )
 
-
+@blueprint.route('/<int:project_id>/show/', defaults={'path': 'plan'}, methods=['GET'])
 @blueprint.route('/<int:project_id>/show/<path:path>', methods=['GET'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 @wash_arguments({'p': (unicode, ''),
@@ -192,6 +193,17 @@ def show(project_id, path,
     records_analysis = records_analysis.paginate(nlpage, per_page=per_page)
     records_public = records_public.paginate(pbpage, per_page=per_page)
 
+    tab_templates = {
+        'plan': 'projects/plan.html',
+        'collect': 'projects/collect.html',
+        'curate': 'projects/curate.html',
+        'integrate': 'projects/integrate.html',
+        'analyze': 'projects/analyze.html',
+        'preserve': 'projects/preserve.html',
+        'publish': 'projects/publish.html',
+    }
+    template = tab_templates.get(path, None)
+
     ctx = dict(
         tab='projects/' + path + '.html',
         project=project,
@@ -210,7 +222,10 @@ def show(project_id, path,
         pbpage=pbpage,
         per_page=per_page,
     )
-    return render_template("projects/show.html", **ctx)
+
+    if template is not None:
+        return render_template(template, **ctx)
+    abort(404)
 
 @blueprint.route('/<int:project_id>/delete', methods=['POST'])
 @ssl_required
@@ -250,6 +265,6 @@ def deposit(project_id, deposition_type):
     draft_cache.data['project_collection'] = project_id
     draft_cache.save()
 
-    return redirect(url_for('webdeposit.create', deposition_type=deposition_type))
+    return redirect(url_for('webdeposit.create', deposition_type=deposition_type, next=next))
 
 

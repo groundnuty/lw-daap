@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+{% extends 'projects/show.html' %}
+{% set active='preserve' %}
 
+{% block project_body %}
 <div class="col-md-12">
   <h3>Preserve</h3>
   <p>Plan to preserve data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to preserve, where to preserve it, and what documentation needs to accompany the data.</p>
@@ -40,4 +43,4 @@
     {% endif %}
   </table>
 </div>
-
+{% endblock %}
