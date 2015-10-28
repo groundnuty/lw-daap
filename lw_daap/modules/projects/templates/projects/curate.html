@@ -19,6 +19,22 @@
 {% set active='curate' %}
 
 
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $('#curatemodal').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      var curateUrl = a.data('curateUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#curateform').attr('action', curateUrl);
+      });
+    });
+</script>
+{% endblock %}
+
+
+
 <div id="curatemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="curatemodal_label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
