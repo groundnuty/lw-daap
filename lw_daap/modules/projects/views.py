@@ -25,6 +25,8 @@ from flask_menu import register_menu
 from flask_login import current_user
 from flask_restful import abort
 
+from invenio.legacy.bibrecord import record_add_field
+
 from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
@@ -131,6 +133,7 @@ def new():
         **ctx
     )
 
+
 @blueprint.route('/<int:project_id>/edit/', methods=['GET', 'POST'])
 @ssl_required
 @login_required
@@ -227,6 +230,7 @@ def show(project_id, path,
         return render_template(template, **ctx)
     abort(404)
 
+
 @blueprint.route('/<int:project_id>/delete', methods=['POST'])
 @ssl_required
 @login_required
@@ -250,6 +254,7 @@ def delete(project_id):
         flash("Project cannot be deleted.", category='warning')
     return redirect(url_for('.myprojects'))
 
+
 @blueprint.route('/<int:project_id>/deposit/<depositions:deposition_type>', methods=['GET'])
 @ssl_required
 @login_required
@@ -269,4 +274,18 @@ def deposit(project_id, deposition_type):
 
     return redirect(url_for('webdeposit.create', deposition_type=deposition_type, next=next))
 
+@blueprint.route('/<int:project_id>/show/curate/<int:record_id>/', methods=['POST'])
+@ssl_required
+@login_required
+@permission_required('submit')
+def curation(project_id, record_id):
+    rec = {}
+    record_add_field(rec, '001', controlfield_value=str(record_id))
+    project_info_fields = [('a', 'True')]
+    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    from invenio.legacy.bibupload.utils import bibupload_record
+    bibupload_record(record=rec, file_prefix='project_info', mode='-c',
+                     opts=[], alias="project_info")
+    return rec
+    
 
