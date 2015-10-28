@@ -188,7 +188,7 @@ def show(project_id, path,
     records_public = project.get_project_records_public()
 
     page = max(page, 1)
-    per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 1)
+    per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 5)
     records = records.paginate(page, per_page=per_page)
     records_dmp = records_dmp.paginate(dmpage, per_page=per_page)
     records_dataset = records_dataset.paginate(dtpage, per_page=per_page)
@@ -283,9 +283,11 @@ def curation(project_id, record_id):
     record_add_field(rec, '001', controlfield_value=str(record_id))
     project_info_fields = [('a', 'True')]
     record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    project_info_fields = [('b', 'False')]
+    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
     from invenio.legacy.bibupload.utils import bibupload_record
     bibupload_record(record=rec, file_prefix='project_info', mode='-c',
                      opts=[], alias="project_info")
-    return rec
     
+    return redirect(url_for('.show', project_id=project_id))
 
