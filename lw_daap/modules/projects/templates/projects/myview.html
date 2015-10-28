@@ -87,8 +87,8 @@ require(['jquery'], function($) {
       <div class="modal-footer">
         <form id="deleteform" action="#" method="POST">
           {%- for field in deleteform %}{{ field }}{% endfor %}
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">No, thanks</button>
-          <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i>Delete</button>
         </form>
       </div>
     </div>
