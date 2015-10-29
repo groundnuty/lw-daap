@@ -16,9 +16,11 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{% from "format/record/record_macros.tpl" import render_authors, render_access_rights %}
+{% from "format/record/record_macros.tpl" import render_authors, render_access_rights, render_deposition_type %}
 
 {% extends "format/record/Default_HTML_brief_base.tpl" %}
+
+{% set record = get_updated_record(record) %}
 
 {% block above_record_header %}
 {% endblock %}
@@ -35,7 +37,8 @@
 
 {% block record_info %}
   {{ render_access_rights(record) if record.get('access_right') }}  |
-  {{ '<span class="label label-primary" style="background: #999">Project</span> |' if record.project_collection }} 
+  {{ render_deposition_type(record) if record.get('upload_type') }} |
+  {{ '<span class="label label-primary" style="background: #999">project</span> |' if record.project_collection }} 
   {{ '<a href="http://dx.doi.org/%(doi)s" title="DOI" target="_blank"><i class="glyphicon glyphicon-barcode"></i> %(doi)s</a> | '|format(doi=record['doi']) if record.get('doi') }} 
   {{ record.publication_date }}
 

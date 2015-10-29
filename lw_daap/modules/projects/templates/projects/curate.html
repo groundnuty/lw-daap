@@ -15,8 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+
+
 {% extends 'projects/show.html' %}
 {% set active='curate' %}
+
+
+{% from 'projects/macros.tpl' import record_table with context %}
 
 
 {% block javascript %}
@@ -33,6 +38,7 @@ require(['jquery'], function($) {
 </script>
 {% endblock %}
 
+
 {% block project_body %}
 <div id="curatemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="curatemodal_label" aria-hidden="true">
   <div class="modal-dialog">
@@ -47,112 +53,37 @@ require(['jquery'], function($) {
             <li>If you curate it, the record will be accesible in the next data life cycle steps.</li>
         </ul>
       </div>
+      <div class="alert help-block alert-danger" id="curatemodal-state-title" style="margin-top: 5px; display: none;">
+      </div>
       <div class="modal-footer">
         <form id="curateform" action="#" method="POST">
           {%- for field in curateform %}{{ field }}{% endfor %}
           <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-          <button type="submit" class="btn btn-primary">Curate</button>
+          <button type="submit" class="btn btn-primary" 
+                  onclick='$.post(curateUrl)
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#curatemodal").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#curatemodal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>Curate</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<div class="col-md-12">
+<div class="class-md-12">
   <h3>Curate</h3>
   <p>Employ quality assurance and quality control procedures that enhance the quality of data (e.g., training participants, routine instrument calibration) and identify potential errors and techniques to address them.</p>
-  {% if records_dmp.items %}
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="col-md-10">DMP records:</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for rec in records_dmp.items %}
-    <tr>
-      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
-          rel="tooltip" title="Curate record">Curate</a>
-      </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    {% if records_dmp.total > per_page %}
-    <tfoot>
-      <tr>
-        <td class="text-center" colspan="2">
-          {{ list_status(records_dmp, dmpage) }}
-          {{ paginate(records_dmp, 'dmpage', small=True) if records_dmp.items|length }}
-        </td>
-      </tr>
-    </tfoot>
-    {% endif %}
-  </table>
-  {% endif %}  
-  {% if records_dataset.items %}
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="col-md-10">Dataset records:</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for rec in records_dataset.items %}
-    <tr>
-      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
-          rel="tooltip" title="Curate record">Curate</a>
-      </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    {% if records_dataset.total > per_page %}
-    <tfoot>
-      <tr>
-        <td class="text-center" colspan="2">
-          {{ list_status(records_dataset, dtpage) }}
-          {{ paginate(records_dataset, 'dtpage', small=True) if records_dataset.items|length }}
-        </td>
-      </tr>
-    </tfoot>
-    {% endif %}
-  </table>
-  {% endif %}  
-  {% if records_software.items %}
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="col-md-10">Software records:</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for rec in records_software.items %}
-    <tr>
-      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle"><a data-toggle="modal" data-target="#curatemodal"
-          data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.id) }}" class="btn btn-danger pull-right rmlink" 
-          rel="tooltip" title="Curate record">Curate</a>
-      </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-     {% if records_software.total > per_page %}
-    <tfoot>
-      <tr>
-        <td class="text-center" colspan="2">
-          {{ list_status(records_software, sfpage) }}
-          {{ paginate(records_software, 'sfpage', small=True) if records_software.items|length }}
-        </td>
-      </tr>
-    </tfoot>
-    {% endif %}
-  </table>
-  {% endif %}  
+
+  {{ record_table('curate', records, "Non-curated Dataset records")|safe}}
 </div>
 {% endblock %}

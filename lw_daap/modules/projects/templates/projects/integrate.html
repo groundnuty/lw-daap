@@ -26,13 +26,17 @@
 <div class="col-md-3">
   <div class="spacer20"></div>
   <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
-    href="{{ url_for("lwdaap_projects.deposit", deposition_type="analysis") }}"
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="analysis") }}"
     role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
 </div>
 <div class="clearfix"></div>
 <div class="spacer50"></div>
 <div class="col-md-6">
   <div class="panel">
+
+    {% for r in records.items %}
+        {{ r }}
+    {% endfor %}
     <div class="panel-heading" style="background: #CCC; border: none;">
       Datasets
     </div>

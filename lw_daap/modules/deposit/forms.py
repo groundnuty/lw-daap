@@ -396,6 +396,7 @@ class InputRecordDatasetFieldForm(WebDepositForm):
         widget_classes='form-control',
     )
 
+
 class InputRecordSoftwareFieldForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
@@ -726,16 +727,19 @@ class BasicForm(WebDepositForm):
     project_collection = fields.StringField(
         widget=widgets.HiddenInput(),
         default=None,
+        label='',
     )
 
     record_curated_in_project = fields.StringField(
         widget=widgets.HiddenInput(),
         default=False,
+        label='',
     )
 
     record_public_from_project = fields.StringField(
         widget=widgets.HiddenInput(),
         default=False,
+        label='',
     )
 
     #

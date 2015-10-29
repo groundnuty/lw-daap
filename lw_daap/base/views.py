@@ -175,8 +175,16 @@ def add_record_variables(sender, **kwargs):
             # this updates the DB, but avoids ugly caching
             daap_record=get_record(kwargs['recid'], True)
         )
-
         return ctx
+
+
+@blueprint.app_template_global()
+def get_updated_record(record):
+    """
+    returns the record as fresh as possible
+    """
+    from invenio.modules.records.api import get_record
+    return get_record(record['recid'], True)
 
 
 @blueprint.before_app_first_request

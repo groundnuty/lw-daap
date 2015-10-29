@@ -15,35 +15,60 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+
+
 {% extends 'projects/show.html' %}
 {% set active='publish' %}
 
+
+{% from 'projects/macros.tpl' import record_table with context %}
+
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require(['jquery'], function($) {
+    $('#publishmodal').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      var publishUrl = a.data('publishUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#publishform').attr('action', publishUrl);
+      });
+    });
+</script>
+{% endblock %}
+
+
 {% block project_body %}
+<div id="publishmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="publishmodal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="publishmodal_label">Publish record?</h3>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>Would you like to public this record?</li> 
+            <li>If you publish it, the record will be public according to the access right you had set.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <form id="publishform" action="#" method="POST">
+          {%- for field in publishform %}{{ field }}{% endfor %}
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button type="submit" class="btn btn-primary">Publish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="col-md-12">
   <h3>Publish</h3>
   <p>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
   </p>
-  <table class="table table-hover">
-    <tbody>
-    {% for rec in records.items %}
-    <tr>
-      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle;"><a class="btn btn-md btn-danger pull-right" href="#"><i class="fa fa-share"></i> Publish</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    {% if records.total > per_page %}
-    <tfoot>
-      <tr>
-        <td class="text-center" colspan="2">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-        </td>
-      </tr>
-    </tfoot>
-    {% endif %}
-
-  </table>
+  {{ record_table('publish', records, "Project records")|safe}}
 </div>
 {% endblock %}

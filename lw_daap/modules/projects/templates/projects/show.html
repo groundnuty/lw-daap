@@ -104,16 +104,15 @@ require(['jquery'], function($) {
   </div>
 </div>
 
-{% endif %}
-{% if records.items %}
+{% else %}
 <div class="panel panel-default ">
-  {% if project.is_public %}
+{% if not records.items %}
   <div class="panel-heading">
     <a class="panel-toggle">
-      Public view - Currently, there are not public records in this project
+      There are not public records in this project currently.
     </a>
   </div>
-  {% else %}
+{% else %}
 
   <div class="panel-heading">
     <a data-toggle="collapse" class="panel-toggle" href="#collapse-files">
@@ -149,7 +148,7 @@ require(['jquery'], function($) {
     </div>
   </div>
 
-  {% endif %}
+{% endif %}
 </div>
 {% endif %}
 {% endblock %}

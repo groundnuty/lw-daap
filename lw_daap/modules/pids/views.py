@@ -63,7 +63,7 @@ def error_400(msg):
 
 @blueprint.route('mint/<int:recid>', methods=['POST'])
 @login_required
-def mint_doi(recid):
+def mint_doi(recid, project_id=None):
     """ mint a PID for the record """
     uid = current_user.get_id()
     record = get_record(recid)
@@ -101,4 +101,7 @@ def mint_doi(recid):
 
     r = add_doi(recid, doi)
 
-    return jsonify({'status': 'ok', 'redirect': url_for('record.metadata', recid=recid)})
+    if project_id == None:
+        return jsonify({'status': 'ok', 'redirect': url_for('record.metadata', recid=recid)})
+    else: 
+        return jsonify({'status': 'ok', 'redirect': url_for('lwdaap_projects.show', project_id=project_id, path='preserve')})

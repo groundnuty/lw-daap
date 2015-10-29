@@ -19,6 +19,8 @@
 {% extends 'projects/show.html' %}
 {% set active='collect' %}
 
+{% from 'projects/macros.tpl' import record_table with context %}
+
 {% block project_body %}
 <div class="col-md-9">
   <h3>Describe and collect</h3>
@@ -33,4 +35,7 @@
     href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
     role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
 </div>
+
+  {{ record_table('collect', records, "Dataset and Software records")|safe}}
+
 {% endblock %}
