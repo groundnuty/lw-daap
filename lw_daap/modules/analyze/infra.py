@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-from base64 import b64encode
 from datetime import datetime
 from itertools import chain
 from tempfile import NamedTemporaryFile
@@ -24,33 +23,72 @@ from urlparse import urlsplit
 
 from dateutil.parser import parse
 import etcd
-from flask import current_app
+from flask import current_app, g
 from flask_login import current_user
 import novaclient.auth_plugin
 import novaclient.client
 import humanize
 import pytz
 import requests.exceptions
-import yaml
-
 
 from invenio.base.globals import cfg
-from invenio.ext.template import render_template_to_string
+from invenio.ext.cache import cache
 
 from .utils import get_requirements
+from .context import build_user_data
 
 
 class InfraException(Exception):
     pass
 
 
+def _make_client(proxy_file):
+    username = password = None
+    tenant = cfg.get('CFG_OPENSTACK_TENANT', '')
+    url = cfg.get('CFG_OPENSTACK_AUTH_URL', '')
+    version = 2
+    auth_system = "voms"
+    novaclient.auth_plugin.discover_auth_systems()
+    auth_plugin = novaclient.auth_plugin.load_plugin(auth_system)
+    auth_plugin.opts["x509_user_proxy"] = proxy_file
+    client =  novaclient.client.Client(version, username, password,
+                                       tenant, url,
+                                       auth_plugin=auth_plugin,
+                                       auth_system=auth_system,
+                                       # XXX REMOVE THIS ASAP!
+                                       insecure=True)
+    return client
+
+
+def get_client(user_proxy=None):
+    if not user_proxy:
+        client = getattr(g, '_client', None)
+        if not client:
+            client = g._client = _make_client(cfg.get('CFG_LWDAAP_ROBOT_PROXY'))
+    else:
+        with NamedTemporaryFile() as proxy_file:
+            proxy_file.write(user_proxy)
+            proxy_file.flush()
+            client = _make_client(proxy_file.name)
+    try:
+        client.authenticate()
+    except requests.exceptions.RequestException, e:
+        raise InfraException(e.message)
+    return client
+
+
 def _vm_mapper():
+    """
+    Maps VM information into a dictionary with the portal required fields
+    """
     now = datetime.utcnow().replace(tzinfo=pytz.utc)
     reqs = get_requirements()
     flavors = {v['flavor-id']: v['title'] for v in reqs['flavors'].values()}
     images = {v['image-id']: v['title'] for v in reqs['images'].values()}
 
     def _mapper(vm):
+        current_app.logger.debug(vm.created)
+        current_app.logger.debug(parse(vm.created))
         created = now - parse(vm.created)
         return {
             'id': vm.id,
@@ -60,23 +98,27 @@ def _vm_mapper():
             'image': images.get(vm.image['id']),
             'created': humanize.naturaltime(created),
             'seconds': created.seconds,
-            'metadata': vm.metadata,
+            'user': vm.metadata.get('lwdaap_user'),
+            'app_env': vm.metadata.get('app_env'),
         }
     return _mapper
 
 
-def _vm_filter(user_id, one_user=True):
-    if one_user:
-        daap_user = '%s' % current_user.get_id()
-        user_filter = lambda x: x.metatada.get('lwdaap_user') == dapp_user
-    else:
-        user_filter = lambda x: True
-
+def _lwdaap_vm_filter(user_id):
+    """
+    Filters out VMs not started by this module
+    """
     def _filter(vm):
         return (vm.user_id == user_id and
-                vm.metadata.get('lwdaap_vm', None) is not None and
-                user_filter)
+                vm.metadata.get('lwdaap_vm', None) is not None)
     return _filter
+
+
+def is_user_vm(vm, user_id):
+    daap_user = '%s' % current_user.get_id()
+    return (vm.user_id == user_id and
+            vm.metadata.get('lwdaap_vm', None) is not None and
+            vm.metadata.get('lwdaap_user') == daap_user)
 
 
 def _get_user_id(client):
@@ -84,129 +126,24 @@ def _get_user_id(client):
     return catalog['access']['user']['id']
 
 
-def get_client(user_proxy=None):
-    # hack para forzar robot
-    user_proxy = None
-    username = password = None
-    tenant = cfg.get('CFG_OPENSTACK_TENANT', '')
-    url = cfg.get('CFG_OPENSTACK_AUTH_URL', '')
-    version = 2
-    auth_system = "voms"
-    novaclient.auth_plugin.discover_auth_systems()
-    auth_plugin = novaclient.auth_plugin.load_plugin(auth_system)
-    if not user_proxy:
-        auth_plugin.opts["x509_user_proxy"] = cfg.get('CFG_LWDAAP_ROBOT_PROXY')
-        client =  novaclient.client.Client(version, username, password,
-                                           tenant, url,
-                                           auth_plugin=auth_plugin,
-                                           auth_system=auth_system,
-                                           # XXX REMOVE THIS ASAP!
-                                           insecure=True)
-    else:
-        with NamedTemporaryFile() as proxy_file:
-            proxy_file.write(user_proxy)
-            proxy_file.flush()
-            auth_plugin.opts["x509_user_proxy"] = proxy_file.name
-            client =  novaclient.client.Client(version, username, password,
-                                               tenant, url,
-                                               auth_plugin=auth_plugin,
-                                               auth_system=auth_system,
-                                               # XXX REMOVE THIS ASAP!
-                                               insecure=True)
-    try:
-        client.authenticate()
-    except requests.exceptions.RequestException, e:
-        raise InfraException(e.message)
-    return client
+def build_vm_list(client):
+    user_id = _get_user_id(client)
+    vms = map(_vm_mapper(), filter(_lwdaap_vm_filter(user_id),
+                                   client.servers.list()))
+    return vms
 
 
-def nato_context():
-    context_script = b64encode(
-        render_template_to_string('analyze/etcd-updater.sh',
-                                  etcd_url=cfg.get('CFG_ANALYZE_ETCD_URL'),
-                                  ttl=600,
-                                  root=cfg.get('CFG_ANALYZE_NODES_KEY'))
-    )
-    context_script_path = '/usr/local/bin/etcd-updater.sh'
-    crontab = b64encode(
-        render_template_to_string('analyze/etcd_updater_cron',
-                                  context_script_path=context_script_path)
-    )
-    return {
-        'write_files': [
-            {
-                'encoding': 'b64',
-                'content': context_script,
-                'permissions': '755',
-                'path': context_script_path,
-            },
-            {
-                'encoding': 'b64',
-                'content': crontab,
-                'permissions': '755',
-                'path': '/etc/cron.d/etcd_updater'
-            },
-        ],
-        # run it as soon as the VM is booted
-        'runcmd': [
-            [context_script_path],
-        ],
-    }
+def list_vms(client):
+    daap_user = '%s' % current_user.get_id()
+    return filter(lambda vm: vm['user'] == daap_user, build_vm_list(client))
 
 
-def ssh_context(app_env, ssh_key, context):
-    if ssh_key:
-        context['users'] = [
-            "default",
-            {
-                "name": "lw",
-                "sudo": "ALL=(ALL) NOPASSWD:ALL",
-                "ssh-import-id": None,
-                "lock-passwd": True,
-                "ssh-authorized-keys": [ssh_key],
-		        "shell": "/bin/bash",
-            },
-        ]
-
-
-def jupyter_context(app_env, ssh_key, context):
-    jupyter_script = b64encode(
-        # nothing to pass to the template?
-        render_template_to_string('analyze/jupyter.sh', app_env=app_env)
-    )
-    jupyter_script_path = '/usr/local/bin/start-jupyter.sh'
-    context['write_files'].append({
-        'encoding': 'b64',
-        'content': jupyter_script,
-        'permissions': '755',
-        'path': jupyter_script_path,
-    })
-    context['runcmd'].append([jupyter_script_path])
-
-
-def record_context(recid, context):
-    context['runcmd'].append(['/usr/bin/touch', '/tmp/comefrom%s' % recid])
-
-
-CONTEXT_MAP = {
-    'ssh': ssh_context,
-    'jupyter-python': jupyter_context,
-    'jupyter-r': jupyter_context,
-}
-
-
-def launch_vm(client, name, image, flavor, app_env='', recid='', ssh_key=None):
-    context = nato_context()
-    app_env_context = CONTEXT_MAP.get(app_env, None)
-    if app_env_context:
-        app_env_context(app_env, ssh_key, context)
-    if recid:
-        record_context(recid, context)
-
-    userdata='\n'.join(['#cloud-config',
-                        yaml.safe_dump(context,
-                                       default_flow_style=False)])
-    current_app.logger.debug(userdata)
+def launch_vm(client, name, image, flavor, app_env=None, recid=None, ssh_key=None):
+    current_vms = list_vms(client)
+    if len(current_vms) >= cfg.get('CFG_LWDAAP_MAX_VMS'):
+        msg = 'Maximum number of VMs per user reached!'
+        raise InfraException(msg)
+    userdata = build_user_data(app_env, ssh_key, recid)
     try:
         s = client.servers.create(name, image=image,
                                   flavor=flavor, meta={'lwdaap_vm': '',
@@ -218,6 +155,7 @@ def launch_vm(client, name, image, flavor, app_env='', recid='', ssh_key=None):
         raise InfraException(e.message)
     return s
 
+
 def terminate_vm(client, vm_id):
     try:
         client.servers.delete(vm_id)
@@ -225,16 +163,9 @@ def terminate_vm(client, vm_id):
         raise InfraException(e.message)
 
 
-def list_vms(client):
-    user_id = _get_user_id(client)
-    return  map(_vm_mapper(), filter(_vm_filter(user_id), client.servers.list()))
-
-
 def kill_old_vms(client, max_time):
-    user_id = _get_user_id(client)
-    all_vms = filter(_vm_filter(user_id, False), client.servers.list())
     now = datetime.utcnow().replace(tzinfo=pytz.utc)
-    for vm in all_vms:
+    for vm in build_vm_list(client):
         if now - parse(vm.created) > max_time:
             current_app.logger.info("KILLING VM with ID: %s", vm.id)
             # client.servers.delete(vm.id)
@@ -244,7 +175,7 @@ def get_vm(client, vm_id):
     try:
         user_id = _get_user_id(client)
         vm = client.servers.get(vm_id)
-        if _vm_filter(user_id)(vm):
+        if is_user_vm(vm, user_id):
             return _vm_mapper()(vm)
         return None
     except Exception, e:
@@ -258,7 +189,7 @@ def get_vm_connection(client, vm_id):
     if not vm:
         return dict(
             error=True,
-            msg='Instante is not known to the system'
+            msg='Instance is not known to the system'
         )
     if vm['status'] != 'ACTIVE':
         return dict(
@@ -277,7 +208,7 @@ def get_vm_connection(client, vm_id):
     try:
         r = etcd_client.read(vm_dir, recursive=True)
         d = {c.key.split('/')[-1]: c.value for c in r.children}
-        app_env = vm.get('metadata', {}).get('app_env')
+        app_env = vm.get('app_env')
         if app_env == 'ssh':
             d['user'] = 'lw'
             return dict(
