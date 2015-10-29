@@ -104,7 +104,8 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
     else:
         # datasets from projects w/ curate = True
         recids = search_pattern_parenthesised(
-            p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR (8560_w:%s AND (NOT 980__:project-* OR 983__a:True)))' % (term.encode('utf-8'), current_user.get_id()))
+            #p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR (8560_w:%s AND (NOT 980__:project-* OR 983__a:True)))' % (term.encode('utf-8'), current_user.get_id()))
+            p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR 8560_w:%s)' % (term.encode('utf-8'), current_user.get_id()))
         objs = Record.query.filter(
             Record.id.in_(recids)
         ).filter_by().limit(limit).all()
@@ -126,9 +127,9 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
                 'title': "%s (record id: %s)" % (o[1], o[0]),
             }
         },
-        map(lambda o: (o.id, get_record(o.id)['title']), objs) 
-            #filter(lambda o: get_record(o.id)['project_collection'] != None 
-            #       and get_record(o.id)['record_curated_in_project'] == True , objs))
+        map(lambda o: (o.id, get_record(o.id)['title']), 
+            filter(lambda o: get_record(o.id)['project_collection'] != None 
+                   and get_record(o.id)['record_curated_in_project'] == True , objs))
     )
 
 
