@@ -189,7 +189,8 @@ def show(project_id, path, page):
         },
         'curate': {
             'template': 'projects/curate.html',
-            'q': {'record_types': ['dataset'], 'curated': False},
+            'q': {'record_types': ['dataset']},
+            #'q': {'record_types': ['dataset'], 'curated': False},
         },
         'integrate': {
             'template': 'projects/integrate.html',
@@ -205,7 +206,8 @@ def show(project_id, path, page):
         },
         'publish': {
             'template': 'projects/publish.html',
-            'q': {'public': False},
+            'q': {},
+            #'q': {'public': False},
         },
         'public': {
             'template': 'projects/show.html',

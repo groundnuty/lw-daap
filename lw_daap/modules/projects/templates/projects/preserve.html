@@ -27,10 +27,11 @@
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
+var doiUrl
 require(['jquery'], function($) {
     $('#doimodal').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
-      var doiUrl = a.data('doiUrl') // Extract info from data-* attributes
+      doiUrl = a.data('doiUrl') // Extract info from data-* attributes
       var modal = $(this)
       modal.find('#doiform').attr('action', doiUrl);
       });
@@ -44,8 +45,8 @@ require(['jquery'], function($) {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="doimodal_label">Mint DOI?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="doimodal_label">Mint DOI?</h4>
       </div>
       <div class="modal-body">
         <ul>
@@ -53,11 +54,27 @@ require(['jquery'], function($) {
             <li>The minting process will take some minutes, when available it will be shown in the record.</li>
         </ul>
       </div>
+      <div class="alert help-block alert-danger" id="doimodal-state-title" style="margin-top: 5px; display: none;">
+      </div>
       <div class="modal-footer">
         <form id="doiform" action="#" method="POST">
           {%- for field in doiform %}{{ field }}{% endfor %}
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-          <button type="submit" class="btn btn-primary">Mint DOI</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"
+                  onclick='$.post(doiUrl)
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#doimodal").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#doimodal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>Mint DOI</button>
         </form>
       </div>
     </div>

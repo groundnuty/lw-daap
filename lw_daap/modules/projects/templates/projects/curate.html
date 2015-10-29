@@ -27,10 +27,11 @@
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
+var curateUrl
 require(['jquery'], function($) {
     $('#curatemodal').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
-      var curateUrl = a.data('curateUrl') // Extract info from data-* attributes
+      curateUrl = a.data('curateUrl') // Extract info from data-* attributes
       var modal = $(this)
       modal.find('#curateform').attr('action', curateUrl);
       });
@@ -44,8 +45,8 @@ require(['jquery'], function($) {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="curatemodal_label">Curate record?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="curatemodal_label">Curate record?</h4>
       </div>
       <div class="modal-body">
         <ul>
@@ -58,14 +59,14 @@ require(['jquery'], function($) {
       <div class="modal-footer">
         <form id="curateform" action="#" method="POST">
           {%- for field in curateform %}{{ field }}{% endfor %}
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-          <button type="submit" class="btn btn-primary" 
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"
                   onclick='$.post(curateUrl)
                                 .done(function(data) {
                                         if (data.redirect) {
                                            window.location.replace(data.redirect);
                                         } else {
-                                          $("#curatemodal").modal("hide")
+                                           $("#curatemodal").modal("hide")
                                         }
                                       })
                                 .fail(function(jqXHR) {
