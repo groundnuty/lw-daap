@@ -30,6 +30,16 @@
 {%- endmacro %}
 
 
+{% macro integrate_buttons(rec) -%} 
+<a class="btn btn-md btn-danger pull-right" href="#">Integrate</a>
+{%- endmacro %}
+
+
+{% macro analyze_buttons(rec) -%} 
+<a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title=rec.title, flavor=rec.flavor, os=rec.os, app_env=rec.app_env, recid=rec.recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
+{%- endmacro %}
+
+
 {% macro preserve_buttons(rec) -%} 
   {% if not rec.doi %}
     <a data-toggle="modal" data-target="#doimodal"
@@ -56,20 +66,17 @@
 {%- endmacro %}
 
 
-{% macro analyze_buttons(rec) -%} 
-<a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title=rec.title, flavor=rec.flavor, os=rec.os, app_env=rec.app_env, recid=rec.recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
-{%- endmacro %}
-
-
 {% macro action_buttons(tab, rec) -%}
   {% if tab == "curate" %}
     {{ curate_buttons(record) }}
+  {% elif tab == "integrate" %}
+    {{ integrate_buttons(record) }}
+  {% elif tab == "analyze" %}
+    {{ analyze_buttons(record) }}
   {% elif tab == "preserve" %}
     {{ preserve_buttons(record) }}
   {% elif tab == "publish" %}
     {{ publish_buttons(record) }}
-  {% elif tab == "analyze" %}
-    {{ analyze_buttons(record) }}
   {% endif %}
 {%- endmacro %}
 

@@ -15,77 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
+
+
 {% extends 'projects/show.html' %}
 {% set active='integrate' %}
 
+
+{% from 'projects/macros.tpl' import record_table with context %}
+
+
 {% block project_body %}
-<div class="col-md-9">
+<div class="col-md-12">
   <h3>Integrate</h3>
   <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
-</div>
-<div class="col-md-3">
-  <div class="spacer20"></div>
-  <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
-    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="analysis") }}"
-    role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
-</div>
-<div class="clearfix"></div>
-<div class="spacer50"></div>
-<div class="col-md-6">
-  <div class="panel">
-
-    {% for r in records.items %}
-        {{ r }}
-    {% endfor %}
-    <div class="panel-heading" style="background: #CCC; border: none;">
-      Datasets
-    </div>
-    <div class="panel-body">
-      <table class="table table-hover">
-        <tbody>
-        <tr>
-          <td class="col-md-1"><input type="checkbox"></td>
-          <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-        </tr>
-        </tbody>
-        {% if records.total > per_page %}
-        <tfoot>
-          <tr>
-            <td class="text-center" colspan="2">
-              {{ list_status(records, page) }}
-              {{ paginate(records, 'dpage', small=True) if records.items|length }}
-            </td>
-          </tr>
-        </tfoot>
-        {% endif %}
-      </table>
-    </div>
-  </div>
-</div>
-<div class="col-md-6">
-  <div class="panel">
-    <div class="panel-heading" style="background: #CCC; border: none;">
-      Software
-    </div>
-    <div class="panel-body">
-      <table class="table table-hover">
-        <tr>
-          <td class="col-md-1"><input type="checkbox"></td>
-          <td>Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci</td>
-        </tr>
-        {% if records.total > per_page %}
-        <tfoot>
-          <tr>
-            <td class="text-center" colspan="2">
-              {{ list_status(records, page) }}
-              {{ paginate(records, 'spage', small=True) if records.items|length }}
-            </td>
-          </tr>
-        </tfoot>
-        {% endif %}
-
-      </table>
-    </div>
-  </div>
+{{ record_table('integrate', records, "Dataset and Software records")|safe}}
 </div>
 {% endblock %}
