@@ -28,6 +28,9 @@ from invenio.modules.accounts.models import User
 from invenio.modules.search.models import \
     Collection, CollectionCollection, \
     CollectionFormat, Collectionname, Format
+from invenio.modules.access.models import \
+    AccACTION, AccARGUMENT, \
+    AccAuthorization, AccROLE, UserAccROLE
 
 
 class Project(db.Model):
@@ -91,7 +94,7 @@ class Project(db.Model):
         q = ['980__:%s' % self.get_collection_name()]
         if record_types:
             qtypes = ['980__:%s' % t for t in record_types]
-            if len(qtypes) > 1: 
+            if len(qtypes) > 1:
                 q.append('(%s)' % ' OR '.join(qtypes))
             else:
                 q.extend(qtypes)
@@ -166,6 +169,48 @@ class Project(db.Model):
         db.session.add(c_fmt)
         return c_fmt
 
+    def save_acl(self, c):
+        # Role - use Community id, because role name is limited to 32 chars.
+        role_name = 'coll_%s' % c.id
+        role = AccROLE.query.filter_by(name=role_name).first()
+        if not role:
+            role = AccROLE(
+                name=role_name,
+                description='Owner of project %s' % c.name)
+            db.session.add(role)
+
+        # Argument
+        fields = dict(keyword='collection', value=c.name)
+        arg = AccARGUMENT.query.filter_by(**fields).first()
+        if not arg:
+            arg = AccARGUMENT(**fields)
+            db.session.add(arg)
+
+        # Action
+        action = AccACTION.query.filter_by(name='viewrestrcoll').first()
+
+        # User role
+        alluserroles = UserAccROLE.query.filter_by(role=role).all()
+        userrole = None
+        if alluserroles:
+            # Remove any user which is not the owner
+            for ur in alluserroles:
+                if ur.id_user == self.id_user:
+                    db.session.delete(ur)
+                else:
+                    userrole = ur
+
+        if not userrole:
+            userrole = UserAccROLE(id_user=self.id_user, role=role)
+            db.session.add(userrole)
+
+        # Authorization
+        auth = AccAuthorization.query.filter_by(role=role, action=action,
+                                                argument=arg).first()
+        if not auth:
+            auth = AccAuthorization(role=role, action=action, argument=arg,
+                                    argumentlistid=1)
+
     def save_collection(self):
         collection_name = self.get_collection_name()
         c = Collection.query.filter_by(name=collection_name).first()
@@ -183,6 +228,7 @@ class Project(db.Model):
         self.save_collectionname(c, self.title)
         self.save_collectioncollection(c)
         self.save_collectionformat(c)
+        self.save_acl(c)
         db.session.commit()
 
     def delete_collection(self):
