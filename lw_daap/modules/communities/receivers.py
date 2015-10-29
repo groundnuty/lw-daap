@@ -43,7 +43,7 @@ from flask.ext.cache import make_template_fragment_key
 
 def make_public_restricted(sender, collection=None, provisional=False, **extra):
     """
-    set permissions on the public part of the collection so it can be 
+    set permissions on the public part of the collection so it can be
     viewed by anyone. This is to allow records being in more than one community
     but only curated in some to be globally available
     """
@@ -72,6 +72,20 @@ def make_public_restricted(sender, collection=None, provisional=False, **extra):
     if not auth:
         auth = AccAuthorization(role=role, action=action, argument=arg,
                                 argumentlistid=1)
+    db.session.commit()
+
+def update_provisional_query(sender, collection=None, provisional=False, **extra):
+    if not provisional or not collection.name.startswith('provisional-community'):
+        return
+
+    from invenio.modules.communities.models import update_changed_fields
+    from invenio.ext.sqlalchemy import db
+
+    avoid_provisional_project = ' AND NOT 983__b:False'
+    fields = dict(
+        dbquery=collection.dbquery + avoid_provisional_project
+    )
+    update_changed_fields(collection, fields)
     db.session.commit()
 
 

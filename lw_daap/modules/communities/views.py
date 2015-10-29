@@ -43,7 +43,7 @@ from invenio.modules.communities.signals import after_save_collection, \
     pre_curation, post_curation
 
 from .receivers import invalidate_jinja2_cache, pre_curation_reject_listener, \
-    post_curation_reject_listener, make_public_restricted
+    post_curation_reject_listener, make_public_restricted, update_provisional_query
 
 
 blueprint = Blueprint(
@@ -62,5 +62,6 @@ def register_receivers():
     webcoll_after_webpage_cache_update.connect(invalidate_jinja2_cache)
     after_save_collection.connect(invalidate_jinja2_cache)
     after_save_collection.connect(make_public_restricted)
+    after_save_collection.connect(update_provisional_query)
     pre_curation.connect(pre_curation_reject_listener)
     post_curation.connect(post_curation_reject_listener)
