@@ -39,6 +39,7 @@
 import re
 
 from flask import current_app
+from flask_login import current_user
 
 from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator 
 
@@ -101,9 +102,10 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
     if not term:
         objs = Record.query.limit(limit).all()
     else:
+        # datasets from projects w/ curate = True
         recids = search_pattern_parenthesised(
-            #p='title:%%%s%% AND ((980__:community AND 980__:dataset) OR (980__:project AND 980__:dataset))' % term.encode('utf-8'))
-            p='title:%%%s%% AND ((980__:community AND 980__:dataset) OR (980__:project AND 980__:dataset))' % term.encode('utf-8'))
+            #p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR (8560_w:%s AND (NOT 980__:project-* OR 983__a:True)))' % (term.encode('utf-8'), current_user.get_id()))
+            p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR 8560_w:%s)' % (term.encode('utf-8'), current_user.get_id()))
         objs = Record.query.filter(
             Record.id.in_(recids)
         ).filter_by().limit(limit).all()
@@ -125,8 +127,9 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
                 'title': "%s (record id: %s)" % (o[1], o[0]),
             }
         },
-        map(lambda o: (o.id, get_record(o.id)['title']), objs)
-          #filter(lambda o: get_record(o.id)['upload_type'] == 'dataset', objs)
+        map(lambda o: (o.id, get_record(o.id)['title']), 
+            filter(lambda o: get_record(o.id)['project_collection'] != None 
+                   and get_record(o.id)['record_curated_in_project'] == True , objs))
     )
 
 
@@ -139,7 +142,7 @@ def inputrecords_autocomplete_software(dummy_form, dummy_field, term, limit=50):
         objs = Record.query.limit(limit).all()
     else:
         recids = search_pattern_parenthesised(
-            p='title:%%%s%% AND ((980__:community AND 980__:software) OR (980__:project AND 980__:software))' % term.encode('utf-8'))
+            p='title:%%%s%% AND 980__:software AND (980__:community-* OR 8560_w:%s)' % (term.encode('utf-8'), current_user.get_id()))
         objs = Record.query.filter(
             Record.id.in_(recids)
         ).filter_by().limit(limit).all()
@@ -162,5 +165,4 @@ def inputrecords_autocomplete_software(dummy_form, dummy_field, term, limit=50):
             }
         },
         map(lambda o: (o.id, get_record(o.id)['title']), objs)
-          #filter(lambda o: get_record(o.id)['upload_type'] == 'software') 
     )

@@ -24,9 +24,19 @@
       rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curate</a>
   {% else %} 
     <a data-toggle="modal" data-target="#curatemodal"
-      data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curate</a>
+      data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
+      rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curated</a>
   {% endif %}
+{%- endmacro %}
+
+
+{% macro integrate_buttons(rec) -%} 
+<a class="btn btn-md btn-danger pull-right" href="#">Integrate</a>
+{%- endmacro %}
+
+
+{% macro analyze_buttons(rec) -%} 
+<a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title=rec.title, flavor=rec.flavor, os=rec.os, app_env=rec.app_env, recid=rec.recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
 {%- endmacro %}
 
 
@@ -37,8 +47,8 @@
       rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Mint DOI</a>
   {% else %} 
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_pids.mint_doi', recid=rec.recid, project_id=project.id) }}" class="disabled btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Mint DOI</a>
+      data-doi-url="{{ url_for('lwdaap_pids.mint_doi', recid=rec.recid, project_id=project.id) }}" class="disabled btn btn-primary pull-right rmlink" 
+      rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Has a DOI</a>
   {% endif %}
 {%- endmacro %}
 
@@ -50,26 +60,23 @@
       rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Publish</a>
   {% else %} 
     <a data-toggle="modal" data-target="#publishmodal"
-      data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Publish</a>
+      data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
+      rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Public</a>
   {% endif %}
-{%- endmacro %}
-
-
-{% macro analyze_buttons(rec) -%} 
-<a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title=rec.title, flavor=rec.flavor, os=rec.os, app_env=rec.app_env, recid=rec.recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
 {%- endmacro %}
 
 
 {% macro action_buttons(tab, rec) -%}
   {% if tab == "curate" %}
     {{ curate_buttons(record) }}
+  {% elif tab == "integrate" %}
+    {{ integrate_buttons(record) }}
+  {% elif tab == "analyze" %}
+    {{ analyze_buttons(record) }}
   {% elif tab == "preserve" %}
     {{ preserve_buttons(record) }}
   {% elif tab == "publish" %}
     {{ publish_buttons(record) }}
-  {% elif tab == "analyze" %}
-    {{ analyze_buttons(record) }}
   {% endif %}
 {%- endmacro %}
 
