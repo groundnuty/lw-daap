@@ -25,9 +25,19 @@
 
 
 {% block project_body %}
-<div class="col-md-12">
+
+<div class="col-md-9">
   <h3>Integrate</h3>
   <p>Combine citizen science project data with other sources of data to enable new analyses and investigations. Successful data integration depends on employing good data management practices throughout the data life cycle.</p>
-{{ record_table('integrate', records, "Dataset and Software records")|safe}}
 </div>
+
+<div class="col-md-3">
+  <div class="spacer20"></div>
+  <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="analysis") }}"
+    role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+</div>
+
+{{ record_table('integrate', records, "Dataset and Software records")|safe}}
+
 {% endblock %}
