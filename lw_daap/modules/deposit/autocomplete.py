@@ -102,6 +102,7 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
         objs = Record.query.limit(limit).all()
     else:
         recids = search_pattern_parenthesised(
+            #p='title:%%%s%% AND ((980__:community AND 980__:dataset) OR (980__:project AND 980__:dataset))' % term.encode('utf-8'))
             p='title:%%%s%% AND ((980__:community AND 980__:dataset) OR (980__:project AND 980__:dataset))' % term.encode('utf-8'))
         objs = Record.query.filter(
             Record.id.in_(recids)

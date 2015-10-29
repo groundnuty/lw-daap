@@ -61,7 +61,7 @@ def error_400(msg):
     return response
 
 
-@blueprint.route('mint/<int:recid>', methods=['POST'])
+@blueprint.route('/mint/<int:recid>', methods=['POST'])
 @login_required
 def mint_doi(recid, project_id=None):
     """ mint a PID for the record """
