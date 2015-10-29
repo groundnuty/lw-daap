@@ -102,6 +102,7 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
     if not term:
         objs = Record.query.limit(limit).all()
     else:
+        # datasets from projects w/ curate = True
         recids = search_pattern_parenthesised(
             p='title:%%%s%% AND 980__:dataset AND (980__:community-* OR 8560_w:%s)' % (term.encode('utf-8'), current_user.get_id()))
         objs = Record.query.filter(
@@ -125,8 +126,9 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
                 'title': "%s (record id: %s)" % (o[1], o[0]),
             }
         },
-        map(lambda o: (o.id, get_record(o.id)['title']), objs)
-          #filter(lambda o: get_record(o.id)['upload_type'] == 'dataset', objs)
+        map(lambda o: (o.id, get_record(o.id)['title']), 
+            filter(lambda o: get_record(o.id)['project_collection'] != None 
+                   and get_record(o.id)['record_curated_in_project'] == True , objs))
     )
 
 
@@ -162,5 +164,4 @@ def inputrecords_autocomplete_software(dummy_form, dummy_field, term, limit=50):
             }
         },
         map(lambda o: (o.id, get_record(o.id)['title']), objs)
-          #filter(lambda o: get_record(o.id)['upload_type'] == 'software') 
     )
