@@ -46,14 +46,14 @@ __all__ = ['UploadTypeField']
 
 UPLOAD_TYPES = [
     ('dmp', 'DMP', [], 'fa fa-book fa-2x fa-fw'),
-    #('publication', 'Publication', [], 'fa fa-file-text-o fa-2x fa-fw'),
-    #('poster', 'Poster', [], 'fa fa-columns fa-2x fa-fw'),
-    #('presentation', 'Presentation', [], 'fa fa-group fa-2x fa-fw'),
+    # ('publication', 'Publication', [], 'fa fa-file-text-o fa-2x fa-fw'),
+    # ('poster', 'Poster', [], 'fa fa-columns fa-2x fa-fw'),
+    # ('presentation', 'Presentation', [], 'fa fa-group fa-2x fa-fw'),
     ('dataset', 'Dataset', [], 'fa fa-table fa-2x fa-fw'),
-    #('image', 'Image', [], 'fa fa-bar-chart-o fa-2x fa-fw'),
-    #('video', 'Video/Audio', [], 'fa fa-film fa-2x fa-fw'),
+    # ('image', 'Image', [], 'fa fa-bar-chart-o fa-2x fa-fw'),
+    # ('video', 'Video/Audio', [], 'fa fa-film fa-2x fa-fw'),
     ('software', 'Software', [], 'fa fa-cogs fa-2x fa-fw'),
-    #('lesson', 'Lesson', [], 'fa fa-graduation-cap fa-2x fa-fw'),
+    # ('lesson', 'Lesson', [], 'fa fa-graduation-cap fa-2x fa-fw'),
     ('analysis', 'Analysis', [], 'fa fa-bar-chart-o fa-2x fa-fw'),
 ]
 

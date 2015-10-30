@@ -51,12 +51,12 @@ def _make_client(proxy_file):
     novaclient.auth_plugin.discover_auth_systems()
     auth_plugin = novaclient.auth_plugin.load_plugin(auth_system)
     auth_plugin.opts["x509_user_proxy"] = proxy_file
-    client =  novaclient.client.Client(version, username, password,
-                                       tenant, url,
-                                       auth_plugin=auth_plugin,
-                                       auth_system=auth_system,
-                                       # XXX REMOVE THIS ASAP!
-                                       insecure=True)
+    client = novaclient.client.Client(version, username, password,
+                                      tenant, url,
+                                      auth_plugin=auth_plugin,
+                                      auth_system=auth_system,
+                                      # XXX REMOVE THIS ASAP!
+                                      insecure=True)
     return client
 
 
@@ -64,7 +64,8 @@ def get_client(user_proxy=None):
     if not user_proxy:
         client = getattr(g, '_client', None)
         if not client:
-            client = g._client = _make_client(cfg.get('CFG_LWDAAP_ROBOT_PROXY'))
+            g._client = _make_client(cfg.get('CFG_LWDAAP_ROBOT_PROXY'))
+            client = g._client
     else:
         with NamedTemporaryFile() as proxy_file:
             proxy_file.write(user_proxy)
@@ -72,7 +73,7 @@ def get_client(user_proxy=None):
             client = _make_client(proxy_file.name)
     try:
         client.authenticate()
-    except requests.exceptions.RequestException, e:
+    except requests.exceptions.RequestException as e:
         raise InfraException(e.message)
     return client
 
@@ -138,20 +139,23 @@ def list_vms(client):
     return filter(lambda vm: vm['user'] == daap_user, build_vm_list(client))
 
 
-def launch_vm(client, name, image, flavor, app_env=None, recid=None, ssh_key=None):
+def launch_vm(client, name, image, flavor,
+              app_env=None, recid=None, ssh_key=None):
     current_vms = list_vms(client)
     if len(current_vms) >= cfg.get('CFG_LWDAAP_MAX_VMS'):
         msg = 'Maximum number of VMs per user reached!'
         raise InfraException(msg)
     userdata = build_user_data(app_env, ssh_key, recid)
+    metadata = {'lwdaap_vm': '',
+                'lwdaap_user': "%s" % current_user.get_id(),
+                'app_env': app_env}
     try:
-        s = client.servers.create(name, image=image,
-                                  flavor=flavor, meta={'lwdaap_vm': '',
-                                                       'lwdaap_user': "%s" % current_user.get_id(),
-                                                       'app_env': app_env},
+        # Robot Cert ('lw_wp' User Cert?)
+        s = client.servers.create(name, image=image, flavor=flavor,
+                                  meta=metadata,
                                   userdata=userdata,
-                                  key_name='lwkey') # Robot Cert ('lw_wp' User Cert?)
-    except Exception, e:
+                                  key_name='lwkey')
+    except Exception as e:
         raise InfraException(e.message)
     return s
 
@@ -159,7 +163,7 @@ def launch_vm(client, name, image, flavor, app_env=None, recid=None, ssh_key=Non
 def terminate_vm(client, vm_id):
     try:
         client.servers.delete(vm_id)
-    except Exception, e:
+    except Exception as e:
         raise InfraException(e.message)
 
 
@@ -178,7 +182,7 @@ def get_vm(client, vm_id):
         if is_user_vm(vm, user_id):
             return _vm_mapper()(vm)
         return None
-    except Exception, e:
+    except Exception as e:
         current_app.logger.debug("PUM!, %s" % e)
         return None
 
@@ -213,7 +217,8 @@ def get_vm_connection(client, vm_id):
             d['user'] = 'lw'
             return dict(
                 error=False,
-                msg=('<p>You can connect via SSH to %(ip)s, port %(port)s with '
+                msg=('<p>You can connect via SSH to %(ip)s, '
+                     'port %(port)s with '
                      'user "%(user)s":</p>'
                      '<p>ssh -i &lt;your ssh key&gt; -p %(port)s '
                      '%(user)s@%(ip)s</p>') % d
@@ -221,7 +226,8 @@ def get_vm_connection(client, vm_id):
         elif app_env in ['jupyter-python', 'jupyter-r']:
             return dict(
                 error=False,
-                msg='<p>You can connect to <a href="%(http)s" class="btn btn-info">jupyter</a>.' % d
+                msg=('<p>You can connect to <a href="%(http)s" '
+                     'class="btn btn-info">jupyter</a>.') % d
             )
         else:
             return dict(
@@ -233,7 +239,7 @@ def get_vm_connection(client, vm_id):
             error=True,
             msg='Connection details are still not available.'
         )
-    except etcd.EtcdException, e:
+    except etcd.EtcdException as e:
         return dict(
             error=True,
             msg='Unable to get connection details (%s).' % e

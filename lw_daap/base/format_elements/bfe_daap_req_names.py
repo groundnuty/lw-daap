@@ -20,12 +20,13 @@
 import json
 from invenio.modules.knowledge.api import get_kb_mapping
 
+
 def format_element(bfo, req_id=''):
     info = get_kb_mapping('requirements', req_id)
     if info:
         info = json.loads(info['value'])
         return info['title']
 
+
 def escape_values(bfo):
     return 0
-

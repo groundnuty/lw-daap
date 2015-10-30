@@ -16,22 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-## This file is part of Invenio.
-## Copyright (C) 2014 CERN.
-##
-## Invenio is free software; you can redistribute it and/or
-## modify it under the terms of the GNU General Public License as
-## published by the Free Software Foundation; either version 2 of the
-## License, or (at your option) any later version.
-##
-## Invenio is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with Invenio; if not, write to the Free Software Foundation, Inc.,
-## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# This file is part of Invenio.
+# Copyright (C) 2014 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 import warnings
 from sqlalchemy import *
@@ -99,13 +99,15 @@ def info():
 good = 0
 bad = 0
 
+
 def do_upgrade():
     """ Implement your upgrades here  """
     from invenio.modules.workflows.models import BibWorkflowObject
     from invenio.modules.workflows.engine import ObjectVersion, WorkflowStatus
     from lw_daap.modules.invenio_deposit.models import Deposition
 
-    for o in BibWorkflowObject.query.filter(BibWorkflowObject.id_user!=0).all():
+    for o in BibWorkflowObject.query.filter(
+            BibWorkflowObject.id_user != 0).all():
         d = Deposition(o)
         if is_error(d):
             warn(o, 'ERROR', "run workflow")
@@ -116,56 +118,98 @@ def do_upgrade():
                     del sip.metadata[k]
             d.run_workflow(headless=True)
         elif is_done(d):
-            if o.version != ObjectVersion.COMPLETED or o.workflow.status != WorkflowStatus.COMPLETED:
-                if o.version == ObjectVersion.HALTED and o.workflow.status == ObjectVersion.HALTED:
-                    warn(o, 'DONE', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.COMPLETED))
-                    warn(o, 'DONE', "obj version %s -> %s" % (o.version, ObjectVersion.COMPLETED))
+            if (o.version != ObjectVersion.COMPLETED or
+                    o.workflow.status != WorkflowStatus.COMPLETED):
+                if (o.version == ObjectVersion.HALTED and
+                        o.workflow.status == ObjectVersion.HALTED):
+                    warn(
+                        o, 'DONE', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.COMPLETED))
+                    warn(
+                        o, 'DONE', "obj version %s -> %s" %
+                        (o.version, ObjectVersion.COMPLETED))
                     o.workflow.status = WorkflowStatus.COMPLETED
                     o.version = ObjectVersion.COMPLETED
-                elif o.version == ObjectVersion.COMPLETED and o.workflow.status == 5:
-                    warn(o, 'DONE', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.COMPLETED))
+                elif (o.version == ObjectVersion.COMPLETED and
+                      o.workflow.status == 5):
+                    warn(
+                        o, 'DONE', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.COMPLETED))
                     o.workflow.status = WorkflowStatus.COMPLETED
-                elif o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.COMPLETED:
-                    warn(o, 'DONE', "obj version %s -> %s" % (o.version, ObjectVersion.COMPLETED))
+                elif (o.version == ObjectVersion.HALTED and
+                      o.workflow.status == WorkflowStatus.COMPLETED):
+                    warn(
+                        o, 'DONE', "obj version %s -> %s" %
+                        (o.version, ObjectVersion.COMPLETED))
                     o.version = ObjectVersion.COMPLETED
                 else:
-                    warn(o, 'DONE', "Unmatched version %s status %s" % (o.version, o.workflow.status if o.workflow else None))
+                    warn(
+                        o, 'DONE', "Unmatched version %s status %s" %
+                        (o.version, o.workflow.status if o.workflow else None))
             else:
                 info_msg(o, 'DONE')
         elif is_inprogress(d):
             if is_submitted(d):
-                if o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.HALTED:
+                if (o.version == ObjectVersion.HALTED and
+                        o.workflow.status == WorkflowStatus.HALTED):
                     info_msg(o, 'INPROGRESS/SUBMITTED')
-                elif o.version == ObjectVersion.INITIAL and o.workflow.status == WorkflowStatus.NEW:
+                elif (o.version == ObjectVersion.INITIAL and
+                      o.workflow.status == WorkflowStatus.NEW):
                     info_msg(o, 'INPROGRESS/SUBMITTED')
-                elif o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.COMPLETED:
-                    warn(o, 'INPROGRESS/SUBMITTED', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.HALTED))
+                elif (o.version == ObjectVersion.HALTED and
+                      o.workflow.status == WorkflowStatus.COMPLETED):
+                    warn(
+                        o, 'INPROGRESS/SUBMITTED', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.HALTED))
                     o.workflow.status = WorkflowStatus.HALTED
                 else:
-                    warn(o, 'INPROGRESS/SUBMITTED', "Unmatched version %s status %s" % (o.version, o.workflow.status if o.workflow else None))
+                    warn(
+                        o, 'INPROGRESS/SUBMITTED',
+                        "Unmatched version %s status %s" %
+                        (o.version, o.workflow.status if o.workflow else None))
             elif is_unsubmitted(d):
                 if o.workflow is None:
                     if o.version != ObjectVersion.INITIAL:
-                        warn(o, 'INPROGRESS/UNSUBMITTED', "Unmatched version %s status %s" % (o.version, o.workflow.status if o.workflow else None))
+                        warn(
+                            o, 'INPROGRESS/UNSUBMITTED',
+                            "Unmatched version %s status %s" %
+                            (o.version,
+                             o.workflow.status if o.workflow else None))
                     else:
                         info_msg(o, 'INPROGRESS/UNSUBMITTED')
-                elif o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.HALTED:
+                elif (o.version == ObjectVersion.HALTED and
+                      o.workflow.status == WorkflowStatus.HALTED):
                     info_msg(o, 'INPROGRESS/UNSUBMITTED')
-                elif o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.RUNNING:
-                    warn(o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.HALTED))
+                elif (o.version == ObjectVersion.HALTED and
+                      o.workflow.status == WorkflowStatus.RUNNING):
+                    warn(
+                        o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.HALTED))
                     o.workflow.status = WorkflowStatus.HALTED
-                elif o.version == ObjectVersion.RUNNING and o.workflow.status == WorkflowStatus.RUNNING:
-                    warn(o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.HALTED))
-                    warn(o, 'INPROGRESS/UNSUBMITTED', "obj version %s -> %s" % (o.version, ObjectVersion.HALTED))
+                elif (o.version == ObjectVersion.RUNNING and
+                      o.workflow.status == WorkflowStatus.RUNNING):
+                    warn(
+                        o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.HALTED))
+                    warn(
+                        o, 'INPROGRESS/UNSUBMITTED', "obj version %s -> %s" %
+                        (o.version, ObjectVersion.HALTED))
                     o.version = ObjectVersion.HALTED
                     o.workflow.status = WorkflowStatus.HALTED
-                elif o.version == ObjectVersion.HALTED and o.workflow.status == WorkflowStatus.COMPLETED:
-                    warn(o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" % (o.workflow.status, WorkflowStatus.HALTED))
+                elif (o.version == ObjectVersion.HALTED and
+                      o.workflow.status == WorkflowStatus.COMPLETED):
+                    warn(
+                        o, 'INPROGRESS/UNSUBMITTED', "wf status %s -> %s" %
+                        (o.workflow.status, WorkflowStatus.HALTED))
                     o.workflow.status = WorkflowStatus.HALTED
                 else:
-                    warn(o, 'INPROGRESS/UNSUBMITTED', "Unmatched version %s status %s" % (o.version, o.workflow.status if o.workflow else None))
+                    warn(
+                        o, 'INPROGRESS/UNSUBMITTED',
+                        "Unmatched version %s status %s" %
+                        (o.version, o.workflow.status if o.workflow else None))
             else:
-                warn(o, 'INPROGRESS/?', "Unmatched version %s status %s" % (o.version, o.workflow.status if o.workflow else None))
+                warn(o, 'INPROGRESS/?', "Unmatched version %s status %s" %
+                     (o.version, o.workflow.status if o.workflow else None))
     global good, bad
     warnings.warn("Good: %s Bad: %s" % (good, bad))
     db.session.commit()

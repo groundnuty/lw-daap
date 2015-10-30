@@ -81,7 +81,8 @@ def mint_doi(recid, project_id=None):
     key = get_cache_key(recid)
     cache_action = cache.get(key)
     if cache_action:
-        return error_400('DOI is being processed, you should wait some minutes.')
+        return error_400('DOI is being processed,'
+                         'you should wait some minutes.')
 
     doi = build_doi(recid)
     # Set 5 min cache to allow bibupload/bibreformat to finish
@@ -103,6 +104,10 @@ def mint_doi(recid, project_id=None):
     r = add_doi(recid, doi)
 
     if project_id:
-        return jsonify({'status': 'ok', 'redirect': url_for('lwdaap_projects.show', project_id=project_id, path='preserve')})
-    else: 
-        return jsonify({'status': 'ok', 'redirect': url_for('record.metadata', recid=recid)})
+        return jsonify({'status': 'ok',
+                        'redirect': url_for('lwdaap_projects.show',
+                                            project_id=project_id,
+                                            path='preserve')})
+    else:
+        return jsonify({'status': 'ok',
+                        'redirect': url_for('record.metadata', recid=recid)})

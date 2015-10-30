@@ -53,9 +53,10 @@ from invenio.base.globals import cfg
 from invenio.modules.formatter import format_record
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.ext.login import UserInfo
-from lw_daap.modules.invenio_deposit.models import DepositionType, Deposition, \
-    InvalidApiAction, DraftDoesNotExists
-from lw_daap.modules.invenio_deposit.tasks import render_form, \
+from lw_daap.modules.invenio_deposit.models \
+    import DepositionType, Deposition, InvalidApiAction, DraftDoesNotExists
+from lw_daap.modules.invenio_deposit.tasks import  \
+    render_form, \
     create_recid, \
     prepare_sip, \
     finalize_record_sip, \
@@ -68,7 +69,8 @@ from lw_daap.modules.invenio_deposit.tasks import render_form, \
     process_sip_metadata, \
     process_bibdocfile
 from lw_daap.modules.invenio_deposit.helpers import record_to_draft
-from lw_daap.modules.invenio_deposit.tasks import merge_changes, is_sip_uploaded
+from lw_daap.modules.invenio_deposit.tasks import merge_changes, \
+    is_sip_uploaded
 from lw_daap.modules.deposit.utils import create_doi, filter_empty_helper
 from invenio.ext.restful import error_codes, ISODate
 from invenio.ext.sqlalchemy import db
@@ -82,7 +84,7 @@ CFG_LICENSE_SOURCE = "opendefinition.org"
 
 CFG_REQUIREMENT_KB = "requirements"
 
-CFG_DAAP_DEFAULT_COLLECTION_ID="daap"
+CFG_DAAP_DEFAULT_COLLECTION_ID = "daap"
 
 
 def has_doi(obj, eng):
@@ -90,6 +92,7 @@ def has_doi(obj, eng):
         d = Deposition(obj)
         return d.is_minted()
     return False
+
 
 def is_api_request(obj, end):
     return getattr(request, 'is_api_request', False)
@@ -166,7 +169,8 @@ def process_recjson(deposition, recjson):
         recjson['_additional_authors'] = recjson['authors'][1:]
 
     if 'keywords' in recjson and recjson['keywords']:
-        recjson['keywords'] = sorted(set([item.strip() for item in recjson['keywords'].split(',')]))
+        recjson['keywords'] = sorted(
+            set([item.strip() for item in recjson['keywords'].split(',')]))
 
     # ===========
     # Communities
@@ -212,17 +216,16 @@ def process_recjson(deposition, recjson):
     # ==============
     for rel_input_type in ['rel_dataset', 'rel_software']:
         try:
-            rel_input = recjson.get(rel_input_type,  [])
+            rel_input = recjson.get(rel_input_type, [])
 
             # Extract identifier (i.e. elements are mapped from dict ->
             # string)
             recjson[rel_input_type] = map(
-                lambda x: x['identifier'], rel_input 
+                lambda x: x['identifier'], rel_input
             )
         except TypeError:
             # Happens on re-run
             pass
-
 
     # =============================
     # Related/alternate identifiers
@@ -259,11 +262,10 @@ def process_recjson(deposition, recjson):
     elif 'license' in recjson:
         del recjson['license']
 
-
     # =================
     # Requirements
     # =================
-    #if recjson.get('os', []):
+    # if recjson.get('os', []):
     #    info = get_kb_mapping(CFG_REQUIREMENT_KB, str(recjson['os']))
     #    if info:
     #        info = json.loads(info['value'])
@@ -271,11 +273,10 @@ def process_recjson(deposition, recjson):
     #            identifier=recjson['os'],
     #            os=info['title'],
     #        )
-    #elif 'os' in recjson:
+    # elif 'os' in recjson:
     #    del recjson['os']
 
-
-    #if recjson.get('flavor', []):
+    # if recjson.get('flavor', []):
     #    info = get_kb_mapping(CFG_REQUIREMENT_KB, str(recjson['flavor']))
     #    if info:
     #        info = json.loads(info['value'])
@@ -283,9 +284,8 @@ def process_recjson(deposition, recjson):
     #            identifier=recjson['flavor'],
     #            flavor=info['title'],
     #        )
-    #elif 'flavor' in recjson:
+    # elif 'flavor' in recjson:
     #    del recjson['flavor']
-
 
     # =======================
     # Filter out empty fields
@@ -351,7 +351,8 @@ def process_recjson_new(deposition, recjson):
     # ===========
     # Specific Zenodo user collection, used to curate content for
     # Zenodo
-    if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson['provisional_communities']:
+    if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson[
+            'provisional_communities']:
         recjson['provisional_communities'].append(
             CFG_DAAP_DEFAULT_COLLECTION_ID
         )
@@ -363,7 +364,7 @@ def process_recjson_new(deposition, recjson):
         deposition.user_id,
         recjson['access_right'],
         recjson.get('embargo_date', None),
-        recjson.get('access_groups_title',[])
+        recjson.get('access_groups_title', [])
     )
 
     # Calculate number of leading zeros needed in the comment.
@@ -387,9 +388,9 @@ def process_recjson_edit(deposition, recjson):
     """
     process_recjson(deposition, recjson)
     # Remove all FFTs
-    #try:
+    # try:
     #    del recjson['fft']
-    #except KeyError:
+    # except KeyError:
     #    pass
     return recjson
 
@@ -420,7 +421,7 @@ def process_files(deposition, bibrecdocs):
     for bf in bibrecdocs.list_latest_files():
         try:
             order, uuid = bf.comment.split('-', 1)
-        except ValueError, e:
+        except ValueError as e:
             continue
         if uuid in fft:
             sip.metadata['fft'].append({
@@ -438,7 +439,7 @@ def process_files(deposition, bibrecdocs):
                 'name': bf.name,
                 'docfile_type': 'DELETE',
                 'format': bf.format,
-             })
+            })
     # handle any missing files
     for f in fft.values():
         f['restriction'] = fft_status
@@ -627,18 +628,18 @@ class upload(DepositionType):
     """
     workflow = [
         p.IF_ELSE(has_submission,
-            [
-                # existing record, let user edit
-                load_record(draft_id='_edit',
-                            post_process=process_draft),
-                render_form(draft_id='_edit'),
-            ],
-            [
-                # new deposition
-                prefill_draft(draft_id='_metadata'),
-                render_form(draft_id='_metadata'),
-            ],
-        ),
+                  [
+                      # existing record, let user edit
+                      load_record(draft_id='_edit',
+                                  post_process=process_draft),
+                      render_form(draft_id='_edit'),
+                  ],
+                  [
+                      # new deposition
+                      prefill_draft(draft_id='_metadata'),
+                      render_form(draft_id='_metadata'),
+                  ],
+                  ),
         p.IF_NOT(
             has_doi,
             [
@@ -653,31 +654,31 @@ class upload(DepositionType):
         # merge all drafts (default + files)
         prepare_sip(),
         p.IF_ELSE(has_submission,
-            [
-                # Process SIP recjson
-                process_sip_metadata(process_recjson_edit),
-                # Merge SIP metadata into record and generate MARC
-                merge_record(
-                    draft_id='_edit',
-                    post_process_load=process_draft,
-                    process_export=process_recjson_edit,
-                    merge_func=merge,
-                ),
-                # Set file restrictions
-                process_bibdocfile(process=process_files),
-            ],
-            [
-                # Create new record ID
-                create_recid(),
-                # do some stuff
-                process_sip_metadata(process_recjson_new),
-            ],
-        ),
+                  [
+                      # Process SIP recjson
+                      process_sip_metadata(process_recjson_edit),
+                      # Merge SIP metadata into record and generate MARC
+                      merge_record(
+                          draft_id='_edit',
+                          post_process_load=process_draft,
+                          process_export=process_recjson_edit,
+                          merge_func=merge,
+                      ),
+                      # Set file restrictions
+                      process_bibdocfile(process=process_files),
+                  ],
+                  [
+                      # Create new record ID
+                      create_recid(),
+                      # do some stuff
+                      process_sip_metadata(process_recjson_new),
+                  ],
+                  ),
         # generate MARC
         finalize_record_sip(),
         # and let bibupload do the magic
         upload_record_sip(),
-        p.IF(has_doi, [ run_tasks(update=False) ]),
+        p.IF(has_doi, [run_tasks(update=False)]),
     ]
 
     name = "Upload"
@@ -708,10 +709,10 @@ class upload(DepositionType):
     )
 
     marshal_metadata_edit_fields = marshal_metadata_fields.copy()
-    #marshal_metadata_edit_fields.update(dict(
+    # marshal_metadata_edit_fields.update(dict(
     #    recid=fields.Integer,
     #    version_id=UTCISODateTime,
-    #))
+    # ))
 
     marshal_deposition_fields = DepositionType.marshal_deposition_fields.copy()
     del marshal_deposition_fields['drafts']
@@ -776,9 +777,8 @@ class upload(DepositionType):
                         recid=recjson.get('recid'),
                         _external=True
                     ))
-                if recjson.get('doi') and \
-                   recjson.get('doi').startswith(cfg['CFG_DATACITE_DOI_PREFIX']
-                                                +"/"):
+                if (recjson.get('doi') and recjson.get('doi').startswith(
+                        cfg['CFG_DATACITE_DOI_PREFIX'] + "/")):
                     obj['doi'] = fields.String().format(recjson.get('doi'))
                     obj['doi_url'] = fields.String().format(
                         "http://dx.doi.org/%s" % obj['doi']

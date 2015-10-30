@@ -90,7 +90,8 @@ In templates you can add a sign in/up link:
 
 .. code-block:: jinja
 
-    <a href="{{url_for('oauthclient.login', remote_app='github')}}">Sign in with GitHub</a>
+    <a href="{{url_for('oauthclient.login',
+                       remote_app='github')}}">Sign in with GitHub</a>
 """
 
 import github3
@@ -109,7 +110,8 @@ REMOTE_APP = dict(
         view="invenio.modules.oauthclient.handlers:signup_handler",
     ),
     params=dict(
-        request_token_params={'scope': 'user:email, admin:repo_hook, read:org'},
+        request_token_params={'scope': ('user: email,'
+                                        'admin: repo_hook, read: org')},
         base_url='https://api.github.com/',
         request_token_url=None,
         access_token_url="https://github.com/login/oauth/access_token",
@@ -124,7 +126,7 @@ def account_info(remote, resp):
     """ Retrieve remote account information used to find local user. """
     gh = github3.login(token=resp['access_token'])
     ghuser = gh.user()
-    #return dict(email=ghuser.email, nickname=ghuser.login)
+    # return dict(email=ghuser.email, nickname=ghuser.login)
     return dict(email=ghuser.email, nickname=ghuser.email)
 
 

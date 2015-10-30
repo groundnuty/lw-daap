@@ -20,7 +20,8 @@
 # This file is part of Invenio.
 # Copyright (C) 2013, 2014, 2015 CERN.
 #
-# Invenio is free software; you can redistribute it an# modify it under the terms of the GNU General Public License as
+# Invenio is free software; you can redistribute it an# modify it under the
+# terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
@@ -222,9 +223,9 @@ class InputProcessorMixin(object):
 
             # Process data
 
-
             if request.json['metadata']['keywords']:
-                request.json['metadata']['keywords'] = ','.join(request.json['metadata']['keywords'])
+                request.json['metadata']['keywords'] = ','.join(
+                    request.json['metadata']['keywords'])
 
             dummy_form, validated, result = draft.process(
                 request.json.get('metadata', {}), complete_form=True
@@ -268,7 +269,11 @@ class DepositionListResource(Resource, InputProcessorMixin):
     def post(self):
         """Create a new deposition."""
         # Create deposition (uses default deposition type unless type is given)
-        d = Deposition.create(current_user, request.json['metadata'].get('upload_type', None))
+        d = Deposition.create(
+            current_user,
+            request.json['metadata'].get(
+                'upload_type',
+                None))
         # Validate input data according to schema
         self.validate_input(d)
         # Process input data

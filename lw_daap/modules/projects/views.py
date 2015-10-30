@@ -19,7 +19,8 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, render_template, request, flash, url_for, redirect, current_app, jsonify
+from flask import Blueprint, render_template, request, flash, \
+    url_for, redirect, current_app, jsonify
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
@@ -55,7 +56,9 @@ blueprint = Blueprint(
 def myprojects_ctx():
     """Helper method for return ctx used by many views."""
     uid = current_user.get_id()
-    return { 'myprojects': Project.query.filter_by(id_user=uid).order_by(db.asc(Project.title)).all() }
+    return {'myprojects': Project.query.filter_by(
+                            id_user=uid).order_by(
+                            db.asc(Project.title)).all()}
 
 
 @blueprint.route('/', methods=['GET', ])
@@ -88,12 +91,14 @@ def index(p, so, page):
 
 @blueprint.route('/myprojects')
 @register_menu(blueprint,
-        'settings.myprojects',
-        _('%(icon)s My Projects', icon='<i class="fa fa-list-alt fa-fw"></i>'),
-        order=0,
-        active_when=lambda: request.endpoint.startswith("lwdaap_projects"),
-)
-@register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects', _('My Projects'))
+               'settings.myprojects',
+               _('%(icon)s My Projects',
+                 icon='<i class="fa fa-list-alt fa-fw"></i>'),
+               order=0,
+               active_when=lambda: request.endpoint.startswith(
+                                                        "lwdaap_projects"),)
+@register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects',
+                     _('My Projects'))
 @login_required
 def myprojects():
     ctx = myprojects_ctx()
@@ -168,7 +173,8 @@ def edit(project_id):
     )
 
 
-@blueprint.route('/<int:project_id>/show/', defaults={'path': 'plan'}, methods=['GET'])
+@blueprint.route('/<int:project_id>/show/', defaults={'path': 'plan'},
+                 methods=['GET'])
 @blueprint.route('/<int:project_id>/show/<path:path>', methods=['GET'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 @wash_arguments({'page': (int, 1)})
@@ -219,8 +225,8 @@ def show(project_id, path, page):
         abort(404)
     query_opts = tab_info.get('q', {})
     records = project.get_project_records(**query_opts)
-    if tab_info.get('disable_paginate', False): 
-        per_page = page = 0 
+    if tab_info.get('disable_paginate', False):
+        per_page = page = 0
     else:
         page = max(page, 1)
         per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 5)
@@ -250,7 +256,8 @@ def delete(project_id):
         flash('Only the owner of the project can delete it', category='error')
         abort(404)
     if project.is_public:
-        flash('Project has public records, cannot be deleted', category='error')
+        flash('Project has public records, cannot be deleted',
+              category='error')
         abort(404)
 
     form = DeleteProjectForm(request.values)
@@ -264,25 +271,29 @@ def delete(project_id):
     return redirect(url_for('.myprojects'))
 
 
-@blueprint.route('/<int:project_id>/deposit/<depositions:deposition_type>', methods=['GET'])
+@blueprint.route('/<int:project_id>/deposit/<depositions:deposition_type>',
+                 methods=['GET'])
 @ssl_required
 @login_required
 @permission_required('submit')
 def deposit(project_id, deposition_type):
     project = Project.query.get_or_404(project_id)
     if current_user.get_id() != project.id_user:
-        flash('Only the owner of the project can deposit records on it', category='error')
+        flash('Only the owner of the project can deposit records on it',
+              category='error')
         abort(404)
 
-    from lw_daap.modules.invenio_deposit.models import DepositionDraftCacheManager
+    from lw_daap.modules.invenio_deposit.models \
+        import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
     draft_cache.data['project_collection'] = project_id
-    curated = deposition_type.lower() != 'dataset' 
-    draft_cache.data['record_curated_in_project'] = curated 
+    curated = deposition_type.lower() != 'dataset'
+    draft_cache.data['record_curated_in_project'] = curated
     draft_cache.data['record_public_from_project'] = False
     draft_cache.save()
 
-    return redirect(url_for('webdeposit.create', deposition_type=deposition_type, next=next))
+    return redirect(url_for('webdeposit.create',
+                    deposition_type=deposition_type, next=next))
 
 
 def error_400(msg):
@@ -291,7 +302,8 @@ def error_400(msg):
     return response
 
 
-@blueprint.route('/<int:project_id>/show/curate/<int:record_id>/', methods=['POST'])
+@blueprint.route('/<int:project_id>/show/curate/<int:record_id>/',
+                 methods=['POST'])
 @ssl_required
 @login_required
 @permission_required('submit')
@@ -307,24 +319,30 @@ def curation(project_id, record_id):
     key = get_cache_key(record_id)
     cache_action = cache.get(key)
     if cache_action == 'curate':
-        return error_400('Record is being curated, you should wait some minutes.')
+        return error_400('Record is being curated, '
+                         'you should wait some minutes.')
     # Set 5 min cache to allow bibupload/bibreformat to finish
     cache.set(key, 'curate', timeout=5*60)
 
     rec = {}
     record_add_field(rec, '001', controlfield_value=str(record_id))
     project_info_fields = [('a', 'True')]
-    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    record_add_field(rec, tag='983', ind1='_',
+                     ind2='_', subfields=project_info_fields)
     project_info_fields = [('b', 'False')]
-    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    record_add_field(rec, tag='983', ind1='_',
+                     ind2='_', subfields=project_info_fields)
     from invenio.legacy.bibupload.utils import bibupload_record
     bibupload_record(record=rec, file_prefix='project_info', mode='-c',
                      opts=[], alias="project_info")
-    
-    return jsonify({'status': 'ok', 'redirect': url_for('.show', project_id=project_id, path='curate')})
+
+    return jsonify({'status': 'ok',
+                    'redirect': url_for('.show',
+                                        project_id=project_id, path='curate')})
 
 
-@blueprint.route('/<int:project_id>/show/publish/<int:record_id>/', methods=['POST'])
+@blueprint.route('/<int:project_id>/show/publish/<int:record_id>/',
+                 methods=['POST'])
 @ssl_required
 @login_required
 @permission_required('submit')
@@ -339,18 +357,24 @@ def publication(project_id, record_id):
     key = get_cache_key(record_id)
     cache_action = cache.get(key)
     if cache_action == 'publish':
-        return error_400('Record is being published, you should wait some minutes.')
+        return error_400('Record is being published, '
+                         'you should wait some minutes.')
     # Set 5 min cache to allow bibupload/bibreformat to finish
     cache.set(key, 'publish', timeout=5*60)
 
     rec = {}
     record_add_field(rec, '001', controlfield_value=str(record_id))
     project_info_fields = [('a', 'True')]
-    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    record_add_field(rec, tag='983', ind1='_',
+                     ind2='_', subfields=project_info_fields)
     project_info_fields = [('b', 'True')]
-    record_add_field(rec, tag='983', ind1='_', ind2='_', subfields=project_info_fields)    
+    record_add_field(rec, tag='983', ind1='_',
+                     ind2='_', subfields=project_info_fields)
     from invenio.legacy.bibupload.utils import bibupload_record
     bibupload_record(record=rec, file_prefix='project_info', mode='-c',
                      opts=[], alias="project_info")
-    
-    return jsonify({'status': 'ok', 'redirect': url_for('.show', project_id=project_id, path='publish')})
+
+    return jsonify({'status': 'ok',
+                    'redirect': url_for('.show',
+                                        project_id=project_id,
+                                        path='publish')})

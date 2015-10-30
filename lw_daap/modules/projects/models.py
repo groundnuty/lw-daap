@@ -77,7 +77,6 @@ class Project(db.Model):
     owner = db.relationship(User, backref='projects',
                             foreign_keys=[id_user])
 
-
     #
     # Collection management
     #
@@ -271,6 +270,7 @@ class Project(db.Model):
             order = so == 'title' and db.asc or db.desc
             query = query.order_by(order(getattr(cls, so)))
         return query
+
 
 #
 #

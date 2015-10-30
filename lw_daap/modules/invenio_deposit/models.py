@@ -457,8 +457,7 @@ class DepositionType(object):
         Deposition.run_workflow().
         """
         if deposition.workflow_object.workflow is None or (
-                deposition.workflow_object.version == ObjectVersion.INITIAL
-                and
+                deposition.workflow_object.version == ObjectVersion.INITIAL and
                 deposition.workflow_object.workflow.status ==
                 WorkflowStatus.NEW):
             return deposition.workflow_object.start_workflow(
@@ -583,6 +582,7 @@ class DepositionFile(FactoryMixin):
         d.delete()
 
     """
+
     def __init__(self, uuid=None, backend=None):
         self.uuid = uuid or str(uuid4())
         self._backend = backend
@@ -597,7 +597,7 @@ class DepositionFile(FactoryMixin):
             size=self.size,
             checksum=self.checksum,
             description=self.description,
-            #bibdoc=self.bibdoc
+            # bibdoc=self.bibdoc
         )
 
     def __setstate__(self, state):
@@ -625,7 +625,8 @@ class DepositionFile(FactoryMixin):
             raise Exception("No path set")
         return self._path
 
-    def save(self, incoming_file, filename=None, description=None, *args, **kwargs):
+    def save(self, incoming_file, filename=None,
+             description=None, *args, **kwargs):
         self.name = secure_filename(filename or incoming_file.filename)
         self.description = description
         (self._path, self.size, self.checksum, result) = self.backend.save(
@@ -656,6 +657,7 @@ class DepositionDraftCacheManager(object):
     to a workflow being run. The data can be loaded by the prefill_draft()
     workflow task.
     """
+
     def __init__(self, user_id):
         self.user_id = user_id
         self.data = {}
@@ -723,6 +725,7 @@ class DepositionDraft(FactoryMixin):
     """
     Represents the state of a form
     """
+
     def __init__(self, draft_id, form_class=None, deposition_ref=None):
         self.id = draft_id
         self.completed = False
@@ -844,8 +847,8 @@ class DepositionDraft(FactoryMixin):
         # Determine changed messages
         changed_msgs = dict(
             (name, messages) for name, messages in post_processed_msgs.items()
-            if validated_msgs.get(name, []) != messages
-            or process_field_names is None or name in process_field_names
+            if validated_msgs.get(name, []) != messages or
+            process_field_names is None or name in process_field_names
         )
 
         result = {}
@@ -923,7 +926,9 @@ class DepositionDraft(FactoryMixin):
         """
         data = {}
         # Don't include *) disabled fields, and *) empty optional fields
-        func = lambda f: not f.flags.disabled and (f.flags.required or f.data)
+
+        def func():
+            return not f.flags.disabled and (f.flags.required or f.data)
 
         for d in drafts:
             if d.has_form():
@@ -945,6 +950,7 @@ class Deposition(object):
     Basically an interface to work with BibWorkflowObject data attribute in an
     easy manner.
     """
+
     def __init__(self, workflow_object, type=None, user_id=None):
         self.workflow_object = workflow_object
         if not workflow_object:
@@ -1286,7 +1292,7 @@ class Deposition(object):
                     record = get_record(recid, True)
                     if record:
                         return record.get('doi', None) is not None
-                except Exception, e:
+                except Exception as e:
                     pass
         return False
 
@@ -1370,7 +1376,7 @@ class Deposition(object):
     def get_type(self, type_or_id):
         if type_or_id and isinstance(type_or_id, type) and \
            issubclass(type_or_id, DepositionType):
-                return type_or_id
+            return type_or_id
         else:
             return DepositionType.get(type_or_id) if type_or_id else \
                 DepositionType.get_default()
@@ -1514,6 +1520,7 @@ class SubmissionInformationPackage(FactoryMixin):
         import json
 
         class DateTimeEncoder(json.JSONEncoder):
+
             def default(self, obj):
                 if isinstance(obj, (datetime.datetime, datetime.date)):
                     encoded_object = obj.isoformat()

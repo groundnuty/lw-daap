@@ -16,11 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
+
 def create_doi(recid=None):
-    if recid == None:
+    if recid is None:
         recid = 12345
     return {'doi': '%s/lw_daap.%s' % ('10.5072', recid),
-       'recid': recid }
+            'recid': recid}
+
 
 def filter_empty_helper(keys=None):
     """ Remove empty elements from a list"""

@@ -21,6 +21,12 @@
 # Configuration
 
 from datetime import timedelta
+import warnings
+import invenio.ext.login.legacy_user
+import lw_daap.base.auth.github
+import lw_daap.base.auth.google
+import lw_daap.base.auth.facebook
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -30,8 +36,9 @@ sys.setdefaultencoding('utf8')
 
 # MonkeyPatch the UserInfo so it gets our group stuff
 # must be done quite early!
-import invenio.ext.login.legacy_user
 old_login = invenio.ext.login.legacy_user.UserInfo._login
+
+
 def new_login(self, uid, force=False):
     from lw_daap.modules.invenio_groups.models import Group
     data = old_login(self, uid, force)
@@ -39,12 +46,8 @@ def new_login(self, uid, force=False):
     return data
 invenio.ext.login.legacy_user.UserInfo._login = new_login
 
-import warnings
 warnings.filterwarnings('ignore')
 
-import lw_daap.base.auth.github
-import lw_daap.base.auth.google
-import lw_daap.base.auth.facebook
 
 # Global config
 CFG_SITE_LANGS = ["en"]

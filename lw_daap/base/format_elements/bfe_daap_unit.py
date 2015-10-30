@@ -23,6 +23,6 @@ def format_element(bfo, frequency={}):
     else:
         return frequency.get('unit')
 
+
 def escape_values(bfo):
     return 0
-

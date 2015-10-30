@@ -33,6 +33,7 @@ from flask import current_app
 
 __all__ = ['PeriodField']
 
+
 class PeriodFieldForm(WebDepositForm):
     start = Date(
         label=_('Start date'),
@@ -43,12 +44,14 @@ class PeriodFieldForm(WebDepositForm):
                 [lambda x: x is not None, ],  # non-empty
                 message="Start date required if you specify an end date."
             ),
-            validators.optional(),		
-            StartEndDate(max_from='end', message='%(field_label)s must be previous to end date.'),
+            validators.optional(),
+            StartEndDate(
+                max_from='end',
+                message='%(field_label)s must be previous to end date.'),
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',
-        )
+    )
     end = Date(
         label=_('End date'),
         description='End date.',
@@ -57,14 +60,12 @@ class PeriodFieldForm(WebDepositForm):
                 'start',
                 [lambda x: x is not None, ],  # non-empty
                 message="End date required if you specify a start date."
-             ),	
-             validators.optional(),	
-             StartEndDate(max=date.today(), min_from='start',
-                          message='%(field_label)s must be between start date and today.'),
+            ),
+            validators.optional(),
+            StartEndDate(max=date.today(), min_from='start',
+                         message=('%(field_label)s must be between start'
+                                  ' date and today.')),
         ],
         widget=ColumnInput(date_widget, class_="col-xs-3"),
         widget_classes='',
-        )
-
-
-
+    )

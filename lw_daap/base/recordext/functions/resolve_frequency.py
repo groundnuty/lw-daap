@@ -26,4 +26,4 @@ def resolve_frequency(values, which):
         'size': 0,
         'unit': -1,
     }
-    return values[which_map.get(which, 0)] 
+    return values[which_map.get(which, 0)]

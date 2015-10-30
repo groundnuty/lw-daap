@@ -48,7 +48,6 @@ class ProjectForm(Form):
         ], {'classes': 'in'}),
     ]
 
-
     field_placeholders = {
     }
 

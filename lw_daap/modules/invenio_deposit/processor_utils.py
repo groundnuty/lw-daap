@@ -297,7 +297,7 @@ def record_id_process(form, field, submit=False):
 
     if json_reader is not None:
         webdeposit_json = form.uncook_json(json_reader, {}, value)
-        #FIXME: update current json, past self, what do you mean?? :S
+        # FIXME: update current json, past self, what do you mean?? :S
 
         field.add_message('<a href="/record/"' + value +
                           '>Record</a> was loaded successfully',

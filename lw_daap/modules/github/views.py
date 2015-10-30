@@ -40,7 +40,8 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, render_template, request, current_app, abort, jsonify
+from flask import Blueprint, render_template, \
+    request, current_app, abort, jsonify
 
 from invenio.ext.sslify import ssl_required
 
@@ -79,9 +80,10 @@ def index():
             "repos": extra_data['repos'],
             "name": extra_data['login'],
             "user_id": token.remote_account.user_id,
-#            "last_sync": humanize.naturaltime(now - last_sync),
+            # "last_sync": humanize.naturaltime(now - last_sync),
         })
     return render_template("github/index.html", **ctx)
+
 
 @blueprint.route('/releases/<owner>/<name>')
 @ssl_required

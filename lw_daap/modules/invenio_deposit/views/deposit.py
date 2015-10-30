@@ -78,6 +78,7 @@ blueprint = Blueprint(
 
 default_breadcrumb_root(blueprint, '.webdeposit')
 
+
 def deposition_error_handler(endpoint='.index'):
     """Decorator to handle deposition exceptions."""
     def decorator(f):
@@ -175,13 +176,14 @@ def deposition_type_index(deposition_type):
 
 @blueprint.route('/myuploads')
 @register_menu(blueprint,
-        'settings.myuploads',
-        _('%(icon)s My Uploads', icon='<i class="fa fa-file fa-fw"></i>'),
-        order=1,
-        active_when=lambda: request.endpoint.startswith("webdeposit."),
-)
-
-@register_breadcrumb(blueprint, 'breadcrumbs.settings.myuploads', _('My Uploads'))
+               'settings.myuploads',
+               _('%(icon)s My Uploads',
+                 icon='<i class="fa fa-file fa-fw"></i>'),
+               order=1,
+               active_when=lambda: request.endpoint.startswith("webdeposit."),
+               )
+@register_breadcrumb(blueprint, 'breadcrumbs.settings.myuploads',
+                     _('My Uploads'))
 @login_required
 def myuploads():
     ctx = dict(
@@ -291,7 +293,6 @@ def save(deposition_type=None, uuid=None, draft_id=None):
         data, complete_form=is_complete_form or is_submit
     )
 
-
     # Complete draft only if form validates.
     if validated and is_submit:
         draft.complete()
@@ -400,7 +401,8 @@ def status(deposition_type=None, uuid=None, draft_id=None):
 
 
 @blueprint.route('/<int:uuid>/file/url/', methods=['POST'])
-@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/url/', methods=['POST'])
+@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/url/',
+                 methods=['POST'])
 @login_required
 @deposition_error_handler()
 def upload_url(deposition_type=None, uuid=None):
@@ -442,7 +444,8 @@ def upload_url(deposition_type=None, uuid=None):
 
 
 @blueprint.route('/<int:uuid>/file/', methods=['POST'])
-@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/', methods=['POST'])
+@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/',
+                 methods=['POST'])
 @login_required
 @deposition_error_handler()
 def upload_file(deposition_type=None, uuid=None):
@@ -467,7 +470,8 @@ def upload_file(deposition_type=None, uuid=None):
 
     description = request.form.get('description', filename)
 
-    if df.save(uploaded_file, filename=filename, description=description, **kwargs):
+    if df.save(uploaded_file, filename=filename,
+               description=description, **kwargs):
         try:
             deposition.add_file(df)
             deposition.save()
@@ -483,7 +487,8 @@ def upload_file(deposition_type=None, uuid=None):
 
 
 @blueprint.route('/<int:uuid>/file/delete/', methods=['POST'])
-@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/delete/', methods=['POST'])
+@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/delete/',
+                 methods=['POST'])
 @login_required
 @deposition_error_handler()
 def delete_file(deposition_type=None, uuid=None):
@@ -503,7 +508,8 @@ def delete_file(deposition_type=None, uuid=None):
 
 
 @blueprint.route('/<int:uuid>/file/', methods=['GET'])
-@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/', methods=['GET'])
+@blueprint.route('/<depositions:deposition_type>/<int:uuid>/file/',
+                 methods=['GET'])
 @login_required
 @deposition_error_handler()
 def get_file(deposition_type=None, uuid=None):

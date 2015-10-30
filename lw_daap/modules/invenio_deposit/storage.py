@@ -48,7 +48,6 @@ from flask import current_app
 from invenio.base.globals import cfg
 
 
-
 class UploadError(IOError):
 
     """Error during upload."""
@@ -79,7 +78,8 @@ class ExternalFile(object):
                         if (s[0] == s[-1]) and s.startswith(("'", '"')):
                             s = s[1:-1]
                         self.filename = s
-                        current_app.logger.debug("filename: %s" % self.filename)
+                        current_app.logger.debug("filename: %s"
+                                                 % self.filename)
             if not self.filename:
                 self.filename = filename
 
@@ -235,7 +235,7 @@ class ChunkedDepositionStorage(DepositionStorage):
         )
 
         # Only merge files on last_trunk
-        if chunk != chunks-1:
+        if chunk != chunks - 1:
             return res
 
         # Get the chunks

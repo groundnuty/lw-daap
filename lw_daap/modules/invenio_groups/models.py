@@ -375,7 +375,6 @@ class Group(db.Model):
         """
         return Group.query.join(Membership).filter_by(id_user=uid)
 
-
     @classmethod
     def search(cls, query, q):
         """Modify query as so include only specific group names.
@@ -384,7 +383,7 @@ class Group(db.Model):
         :param str q: Search string.
         :returs: Query object.
         """
-        return query.filter(Group.name.like("%"+q+"%"))
+        return query.filter(Group.name.like("%" + q + "%"))
 
     def add_admin(self, admin):
         """Invite an admin to a group.
@@ -416,7 +415,6 @@ class Group(db.Model):
         :param user: User to be removed from group members.
         """
         return Membership.delete(self, user)
-
 
     def invite(self, user, admin=None):
         """Invite a user to a group (should be done by admins).
@@ -473,7 +471,8 @@ class Group(db.Model):
         return False
 
     def is_unique_admin(self, admin):
-        if self.is_admin(admin) and GroupAdmin.query_by_group(self).count() == 1:
+        if (self.is_admin(admin) and
+                GroupAdmin.query_by_group(self).count() == 1):
             return True
         return False
 
@@ -669,12 +668,12 @@ class Membership(db.Model):
     def query_requests(cls, admin, eager=False):
         """Get all pending group requests."""
         # Get direct pending request
-        #if hasattr(admin, 'is_admin') and admin.is_superadmin:
-        #    q1 = GroupAdmin.query.with_entities(
-        #        GroupAdmin.group_id)
-        #else:
+        # if hasattr(admin, 'is_admin') and admin.is_superadmin:
+        #     q1 = GroupAdmin.query.with_entities(
+        #         GroupAdmin.group_id)
+        # else:
         q1 = GroupAdmin.query_by_admin(admin).with_entities(
-                GroupAdmin.group_id)
+            GroupAdmin.group_id)
         q2 = Membership.query.filter(
             Membership.state == MembershipState.PENDING_ADMIN,
             Membership.id_group.in_(q1),
@@ -727,8 +726,8 @@ class Membership(db.Model):
         """
         query = query.join(User).filter(
             db.or_(
-                User.nickname.like("%"+q+"%"),
-                User.email.like("%"+q+"%")
+                User.nickname.like("%" + q + "%"),
+                User.email.like("%" + q + "%")
             )
         )
         return query

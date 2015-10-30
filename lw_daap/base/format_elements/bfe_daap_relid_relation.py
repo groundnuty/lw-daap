@@ -18,26 +18,26 @@
 
 from wtforms import widgets
 
-def format_element(bfo, relation={}):
-	choices={
-            'isCitedBy': 'cites this upload',
-            'cites': 'is cited by this upload',
-            'isSupplementTo': 'is supplemented by this upload',
-            'isSupplementedBy': 'is a supplement to this upload',
-            'isNewVersionOf': 'is previous version of this upload',
-            'isPreviousVersionOf': 'is new version of this upload',
-            'isPartOf': 'has this upload as part',
-            'hasPart': 'is part of this upload',
-            'isAnaBy': 'is analyzed by this upload',
-            'analyzes': 'analyzes this upload',
-            'isCompiledBy': 'compiled/created this upload',
-            'compiles': 'is compiled/created by this upload',
-            'isIdenticalTo': 'is identical to upload',
-            'isAlternativeIdentifier': 'is alternate identifier',
-        }
 
-	return choices[relation]
+def format_element(bfo, relation={}):
+    choices = {
+        'isCitedBy': 'cites this upload',
+        'cites': 'is cited by this upload',
+        'isSupplementTo': 'is supplemented by this upload',
+        'isSupplementedBy': 'is a supplement to this upload',
+        'isNewVersionOf': 'is previous version of this upload',
+        'isPreviousVersionOf': 'is new version of this upload',
+        'isPartOf': 'has this upload as part',
+        'hasPart': 'is part of this upload',
+        'isAnaBy': 'is analyzed by this upload',
+        'analyzes': 'analyzes this upload',
+        'isCompiledBy': 'compiled/created this upload',
+        'compiles': 'is compiled/created by this upload',
+        'isIdenticalTo': 'is identical to upload',
+        'isAlternativeIdentifier': 'is alternate identifier',
+        }
+    return choices[relation]
+
 
 def escape_values(bfo):
     return 0
-

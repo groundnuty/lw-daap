@@ -20,9 +20,10 @@ from lw_daap.modules.projects.models import Project
 
 from flask import current_app
 
+
 def format_element(bfo, pid):
     return Project.get_name_by_collection(pid)
 
+
 def escape_values(bfo):
     return 0
-

@@ -17,7 +17,7 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 from wtforms import RadioField, SelectField, StringField, HiddenField, \
-                    validators, ValidationError
+    validators, ValidationError
 
 from invenio.utils.forms import InvenioBaseForm
 
@@ -26,13 +26,15 @@ class LaunchFormData:
     """
     Helper Class to pass when initializing the LaunchForm
     """
+
     def _get_value_from_id(self, reqs, id):
         for k, v in reqs.items():
             if v['id'] == id:
                 return k
         return None
 
-    def __init__(self, reqs, title=None, flavor=None, os=None, app_env=None, recid=None, **kwargs):
+    def __init__(self, reqs, title=None, flavor=None,
+                 os=None, app_env=None, recid=None, **kwargs):
         if title:
             self.name = title[0]
         if flavor:
@@ -40,7 +42,8 @@ class LaunchFormData:
         if os:
             self.image = self._get_value_from_id(reqs['images'], os[0])
         if app_env:
-            self.app_env = self._get_value_from_id(reqs['app_envs'], app_env[0])
+            self.app_env = self._get_value_from_id(reqs['app_envs'],
+                                                   app_env[0])
         if recid:
             self.recid = recid[0]
 
@@ -49,29 +52,29 @@ class LaunchForm(InvenioBaseForm):
     recid = HiddenField()
 
     name = StringField(
-        label = 'Instance Name',
-        description= 'Required. A name that helps to identify your instance',
+        label='Instance Name',
+        description='Required. A name that helps to identify your instance',
         validators=[validators.DataRequired(),
                     validators.length(
                         max=50,
                         message=("The identifier must be less "
                                  "than 50 characters long.")),
-                   ],
+                    ],
     )
 
     flavor = SelectField(
-        label = 'Flavor',
-        description = 'Required. Size of the VM to start',
+        label='Flavor',
+        description='Required. Size of the VM to start',
     )
 
     image = SelectField(
-        label = 'Operating System',
-        description = 'Required. Operating System to use',
+        label='Operating System',
+        description='Required. Operating System to use',
     )
 
     app_env = SelectField(
-        label = 'Application environment',
-        description = 'Required. Some info?',
+        label='Application environment',
+        description='Required. Some info?',
     )
 
     def __init__(self, **kwargs):
@@ -90,7 +93,8 @@ class LaunchForm(InvenioBaseForm):
         self.app_env.choices = self._build_choices(reqs, 'app_envs')
 
     def validate_image(form, field):
-        if field.data in ['centos-6', 'centos-7'] and form.app_env.data != 'ssh':
+        if (field.data in ['centos-6', 'centos-7'] and
+                form.app_env.data != 'ssh'):
             msg = ('Centos 6 and Centos 7 currently only support ssh.')
             raise ValidationError(msg)
 

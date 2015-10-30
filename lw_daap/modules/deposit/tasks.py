@@ -69,7 +69,7 @@ from invenio.ext.template import render_template_to_string
 
 try:
     from altmetric import Altmetric, AltmetricHTTPException
-except ImportError, e:
+except ImportError as e:
     register_exception(
         prefix='Altmetric module not installed: %s' % str(e),
         alert_admin=False
@@ -180,11 +180,11 @@ def openaire_create_icon(docid=None, recid=None, reformat=True):
                              'icon-file-format': ICON_FILEFORMAT,
                              'verbosity': 0})
                         icon_path = os.path.join(icon_dir, icon_name)
-                    except InvenioWebSubmitIconCreatorError, e:
+                    except InvenioWebSubmitIconCreatorError as e:
                         logger.warning(
                             'Icon for file %s could not be created: %s' % (
                                 file_path, str(e))
-                            )
+                        )
                         register_exception(
                             prefix='Icon for file %s could not be created: %s'
                                    % (file_path, str(e)),
@@ -204,7 +204,7 @@ def openaire_create_icon(docid=None, recid=None, reformat=True):
                                     recid_list
                                 )
 
-                    except InvenioBibDocFileError, e:
+                    except InvenioBibDocFileError as e:
                         logger.warning(
                             'Icon %s for file %s could not be added to '
                             'document: %s' % (icon_path, f, str(e))
@@ -287,7 +287,7 @@ def openaire_altmetric_update(recids, upload=True):
                     ('9', 'Altmetric')
                 ])
                 records.append(rec)
-        except AltmetricHTTPException, e:
+        except AltmetricHTTPException as e:
             logger.warning(
                 'Altmetric error for recid %s with DOI %s (status code %s): %s'
                 % (recid, doi_val, e.status_code, str(e))

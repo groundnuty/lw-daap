@@ -26,6 +26,6 @@ def format_element(bfo, files=[]):
             pass
     return sum(sizes)
 
+
 def escape_values(bfo):
     return 0
-

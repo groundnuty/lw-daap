@@ -39,7 +39,8 @@ js = Bundle(
 
 styles = Bundle(
     "css/deposit/form.css",
-    "vendors/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
+    ("vendors/eonasdan-bootstrap-datetimepicker"
+     "/build/css/bootstrap-datetimepicker.css"),
     output="deposit.css",
     filters="cleancss",
     weight=51

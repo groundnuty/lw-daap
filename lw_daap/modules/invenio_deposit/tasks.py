@@ -93,7 +93,8 @@ def has_submission(obj, eng):
 
 
 def is_sip_uploaded(sip, record=None):
-    """Check if a submission information package for a record has been uploaded."""
+    """Check if a submission information package"""
+    """for a record has been uploaded."""
     if not sip.is_sealed():
         return False
 
@@ -461,7 +462,8 @@ def prepare_sip():
 
 
 def process_sip_metadata(processor=None):
-    """Process metadata in submission information package using a custom processor."""
+    """Process metadata in submission information package"""
+    """using a custom processor."""
     @wraps(process_sip_metadata)
     def _process_sip(obj, dummy_eng):
         d = Deposition(obj)
@@ -493,7 +495,8 @@ def hold_for_approval():
     """Hold deposition on the Holding Pen for admin approval."""
     @wraps(hold_for_approval)
     def _hold_for_approval(obj, dummy_eng):
-        from invenio.modules.workflows.tasks.marcxml_tasks import approve_record
+        from invenio.modules.workflows.tasks.marcxml_tasks \
+            import approve_record
         d = Deposition(obj)
         if d.type.hold_for_upload:
             approve_record(obj, dummy_eng)
@@ -509,10 +512,10 @@ def upload_record_sip():
     """
     @wraps(upload_record_sip)
     def create(obj, dummy_eng):
-        #FIXME change share tmp directory
+        # FIXME change share tmp directory
         from invenio.config import CFG_TMPSHAREDDIR
-        from invenio.legacy.bibsched.bibtask import task_low_level_submission, \
-            bibtask_allocate_sequenceid
+        from invenio.legacy.bibsched.bibtask \
+            import task_low_level_submission, bibtask_allocate_sequenceid
         d = Deposition(obj)
 
         sip = d.get_latest_sip(sealed=False)

@@ -18,8 +18,10 @@
 
 from datetime import date
 
+
 def format_element(bfo, embargo_date=''):
     return date.today() > embargo_date
+
 
 def escape_values(bfo):
     return 0

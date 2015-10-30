@@ -59,7 +59,7 @@ def _kb_requirements_choices(domain_flavor=True, domain_os=True):
         else:
             return None
     return filter(lambda x: x is not None,
-               map(_mapper, get_kb_mappings('requirements', '', '')))
+                  map(_mapper, get_kb_mappings('requirements', '', '')))
 
 
 class RequirementsField(WebDepositField, SelectField):

@@ -16,25 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-## This file is part of Zenodo.
-## Copyright (C) 2012, 2013 CERN.
-##
-## Zenodo is free software: you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation, either version 3 of the License, or
-## (at your option) any later version.
-##
-## Zenodo is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with Zenodo. If not, see <http://www.gnu.org/licenses/>.
-##
-## In applying this licence, CERN does not waive the privileges and immunities
-## granted to it by virtue of its status as an Intergovernmental Organization
-## or submit itself to any jurisdiction.
+# This file is part of Zenodo.
+# Copyright (C) 2012, 2013 CERN.
+#
+# Zenodo is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Zenodo is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Zenodo. If not, see <http://www.gnu.org/licenses/>.
+#
+# In applying this licence, CERN does not waive the privileges and immunities
+# granted to it by virtue of its status as an Intergovernmental Organization
+# or submit itself to any jurisdiction.
 
 from wtforms import RadioField
 from wtforms.widgets import RadioInput, HTMLString
@@ -71,6 +71,7 @@ class InlineListWidget(object):
     otherwise afterwards. The latter is useful for iterating radios or
     checkboxes.
     """
+
     def __init__(self, prefix_label=True, inline=True):
         self.prefix_label = prefix_label
         self.inline = " inline" if inline else ""
@@ -80,9 +81,15 @@ class InlineListWidget(object):
         html = []
         for subfield in field:
             if self.prefix_label:
-                html.append(u'<label class="%s%s">%s&nbsp;%s</label>' % (subfield.widget.input_type, self.inline, subfield.label.text, subfield()))
+                html.append(
+                    u'<label class="%s%s">%s&nbsp;%s</label>' %
+                    (subfield.widget.input_type, self.inline,
+                     subfield.label.text, subfield()))
             else:
-                html.append(u'<label class="%s%s">%s&nbsp;%s</label>' % (subfield.widget.input_type, self.inline, subfield(), subfield.label.text))
+                html.append(
+                    u'<label class="%s%s">%s&nbsp;%s</label>' %
+                    (subfield.widget.input_type, self.inline,
+                     subfield(), subfield.label.text))
         return HTMLString(u''.join(html))
 
 
