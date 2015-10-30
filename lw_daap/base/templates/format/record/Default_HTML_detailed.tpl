@@ -75,7 +75,14 @@ with context
         </div>
         <div class="panel-body">
           <h4>Publication  Date</h4>{{ daap_record.publication_date }}
-          <h4>Persistent Identifier</h4>{% include "lw_daap/pids/doi_info.html" %}
+          <h4>Persistent Identifiers</h4>
+            {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(daap_record.recid), _external=True, _scheme='https') %}
+            <a href="{{url_for('record.metadata', recid=daap_record.recid)}}" title="PID" target="_blank">
+            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
+                <img src="{{image_url}}" alt="{{get_pid(daap_record.recid)}}"/>                    
+            </span>
+            </a>
+            {% include "lw_daap/pids/doi_info.html" %}
           <h4>Access</h4><h4> {{ render_access_rights(daap_record) }}</h4>
           <h4>Record type</h4><h4> {{ render_deposition_type(daap_record) }}</h4>
           {% if daap_files %}
@@ -98,8 +105,16 @@ with context
         '<i class="fa fa-info"></i> Basic information', 1, False) }}
         <table class="table table-hover">
           <tr>
-            <th class="col-md-3"><i class="fa fa-barcode fa-fw"></i> Persistent Identifier</th>
-            <td class="col-md-9">{% include "lw_daap/pids/doi_info.html" %}</td>
+            <th class="col-md-3"><i class="fa fa-barcode fa-fw"></i> Persistent Identifiers</th>
+            <td class="col-md-9">
+                {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(daap_record.recid), _external=True, _scheme='https') %}
+                <a href="{{url_for('record.metadata', recid=daap_record.recid)}}" title="PID" target="_blank">
+                <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
+                    <img src="{{image_url}}" alt="{{get_pid(daap_record.recid)}}"/>                    
+                </span> 
+                </a>
+                {% include "lw_daap/pids/doi_info.html" %}
+            </td>
           </tr>
 
           {% if daap_record.publication_date %}
