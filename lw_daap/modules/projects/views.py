@@ -235,7 +235,6 @@ def show(project_id, path, page):
     template = tab_info.get('template')
 
     ctx = dict(
-        tab='projects/' + path + '.html',
         project=project,
         records=records,
         format_record=format_record,
