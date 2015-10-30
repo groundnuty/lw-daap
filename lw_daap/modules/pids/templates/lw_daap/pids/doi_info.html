@@ -20,9 +20,15 @@
  # whatever
  #}
 
+
 {% if daap_record %}
   {% if daap_record.doi %}
-    {{ daap_record.doi }}
+  {% set image_url = url_for('lwdaap_pids.doi_badge', doi=daap_record.doi, _external=True, _scheme='https') %}
+     <a href="http://dx.doi.org/{{daap_record.doi}}" title="DOI" target="_blank">
+     <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the DOI badge!">
+        <img src="{{image_url}}" alt="{{daap_record.doi}}"/>
+     </span> 
+     </a>
   {% else %}
   {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
       {% if bfe_is_doi_being_minted(bfo, recid=recid) %}

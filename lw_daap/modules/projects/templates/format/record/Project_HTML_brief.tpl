@@ -36,7 +36,20 @@
   {% block record_info %}
     {{ render_access_rights(record) if record.get('access_right') }}  |
     {{ render_deposition_type(record) if record.get('upload_type') }} |
-    {{ '<a href="http://dx.doi.org/%(doi)s" title="DOI" target="_blank"><i class="glyphicon glyphicon-barcode"></i> %(doi)s</a> |' | format(doi=record['doi']) if record.get('doi') }} 
+    {% if record.get('doi') %}
+        {% set image_url = url_for('lwdaap_pids.doi_badge', doi=record.get('doi'), _external=True, _scheme='https') %}
+        <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">        
+            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the DOI badge!">
+                <img src="{{image_url}}" alt="{{record.get('doi')}}"/>          
+            </span>  
+        </a> |
+    {% endif %}
+        {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(record.recid), _external=True, _scheme='https') %}
+        <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">        
+            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
+                <img src="{{image_url}}" alt="{{get_pid(record.recid)}}"/>          
+            </span>  
+        </a> |
     {{ record.publication_date }}
   {% endblock %}
   </p>
