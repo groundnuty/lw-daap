@@ -122,6 +122,14 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
                         'title': "%s (doi)" % term,
                     }
                 }]
+            if re.match("lifewatch.openscience.\d+", term, re.I):
+                return [{
+                    'value': "%s (pid)" % term,
+                    'fields': {
+                        'identifier': term,
+                        'title': "%s (pid)" % term,
+                    }
+                }]
 
     return map(
         lambda o: {
@@ -162,6 +170,14 @@ def inputrecords_autocomplete_software(
                     'fields': {
                         'identifier': term,
                         'title': "%s (doi)" % term,
+                    }
+                }]
+            if re.match("lifewatch.openscience.\d+", term, re.I):
+                return [{
+                    'value': "%s (pid)" % term,
+                    'fields': {
+                        'identifier': term,
+                        'title': "%s (pid)" % term,
                     }
                 }]
 
