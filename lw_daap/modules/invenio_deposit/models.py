@@ -927,7 +927,7 @@ class DepositionDraft(FactoryMixin):
         data = {}
         # Don't include *) disabled fields, and *) empty optional fields
 
-        def func():
+        def func(f):
             return not f.flags.disabled and (f.flags.required or f.data)
 
         for d in drafts:
