@@ -46,7 +46,16 @@ with context
     </div>
     {% if daap_record.project_collection %}
     <div class="col-sm-3 pull-right">
-    <a href="{{ url_for('lwdaap_projects.show', project_id=bfe_daap_project_id(bfo, pid=daap_record.project_collection)) }}"
+    {% set record_project_path = {
+        'dataset': 'collect',
+        'software': 'collect',
+        'dmp': 'plan',
+        'analysis': 'analyze',
+    }%}
+    <a href="{{ url_for('lwdaap_projects.show',
+                        project_id=bfe_daap_project_id(bfo, pid=daap_record.project_collection),
+                        path=record_project_path[daap_record.upload_type])
+             }}"
         class="btn btn-lg btn-primary pull-right"
         style="margin-top: 20px;">
         <i class="fa fa-list-alt"></i> Go to project
