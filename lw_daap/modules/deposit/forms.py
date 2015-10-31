@@ -1206,8 +1206,11 @@ class AnalysisForm(BasicForm):
                 'Specifiy the inputs of your analysis. Datasets and'
                 ' softwares can  be associated to this upload using'
                 ' the record title in this portal or the associated'
-                ' internal or external DOI. At least a dataset'
-                ' and a software must be specified.')
+                ' internal PID, or the internal or external DOI. At'
+                ' least a dataset'
+                ' and a software must be specified. The autocomplete'
+                ' option is only available for the record title;'
+                ' PIDs or DOIs must be entered completely.')
         }),
         ('<i class="fa fa-laptop"></i> Requirements', [
             'os', 'flavor', 'app_env',
