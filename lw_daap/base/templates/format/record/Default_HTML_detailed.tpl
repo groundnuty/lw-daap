@@ -40,15 +40,22 @@ with context
 <div class="record-details">
   {% block header %}
   <div class="row">
-    <div class="col-sm-12 col-md-4 pull-right">
-    </div>
-
-    <div class="col-sm-12 col-md-8">
+    {# <div class="col-sm-9 col-md-4 pull-right"></div> #}
+    <div class="col-sm-9 col-md-8">
       <h2>{{ daap_record.title }}</h2>
     </div>
-    <div class="col-sm-12">
+    {% if daap_record.project_collection %}
+    <div class="col-sm-3 pull-right">
+    <a href="{{ url_for('lwdaap_projects.show', project_id=bfe_daap_project_id(bfo, pid=daap_record.project_collection)) }}"
+        class="btn btn-lg btn-primary pull-right"
+        style="margin-top: 20px;">
+        <i class="fa fa-list-alt"></i> Go to project
+    </a>
+    </div>
+    <div class="col-sm-9">
       <h4 style="margin-top: 0px">{{ render_authors(daap_record, 4) }}</h4>
     </div>
+       {% endif %}
   </div>
 
   <div class="spacer30"></div>
@@ -58,7 +65,7 @@ with context
 
       {% if metadata_view %}
       {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %} {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
-      <button class="btn btn-block btn-lg btn-default" 
+      <button class="btn btn-block btn-lg btn-default"
         data-toggle="modal" data-target="#doi-confirm-dialog">
         <i class="fa fa-barcode"></i> Mint Doi</button>
       {% endif %}
@@ -162,13 +169,13 @@ with context
         <tr>
         <th class="col-md-3"><i class="fa fa-list-alt fa-fw"></i>Projects</th>
         <td class="col-md-9">
-         {{ bfe_daap_project(bfo, pid=daap_record.project_collection) }}
+         {{ bfe_daap_project_name(bfo, pid=daap_record.project_collection) }}
         </td>
         </tr>
         </table>
         {{ close_panel_section() }}
         {% endif %}
-        
+
         {% if daap_record.upload_type == "analysis" %}
         {% if daap_record.rel_dataset or daap_record.rel_software %}
         {{ open_panel_section(
@@ -281,7 +288,7 @@ with context
           <i class="fa fa-bars"></i>Related identifiers', 5, True) }}
           <table class="table table-hover">
             <tr>
-            
+
               <th class="col-md-3"><i class="fa fa-bars fa-fw"></i> Related identifiers</th>
               <td class="col-md-9">
                 {% for relid in daap_record.related_identifiers %}
