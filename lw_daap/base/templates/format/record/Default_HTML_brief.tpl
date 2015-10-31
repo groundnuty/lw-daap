@@ -16,32 +16,35 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{% from "format/record/record_macros.tpl" import render_authors, render_access_rights, render_deposition_type %}
+{% from "format/record/record_macros.tpl" import render_authors, render_access_rights, render_deposition_type, pid_badge %}
 
 {% extends "format/record/Default_HTML_brief_base.tpl" %}
 
 {% set record = get_updated_record(record) %}
 
-{% block above_record_header %}
-{% endblock %}
+{% block above_record_header %}{% endblock %}
 
 {% block record_header %}
 <a href="{{ url_for('record.metadata', recid=record['recid']) }}">
   {{ record.get('title', '') }}
-  <small class="text-muted">{{ record.description|sentences(3) }}</small>
 </a>
 {% endblock %}
 
 {% block record_content %}
-{% endblock %}
+  <small class="text-muted">{{ record.description|sentences(3) }}</small>
 
-{% block record_info %}
-  {{ render_access_rights(record) if record.get('access_right') }}  |
-  {{ render_deposition_type(record) if record.get('upload_type') }} |
-  {{ '<span class="label label-primary" style="background: #999">project</span> |' if record.project_collection }} 
-  {{ '<a href="http://dx.doi.org/%(doi)s" title="DOI" target="_blank"><i class="glyphicon glyphicon-barcode"></i> %(doi)s</a> | '|format(doi=record['doi']) if record.get('doi') }} 
-  {{ record.publication_date }}
-
+   {% if record.get('doi') %}                                                   
+        <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
+            {{ pid_badge('DOI', record.get('doi'), cbgc='#0F81C2') }}           
+        </a> |                                                                  
+    {% endif %}                                                                 
+    <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
+        {{ pid_badge('PID', get_pid(record.recid), cbgc='#D9634C') }}           
+    </a> |                                                                      
+                                                                                
+  {{ render_access_rights(record) if record.get('access_right') }}  |           
+  {{ render_deposition_type(record) if record.get('upload_type') }} |           
+  {{ record.publication_date }} 
 {% endblock %}
 
 {% block fulltext_snippets %}{% endblock %}

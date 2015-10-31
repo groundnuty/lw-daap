@@ -81,8 +81,8 @@ with context
             {{ pid_badge("PID", get_pid(daap_record.recid), cbgc="#0F81C2") }}
             </a>
             {% include "lw_daap/pids/doi_info.html" %}
-          <h4>Access</h4><h4> {{ render_access_rights(daap_record) }}</h4>
-          <h4>Record type</h4><h4> {{ render_deposition_type(daap_record) }}</h4>
+          <h4>Access</h4>{{ render_access_rights(daap_record) }}
+          <h4>Record type</h4>{{ render_deposition_type(daap_record) }}
           {% if daap_files %}
           <h4>Files</h4>
           {{ daap_files|length }}
@@ -106,9 +106,7 @@ with context
             <th class="col-md-3"><i class="fa fa-barcode fa-fw"></i> Persistent Identifiers</th>
             <td class="col-md-9">
                 <a href="{{url_for('record.metadata', recid=daap_record.recid)}}" title="PID" target="_blank">
-                <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
                             {{ pid_badge("PID", get_pid(daap_record.recid), cbgc="#0F81C2") }}
-                </span> 
                 </a>
                 {% include "lw_daap/pids/doi_info.html" %}
             </td>
