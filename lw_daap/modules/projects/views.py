@@ -33,7 +33,6 @@ from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
-from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
 from invenio.modules.formatter import format_record
 from invenio.modules.records.api import get_record
@@ -110,7 +109,6 @@ def myprojects():
 @blueprint.route('/new/', methods=['GET', 'POST'])
 @ssl_required
 @login_required
-@permission_required('submit')
 @register_breadcrumb(blueprint, '.new', _('Create new'))
 def new():
     uid = current_user.get_id()
@@ -248,7 +246,6 @@ def show(project_id, path, page):
 @blueprint.route('/<int:project_id>/delete', methods=['POST'])
 @ssl_required
 @login_required
-@permission_required('submit')
 def delete(project_id):
     project = Project.query.get_or_404(project_id)
     if current_user.get_id() != project.id_user:
@@ -274,7 +271,6 @@ def delete(project_id):
                  methods=['GET'])
 @ssl_required
 @login_required
-@permission_required('submit')
 def deposit(project_id, deposition_type):
     project = Project.query.get_or_404(project_id)
     if not project.is_user_allowed():
@@ -305,7 +301,6 @@ def error_400(msg):
                  methods=['POST'])
 @ssl_required
 @login_required
-@permission_required('submit')
 def curation(project_id, record_id):
     project = Project.query.get_or_404(project_id)
     record = get_record(record_id)
@@ -346,7 +341,6 @@ def curation(project_id, record_id):
                  methods=['POST'])
 @ssl_required
 @login_required
-@permission_required('submit')
 def preserve(project_id, record_id):
     from lw_daap.modules.pids.view import mint_doi
     return mint_doi(record_id, project_id)
@@ -356,7 +350,6 @@ def preserve(project_id, record_id):
                  methods=['POST'])
 @ssl_required
 @login_required
-@permission_required('submit')
 def publication(project_id, record_id):
     project = Project.query.get_or_404(project_id)
     record = get_record(record_id)
