@@ -37,7 +37,9 @@ from invenio.ext.principal import permission_required
 from invenio.ext.sqlalchemy import db
 from invenio.modules.formatter import format_record
 from invenio.modules.records.api import get_record
+
 from lw_daap.ext.login import login_required
+from lw_daap.modules.invenio_groups.models import Group
 
 from .forms import ProjectForm, SearchForm, EditProjectForm, DeleteProjectForm
 from .models import Project
@@ -51,14 +53,6 @@ blueprint = Blueprint(
     static_folder="static",
     template_folder="templates",
 )
-
-
-def myprojects_ctx():
-    """Helper method for return ctx used by many views."""
-    uid = current_user.get_id()
-    return {'myprojects': Project.query.filter_by(
-                            id_user=uid).order_by(
-                            db.asc(Project.title)).all()}
 
 
 @blueprint.route('/', methods=['GET', ])
@@ -90,21 +84,23 @@ def index(p, so, page):
 
 
 @blueprint.route('/myprojects')
-@register_menu(blueprint,
-               'settings.myprojects',
-               _('%(icon)s My Projects',
-                 icon='<i class="fa fa-list-alt fa-fw"></i>'),
-               order=0,
-               active_when=lambda: request.endpoint.startswith(
-                                                        "lwdaap_projects"),)
+@register_menu(
+    blueprint,
+    'settings.myprojects',
+    _('%(icon)s My Projects',
+      icon='<i class="fa fa-list-alt fa-fw"></i>'),
+    order=0,
+    active_when=lambda: request.endpoint.startswith("lwdaap_projects"),)
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.myprojects',
                      _('My Projects'))
 @login_required
 def myprojects():
-    ctx = myprojects_ctx()
-    ctx.update({
-        "deleteform": DeleteProjectForm()
-    })
+    myprojects = Project.get_user_projects(current_user).order_by(
+        db.asc(Project.title)).all()
+    ctx = {
+        'myprojects': myprojects,
+        'deleteform': DeleteProjectForm(),
+    }
     return render_template(
         'projects/myview.html',
         **ctx
@@ -120,12 +116,11 @@ def new():
     uid = current_user.get_id()
     form = ProjectForm(request.values, crsf_enabled=False)
 
-    ctx = myprojects_ctx()
-    ctx.update({
+    ctx = {
         'form': form,
         'is_new': True,
         'project': None,
-    })
+    }
 
     if request.method == 'POST' and form.validate():
         # Map form
@@ -134,6 +129,7 @@ def new():
         db.session.add(p)
         db.session.commit()
         p.save_collection()
+        p.save_group()
         flash("Project was successfully created.", category='success')
         return redirect(url_for('.show', project_id=p.id))
 
@@ -149,8 +145,9 @@ def new():
 @register_breadcrumb(blueprint, '.edit', _('Edit'))
 def edit(project_id):
     project = Project.query.get_or_404(project_id)
-    if current_user.get_id() != project.id_user:
-        abort(404)
+
+    if not project.is_user_allowed():
+        abort(401)
 
     form = EditProjectForm(request.values, project)
     ctx = dict(
@@ -164,6 +161,7 @@ def edit(project_id):
             setattr(project, field, val)
         db.session.commit()
         project.save_collection()
+        project.save_group()
         flash("Project successfully edited.", category='success')
         return redirect(url_for('.show', project_id=project.id))
 
@@ -181,7 +179,7 @@ def edit(project_id):
 def show(project_id, path, page):
     project = Project.query.get_or_404(project_id)
 
-    if current_user.get_id() != project.id_user:
+    if not project.is_user_allowed():
         path = 'public'
 
     tabs = {
@@ -233,8 +231,10 @@ def show(project_id, path, page):
         records = records.paginate(page, per_page=per_page)
 
     template = tab_info.get('template')
+    current_app.logger.debug("TEMPLATE: %s" % template)
 
     ctx = dict(
+        path=path,
         project=project,
         records=records,
         format_record=format_record,
@@ -277,7 +277,7 @@ def delete(project_id):
 @permission_required('submit')
 def deposit(project_id, deposition_type):
     project = Project.query.get_or_404(project_id)
-    if current_user.get_id() != project.id_user:
+    if not project.is_user_allowed():
         flash('Only the owner of the project can deposit records on it',
               category='error')
         abort(404)
@@ -307,11 +307,13 @@ def error_400(msg):
 @login_required
 @permission_required('submit')
 def curation(project_id, record_id):
-    uid = current_user.get_id()
+    project = Project.query.get_or_404(project_id)
     record = get_record(record_id)
+    if not record:
+        abort(404)
 
     # do only allow to curate to the owner
-    if uid != int(record.get('owner', {}).get('id', -1)):
+    if not project.is_user_allowed():
         abort(401)
 
     # crazy invenio stuff, cache actions so they dont get duplicated
@@ -340,18 +342,31 @@ def curation(project_id, record_id):
                                         project_id=project_id, path='curate')})
 
 
+@blueprint.route('/<int:project_id>/show/preserve/<int:record_id>/',
+                 methods=['POST'])
+@ssl_required
+@login_required
+@permission_required('submit')
+def preserve(project_id, record_id):
+    from lw_daap.modules.pids.view import mint_doi
+    return mint_doi(record_id, project_id)
+
+
 @blueprint.route('/<int:project_id>/show/publish/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
 @permission_required('submit')
 def publication(project_id, record_id):
-    uid = current_user.get_id()
+    project = Project.query.get_or_404(project_id)
     record = get_record(record_id)
+    if not record:
+        abort(404)
 
-    # do only allow to publish to the owner
-    if uid != int(record.get('owner', {}).get('id', -1)):
+    # do only allow to curate to the owner
+    if not project.is_user_allowed():
         abort(401)
+
     # crazy invenio stuff, cache actions so they dont get duplicated
     key = get_cache_key(record_id)
     cache_action = cache.get(key)

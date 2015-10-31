@@ -21,16 +21,19 @@ from __future__ import absolute_import
 
 from datetime import datetime
 
-from invenio.ext.sqlalchemy import db
 from invenio.base.globals import cfg
 from invenio.config import CFG_SITE_LANG
+from invenio.ext.sqlalchemy import db
+from invenio.modules.access.models import \
+    AccACTION, AccARGUMENT, \
+    AccAuthorization, AccROLE, UserAccROLE
 from invenio.modules.accounts.models import User
 from invenio.modules.search.models import \
     Collection, CollectionCollection, \
     CollectionFormat, Collectionname, Format
-from invenio.modules.access.models import \
-    AccACTION, AccARGUMENT, \
-    AccAuthorization, AccROLE, UserAccROLE
+
+from lw_daap.modules.invenio_groups.models import \
+    Group, PrivacyPolicy, SubscriptionPolicy
 
 
 class Project(db.Model):
@@ -76,6 +79,14 @@ class Project(db.Model):
     )
     owner = db.relationship(User, backref='projects',
                             foreign_keys=[id_user])
+
+    # group
+    id_group = db.Column(
+        db.Integer(15, unsigned=True), db.ForeignKey(Group.id),
+        nullable=True, default=None
+    )
+    group = db.relationship(Group, backref='projects',
+                            foreign_keys=[id_group])
 
     #
     # Collection management
@@ -241,6 +252,30 @@ class Project(db.Model):
             db.session.delete(self.collection)
             db.session.commit()
 
+    def get_group_name(self):
+        return 'project-group-%d' % self.id
+
+    def save_group(self):
+        g = self.group
+        if not g:
+            g = Group.create(self.get_group_name(),
+                             description='Group for project %s' % self.id,
+                             privacy_policy=PrivacyPolicy.MEMBERS,
+                             subscription_policy=SubscriptionPolicy.APPROVAL,
+                             is_managed=True,
+                             admins=[self.owner])
+            g.add_member(self.owner)
+            self.group = g
+            db.session.commit()
+
+    def is_user_allowed(self, user=None):
+        if not user:
+            from flask_login import current_user
+            user = current_user
+        uid = user.get_id()
+        groups = user.get('group', [])
+        return self.id_user == uid or self.group.name in groups
+
     @classmethod
     def get_name_by_collection(self, collection):
         prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
@@ -271,9 +306,14 @@ class Project(db.Model):
             query = query.order_by(order(getattr(cls, so)))
         return query
 
+    @classmethod
+    def get_user_projects(cls, user):
+        gids = [g.id for g in Group.query_by_uid(user.get_id())]
+        return Project.query.filter(Project.id_group.in_(gids))
+
 
 #
-#
+# Directly taken from invenio.modules.communities
 #
 def update_changed_fields(obj, fields):
     """Utility method to update fields on an object if they have changed.

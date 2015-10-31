@@ -56,7 +56,7 @@ require(['jquery'], function($) {
 {% macro project_row(p) %}
 <tr>
   <td style="padding-left:20px; width: 50%;">
-    {% if not p.is_public %}
+    {% if not p.is_public and p.id_user == current_user.get_id() %}
     <a href="#" data-toggle="modal" data-target="#deletemodal"
        data-delete-url="{{ url_for('.delete', project_id=p.id) }}"
        class="rmlink" rel="tooltip" title="Delete project">

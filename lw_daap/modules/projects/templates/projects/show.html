@@ -54,7 +54,7 @@ require(['jquery'], function($) {
   </div>
 </div>
 
-{% if current_user.get_id() == project.id_user %}
+{% if path != 'public' %}
 <div class="panel panel-primary">
   <div id="dlc-nav" class="panel-heading" style="background: #FF5001; padding-right: 30px;
     border: none; box-shadow: 4px 0 4px solid rgba(0, 0, 0, 0.25);">
@@ -109,7 +109,7 @@ require(['jquery'], function($) {
 {% if not records.items %}
   <div class="panel-heading">
     <a class="panel-toggle">
-      There are not public records in this project currently.
+      There are no public records in this project yet.
     </a>
   </div>
 {% else %}

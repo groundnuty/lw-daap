@@ -130,16 +130,19 @@ def error_400(msg):
 
 
 @blueprint.route('/mint/<int:recid>/', methods=['POST'])
-@blueprint.route('/mint/<int:recid>/<int:project_id>/', methods=['POST'])
 @login_required
 def mint_doi(recid, project_id=None):
     """ mint a PID for the record """
     uid = current_user.get_id()
     record = get_record(recid)
 
-    # do only allow to mint to the owner
-    if uid != int(record.get('owner', {}).get('id', -1)):
-        abort(401)
+    if project_id:
+        if not is_user_allowed(project):
+            abort(401)
+    else:
+        # do only allow to mint to the owner
+        if uid != int(record.get('owner', {}).get('id', -1)):
+            abort(401)
 
     # don't try to mint a doi if the record already has one
     if record.get('doi', None) is not None:
