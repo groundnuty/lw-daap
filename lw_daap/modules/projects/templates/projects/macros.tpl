@@ -43,11 +43,11 @@
 {% macro preserve_buttons(rec) -%} 
   {% if not rec.doi %}
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.preserve', recid=rec.recid, project_id=project.id) }}" class="btn btn-danger pull-right rmlink" 
+      data-doi-url="{{ url_for('lwdaap_projects.preserve', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Mint DOI</a>
   {% else %} 
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.preserve', recid=rec.recid, project_id=project.id) }}" class="disabled btn btn-primary pull-right rmlink" 
+      data-doi-url="{{ url_for('lwdaap_projects.preserve', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Has a DOI</a>
   {% endif %}
 {%- endmacro %}
