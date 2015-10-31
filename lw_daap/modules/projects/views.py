@@ -297,7 +297,7 @@ def error_400(msg):
     return response
 
 
-@blueprint.route('/<int:project_id>/show/curate/<int:record_id>/',
+@blueprint.route('/<int:project_id>/curate/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
@@ -337,16 +337,16 @@ def curation(project_id, record_id):
                                         project_id=project_id, path='curate')})
 
 
-@blueprint.route('/<int:project_id>/show/preserve/<int:record_id>/',
+@blueprint.route('/<int:project_id>/preserve/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
 def preserve(project_id, record_id):
-    from lw_daap.modules.pids.view import mint_doi
+    from lw_daap.modules.pids.views import mint_doi
     return mint_doi(record_id, project_id)
 
 
-@blueprint.route('/<int:project_id>/show/publish/<int:record_id>/',
+@blueprint.route('/<int:project_id>/publish/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
