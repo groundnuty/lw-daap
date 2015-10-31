@@ -373,7 +373,10 @@ class Group(db.Model):
     def query_by_uid(cls, uid):
         """Query group by uid.
         """
-        return Group.query.join(Membership).filter_by(id_user=uid)
+        q1 = Group.query.join(Membership).filter_by(id_user=uid)
+        q1 = q1.filter_by(state=MembershipState.ACTIVE)
+        query = q1.with_entities(Group.id)
+        return Group.query.filter(Group.id.in_(query))
 
     @classmethod
     def search(cls, query, q):
