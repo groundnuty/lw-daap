@@ -51,7 +51,8 @@ _s.contents += [
     "css/header.css",
     "css/buttons.css",
     "css/panels.css",
-    "css/dlc.css"
+    "css/dlc.css",
+    "css/pid_badge.css"
 ]
 
 #

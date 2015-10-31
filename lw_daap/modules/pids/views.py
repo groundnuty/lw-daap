@@ -37,7 +37,6 @@ from invenio.modules.records.api import get_record
 from lw_daap.ext.login import login_required
 from .utils import build_doi, get_cache_key
 
-from .badge import create_badge
 
 blueprint = Blueprint(
     'lwdaap_pids',
@@ -52,63 +51,6 @@ DOI_PID_TYPE = 'doi'
 @blueprint.app_template_global()
 def get_pid(recid):                                                           
     return 'lifewatch.openscience.%s' % recid       
-
-
-def badge(doi, style=None, id_type="DOI", color="blue"):                                                     
-    """Helper method to generate PID badge."""                                  
-    doi_encoded = urllib.quote(doi, '')                                         
-                                                                                
-    if style not in current_app.config['BADGE_STYLES']:                  
-        style = current_app.config['BADGE_DEFAULT_STYLE']                
-                                                                                
-    # Check if badge already exists                                             
-    badge_path = os.path.join(                                                  
-        current_app.config['COLLECT_STATIC_ROOT'],                              
-        "badges",                                                               
-        "%s-%s.svg" % (doi_encoded, style)                                      
-    )                                                                           
-                                                                                
-    if not os.path.exists(os.path.dirname(badge_path)):                         
-        os.makedirs(os.path.dirname(badge_path))                                
-                                                                                
-    if not os.path.isfile(badge_path):                                          
-        try:                                                                    
-            create_badge(id_type, doi, color, badge_path, style=style)           
-        except Exception:                                                       
-            current_app.logger.warning(                                         
-                "%s is down." % cfg['SHIELDSIO_BASE_URL'],               
-                exc_info=True                                                   
-            )                                                                   
-            return make_response(                                               
-                "%s is down." % cfg['SHIELDSIO_BASE_URL'],               
-                503                                                             
-            )                                                                   
-                                                                                
-    resp = make_response(open(badge_path, 'r').read())                          
-    resp.content_type = "image/svg+xml"                                         
-    return resp            
-
-
-@blueprint.route("/doi/<path:doi>.svg", methods=["GET"])                        
-@ssl_required
-def doi_badge(doi):                                                             
-    """Generate a badge for a specific DOI."""                                                                                                        
-    if doi is None:                                                             
-        return abort(404)                                                       
-    style = request.args.get('style', None)                                     
-                                                                                
-    return badge(doi, style, "DOI", "blue") 
-
-
-@blueprint.route("/pid/<path:pid>.svg", methods=["GET"])                        
-@ssl_required
-def pid_badge(pid):                                                             
-    """Generate a badge for a specific PID."""                                                                                                        
-    if pid is None:                                                             
-        return abort(404)                                                       
-    style = request.args.get('style', None)                                     
-                                                                                
-    return badge(pid, style, "PID", "red") 
 
 
 def add_doi(recid, doi):

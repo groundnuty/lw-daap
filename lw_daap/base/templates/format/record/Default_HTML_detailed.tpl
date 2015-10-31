@@ -27,7 +27,8 @@ render_access_rights,
 render_deposition_type,
 render_rel_input,
 open_panel_section,
-close_panel_section
+close_panel_section,
+pid_badge
 with context
 %}
 
@@ -76,11 +77,8 @@ with context
         <div class="panel-body">
           <h4>Publication  Date</h4>{{ daap_record.publication_date }}
           <h4>Persistent Identifiers</h4>
-            {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(daap_record.recid), _external=True, _scheme='https') %}
             <a href="{{url_for('record.metadata', recid=daap_record.recid)}}" title="PID" target="_blank">
-            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
-                <img src="{{image_url}}" alt="{{get_pid(daap_record.recid)}}"/>                    
-            </span>
+            {{ pid_badge("PID", get_pid(daap_record.recid), cbgc="#0F81C2") }}
             </a>
             {% include "lw_daap/pids/doi_info.html" %}
           <h4>Access</h4><h4> {{ render_access_rights(daap_record) }}</h4>
@@ -107,10 +105,9 @@ with context
           <tr>
             <th class="col-md-3"><i class="fa fa-barcode fa-fw"></i> Persistent Identifiers</th>
             <td class="col-md-9">
-                {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(daap_record.recid), _external=True, _scheme='https') %}
                 <a href="{{url_for('record.metadata', recid=daap_record.recid)}}" title="PID" target="_blank">
                 <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
-                    <img src="{{image_url}}" alt="{{get_pid(daap_record.recid)}}"/>                    
+                            {{ pid_badge("PID", get_pid(daap_record.recid), cbgc="#0F81C2") }}
                 </span> 
                 </a>
                 {% include "lw_daap/pids/doi_info.html" %}

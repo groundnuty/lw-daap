@@ -16,7 +16,7 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{% from "format/record/record_macros.tpl" import render_authors, render_access_rights, render_deposition_type %}
+{% from "format/record/record_macros.tpl" import render_authors, render_access_rights, render_deposition_type, pid_badge %}
 {% from "projects/macros.tpl" import action_buttons with context %}
 
 {% set record = get_updated_record(record) %}
@@ -32,27 +32,20 @@
     </a>
   {%- endblock %}
   </h4>
-  <p class="record-info">
   {% block record_info %}
-    {{ render_access_rights(record) if record.get('access_right') }}  |
-    {{ render_deposition_type(record) if record.get('upload_type') }} |
-    {% if record.get('doi') %}
-        {% set image_url = url_for('lwdaap_pids.doi_badge', doi=record.get('doi'), _external=True, _scheme='https') %}
-        <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">        
-            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the DOI badge!">
-                <img src="{{image_url}}" alt="{{record.get('doi')}}"/>          
-            </span>  
+   {% if record.get('doi') %}
+        <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
+            {{ pid_badge('DOI', record.get('doi'), cbgc='#0F81C2') }}
         </a> |
     {% endif %}
-        {% set image_url = url_for('lwdaap_pids.pid_badge', pid=get_pid(record.recid), _external=True, _scheme='https') %}
-        <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">        
-            <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the PID badge!">
-                <img src="{{image_url}}" alt="{{get_pid(record.recid)}}"/>          
-            </span>  
-        </a> |
-    {{ record.publication_date }}
+    <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
+        {{ pid_badge('PID', get_pid(record.recid), cbgc='#D9634C') }}
+    </a> |
+ 
+  {{ render_access_rights(record) if record.get('access_right') }}  |
+    {{ render_deposition_type(record) if record.get('upload_type') }} |
+      {{ record.publication_date }}
   {% endblock %}
-  </p>
   </td>
   <td style="vertical-align: middle">
   {% block record_actions %}
