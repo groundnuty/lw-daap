@@ -346,6 +346,18 @@ def preserve(project_id, record_id):
     return mint_doi(record_id, project_id)
 
 
+@blueprint.route('/<int:project_id>/join/',
+                 methods=['POST','GET'])
+@ssl_required
+@login_required
+def join(project_id):
+    project = Project.query.get_or_404(project_id)
+    group = project.group
+    if group.can_join(current_user):
+        group.subscribe(current_user)
+    return redirect(url_for('.show', project_id=project_id, path='plan'))
+
+
 @blueprint.route('/<int:project_id>/publish/<int:record_id>/',
                  methods=['POST'])
 @ssl_required

@@ -24,17 +24,15 @@ from datetime import datetime
 from invenio.base.globals import cfg
 from invenio.config import CFG_SITE_LANG
 from invenio.ext.sqlalchemy import db
+from invenio.modules.access.firerole import compile_role_definition, serialize
 from invenio.modules.access.models import \
-    AccACTION, AccARGUMENT, \
-    AccAuthorization, AccROLE, UserAccROLE
+    AccACTION, AccARGUMENT, AccAuthorization, AccROLE, UserAccROLE
 from invenio.modules.accounts.models import User
 from invenio.modules.search.models import \
-    Collection, CollectionCollection, \
-    CollectionFormat, Collectionname, Format
+    Collection, CollectionCollection, CollectionFormat, Collectionname, Format
 
 from lw_daap.modules.invenio_groups.models import \
     Group, PrivacyPolicy, SubscriptionPolicy
-
 
 class Project(db.Model):
     """
@@ -181,12 +179,15 @@ class Project(db.Model):
 
     def save_acl(self, c):
         # Role - use Community id, because role name is limited to 32 chars.
-        role_name = 'coll_%s' % c.id
+        role_name = 'project_role_%s' % self.id
         role = AccROLE.query.filter_by(name=role_name).first()
         if not role:
+            rule = 'allow group "%s"\ndeny any' % self.get_group_name()
             role = AccROLE(
                 name=role_name,
-                description='Owner of project %s' % c.name)
+                description='Owner of project %s' % self.title,
+                firerole_def_ser=serialize(compile_role_definition(rule)),
+                firerole_def_src=rule)
             db.session.add(role)
 
         # Argument
@@ -262,7 +263,7 @@ class Project(db.Model):
                              description='Group for project %s' % self.id,
                              privacy_policy=PrivacyPolicy.MEMBERS,
                              subscription_policy=SubscriptionPolicy.APPROVAL,
-                             is_managed=True,
+                             is_managed=False,
                              admins=[self.owner])
             g.add_member(self.owner)
             self.group = g
@@ -277,10 +278,14 @@ class Project(db.Model):
         return self.id_user == uid or self.group.name in groups
 
     @classmethod
-    def get_name_by_collection(self, collection):
+    def get_project_by_collection(cls, collection):
         prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
         id = collection[collection.startswith(prefix) and len(prefix):]
-        return self.query.get(id).title
+        return cls.query.get(id)
+
+    @classmethod
+    def get_name_by_collection(cls, collection):
+        return cls.get_project_by_collection(collection).title
 
     @classmethod
     def filter_projects(cls, p, so):

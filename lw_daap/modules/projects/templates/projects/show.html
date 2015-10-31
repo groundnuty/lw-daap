@@ -51,6 +51,21 @@ require(['jquery'], function($) {
       </a>
     </div>
     {% endif %}
+    {% if path == 'public' %}
+    <div class="col-md-1">
+    {% if project.group.is_member(current_user, with_pending=True) %}
+      <a class="disabled btn btn-lg btn-primary pull-right"
+        style="margin-top: 20px;"> Pending approval for joining
+      </a>
+     {% else %}
+      <a href="{{ url_for('.join', project_id=project.id) }}"
+        class="btn btn-lg btn-primary pull-right"
+        style="margin-top: 20px;">
+        <i class="fa fa-users fa-fw"></i> Join project
+      </a>
+    {% endif %}
+    </div>
+    {% endif %}
   </div>
 </div>
 
