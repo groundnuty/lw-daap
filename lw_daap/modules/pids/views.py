@@ -35,6 +35,7 @@ from invenio.modules.pidstore.tasks import datacite_register
 from invenio.modules.records.api import get_record
 
 from lw_daap.ext.login import login_required
+from lw_daap.modules.projects.models import Project
 from .utils import build_doi, get_cache_key
 
 
@@ -78,8 +79,10 @@ def mint_doi(recid, project_id=None):
     uid = current_user.get_id()
     record = get_record(recid)
 
+
     if project_id:
-        if not is_user_allowed(project):
+        project = Project.query.get_or_404(project_id)
+        if not project.is_user_allowed():
             abort(401)
     else:
         # do only allow to mint to the owner
