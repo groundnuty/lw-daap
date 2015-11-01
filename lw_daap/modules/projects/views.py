@@ -40,7 +40,8 @@ from invenio.modules.records.api import get_record
 from lw_daap.ext.login import login_required
 from lw_daap.modules.invenio_groups.models import Group
 
-from .forms import ProjectForm, SearchForm, EditProjectForm, DeleteProjectForm
+from .forms import ProjectForm, SearchForm, EditProjectForm,\
+    DeleteProjectForm, IntegrateForm
 from .models import Project
 
 from .utils import get_cache_key
@@ -143,7 +144,6 @@ def new():
 @register_breadcrumb(blueprint, '.edit', _('Edit'))
 def edit(project_id):
     project = Project.query.get_or_404(project_id)
-
     if not project.is_user_allowed():
         abort(401)
 
@@ -169,16 +169,84 @@ def edit(project_id):
     )
 
 
+def _build_integrate_draft(project, selected_records):
+    from lw_daap.modules.invenio_deposit.models \
+        import DepositionDraftCacheManager
+
+    rel_dataset = []
+    rel_software = []
+    for recid in selected_records:
+        r = get_record(recid)
+        rec_info = {
+            'title': '%s (record id: %s)' % (r.get('title'), recid),
+            'identifier': recid,
+        }
+        if r.get('upload_type') == 'dataset':
+            rel_dataset.append(rec_info)
+        elif r.get('upload_type') == 'software':
+            rel_software.append(rec_info)
+    current_app.logger.debug(rel_dataset)
+    current_app.logger.debug(rel_software)
+    draft_cache = DepositionDraftCacheManager.get()
+    draft_cache.data['project_collection'] = project.id
+    draft_cache.data['record_curated_in_project'] = True
+    draft_cache.data['record_public_from_project'] = False
+    draft_cache.data['rel_dataset'] = rel_dataset
+    draft_cache.data['rel_software'] = rel_software
+    draft_cache.save()
+
+
+def integrate(project, page=1):
+    if not project.is_user_allowed():
+        abort(401)
+
+    records = project.get_project_records(
+        record_types=['dataset', 'software'],
+        curated=True)
+
+    form = IntegrateForm(request.values)
+    form.records.choices = [(r.id, r.id) for r in records]
+    selected_records = [int(recid) for recid in form.records.data or []]
+
+    if request.method == 'POST':
+        if form.validate():
+            if form.integrate.data == "yes":
+                _build_integrate_draft(project, selected_records)
+                return redirect(url_for('webdeposit.create',
+                                        deposition_type='analysis'))
+                flash("INTEGRATE! %s" % selected_records, category="success")
+        else:
+            flash("Something weird happened %s" % form.errors,
+                  category='error')
+
+    page = max(page, 1)
+    per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 5)
+    records = records.paginate(page, per_page=per_page)
+
+    ctx = dict(
+        selected_records=selected_records,
+        form=form,
+        path='integrate',
+        project=project,
+        records=records,
+        format_record=format_record,
+        page=page,
+        per_page=per_page,
+    )
+    return render_template('projects/integrate.html', **ctx)
+
+
 @blueprint.route('/<int:project_id>/show/', defaults={'path': 'plan'},
-                 methods=['GET'])
-@blueprint.route('/<int:project_id>/show/<path:path>', methods=['GET'])
+                 methods=['GET', 'POST'])
+@blueprint.route('/<int:project_id>/show/<path:path>', methods=['GET', 'POST'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 @wash_arguments({'page': (int, 1)})
 def show(project_id, path, page):
     project = Project.query.get_or_404(project_id)
-
     if not project.is_user_allowed():
         path = 'public'
+    if path == 'integrate':
+        return integrate(project, page)
 
     tabs = {
         'plan': {
@@ -192,10 +260,6 @@ def show(project_id, path, page):
         'curate': {
             'template': 'projects/curate.html',
             'q': {'record_types': ['dataset']},
-        },
-        'integrate': {
-            'template': 'projects/integrate.html',
-            'q': {'record_types': ['dataset', 'software'], 'curated': True},
         },
         'analyze': {
             'template': 'projects/analyze.html',
@@ -221,12 +285,9 @@ def show(project_id, path, page):
         abort(404)
     query_opts = tab_info.get('q', {})
     records = project.get_project_records(**query_opts)
-    if tab_info.get('disable_paginate', False):
-        per_page = page = 0
-    else:
-        page = max(page, 1)
-        per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 5)
-        records = records.paginate(page, per_page=per_page)
+    page = max(page, 1)
+    per_page = cfg.get('RECORDS_IN_PROJECTS_DISPLAYED_PER_PAGE', 5)
+    records = records.paginate(page, per_page=per_page)
 
     template = tab_info.get('template')
     current_app.logger.debug("TEMPLATE: %s" % template)
@@ -347,7 +408,7 @@ def preserve(project_id, record_id):
 
 
 @blueprint.route('/<int:project_id>/join/',
-                 methods=['POST','GET'])
+                 methods=['POST', 'GET'])
 @ssl_required
 @login_required
 def join(project_id):

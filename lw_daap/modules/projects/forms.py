@@ -23,7 +23,8 @@ from __future__ import absolute_import
 from invenio.base.i18n import _
 from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 
-from wtforms import HiddenField, StringField, TextAreaField, validators
+from wtforms import HiddenField, StringField, TextAreaField,\
+    SelectMultipleField, validators
 
 from .models import Project
 
@@ -109,3 +110,9 @@ class ProjectForm(Form):
 
 class EditProjectForm(ProjectForm):
     pass
+
+
+class IntegrateForm(Form):
+    records = SelectMultipleField('records', coerce=int)
+    integrate = HiddenField(default='no',
+                            validators=[validators.DataRequired()])

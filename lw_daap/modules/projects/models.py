@@ -34,6 +34,7 @@ from invenio.modules.search.models import \
 from lw_daap.modules.invenio_groups.models import \
     Group, PrivacyPolicy, SubscriptionPolicy
 
+
 class Project(db.Model):
     """
     Represents a project

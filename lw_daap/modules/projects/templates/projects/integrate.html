@@ -23,6 +23,19 @@
 
 {% from 'projects/macros.tpl' import record_table with context %}
 
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+  require(
+    [
+      "jquery",
+      "js/projects/integrate"
+    ],
+    function($, integrate) {
+        integrate.attachTo("#integrateForm");
+    });
+</script>
+{% endblock %}
 
 {% block project_body %}
 
@@ -33,11 +46,16 @@
 
 <div class="col-md-3">
   <div class="spacer20"></div>
-  <a id="btn-deposit-analysis" class="btn btn-block btn-danger  "
-    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="analysis") }}"
-    role="button"><i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis</a>
+  <form method="POST" id="integrateForm">
+    {{ form.integrate }}
+    <div style="display: none;">{{ form.records }}</div>
+    {{ form.hidden_fields }}
+    <button type="submit" id="btn-deposit-analysis" class="btn btn-block btn-danger">
+      <i class="fa fa-bar-chart-o fa-2x fa-fw valign"></i>Register new analysis
+    </button>
+  </form>
 </div>
 
-{{ record_table('integrate', records, "Dataset and Software records")|safe}}
+{{ record_table('integrate', records, "Dataset and Software records", selected_records=selected_records)|safe}}
 
 {% endblock %}

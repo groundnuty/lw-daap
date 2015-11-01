@@ -27,12 +27,12 @@
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
-var curateUrl
+var curateUrl;
 require(['jquery'], function($) {
     $('#curatemodal').on('show.bs.modal', function (event) {
-      var a = $(event.relatedTarget)
-      curateUrl = a.data('curateUrl') // Extract info from data-* attributes
-      var modal = $(this)
+      var a = $(event.relatedTarget);
+      curateUrl = a.data('curateUrl'); // Extract info from data-* attributes
+      var modal = $(this);
       modal.find('#curateform').attr('action', curateUrl);
       });
     });

@@ -31,7 +31,10 @@
 
 
 {% macro integrate_buttons(rec) -%} 
-<a class="btn btn-md btn-danger pull-right" href="#">Integrate</a>
+   <a class="btn btn-md pull-right integrate-chooser {{ 'btn-info' if rec.recid in selected_records else 'btn-danger' }}"
+      href="#" data-record-id="{{ rec.recid }}" data-selected="{{ 'true' if rec.recid in selected_records else 'false' }}">
+    {{ '<i class="fa fa-check"></i> Unselect' if rec.recid in selected_records else 'Select' }}
+  </a>
 {%- endmacro %}
 
 
@@ -94,7 +97,7 @@
     <tbody>
     {% for rec in record_set.items%}
     <tr>
-      {{ format_record(rec.id, of='hbprj', ln=g.ln, tab=tab, project=project)|safe }}
+      {{ format_record(rec.id, of='hbprj', ln=g.ln, tab=tab, project=project, **kwargs)|safe }}
     </tr>
     {% endfor %}
     </tbody>
