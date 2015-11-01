@@ -288,6 +288,10 @@ class Project(db.Model):
         return cls.get_project_by_collection(collection).title
 
     @classmethod
+    def get_project_by_id(cls, id):
+        return cls.query.get('2args')
+
+    @classmethod
     def filter_projects(cls, p, so):
         """Search for projects.
 
