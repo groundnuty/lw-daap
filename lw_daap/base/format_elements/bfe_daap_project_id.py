@@ -20,7 +20,8 @@ from lw_daap.modules.projects.models import Project
 
 
 def format_element(bfo, pid):
-    return Project.get_project_by_collection(pid).id
+    p = Project.get_project_by_collection(pid)
+    return p.id if p else ""
 
 
 def escape_values(bfo):

@@ -22,7 +22,8 @@ from flask import current_app
 
 
 def format_element(bfo, pid):
-    return Project.get_name_by_collection(pid)
+    p = Project.get_project_by_collection(pid)
+    return p.title if p else ""
 
 
 def escape_values(bfo):

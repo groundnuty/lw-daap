@@ -55,7 +55,7 @@ from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
 from .autocomplete import community_autocomplete, accessgroups_autocomplete, \
     inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
-from .validators import community_validator
+from .validators import community_validator, project_acl_validator
 from .utils import create_doi, filter_empty_helper
 
 
@@ -738,6 +738,7 @@ class BasicForm(WebDepositForm):
     #
     project_collection = fields.StringField(
         widget=widgets.HiddenInput(),
+        validators=[project_acl_validator],
         default=None,
         label='',
     )

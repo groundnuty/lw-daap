@@ -2,6 +2,7 @@
    "records":[
       {
          "metadata":{
+            "project_collection": "3",
             "upload_type":"dataset",
             "title":"(API) Dataset Open",
             "creators":[
