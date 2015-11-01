@@ -281,7 +281,10 @@ class Project(db.Model):
     def get_project_by_collection(cls, collection):
         prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
         id = collection[collection.startswith(prefix) and len(prefix):]
-        return cls.query.get(id)
+        try:
+            return cls.query.get(int(id))
+        except ValueError:
+            return None
 
     @classmethod
     def filter_projects(cls, p, so):
