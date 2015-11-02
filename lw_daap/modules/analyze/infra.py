@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import chain
 from tempfile import NamedTemporaryFile
 from urlparse import urlsplit
 
 from dateutil.parser import parse
 import etcd
-from flask import current_app, g
+from flask import current_app
 from flask_login import current_user
 import novaclient.auth_plugin
 import novaclient.client
@@ -41,6 +41,11 @@ from .context import build_user_data
 class InfraException(Exception):
     pass
 
+#
+# global client
+# probably needs some thinking
+robot_client = None
+
 
 def _make_client(proxy_file):
     username = password = None
@@ -57,24 +62,39 @@ def _make_client(proxy_file):
                                       auth_system=auth_system,
                                       # XXX REMOVE THIS ASAP!
                                       insecure=True)
+    try:
+        client.authenticate()
+    except requests.exceptions.RequestException as e:
+        raise InfraException(e.message)
     return client
 
 
+def _needs_new_client(client):
+    if not client:
+        return True
+    catalog = client.client.service_catalog.catalog
+    try:
+        expires = parse(catalog['access']['token']['expires'])
+    except KeyError:
+        return True
+    now = datetime.utcnow().replace(tzinfo=pytz.utc)
+    if now - expires > timedelta(minutes=5):
+        return True
+    return False
+
+
 def get_client(user_proxy=None):
+    current_app.logger.debug("GET CLIENT")
     if not user_proxy:
-        client = getattr(g, '_client', None)
-        if not client:
-            g._client = _make_client(cfg.get('CFG_LWDAAP_ROBOT_PROXY'))
-            client = g._client
+        global robot_client
+        if _needs_new_client(robot_client):
+            robot_client = _make_client(cfg.get('CFG_LWDAAP_ROBOT_PROXY'))
+        client = robot_client
     else:
         with NamedTemporaryFile() as proxy_file:
             proxy_file.write(user_proxy)
             proxy_file.flush()
             client = _make_client(proxy_file.name)
-    try:
-        client.authenticate()
-    except requests.exceptions.RequestException as e:
-        raise InfraException(e.message)
     return client
 
 
@@ -88,8 +108,6 @@ def _vm_mapper():
     images = {v['image-id']: v['title'] for v in reqs['images'].values()}
 
     def _mapper(vm):
-        current_app.logger.debug(vm.created)
-        current_app.logger.debug(parse(vm.created))
         created = now - parse(vm.created)
         return {
             'id': vm.id,
