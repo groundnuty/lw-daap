@@ -75,7 +75,7 @@ COMMUNITIES_PERIODIC_TASKS = {
         'run_every': timedelta(minutes=20),
     },
 }
-
+CFG_LWDAAP_BIBSCHED_CHECK_PERIOD = timedelta(minutes=20)
 
 DISABLE_WARNINGS = True
 
