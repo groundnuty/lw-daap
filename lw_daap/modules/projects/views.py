@@ -265,8 +265,8 @@ def show(project_id, path, page):
             'template': 'projects/analyze.html',
             'q': {'record_types': ['analysis']},
         },
-        'preserve': {
-            'template': 'projects/preserve.html',
+        'cite': {
+            'template': 'projects/cite.html',
             'q': {'curated': True},
         },
         'publish': {
@@ -398,11 +398,11 @@ def curation(project_id, record_id):
                                         project_id=project_id, path='curate')})
 
 
-@blueprint.route('/<int:project_id>/preserve/<int:record_id>/',
+@blueprint.route('/<int:project_id>/cite/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
-def preserve(project_id, record_id):
+def cite(project_id, record_id):
     from lw_daap.modules.pids.views import mint_doi
     return mint_doi(record_id, project_id)
 

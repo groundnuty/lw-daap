@@ -99,9 +99,9 @@ require(['jquery'], function($) {
       <span class="label">Analyze</span>
       <span class="arrow"><span></span></span>
     </a>
-    <a class="button {{ 'active' if active == 'preserve' }}"
-      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='preserve') }}">
-      <span class="label">Preserve</span>
+    <a class="button {{ 'active' if active == 'cite' }}"
+      href="{{ url_for("lwdaap_projects.show", project_id=project.id, path='cite') }}">
+      <span class="label">Cite</span>
       <span class="arrow"><span></span></span>
     </a>
     <a class="button {{ 'active' if active == 'publish' }}"

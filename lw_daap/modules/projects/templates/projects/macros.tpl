@@ -43,14 +43,14 @@
 {%- endmacro %}
 
 
-{% macro preserve_buttons(rec) -%} 
+{% macro cite_buttons(rec) -%} 
   {% if not rec.doi %}
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.preserve', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
+      data-doi-url="{{ url_for('lwdaap_projects.cite', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Mint DOI</a>
   {% else %} 
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.preserve', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
+      data-doi-url="{{ url_for('lwdaap_projects.cite', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Has a DOI</a>
   {% endif %}
 {%- endmacro %}
@@ -76,8 +76,8 @@
     {{ integrate_buttons(record) }}
   {% elif tab == "analyze" %}
     {{ analyze_buttons(record) }}
-  {% elif tab == "preserve" %}
-    {{ preserve_buttons(record) }}
+  {% elif tab == "cite" %}
+    {{ cite_buttons(record) }}
   {% elif tab == "publish" %}
     {{ publish_buttons(record) }}
   {% endif %}
