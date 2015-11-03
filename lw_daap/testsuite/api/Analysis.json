@@ -2,6 +2,7 @@
    "records":[
       {
          "metadata":{
+            "project_collection": "1",
             "upload_type":"analysis",
             "title":"(API) Analysis Open",
             "creators":[
@@ -47,14 +48,11 @@
               {"identifier": "1"},
               {"identifier": "52"}
             ]
-
          },
          "files":[
             {
-               "filename":"Analysis.json"
-            },
-            {
-               "filename":"deposit.py"
+               "filename": "Dataset.json",
+               "description": "Whatever"
             }
          ]
       }
