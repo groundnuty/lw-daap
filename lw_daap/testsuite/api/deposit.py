@@ -52,24 +52,17 @@ def create(metadata):
 
 
 def upload(recid, rfile):
-    try:
-        if rfile != None:
-            fd = open(rfile.get('filename'), 'rb')
-            filename = os.path.basename(rfile.get('filename'))
-            files = {'file': (filename, fd)}
-            data = {'description': rfile.get('description', None)}
-            r = requests.post(files_url % (recid, access_token),
-                              files=files, data=data, verify=False)
-            print " --> FILE %s => %s, %s" % (rfile['filename'],
-                                              r.status_code, r.reason)
-            print r.text
-        else: 
-            files = {'file': ""}
-            data = {'description': ""}
-            r = requests.post(files_url % (recid, access_token),
-                              files=files, data=data, verify=False)
-    except:
-        raise
+    if not rfile:
+        return
+    fd = open(rfile.get('filename'), 'rb')
+    filename = os.path.basename(rfile.get('filename'))
+    files = {'file': (filename, fd)}
+    data = {'description': rfile.get('description', None)}
+    r = requests.post(files_url % (recid, access_token),
+                      files=files, data=data, verify=False)
+    print " --> FILE %s => %s, %s" % (rfile['filename'],
+                                      r.status_code, r.reason)
+    print r.text
 
 
 def publish(recid):
@@ -92,11 +85,8 @@ if __name__ == "__main__":
         if recid:
             try:
                 files = record.get('files', None)
-                if files != None:
-                    for f in files:
-                        upload(recid, f)
-                else:
-                    upload(recid, None)
+                for f in files or []:
+                    upload(recid, f)
                 publish(recid)
             except:
                 raise
