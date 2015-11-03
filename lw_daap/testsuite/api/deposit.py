@@ -17,8 +17,7 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 
-#!/usr/bin/env python
-
+import os
 import requests
 import json
 import codecs
@@ -28,67 +27,77 @@ from deposit_conf import *
 
 create_url = site_url + "api/deposit/depositions/?access_token=%s"
 files_url = site_url + "api/deposit/depositions/%d/files?access_token=%s"
-publish_url = site_url + "api/deposit/depositions/%d/actions/publish?access_token=%s"
+publish_url = site_url
+publish_url += "api/deposit/depositions/%d/actions/publish?access_token=%s"
+
 
 def create(metadata):
-  try:
-    data = '{ "metadata": ' + metadata + '}'
-    r = requests.post(create_url % access_token,
-                      data=data, headers={"Content-Type": "application/json"},
-                      verify=False)
-    print r
-    if 'id' in r.json():
-      recid = r.json()['id']
-      print "RECORD %d => %s, %s" % (recid, r.status_code, r.reason)
-      return recid
-    else:
-      print "CANT CREATE RECORD"
+    try:
+        data = '{ "metadata": ' + metadata + '}'
+        r = requests.post(create_url % access_token,
+                          data=data,
+                          headers={"Content-Type": "application/json"},
+                          verify=False)
+        print r
+        if 'id' in r.json():
+            recid = r.json()['id']
+            print "RECORD %d => %s, %s" % (recid, r.status_code, r.reason)
+            return recid
+        else:
+            print "CANT CREATE RECORD"
+            print json.dumps(r.json(), indent=3)
+            return None
+    except:
+        raise
 
-      print json.dumps(r.json(), indent=3)
-      return None
-  except:
-    raise
 
-import os
 def upload(recid, rfile):
-  try:
-    data = rfile
-    fd = open(rfile['filename'], 'rb')
-    filename = os.path.basename(rfile['filename'])
-    files = {'file': (filename, fd)}
-    data = {'description': rfile['description']}
-    r = requests.post(files_url % (recid, access_token), data=data, files=files, verify=False)
-    print " --> FILE %s => %s, %s" % (rfile['filename'], r.status_code, r.reason)
-    print r.text
-  except:
-    raise
+    try:
+        if rfile != None:
+            fd = open(rfile.get('filename'), 'rb')
+            filename = os.path.basename(rfile.get('filename'))
+            files = {'file': (filename, fd)}
+            data = {'description': rfile.get('description', None)}
+            r = requests.post(files_url % (recid, access_token),
+                              files=files, data=data, verify=False)
+            print " --> FILE %s => %s, %s" % (rfile['filename'],
+                                              r.status_code, r.reason)
+            print r.text
+        else: 
+            files = {'file': ""}
+            data = {'description': ""}
+            r = requests.post(files_url % (recid, access_token),
+                              files=files, data=data, verify=False)
+    except:
+        raise
 
 
 def publish(recid):
-  try:
-    r = requests.post(publish_url % (recid, access_token), verify=False)
-    print " --> PUBLISH => %s, %s" % (r.status_code, r.reason)
-  except:
-    raise
+    try:
+        r = requests.post(publish_url % (recid, access_token), verify=False)
+        print " --> PUBLISH => %s, %s" % (r.status_code, r.reason)
+    except:
+        raise
 
 
 if __name__ == "__main__":
-  try:
-    fd = open(sys.argv[1])
-    records = json.load(fd)
-  except:
-    raise
+    try:
+        fd = open(sys.argv[1])
+        records = json.load(fd)
+    except:
+        raise
 
-  for record in records['records']:
-    recid = create(json.dumps(record['metadata']))
-    if recid:
-      files = record['files']
-      for f in files:
-        upload(recid, f)
-      publish(recid)
-    print '\r'
-
-
-
-
-
+    for record in records.get('records'):
+        recid = create(json.dumps(record.get('metadata')))
+        if recid:
+            try:
+                files = record.get('files', None)
+                if files != None:
+                    for f in files:
+                        upload(recid, f)
+                else:
+                    upload(recid, None)
+                publish(recid)
+            except:
+                raise
+        print '\r'
