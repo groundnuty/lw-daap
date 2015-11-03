@@ -597,7 +597,14 @@ def api_validate_files():
     def _api_validate_files(obj, eng):
         if getattr(request, 'is_api_request', False):
             d = Deposition(obj)
+            missing_files = False
             if len(d.files) < 1:
+                for draft in d.drafts_list:
+                    draft_type = draft.values.get('upload_type')
+                    if draft_type != 'analysis':
+                        missing_files = True
+                        break
+            if missing_files:
                 d.set_render_context(dict(
                     response=dict(
                         message="Bad request",
