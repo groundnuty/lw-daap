@@ -263,6 +263,21 @@ def process_recjson(deposition, recjson):
         del recjson['license']
 
     # =================
+    # Project info
+    # =================
+    if recjson.get('project_collection'):
+        curated = recjson.get('record_curated_in_project', None) 
+        if curated is None:
+            curated = recjson['upload_type'] != 'dataset'
+            recjson['record_curated_in_project'] = curated
+        public = recjson.get('record_public_from_project', None) 
+        if public is None:
+            recjson['record_public_from_project'] = False
+    else:
+        for k in ['record_curated_in_project', 'record_public_from_project']:
+            if k in recjson:
+                del recjson[k]
+
     # Requirements
     # =================
     # if recjson.get('os', []):
@@ -349,8 +364,8 @@ def process_recjson_new(deposition, recjson):
     # ===========
     # Communities
     # ===========
-    # Specific Zenodo user collection, used to curate content for
-    # Zenodo
+    # Specific user collection, used to curate content 
+    # 
     if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson[
             'provisional_communities']:
         recjson['provisional_communities'].append(
@@ -701,18 +716,18 @@ class upload(DepositionType):
         access_conditions=fields.String,
         access_groups=fields.List(fields.Raw),
         communities=fields.List(fields.Raw),
+        contributors=fields.Raw(default=[]),
         description=fields.String,
         doi=fields.String(default=''),
         embargo_date=ISODate,
         keywords=fields.Raw(default=[]),
-        subjects=fields.Raw(default=[]),
         license=fields.String,
         notes=fields.String(default=''),
         publication_date=ISODate,
         related_identifiers=fields.Raw(default=[]),
+        subjects=fields.Raw(default=[]),
         title=fields.String,
         upload_type=fields.String,
-        contributors=fields.Raw(default=[]),
     )
 
     marshal_metadata_edit_fields = marshal_metadata_fields.copy()

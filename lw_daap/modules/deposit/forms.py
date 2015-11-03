@@ -55,7 +55,8 @@ from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
 from .autocomplete import community_autocomplete, accessgroups_autocomplete, \
     inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
-from .validators import community_validator, project_acl_validator
+from .validators import community_validator, project_acl_validator, \
+    rel_record_validator
 from .utils import create_doi, filter_empty_helper
 
 
@@ -405,6 +406,10 @@ class InputRecordDatasetFieldForm(WebDepositForm):
         widget=TagInput(),
         widget_classes='form-control',
     )
+    is_pid = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False
+    )
 
 
 class InputRecordSoftwareFieldForm(WebDepositForm):
@@ -419,6 +424,10 @@ class InputRecordSoftwareFieldForm(WebDepositForm):
         autocomplete_fn=inputrecords_autocomplete_software,
         widget=TagInput(),
         widget_classes='form-control',
+    )
+    is_pid = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False
     )
 
 
@@ -743,13 +752,13 @@ class BasicForm(WebDepositForm):
         label='',
     )
 
-    record_curated_in_project = fields.StringField(
+    record_curated_in_project = fields.BooleanField(
         widget=widgets.HiddenInput(),
         default=False,
         label='',
     )
 
-    record_public_from_project = fields.StringField(
+    record_public_from_project = fields.BooleanField(
         widget=widgets.HiddenInput(),
         default=False,
         label='',
@@ -1124,6 +1133,7 @@ class AnalysisForm(BasicForm):
         validators=[
             validators.DataRequired(message="This field is required."),
             list_length(min_num=1),
+            rel_record_validator
         ],
         label="Input dataset",
         add_label="Add input dataset identifier",
@@ -1142,6 +1152,7 @@ class AnalysisForm(BasicForm):
         validators=[
             validators.DataRequired(message="This field is required."),
             list_length(min_num=1),
+            rel_record_validator
         ],
         label="Input software",
         add_label="Add input software identifier",

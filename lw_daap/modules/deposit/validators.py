@@ -123,12 +123,38 @@ def project_acl_validator(form, field):
     from lw_daap.modules.projects.models import Project
 
     if field.data:
-        p = Project.get_project_by_collection("project-" + field.data)
+        p = Project.get_project_by_collection("project-%s" % field.data)
 
         if not p:
             raise ValidationError("Invalidad project: %s" % field.data)
 
         if not p.is_user_allowed():
             raise ValidationError("User does not have permissions "
-                                  "to deposit records in project: %s" 
+                                  "to deposit records in project: %s"
                                    % field.data)
+
+
+def rel_record_validator(form, field):
+    from invenio.modules.records.api import get_record
+    from lw_daap.modules.projects.models import Project
+
+    from flask import current_app
+    for rel in field.data:
+        current_app.logger.debug(field.data)
+        current_app.logger.debug(rel)
+        if rel.get('is_pid', None):
+            return
+        record = get_record(rel['identifier'])
+        if not record:
+            raise ValidationError("Invalid record id %s" % rel['identifier'])
+
+        msg = "User does not have permission to access this record"
+        if not record.get('communities'):
+            current_app.logger.debug(record.get('communities'))
+            if 'project_collection' in record:
+                p = Project.get_project_by_collection(record['project_collection'])
+                if not p.is_user_allowed():
+                    raise ValidationError(msg)
+            else:
+                if current_user.get_id() != record['owner']['id']:
+                    raise ValidationError(msg)
