@@ -123,7 +123,7 @@ def mint_doi(recid, project_id=None):
         return jsonify({'status': 'ok',
                         'redirect': url_for('lwdaap_projects.show',
                                             project_id=project_id,
-                                            path='preserve')})
+                                            path='cite')})
     else:
         return jsonify({'status': 'ok',
                         'redirect': url_for('record.metadata', recid=recid)})
