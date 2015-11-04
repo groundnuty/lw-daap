@@ -124,7 +124,33 @@ p a:focus {
 }
 
 
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
 
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  margin-right: -50px;
+}
+
+.modal-backdrop
+{
+  opacity:0.6 !important;
+}
+
+.modal .alert {
+  margin: 0px 10px 10px 10px;
+}
 .alert-info {
   background-color: #D6F8E4;
   color: #50BB7B;
