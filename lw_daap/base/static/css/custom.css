@@ -114,6 +114,17 @@ a.btn {
 }
 
 
+p a {
+  color: #FF9464 !important;
+}
+
+p a:hover, 
+p a:focus {
+  color: #FF5001 !important;
+}
+
+
+
 .alert-info {
   background-color: #D6F8E4;
   color: #50BB7B;
@@ -136,9 +147,6 @@ a.btn {
   background-color: #0A9C45;
   color: #FFFFFF;
 }
-
-
-
 
 .searchform  {
   background: #F1F1F1;
