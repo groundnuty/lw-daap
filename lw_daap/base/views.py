@@ -88,6 +88,11 @@ def privacypolicy():
 def termsofservices():
     return render_template('lw_daap/termsofservices.html')
 
+@blueprint.route('/useguide', methods=['GET', ])
+#@register_breadcrumb(blueprint, 'breadcrumbs.useguide', _("Use guide"))
+def useguide():
+    return render_template('lw_daap/useguide.html')
+
 
 #
 #
