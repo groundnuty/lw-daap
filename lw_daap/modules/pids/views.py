@@ -26,9 +26,9 @@ from flask import Blueprint, abort, current_app, jsonify, url_for, request, \
     make_response
 from flask_login import current_user
 
-from invenio.base.globals import cfg 
+from invenio.base.globals import cfg
 from invenio.ext.cache import cache
-from invenio.ext.sslify import ssl_required 
+from invenio.ext.sslify import ssl_required
 from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.pidstore.tasks import datacite_register
@@ -50,8 +50,8 @@ blueprint = Blueprint(
 DOI_PID_TYPE = 'doi'
 
 @blueprint.app_template_global()
-def get_pid(recid):                                                           
-    return 'lifewatch.openscience.%s' % recid       
+def get_pid(recid):
+    return 'lifewatch.openscience.%s' % recid
 
 
 def add_doi(recid, doi):
@@ -97,7 +97,7 @@ def mint_doi(recid, project_id=None):
     key = get_cache_key(recid)
     cache_action = cache.get(key)
     if cache_action:
-        return error_400('DOI is being processed,'
+        return error_400('DOI is being processed, '
                          'you should wait some minutes.')
 
     doi = build_doi(recid)
