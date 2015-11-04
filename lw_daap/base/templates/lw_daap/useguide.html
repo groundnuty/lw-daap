@@ -36,6 +36,7 @@
 #}
 {% extends "page.html" %}
 
+
 {% block body %}
 <div class="row">
   <div class="col-sm-12 col-md-3 hidden-print ">
@@ -55,46 +56,110 @@
 
     <h3 id="lwframe-intro">Introduction</h3>
     <p>The LifeWatch Open Science Framework is an appropiate tool for general 
-       public and scientist since it brings specific features according to the
-       needs of each user. 
-       <ul>
-       <li>Different kind of records-data management plans (DMPs), 
-       datasets, software, and analysis-can be discover through 
-       <a href="{{ url_for('search') }}">Search</a>.</li>
-       <li>Authenticated users 
-       can go a step further and deposit their own records through 
-       <a href="{{ url_for('deposit') }}">Deposit</a>.</li> 
-       <li>By default, the deposits
-       will nest in the default community 
-       <a href="/collection/community-daap">
-       {{ config.CFG_SITE_NAME }}</a>,
-       and also in any other specfied during the record creation. Then, a
-       curation proccess happens: the community admins are in charge of 
-       accepting or rejecting the uploads according to the corresponding
-       curation policy. Once the records are curated they will be discoverable
-       for the general public.</li> 
-       <li>A persistent identifier is associated internally
-       to each of the records created in the framework; additionally a 
-       Digital Object Identifier (DOI) can be mint to have those records 
-       uniquely citeable widely: the researcher decide when to mint the DOI.</li> 
-       <li>Software and analysis records come with a non-pasive feature, 
-       an execution environment accesible through the framework at 
-       <a href="{{ url_for('analyze') }}">Analyze</a>.</li>
-       <li>Researchers can define the entire life cycle of their research 
-       through the workflow define in 
-       <a href="{{ url_for('projects') }}">Projects</a>.</li>
-       <li>Research records associated to this framework are stored safely 
-       and preserve in cloud infrastructure and disk tape(?).</li>
-       </ul>
+    public and scientist since it brings specific features according to the
+    needs of each user. 
+    <ul>
+      <li>Different kind of records-data management plans (DMPs), 
+      datasets, software, and analysis-can be discover through 
+      <a href="{{ url_for('search') }}">Search</a>.</li>
+      <li>Authenticated users 
+      can go a step further and deposit their own records through 
+      <a href="{{ url_for('deposit') }}">Deposit</a>.</li> 
+      <li>By default, the deposits
+      will nest in the default community 
+      <a href="/collection/community-daap">
+        {{ config.CFG_SITE_NAME }}</a>,
+      and also in any other specfied during the record creation. Then, a
+      curation proccess happens: the community admins are in charge of 
+      accepting or rejecting the uploads according to the corresponding
+      curation policy. Once the records are curated they will be discoverable
+      for the general public.</li> 
+      <li>A persistent identifier is associated internally
+      to each of the records created in the framework; additionally a 
+      Digital Object Identifier (DOI) can be mint to have those records 
+      uniquely citeable widely: the researcher decide when to mint the DOI.</li> 
+      <li>Software and analysis records come with a non-pasive feature, 
+      an execution environment accesible through the framework at 
+      <a href="{{ url_for('analyze') }}">Analyze</a>.</li>
+      <li>Researchers can define the entire life cycle of their research 
+      through the workflow define in 
+      <a href="{{ url_for('projects') }}">Projects</a>.</li>
+      <li>Research records associated to this framework are stored safely 
+      and preserve in cloud infrastructure and disk tape(?).</li>
+    </ul>
     </p>
 
     <h3 id="lwframe-discover">Discover</h3>
     <p>Discover {{ config.CFG_SITE_NAME }} 
     public records performing a general 
     <a href="{{ url_for('search') }}">search</a> or filtering them for 
-    record type-DMP, Dataset, Software, Analysis- or for 
+    record type-DMP, Dataset, Software, Analysis- or for
     <a href="{{ url_for('communities') }}">communities</a>.</p>
+    <div id="search-guide" class="panel panel-default" style="margin: 20px 20px">
+      <div class="panel-heading">
+        <a data-toggle="collapse" class="panel-toggle" href="#collapse-search-guide">
+          <div class="{{ 'pull-left' if dropleft else 'pull-right' }}">
+            <span class="show-on-collapsed">
+              <i class="fa fa-chevron-down"></i>
+            </span>
+            <span class="hide-on-collapsed">
+              <i class="fa fa-chevron-up"></i>
+            </span>
+          </div>
+          Search guide
+        </a>
+      </div>
+      <div id="collapse-search-guide" class="panel-collapse collapse in">
+        <div class="panel-body">
+          <p>After you submit your query, the search engine will analyze it and will try to always guide you in case no exact match could be found. The default search mode is a search for words in any place. This means that any whitespace you type is not significant, but is rather interpreted to mean "add an automatic boolean AND between words"</p>
+          <h4>Searching phrases</h4>
+          <p>The whitespace would be significant if you include it within quotes. There are two phrase searching modes:</p>
+          <ol>
+            <li>The double quotes instruct the search engine to search for exact phrase. This phrase search mode will match if and only if the given metadata field is exactly equal to the input pattern. </li>
 
+            <li>The single quotes instruct the search engine to search for partial phrase. Unlike the exact phrase search, this mode allows for an extra text appearing before/after given pattern.</li></ol>
+          <h4>Boolean queries</h4>
+          <p>Standard boolean operators are availables. You can also use parentheses in your queries to group boolean expressions together: </p>
+          <table class="table table-condese">
+          <tbody>
+          <tr>
+            <td class="col-md-2 text-center" rowspan="3" style="vertical-align: middle;">
+              <strong>+<br>AND</strong>
+            </td>
+            <td class="col-md-3"><code>ellis +muon</code></td>
+            <td class="col-md-7" rowspan="3" style="vertical-align: middle;">matches all records that contain both the word <em>ellis</em> and the the word <em>muon</em></td>
+          </tr>
+          <tr><td style="border: 0px"><code>ellis muon</code></td></tr>
+          <tr><td style="border: 0px"><code>ellis and muon</code></td></tr>
+          <tr>
+            <td class="text-center" rowspan="2" style="vertical-align: middle;">
+              <strong>-<br>NOT</strong>
+            </td>
+            <td><code>ellis -muon</code></td>
+            <td rowspan="2" style="vertical-align: middle">
+              matches all records that contain the word <em>ellis</em> but that do not contain the word <em>muon</em>
+            </td>
+          </tr>
+          <tr><td style="border: 0px"><code>ellis not muon</code></td></tr>
+          <tr>
+            <td class="text-center" rowspan="2" style="vertical-align: middle;">
+              <strong>|<br>OR</strong>
+            </td>
+            <td><code>ellis | muon</code></td>
+            <td rowspan="2" style="vertical-align: middle">matches all records that contain at least one of the words</td>
+          </tr>
+          <tr><td style="border: 0px;"><code>ellis or muon</code></td></tr>
+          </tbody>
+        </table>
+        <h4>Wildcard character</h4>
+        <p>The word truncation is supported via asterisk (*) wildcard character. The wildcard instructs the search engine to match any number of characters in that place.</p>
+        <h4>Metadata fields</h4>
+        <p>If a search term is preceded by a field name and a colon, then the term is searched for inside this field only. For example: <code>title: thermodynamic</code>. Common fields you may want to use are <code>author</code>, <code>title</code>, <code>keyword</code>, <code>year</code>. A full list of availables fields are <a href=#>here</a>
+        <h4>Range queries</h4>
+        <p>The span query is provided via a <code>-></code> sign. For example, to search for all documents on muon decay published between 2013 and 2015, type:<code>moun decay year:2013->2015</code>. Also you could ranging over text fields</p>
+        </div>
+      </div>
+    </div>
     <h3 id="lwframe-share">Share</h3>
     <p>Become a {{ config.CFG_SITE_NAME }} user by logging into the portal,
     and start creating your own records through 
@@ -109,7 +174,7 @@
     upload files for those records are editable 
     until a DOI has been minted. 
     All records are accesible through <a href="{{ url_for('deposit.myuploads') }}">
-    My Uploads</a>.</p>
+      My Uploads</a>.</p>
 
     <h3 id="lwframe-analyze">Analyze</h3>
     <p>The {{ config.CFG_SITE_NAME }} brings also to the researchers with a 
@@ -129,8 +194,8 @@
     <a href="{{ url_for('projects') }}">Projects</a> to describe the entire
     data life cycle. Projects are visible from 
     <a href="{{ url_for('projects.myprojects') }}">
-    My Projects</a>.</p>
- 
+      My Projects</a>.</p>
+
   </div>
 </div>
 {% endblock %}
