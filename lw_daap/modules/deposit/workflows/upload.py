@@ -40,6 +40,7 @@
 
 from __future__ import absolute_import
 
+import ast
 import json
 from datetime import date
 
@@ -266,13 +267,13 @@ def process_recjson(deposition, recjson):
     # Project info
     # =================
     if recjson.get('project_collection'):
-        curated = recjson.get('record_curated_in_project', None) 
-        if curated is None:
-            curated = recjson['upload_type'] != 'dataset'
+        if recjson['upload_type'] != 'dataset':
+            recjson['record_curated_in_project'] = True 
+        else:
+            curated = ast.literal_eval(recjson['record_curated_in_project'])
             recjson['record_curated_in_project'] = curated
-        public = recjson.get('record_public_from_project', None) 
-        if public is None:
-            recjson['record_public_from_project'] = False
+        public = ast.literal_eval(recjson['record_public_from_project'])
+        recjson['record_public_from_project'] = public
     else:
         for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:

@@ -752,15 +752,15 @@ class BasicForm(WebDepositForm):
         label='',
     )
 
-    record_curated_in_project = fields.BooleanField(
+    record_curated_in_project = fields.StringField(
         widget=widgets.HiddenInput(),
-        default=False,
+        default="False",
         label='',
     )
 
-    record_public_from_project = fields.BooleanField(
+    record_public_from_project = fields.StringField(
         widget=widgets.HiddenInput(),
-        default=False,
+        default="False",
         label='',
     )
 
