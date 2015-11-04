@@ -21,9 +21,9 @@ from lw_daap.modules.projects.models import Project
 from flask import current_app
 
 
-def format_element(bfo, pid):
-    p = Project.get_project_by_collection(pid)
-    return p.title if p else ""
+def format_element(bfo, pid, field=id):
+    p = Project.get_project(pid)
+    return getattr(p, field, None) if p else None
 
 
 def escape_values(bfo):

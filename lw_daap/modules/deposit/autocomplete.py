@@ -142,7 +142,7 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
             }
         },
         map(lambda o: (o.id, get_record(o.id)['title']),
-            filter(lambda o: get_record(o.id)['project_collection'] != None and
+            filter(lambda o: get_record(o.id)['project'] != None and
                    get_record(o.id)['record_curated_in_project'] == True,
                    objs)
             )

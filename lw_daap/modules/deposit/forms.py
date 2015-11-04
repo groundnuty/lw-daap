@@ -745,7 +745,7 @@ class BasicForm(WebDepositForm):
     #
     # Project
     #
-    project_collection = fields.StringField(
+    project = fields.StringField(
         widget=widgets.HiddenInput(),
         validators=[project_acl_validator],
         default=None,

@@ -44,7 +44,7 @@ with context
     <div class="col-sm-9 col-md-8">
       <h2>{{ daap_record.title }}</h2>
     </div>
-    {% if daap_record.project_collection %}
+    {% if daap_record.project %}
     <div class="col-sm-3 pull-right">
     {% set record_project_path = {
         'dataset': 'collect',
@@ -53,7 +53,7 @@ with context
         'analysis': 'analyze',
     }%}
     <a href="{{ url_for('lwdaap_projects.show',
-                        project_id=bfe_daap_project_id(bfo, pid=daap_record.project_collection),
+                        project_id=bfe_daap_project_field(bfo, pid=daap_record.project, field='id'),
                         path=record_project_path[daap_record.upload_type])
              }}"
         class="btn btn-lg btn-primary pull-right"
@@ -171,14 +171,14 @@ with context
         </table>
         {{ close_panel_section() }}
 
-        {% if daap_record.project_collection %}
+        {% if daap_record.project %}
         {{ open_panel_section(
         '<i class="fa fa-list-alt"></i> Related projects', 'projects', True) }}
         <table class="table table-hover">
         <tr>
         <th class="col-md-3"><i class="fa fa-list-alt fa-fw"></i>Projects</th>
         <td class="col-md-9">
-         {{ bfe_daap_project_name(bfo, pid=daap_record.project_collection) }}
+         {{ bfe_daap_project_field(bfo, pid=daap_record.project, field='name') }}
         </td>
         </tr>
         </table>

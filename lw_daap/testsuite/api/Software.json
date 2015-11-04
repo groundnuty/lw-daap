@@ -2,7 +2,7 @@
    "records":[
       {
          "metadata":{
-            "project_collection": "1",
+            "project": "1",
             "upload_type":"software",
             "title":"(API) Software Open",
             "creators":[
