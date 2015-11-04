@@ -16,24 +16,6 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
-{#
-## This file is part of Invenio.
-## Copyright (C) 2013, 2014, 2015 CERN.
-##
-## Invenio is free software; you can redistribute it and/or
-## modify it under the terms of the GNU General Public License as
-## published by the Free Software Foundation; either version 2 of the
-## License, or (at your option) any later version.
-##
-## Invenio is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with Invenio; if not, write to the Free Software Foundation, Inc.,
-## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
-#}
 {% extends "page.html" %}
 
 
@@ -43,10 +25,11 @@
     <ul class="nav nav-list well">
       <li class="nav-header"><h4>Use guide</h4></li>
       <li><a href="#lwframe-intro">Introduction</a></li>
+      <li><a href="#lwframe-access">User accounts</a></li>
       <li><a href="#lwframe-discover">Discover</a></li>
+      <li><a href="#lwframe-projects">Projects</a></li>
       <li><a href="#lwframe-share">Share</a></li>
       <li><a href="#lwframe-analyze">Analyze</a></li>
-      <li><a href="#lwframe-project">Project</a></li>
     </ul>
   </div>
 
@@ -55,46 +38,53 @@
     <hr/>
 
     <h3 id="lwframe-intro">Introduction</h3>
-    <p>The LifeWatch Open Science Framework is an appropiate tool for general 
-    public and scientist since it brings specific features according to the
-    needs of each user. 
+    <p>The LifeWatch Open Science Framework is a tool for researchers 
+    and general public that brings together data management features with 
+    a platform for analyzing those data.</p>
+    <h4>Main Features</h4> 
     <ul>
-      <li>Different kind of records-data management plans (DMPs), 
-      datasets, software, and analysis-can be discover through 
-      <a href="{{ url_for('search') }}">Search</a>.</li>
-      <li>Authenticated users 
-      can go a step further and deposit their own records through 
-      <a href="{{ url_for('deposit') }}">Deposit</a>.</li> 
-      <li>By default, the deposits
-      will nest in the default community 
-      <a href="/collection/community-daap">
-        {{ config.CFG_SITE_NAME }}</a>,
-      and also in any other specfied during the record creation. Then, a
-      curation proccess happens: the community admins are in charge of 
-      accepting or rejecting the uploads according to the corresponding
-      curation policy. Once the records are curated they will be discoverable
-      for the general public.</li> 
-      <li>A persistent identifier is associated internally
-      to each of the records created in the framework; additionally a 
-      Digital Object Identifier (DOI) can be mint to have those records 
-      uniquely citeable widely: the researcher decide when to mint the DOI.</li> 
-      <li>Software and analysis records come with a non-pasive feature, 
-      an execution environment accesible through the framework at 
-      <a href="{{ url_for('analyze') }}">Analyze</a>.</li>
-      <li>Researchers can define the entire life cycle of their research 
-      through the workflow define in 
-      <a href="{{ url_for('projects') }}">Projects</a>.</li>
-      <li>Research records associated to this framework are stored safely 
-      and preserve in cloud infrastructure and disk tape(?).</li>
-    </ul>
-    </p>
+      <li>Discover different kind of records: data management plans (DMPs), 
+          datasets, software, and analysis, through
+          <a href="{{ url_for('search') }}">Search</a>.
+      </li>
+      <li>Manage the entire research life-cycle through
+          <a href={{ url_for('lwdaap_projects.index') }}>Projects</a>.</li>
+
+      <li><a href="{{ url_for('deposit') }}">Deposit</a> your own records,
+          associated to projects or as independent entities.</li>
+
+      <li>Associate a local persistent identifier (PID) to each record created 
+          in the framework.</li>
+
+      <li>Mint a  Digital Object Identifier (DOI) to make records uniquely citable
+          widely; record owners decide when to mint the DOI.</li>
+
+      <li>Software and analysis records can be executed on a cloud infrastructure
+          through the <a href="{{ url_for('lwdaap_analyze.index') }}">Analyze</a> tab.</li>
+
+      <li>Records entered into this framework are stored safely in reliable disk
+          systems and backed up to tape for preservation.</li>
+
+      <li>Organize records in curated communities. By default all records nest in the
+          <a href="{{ url_for('search.collection', name='community-daap') }}">{{ config.CFG_SITE_NAME }}</a>, 
+          you can specify any other communities during deposit. Community admins are in charge of
+          accepting or rejecting the uploads according to the corresponding curation policy.
+          Curated records are discoverable for the general public.</li> 
+          
+   </ul>
+
+    <h3 id="lwframe-access">User accounts</h3>
+    <p>The LifeWatch Open Science Framework allows anonymous search and 
+       access to data of public records, other funtionality requires a valid
+       user account at <a href="#">LifeWatch IdP</a>.</p>
 
     <h3 id="lwframe-discover">Discover</h3>
-    <p>Discover {{ config.CFG_SITE_NAME }} 
-    public records performing a general 
-    <a href="{{ url_for('search') }}">search</a> or filtering them for 
-    record type-DMP, Dataset, Software, Analysis- or for
+    <p>Discover {{ config.CFG_SITE_NAME }} public records performing a general 
+    <a href="{{ url_for('search') }}">search</a> or filtering them by 
+    record type -DMP, Dataset, Software, Analysis- or by 
     <a href="{{ url_for('communities') }}">communities</a>.</p>
+
+
     <div id="search-guide" class="panel panel-default" style="margin: 20px 20px">
       <div class="panel-heading">
         <a data-toggle="collapse" class="panel-toggle" href="#collapse-search-guide">
@@ -109,15 +99,22 @@
           Search guide
         </a>
       </div>
+
       <div id="collapse-search-guide" class="panel-collapse collapse in">
         <div class="panel-body">
-          <p>After you submit your query, the search engine will analyze it and will try to always guide you in case no exact match could be found. The default search mode is a search for words in any place. This means that any whitespace you type is not significant, but is rather interpreted to mean "add an automatic boolean AND between words"</p>
+          <p>The default search mode is a search for words in any place. This means that any whitespace you type is not significant,
+             but is rather interpreted to mean "add an automatic boolean AND between words".</p>
+
           <h4>Searching phrases</h4>
           <p>The whitespace would be significant if you include it within quotes. There are two phrase searching modes:</p>
           <ol>
-            <li>The double quotes instruct the search engine to search for exact phrase. This phrase search mode will match if and only if the given metadata field is exactly equal to the input pattern. </li>
+            <li>The double quotes instruct the search engine to search for exact phrase. This phrase search mode will match if and only if
+                the given metadata field is exactly equal to the input pattern. </li>
 
-            <li>The single quotes instruct the search engine to search for partial phrase. Unlike the exact phrase search, this mode allows for an extra text appearing before/after given pattern.</li></ol>
+            <li>The single quotes instruct the search engine to search for partial phrase. Unlike the exact phrase search, this mode allows
+                for an extra text appearing before/after given pattern.</li>
+          </ol>
+
           <h4>Boolean queries</h4>
           <p>Standard boolean operators are availables. You can also use parentheses in your queries to group boolean expressions together: </p>
           <table class="table table-condese">
@@ -126,41 +123,76 @@
             <td class="col-md-2 text-center" rowspan="3" style="vertical-align: middle;">
               <strong>+<br>AND</strong>
             </td>
-            <td class="col-md-3"><code>ellis +muon</code></td>
-            <td class="col-md-7" rowspan="3" style="vertical-align: middle;">matches all records that contain both the word <em>ellis</em> and the the word <em>muon</em></td>
+            <td class="col-md-3"><code>water +temperature</code></td>
+            <td class="col-md-7" rowspan="3" style="vertical-align: middle;">matches all records that contain both the word
+              <em>water</em> and the word <em>temperature</em>.</td>
           </tr>
-          <tr><td style="border: 0px"><code>ellis muon</code></td></tr>
-          <tr><td style="border: 0px"><code>ellis and muon</code></td></tr>
+          <tr><td style="border: 0px"><code>water temperature</code></td></tr>
+          <tr><td style="border: 0px"><code>water and temperature</code></td></tr>
           <tr>
             <td class="text-center" rowspan="2" style="vertical-align: middle;">
               <strong>-<br>NOT</strong>
             </td>
-            <td><code>ellis -muon</code></td>
+            <td><code>water -temperature</code></td>
             <td rowspan="2" style="vertical-align: middle">
-              matches all records that contain the word <em>ellis</em> but that do not contain the word <em>muon</em>
+              matches all records that contain the word <em>water</em> but that do not contain the word <em>temperature</em>.
             </td>
           </tr>
-          <tr><td style="border: 0px"><code>ellis not muon</code></td></tr>
+          <tr><td style="border: 0px"><code>water not temperature</code></td></tr>
           <tr>
             <td class="text-center" rowspan="2" style="vertical-align: middle;">
               <strong>|<br>OR</strong>
             </td>
-            <td><code>ellis | muon</code></td>
-            <td rowspan="2" style="vertical-align: middle">matches all records that contain at least one of the words</td>
+            <td><code>water | temperature</code></td>
+            <td rowspan="2" style="vertical-align: middle">matches all records that contain at least one of the words.</td>
           </tr>
-          <tr><td style="border: 0px;"><code>ellis or muon</code></td></tr>
+          <tr><td style="border: 0px;"><code>water or temperature</code></td></tr>
           </tbody>
         </table>
+
         <h4>Wildcard character</h4>
-        <p>The word truncation is supported via asterisk (*) wildcard character. The wildcard instructs the search engine to match any number of characters in that place.</p>
+        <p>Word truncation is supported via star (*) wildcard character. The wildcard instructs the search engine to match any number
+           of characters in that place.</p>
+
         <h4>Metadata fields</h4>
-        <p>If a search term is preceded by a field name and a colon, then the term is searched for inside this field only. For example: <code>title: thermodynamic</code>. Common fields you may want to use are <code>author</code>, <code>title</code>, <code>keyword</code>, <code>year</code>. A full list of availables fields are <a href=#>here</a>
+        <p>If a search term is preceded by a field name and a colon, then the term is searched for inside this field only.
+           For example: <code>title: temperature</code>. Common fields you may want to use are <code>author</code>, <code>title</code>,
+           <code>keyword</code>, <code>year</code>. 
+
         <h4>Range queries</h4>
-        <p>The span query is provided via a <code>-></code> sign. For example, to search for all documents on muon decay published between 2013 and 2015, type:<code>moun decay year:2013->2015</code>. Also you could ranging over text fields</p>
-        </div>
+        <p>The span query is provided via a <code>-></code> sign. For example, to search for all records on temperature
+           between 2013 and 2015, type:<code>temperature year:2013->2015</code>. You can also range over text fields.</p>
       </div>
     </div>
-    <h3 id="lwframe-share">Share</h3>
+  </div>
+
+  <h3 id="lwframe-projects">Projects</h3>
+
+  <p><a href={{ url_for('lwdaap_projects.index') }}>Projects</a> allow to define the complete workflow of the data life-cycle. 
+     Projects are searchable and any user can see public records within the projects. Authenticated users can create new
+     projects or request to join an existing project. The projects accessible to the user are available at
+     <a href="{{ url_for('lwdaap_projects.myprojects') }}">My Projects</a> tab of your profile.</p>
+
+     <p>Projects define the following steps in the data life-cycle workflow:</p>
+     <dl>
+        <dt>Plan</dt>
+        <dd>Create Data Management Plans for your data and upload the resulting document in the framework.</dd>
+        <dt>Describe and collect</dt>
+        <dd>Create datasets and software records to store your data and software assets.</dd>
+        <dt>Curate</dt>
+        <dd>Tag dataset records as curated to certify their quality.</dd>
+        <dt>Integrate</dt>
+        <dd>Create analysis records by combining datasets and software.</dd>
+        <dt>Analyze</dt>
+        <dd>Run your analysis in the cloud.</dd>
+        <dt>Cite</dt>
+        <dd>Mint a DOI for the selected records so they become widely citable.</dd>
+        <dt>Publish</dt>
+        <dd>Make records available publicly for all users or the framework.</dd>
+     </dl>
+
+  <h3 id="lwframe-share">Share</h3>
+
     <p>Become a {{ config.CFG_SITE_NAME }} user by logging into the portal,
     and start creating your own records through 
     <a href="{{ url_for('deposit') }}">Deposit</a>. A minimun amount of 
@@ -188,13 +220,6 @@
     <a href ="{{ url_for('analyze.launch') }}">Run an analysis</a>.
     The scientist can list, connect and terminate their instances.    
     </p>
-
-    <h3 id="lwframe-project">Project</h3>
-    <p>The steps describe above are used in 
-    <a href="{{ url_for('projects') }}">Projects</a> to describe the entire
-    data life cycle. Projects are visible from 
-    <a href="{{ url_for('projects.myprojects') }}">
-      My Projects</a>.</p>
 
   </div>
 </div>
