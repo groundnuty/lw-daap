@@ -279,9 +279,7 @@ class Project(db.Model):
         return self.id_user == uid or self.group.name in groups
 
     @classmethod
-    def get_project_by_collection(cls, collection):
-        prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
-        id = collection[collection.startswith(prefix) and len(prefix):]
+    def get_project(cls, id):
         try:
             return cls.query.get(int(id))
         except ValueError:

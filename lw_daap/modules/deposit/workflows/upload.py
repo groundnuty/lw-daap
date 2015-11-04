@@ -266,7 +266,7 @@ def process_recjson(deposition, recjson):
     # =================
     # Project info
     # =================
-    if recjson.get('project_collection'):
+    if recjson.get('project'):
         if recjson['upload_type'] != 'dataset':
             recjson['record_curated_in_project'] = True 
         else:

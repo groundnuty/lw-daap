@@ -188,7 +188,7 @@ def _build_integrate_draft(project, selected_records):
     current_app.logger.debug(rel_dataset)
     current_app.logger.debug(rel_software)
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project_collection'] = project.id
+    draft_cache.data['project'] = project.id
     draft_cache.data['record_curated_in_project'] = True
     draft_cache.data['record_public_from_project'] = False
     draft_cache.data['rel_dataset'] = rel_dataset
@@ -342,7 +342,7 @@ def deposit(project_id, deposition_type):
     from lw_daap.modules.invenio_deposit.models \
         import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project_collection'] = project_id
+    draft_cache.data['project'] = project_id
     curated = deposition_type.lower() != 'dataset'
     draft_cache.data['record_curated_in_project'] = curated
     draft_cache.data['record_public_from_project'] = False
