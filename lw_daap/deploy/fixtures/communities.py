@@ -31,6 +31,6 @@ class CommunityData(DataSet):
     class cuerda_del_pozo:
         id = 'cuerdadelpozo'
         title = 'Cuerda del Pozo',
-        curation_policy = ('Datasets related to the Cuerda del Pozo ' 
+        curation_policy = ('Datasets related to the Cuerda del Pozo '
                            'reservoir at Soria')
-        id_user = 1 
+        id_user = 1

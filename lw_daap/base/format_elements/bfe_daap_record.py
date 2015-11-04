@@ -34,9 +34,10 @@ def format_element(bfo, rec_id=''):
     except TypeError:
         return ''
 
-    return '<a href="%(link)s"><span class="label label-primary">%(title)s</span></a>' % d
+    msg = ('<a href="%(link)s"><span'
+           'class="label label-primary">%(title)s</span></a>' % d)
+    return msg
 
 
 def escape_values(bfo):
     return 0
-

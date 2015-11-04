@@ -56,7 +56,7 @@ require(['jquery'], function($) {
 {% macro project_row(p) %}
 <tr>
   <td style="padding-left:20px; width: 50%;">
-    {% if not p.is_public %}
+    {% if not p.is_public and p.id_user == current_user.get_id() %}
     <a href="#" data-toggle="modal" data-target="#deletemodal"
        data-delete-url="{{ url_for('.delete', project_id=p.id) }}"
        class="rmlink" rel="tooltip" title="Delete project">
@@ -87,8 +87,8 @@ require(['jquery'], function($) {
       <div class="modal-footer">
         <form id="deleteform" action="#" method="POST">
           {%- for field in deleteform %}{{ field }}{% endfor %}
-          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">No, thanks</button>
-          <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i> Yes, delete</button>
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button type="submit" href="#" class="btn btn-danger"><i class="icon-trash  icon-white"></i>Delete</button>
         </form>
       </div>
     </div>

@@ -20,12 +20,15 @@ from __future__ import absolute_import
 
 import json
 
-from flask import Blueprint, current_app, render_template, request, redirect, url_for
+from flask import Blueprint, current_app, render_template, \
+    request, redirect, url_for
+
 from flask_menu import register_menu
 
 from flask import Response, jsonify, flash
 
 from invenio.ext.principal import permission_required
+from invenio.modules.access.control import acc_add_action, acc_get_action_id
 
 from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import UserProfile
@@ -33,6 +36,7 @@ from lw_daap.modules.profile.models import UserProfile
 from . import infra
 from .forms import LaunchForm, LaunchFormData
 from .utils import get_requirements
+
 
 blueprint = Blueprint(
     'lwdaap_analyze',
@@ -42,9 +46,9 @@ blueprint = Blueprint(
     static_folder='static',
 )
 
-from invenio.modules.access.control import acc_add_action, acc_get_action_id
 
 INFRA_ACCESS = 'infraaccess'
+
 
 @blueprint.before_app_first_request
 def create_infra_action_roles():
@@ -63,7 +67,7 @@ def index():
     try:
         client = infra.get_client(profile.user_proxy)
         ctx['vms'] = infra.list_vms(client)
-    except infra.InfraException, e:
+    except infra.InfraException as e:
         flash(e.message, 'error')
     return render_template('analyze/index.html', **ctx)
 
@@ -76,7 +80,7 @@ def launch():
     obj = LaunchFormData(reqs, **request.args)
     form = LaunchForm(obj=obj, user_profile=profile)
     form.fill_fields_choices(reqs)
-   
+
     if form.validate_on_submit():
         client = infra.get_client(profile.user_proxy)
         image = reqs['images'][form.image.data]['image-id']
@@ -92,7 +96,7 @@ def launch():
                             recid=form.recid.data,
                             ssh_key=profile.ssh_public_key)
             return redirect(url_for('.index'))
-        except infra.InfraException, e:
+        except infra.InfraException as e:
             flash(e.message, 'error')
 
     ctx = dict(

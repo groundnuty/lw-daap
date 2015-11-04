@@ -29,6 +29,7 @@ from lw_daap.modules.invenio_deposit.validation_utils import required_if
 
 __all__ = ['FrequencyField']
 
+
 class FrequencyFieldForm(WebDepositForm):
     size = fields.IntegerField(
         label="",

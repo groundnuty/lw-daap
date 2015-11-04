@@ -26,4 +26,4 @@ def resolve_spatial(values, which):
         'west': 0,
         'east': -1,
     }
-    return values[which_map.get(which, 0)] 
+    return values[which_map.get(which, 0)]

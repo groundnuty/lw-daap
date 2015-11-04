@@ -25,6 +25,7 @@ from .upload import upload
 from lw_daap.modules.deposit.forms import DatasetForm, \
     DatasetEditForm, FilesForm
 
+
 class dataset(upload):
     draft_definitions = {
         '_metadata': DatasetForm,

@@ -42,4 +42,3 @@ def get_requirements():
                 if v.get(r['id']):
                     reqs[r['reqs']][v['id']] = v
     return reqs
-

@@ -181,7 +181,7 @@ class ButtonWidget(object):
             html_params(name=field.name, **params),
             icon,
             self.label,
-            html_params(id=field.name+'-loader', class_='loader'),
+            html_params(id=field.name + '-loader', class_='loader'),
             state,
         ))
 

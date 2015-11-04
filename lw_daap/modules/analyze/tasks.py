@@ -48,10 +48,10 @@ class ProxyRenewalTask(PeriodicTask):
             cmd = ['voms-proxy-init',
                    '--out', new_proxy.name,
                    '-rfc'
-                  ]
+                   ]
             vo = cfg.get('CFG_DELEGATION_VO')
             if vo:
-                cmd.extend(['--voms', vo]) 
+                cmd.extend(['--voms', vo])
             proc = subprocess.Popen(cmd, shell=False,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -61,7 +61,8 @@ class ProxyRenewalTask(PeriodicTask):
             proc.wait()
             if proc.returncode != 0:
                 # and not _check_proxy_validity(new_proxy):
-                msg = "Proxy generation failed (%d): %s" % (proc.returncode, out)
+                msg = ("Proxy generation failed (%d): %s"
+                       % (proc.returncode, out))
                 logger.error(msg)
                 raise self.retry(Exception(msg))
             # dump new proxy to proper location

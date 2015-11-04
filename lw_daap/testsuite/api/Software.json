@@ -2,6 +2,7 @@
    "records":[
       {
          "metadata":{
+            "project_collection": "1",
             "upload_type":"software",
             "title":"(API) Software Open",
             "creators":[
@@ -42,10 +43,12 @@
          },
          "files":[
             {
-               "filename":"Software.json"
+               "filename": "Software.json",
+               "description": ""
             },
             {
-               "filename":"deposit.py"
+               "filename": "deposit.py",
+               "description": ""
             }
          ]
       }

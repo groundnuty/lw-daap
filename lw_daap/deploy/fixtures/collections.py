@@ -26,11 +26,12 @@ siteCollection = default.CollectionData.siteCollection
 
 siteCollection.dbquery = '980__a:community-*'
 
+
 class CollectionData(DataSet):
     class analysis(object):
         id = 2
         name = 'Analysis'
-        dbquery = '980__a:analysis AND 980__a:community-*' 
+        dbquery = '980__a:analysis AND 980__a:community-*'
 
     class dataset(object):
         id = 3

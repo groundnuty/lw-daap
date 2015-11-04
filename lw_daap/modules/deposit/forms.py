@@ -34,16 +34,17 @@ from invenio.config import CFG_DATACITE_DOI_PREFIX, CFG_SITE_NAME, \
     CFG_SITE_SUPPORT_EMAIL
 from lw_daap.modules.invenio_deposit import fields
 from lw_daap.modules.invenio_deposit.autocomplete_utils import kb_autocomplete
-from lw_daap.modules.invenio_deposit.field_widgets import ButtonWidget, \
-    CKEditorWidget, ColumnInput, ExtendedListWidget, ItemWidget, TagInput, \
-    TagListWidget, plupload_widget
-from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, strip_string
+from lw_daap.modules.invenio_deposit.field_widgets \
+    import ButtonWidget, CKEditorWidget, ColumnInput, ExtendedListWidget, \
+    ItemWidget, TagInput, TagListWidget, plupload_widget
+from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
+    strip_string
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
 from lw_daap.modules.invenio_deposit.processor_utils import PidNormalize, \
     PidSchemeDetection, datacite_lookup, replace_field_data
-from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator, \
-    invalid_doi_prefix_validator, list_length, minted_doi_validator, \
-    not_required_if, pid_validator, required_if, \
+from lw_daap.modules.invenio_deposit.validation_utils \
+    import DOISyntaxValidator, invalid_doi_prefix_validator, list_length, \
+    minted_doi_validator, not_required_if, pid_validator, required_if, \
     unchangeable
 from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
@@ -52,12 +53,20 @@ from lw_daap.modules.invenio_groups.models import Group
 
 from . import fields as zfields
 from .field_widgets import date_widget, DynamicHiddenListWidget
-from .autocomplete import community_autocomplete, accessgroups_autocomplete, inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
-from .validators import community_validator
+from .autocomplete import community_autocomplete, accessgroups_autocomplete, \
+    inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
+from .validators import community_validator, project_acl_validator, \
+    rel_record_validator
 from .utils import create_doi, filter_empty_helper
 
 
-__all__ = ('BasicForm', 'DMPForm', 'DatasetForm', 'SoftwareForm', 'AnalysisForm', )
+__all__ = (
+    'BasicForm',
+    'DMPForm',
+    'DatasetForm',
+    'SoftwareForm',
+    'AnalysisForm',
+)
 
 #
 # Local processors
@@ -84,6 +93,7 @@ def map_result(func, mapper):
 
 def community_obj_value(key_name):
     from invenio.modules.communities.models import Community
+
     def _getter(field):
         if field.data:
             obj = Community.query.filter_by(id=field.data).first()
@@ -109,7 +119,7 @@ def inputrecords_obj_value():
     def _getter(field):
         if field.data:
             try:
-               obj = get_record(int(field.data))
+                obj = get_record(int(field.data))
             except ValueError:
                 return field.data
             if obj:
@@ -367,6 +377,7 @@ class CommunityForm(WebDepositForm):
         ]
     )
 
+
 class AccessGroupsForm(WebDepositForm):
     identifier = fields.StringField(
         widget=widgets.HiddenInput(),
@@ -395,6 +406,11 @@ class InputRecordDatasetFieldForm(WebDepositForm):
         widget=TagInput(),
         widget_classes='form-control',
     )
+    is_pid = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False
+    )
+
 
 class InputRecordSoftwareFieldForm(WebDepositForm):
     identifier = fields.StringField(
@@ -408,6 +424,10 @@ class InputRecordSoftwareFieldForm(WebDepositForm):
         autocomplete_fn=inputrecords_autocomplete_software,
         widget=TagInput(),
         widget_classes='form-control',
+    )
+    is_pid = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False
     )
 
 
@@ -459,7 +479,8 @@ class FilesForm(WebDepositForm):
                 try:
                     # Tested in API by a separate workflow task.
                     if len(form.files) == 0:
-                        raise ValidationError("You must provide at least one file.")
+                        raise ValidationError(
+                            "You must provide at least one file.")
                 except AttributeError:
                     # this should never happen
                     pass
@@ -689,10 +710,11 @@ class BasicForm(WebDepositForm):
         fields.FormField(
             AccessGroupsForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-            description='Optional. Specify the groups you will grant the access',
+            description=("Optional. Specify the groups you "
+                         "will grant the access"),
         ),
         validators=[
-            #required_if('access_right', ['restricted']),
+            # required_if('access_right', ['restricted']),
             validators.optional()
         ],
         label=_('Access groups'),
@@ -725,7 +747,21 @@ class BasicForm(WebDepositForm):
     #
     project_collection = fields.StringField(
         widget=widgets.HiddenInput(),
+        validators=[project_acl_validator],
         default=None,
+        label='',
+    )
+
+    record_curated_in_project = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False,
+        label='',
+    )
+
+    record_public_from_project = fields.BooleanField(
+        widget=widgets.HiddenInput(),
+        default=False,
+        label='',
     )
 
     #
@@ -768,6 +804,8 @@ class BasicForm(WebDepositForm):
 #
 # Form
 #
+
+
 class DMPForm(BasicForm):
 
     """DMP Upload Form."""
@@ -787,16 +825,17 @@ class DMPForm(BasicForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title', 'creators',
             'description', 'keywords', 'notes',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
         }),
         ('<i class="fa fa-certificate"></i> License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
+            'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
             'description': (
                 'Unless you explicitly specify the license conditions below'
@@ -809,15 +848,16 @@ class DMPForm(BasicForm):
         ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community on'
                 ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
                 ' communities</a>). Specify communities which you wish your'
-                ' upload to appear in. The owner of the community (and also the default community) will'
-                ' be notified, and can either accept or reject your'
-                ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+                ' upload to appear in. The owner of the community (and also'
+                ' the default community) will be notified, and can either'
+                ' accept or reject your request.' %
+                {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
         ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
@@ -863,7 +903,9 @@ class DatasetForm(BasicForm):
         fields.FormField(
             zfields.FrequencyFieldForm,
             widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
-            #widget=ExtendedListWidget(html_tag='div', item_widget=ItemWidget(), class_="row"), # when not in dynamic field
+            # widget=ExtendedListWidget(html_tag='div',
+            # item_widget=ItemWidget(), class_="row"), # when not in dynamic
+            # field
         ),
         label="Frecuency",
         add_label='Add another frequency',
@@ -881,12 +923,14 @@ class DatasetForm(BasicForm):
         label="Spatial coverage",
         add_label='Add another location',
         description='Optional. Spatial coverage of your data.'
-                    ' Coordinates: western most longitude, eastern most  longitude,'
-                    ' northern most latitude, southern most latitude.'
-                    ' The coordinates must be recorded in decimal degrees.',
-                    #' The coordinates must be recorded in the form hdddmmss'
-                    #' (hemisphere-degrees-minutes-seconds). The subelements'
-                    #' are each right justified and unused positions contain zeros.',
+                    ' Coordinates: western most longitude, eastern most'
+                    ' longitude, northern most latitude, southern most'
+                    ' latitude. The coordinates must be recorded in decimal'
+                    ' degrees.',
+                    # ' The coordinates must be recorded in the form hdddmmss'
+                    # ' (hemisphere-degrees-minutes-seconds). The subelements'
+                    # ' are each right justified and unused positions contain'
+                    # ' zeros.',
         icon='fa fa-map-marker fa-fw',
         widget_classes='',
         min_entries=1,
@@ -903,16 +947,17 @@ class DatasetForm(BasicForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title', 'creators',
             'description', 'keywords', 'notes',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
         }),
         ('<i class="fa fa-certificate"></i> License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
+            'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
             'description': (
                 'Unless you explicitly specify the license conditions below'
@@ -922,7 +967,7 @@ class DatasetForm(BasicForm):
                 ' publications have agreed to the terms of this waiver and'
                 ' license.')
         }),
-        ('<i class="fa fa-globe"></i> Physical information',[
+        ('<i class="fa fa-globe"></i> Physical information', [
             'period',
             'frequency',
             'spatial',
@@ -933,15 +978,16 @@ class DatasetForm(BasicForm):
         ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community on'
                 ' %(CFG_SITE_NAME)s (<a href="/communities/">browse'
                 ' communities</a>). Specify communities which you wish your'
-                ' upload to appear in. The owner of the community (and also the default community) will'
-                ' be notified, and can either accept or reject your'
-                ' request.' % {'CFG_SITE_NAME': CFG_SITE_NAME}),
+                ' upload to appear in. The owner of the community (and also'
+                ' the default community) will be notified, and can either'
+                ' accept or reject your request.' %
+                {'CFG_SITE_NAME': CFG_SITE_NAME}),
         }),
         ('<i class="fa fa-bars"></i> Related Identifiers', [
             'related_identifiers'
@@ -1010,24 +1056,25 @@ class SoftwareForm(BasicForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title', 'creators',
             'description', 'keywords', 'notes',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
         }),
         ('<i class="fa fa-laptop"></i> Requirements', [
             'os', 'flavor', 'app_env',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'recommended',
             'description': (
                 'Requirements are recommended in order to allow ...')
         }),
         ('<i class="fa fa-certificate"></i> License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
+            'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
             'description': (
                 'Unless you explicitly specify the license conditions below'
@@ -1040,7 +1087,7 @@ class SoftwareForm(BasicForm):
         ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community collection on'
@@ -1086,6 +1133,7 @@ class AnalysisForm(BasicForm):
         validators=[
             validators.DataRequired(message="This field is required."),
             list_length(min_num=1),
+            rel_record_validator
         ],
         label="Input dataset",
         add_label="Add input dataset identifier",
@@ -1104,6 +1152,7 @@ class AnalysisForm(BasicForm):
         validators=[
             validators.DataRequired(message="This field is required."),
             list_length(min_num=1),
+            rel_record_validator
         ],
         label="Input software",
         add_label="Add input software identifier",
@@ -1113,7 +1162,6 @@ class AnalysisForm(BasicForm):
         widget=TagListWidget(template="{{title}}"),
         widget_classes=' dynamic-field-list',
     )
-
 
     # Requirements
     os = zfields.RequirementsField(
@@ -1155,36 +1203,39 @@ class AnalysisForm(BasicForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'doi', 'publication_date', 'title',  'creators',
+            'doi', 'publication_date', 'title', 'creators',
             'description', 'keywords', 'notes',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
         }),
         ('<i class="fa fa-asterisk"></i> Inputs', [
             'rel_dataset', 'rel_software',
         ], {
-            #'classes': '',
+            # 'classes': '',
             'indication': 'required',
             'description': (
-                            'Specifiy the inputs of your analysis. Datasets and'
-                            ' softwares can  be associated to this upload using'
-                            ' the record title in this portal or the associated'
-                            ' internal or external DOI. At least a dataset'
-                            ' and a software must be specified.')
+                'Specifiy the inputs of your analysis. Datasets and'
+                ' softwares can  be associated to this upload using'
+                ' the record title in this portal or the associated'
+                ' internal PID, or the internal or external DOI. At'
+                ' least a dataset'
+                ' and a software must be specified. The autocomplete'
+                ' option is only available for the record title;'
+                ' PIDs or DOIs must be entered completely.')
         }),
         ('<i class="fa fa-laptop"></i> Requirements', [
             'os', 'flavor', 'app_env',
         ], {
-            #'classes': '',
             'indication': 'recommended',
             'description': (
-                'Requirements are recommended in order to best fit the needs of your analysis.')
+                'Requirements are recommended in order to best'
+                ' fit the needs of your analysis.')
         }),
         ('<i class="fa fa-certificate"></i> License', [
-            'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups',
+            'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups',
         ], {
-            #'classes': '',
             'indication': 'required',
             'description': (
                 'Unless you explicitly specify the license conditions below'
@@ -1197,7 +1248,6 @@ class AnalysisForm(BasicForm):
         ('<i class="fa fa-users"></i> Communities', [
             'communities',
         ], {
-            #'classes': '',
             'indication': 'recommended',
             'description': Markup(
                 'Any user can create a community collection on'
@@ -1224,6 +1274,7 @@ class AnalysisForm(BasicForm):
             ' field in basic information section.',
         }),
     ]
+
 
 def filter_fields(groups):
     def _inner(element):
@@ -1263,11 +1314,14 @@ class BasicEditForm(BasicForm, EditFormMixin):
 class DMPEditForm(BasicEditForm, DatasetForm):
     pass
 
+
 class DatasetEditForm(BasicEditForm, DatasetForm):
     pass
 
+
 class SoftwareEditForm(BasicEditForm, SoftwareForm):
     pass
+
 
 class AnalysisEditForm(BasicEditForm, AnalysisForm):
     pass

@@ -21,13 +21,18 @@ from __future__ import absolute_import
 
 from datetime import datetime
 
-from invenio.ext.sqlalchemy import db
 from invenio.base.globals import cfg
 from invenio.config import CFG_SITE_LANG
+from invenio.ext.sqlalchemy import db
+from invenio.modules.access.firerole import compile_role_definition, serialize
+from invenio.modules.access.models import \
+    AccACTION, AccARGUMENT, AccAuthorization, AccROLE, UserAccROLE
 from invenio.modules.accounts.models import User
 from invenio.modules.search.models import \
-    Collection, CollectionCollection, \
-    CollectionFormat, Collectionname, Format
+    Collection, CollectionCollection, CollectionFormat, Collectionname, Format
+
+from lw_daap.modules.invenio_groups.models import \
+    Group, PrivacyPolicy, SubscriptionPolicy
 
 
 class Project(db.Model):
@@ -74,6 +79,13 @@ class Project(db.Model):
     owner = db.relationship(User, backref='projects',
                             foreign_keys=[id_user])
 
+    # group
+    id_group = db.Column(
+        db.Integer(15, unsigned=True), db.ForeignKey(Group.id),
+        nullable=True, default=None
+    )
+    group = db.relationship(Group, backref='projects',
+                            foreign_keys=[id_group])
 
     #
     # Collection management
@@ -84,31 +96,25 @@ class Project(db.Model):
     def get_collection_dbquery(self):
         return '%s:%s' % ("980__a", self.get_collection_name())
 
-    def get_project_records(self, record_type=None):
-        from invenio.legacy.search_engine import search_pattern_parenthesised
-        from invenio.modules.records.models import Record
+    def get_project_records(self, record_types=[], public=None, curated=None):
         """ Return all records of this project"""
-        recids = search_pattern_parenthesised(p='980__:%s' % self.get_collection_name())
-        records = Record.query.filter(Record.id.in_(recids))
-        return records
-
-    def get_project_records_by_type(self, record_type):
         from invenio.legacy.search_engine import search_pattern_parenthesised
         from invenio.modules.records.models import Record
-        """ Return all records of this project by type"""
-        recids = search_pattern_parenthesised(p='980__:%s AND 980__:%s' % (self.get_collection_name(), record_type))
+        q = ['980__:%s' % self.get_collection_name()]
+        if record_types:
+            qtypes = ['980__:%s' % t for t in record_types]
+            if len(qtypes) > 1:
+                q.append('(%s)' % ' OR '.join(qtypes))
+            else:
+                q.extend(qtypes)
+        if public is not None:
+            q.append('983__b:%s' % public)
+        if curated is not None:
+            q.append('983__a:%s' % curated)
+        p = (' AND '.join(q))
+        recids = search_pattern_parenthesised(p=p)
         records = Record.query.filter(Record.id.in_(recids))
         return records
-
-    # TODO ...
-    def get_project_records_public(self, record_type=None):
-        from invenio.legacy.search_engine import search_pattern_parenthesised
-        from invenio.modules.records.models import Record
-        """ Return all public records of this project"""
-        recids = search_pattern_parenthesised(p='980__:%s' % self.get_collection_name())
-        records = Record.query.filter(Record.id.in_(recids))
-        return records
-    # ... TODO
 
     def save_collectionname(self, collection, title):
         if collection.id:
@@ -172,6 +178,51 @@ class Project(db.Model):
         db.session.add(c_fmt)
         return c_fmt
 
+    def save_acl(self, c):
+        # Role - use Community id, because role name is limited to 32 chars.
+        role_name = 'project_role_%s' % self.id
+        role = AccROLE.query.filter_by(name=role_name).first()
+        if not role:
+            rule = 'allow group "%s"\ndeny any' % self.get_group_name()
+            role = AccROLE(
+                name=role_name,
+                description='Owner of project %s' % self.title,
+                firerole_def_ser=serialize(compile_role_definition(rule)),
+                firerole_def_src=rule)
+            db.session.add(role)
+
+        # Argument
+        fields = dict(keyword='collection', value=c.name)
+        arg = AccARGUMENT.query.filter_by(**fields).first()
+        if not arg:
+            arg = AccARGUMENT(**fields)
+            db.session.add(arg)
+
+        # Action
+        action = AccACTION.query.filter_by(name='viewrestrcoll').first()
+
+        # User role
+        alluserroles = UserAccROLE.query.filter_by(role=role).all()
+        userrole = None
+        if alluserroles:
+            # Remove any user which is not the owner
+            for ur in alluserroles:
+                if ur.id_user == self.id_user:
+                    db.session.delete(ur)
+                else:
+                    userrole = ur
+
+        if not userrole:
+            userrole = UserAccROLE(id_user=self.id_user, role=role)
+            db.session.add(userrole)
+
+        # Authorization
+        auth = AccAuthorization.query.filter_by(role=role, action=action,
+                                                argument=arg).first()
+        if not auth:
+            auth = AccAuthorization(role=role, action=action, argument=arg,
+                                    argumentlistid=1)
+
     def save_collection(self):
         collection_name = self.get_collection_name()
         c = Collection.query.filter_by(name=collection_name).first()
@@ -189,6 +240,7 @@ class Project(db.Model):
         self.save_collectionname(c, self.title)
         self.save_collectioncollection(c)
         self.save_collectionformat(c)
+        self.save_acl(c)
         db.session.commit()
 
     def delete_collection(self):
@@ -202,11 +254,38 @@ class Project(db.Model):
             db.session.delete(self.collection)
             db.session.commit()
 
+    def get_group_name(self):
+        return 'project-group-%d' % self.id
+
+    def save_group(self):
+        g = self.group
+        if not g:
+            g = Group.create(self.get_group_name(),
+                             description='Group for project %s' % self.id,
+                             privacy_policy=PrivacyPolicy.MEMBERS,
+                             subscription_policy=SubscriptionPolicy.APPROVAL,
+                             is_managed=False,
+                             admins=[self.owner])
+            g.add_member(self.owner)
+            self.group = g
+            db.session.commit()
+
+    def is_user_allowed(self, user=None):
+        if not user:
+            from flask_login import current_user
+            user = current_user
+        uid = user.get_id()
+        groups = user.get('group', [])
+        return self.id_user == uid or self.group.name in groups
+
     @classmethod
-    def get_name_by_collection(self, collection):
+    def get_project_by_collection(cls, collection):
         prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
         id = collection[collection.startswith(prefix) and len(prefix):]
-        return self.query.get(id).title
+        try:
+            return cls.query.get(int(id))
+        except ValueError:
+            return None
 
     @classmethod
     def filter_projects(cls, p, so):
@@ -232,8 +311,14 @@ class Project(db.Model):
             query = query.order_by(order(getattr(cls, so)))
         return query
 
+    @classmethod
+    def get_user_projects(cls, user):
+        gids = [g.id for g in Group.query_by_uid(user.get_id())]
+        return Project.query.filter(Project.id_group.in_(gids))
+
+
 #
-#
+# Directly taken from invenio.modules.communities
 #
 def update_changed_fields(obj, fields):
     """Utility method to update fields on an object if they have changed.

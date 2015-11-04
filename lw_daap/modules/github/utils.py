@@ -17,22 +17,22 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 ##
-## This file is part of Invenio.
-## Copyright (C) 2014, 2015 CERN.
+# This file is part of Invenio.
+# Copyright (C) 2014, 2015 CERN.
 ##
-## Invenio is free software; you can redistribute it and/or
-## modify it under the terms of the GNU General Public License as
-## published by the Free Software Foundation; either version 2 of the
-## License, or (at your option) any later version.
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
 ##
-## Invenio is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
 ##
-## You should have received a copy of the GNU General Public License
-## along with Invenio; if not, write to the Free Software Foundation, Inc.,
-## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 import copy
 import github3
@@ -51,12 +51,15 @@ from invenio.modules.webhooks.models import CeleryReceiver
 from invenio.modules.oauth2server.models import Token as ProviderToken
 
 
-utcnow = lambda: datetime.now(tz=pytz.utc)
+def utcnow():
+    return datetime.now(tz=pytz.utc)
 """
 UTC timestamp (with timezone)
 """
 
-iso_utcnow = lambda: utcnow().isoformat()
+
+def iso_utcnow():
+    return utcnow().isoformat()
 """
 UTC ISO8601 formatted timestamp
 """
@@ -160,7 +163,7 @@ def sync(gh, extra_data, sync_hooks=True):
             # Update description
             extra_data["repos"][r.full_name].update({
                 "description": r.description,
-                "owner": str(r.owner), # XXX FIXME:ayrodrig
+                "owner": str(r.owner),  # XXX FIXME:ayrodrig
                 "name": r.name,
             })
             new_set.add(r.full_name)
@@ -172,7 +175,7 @@ def sync(gh, extra_data, sync_hooks=True):
         #             h.config['url'] ==
 
     # Remove repositories no longer available in github
-    for full_name in (existing_set-new_set):
+    for full_name in (existing_set - new_set):
         del extra_data["repos"][full_name]
 
     # Update last sync

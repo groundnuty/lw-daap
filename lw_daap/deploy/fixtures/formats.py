@@ -22,11 +22,23 @@
 
 from invenio.modules.search import fixtures as defaults
 
+
 class FormatData(defaults.FormatData):
     class FormatHBPro:
         code = u'hbpro'
         last_updated = None
-        description = u'HTML brief output format provisional, used for curation.'
+        description = (u'HTML brief output format provisional,'
+                       'used for curation.')
+
         content_type = u'text/html'
         visibility = 1
         name = u'HTML brief Provisional'
+
+    class FormatHBPrj:
+        code = u'hbprj'
+        last_updated = None
+        description = (u'HTML brief output format project,'
+                       'used in project views.')
+        content_type = u'text/html'
+        visibility = 1
+        name = u'HTML brief Project'

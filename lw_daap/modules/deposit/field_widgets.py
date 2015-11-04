@@ -43,12 +43,12 @@ def date_widget(field, **kwargs):
     """Date picker widget that allows to specify the date format to use.
        Default is YYYY-MM-DD"""
     field_id = kwargs.pop('id', field.id)
-    date_format = kwargs.pop('date_format','YYYY-MM-DD')
+    date_format = kwargs.pop('date_format', 'YYYY-MM-DD')
     html = [u'<div class="input-group datepicker" style="width: 10em">'
-                            '<input class="form-control" %s data-date-format="%s" type="text">'
-                            '<span class="input-group-addon">'
-                                '<span class="glyphicon glyphicon-calendar"></span>'
-                            '</span>'
+            '<input class="form-control" %s data-date-format="%s" type="text">'
+            '<span class="input-group-addon">'
+            '<span class="glyphicon glyphicon-calendar"></span>'
+            '</span>'
             '</div>'
             % (html_params(id=field_id, name=field_id, value=field.data or ''),
                date_format)]
@@ -57,6 +57,7 @@ def date_widget(field, **kwargs):
 
 class DynamicItemWidgetNoButtons(DynamicItemWidget):
     """DynamicItemWidget with no buttons on it"""
+
     def _sort_button(self):
         return ''
 

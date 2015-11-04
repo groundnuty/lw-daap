@@ -80,5 +80,6 @@ class SimpleRecordDeposition(DepositionType):
 
     @classmethod
     def process_sip_metadata(cls, deposition, metadata):
-        """Implement this method in your subclass to process metadata prior to MARC generation."""
+        """Implement this method in your subclass to process"""
+        """metadata prior to MARC generation."""
         pass

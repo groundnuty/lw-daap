@@ -61,7 +61,7 @@ from lw_daap.ext.login import login_required
 from .forms import GroupForm, NewMemberForm
 from .models import Group, Membership
 
-entries_per_page=4
+entries_per_page = 4
 blueprint = Blueprint(
     'groups_settings', __name__,
     url_prefix="/groups",
@@ -99,9 +99,9 @@ def get_group_name(id_group):
 })
 def index(mpage, qpage, per_page, q):
     """List all user memberships."""
-    #if current_user.is_admin:
-    #    groups = Group.query
-    #else:
+    # if current_user.is_admin:
+    #     groups = Group.query
+    # else:
 
     # Member Groups
     m_groups = Group.query_by_user(current_user, eager=True)
@@ -186,7 +186,6 @@ def new():
             return redirect(url_for(".index"))
         except IntegrityError:
             flash(_('Group creation failure'), 'error')
-
 
     return render_template(
         "groups/new.html",
@@ -484,25 +483,25 @@ def new_member(group_id):
     )
     return redirect(url_for('.index'))
 
+
 @blueprint.route('/<int:group_id>/join', methods=['GET', 'POST'])
 @login_required
-#@register_breadcrumb(blueprint, '.members.new', _('New'))
+# @register_breadcrumb(blueprint, '.members.new', _('New'))
 @permission_required('usegroups')
 def join(group_id):
     """Add (invite) new member."""
     group = Group.query.get_or_404(group_id)
 
     if group.can_join(current_user):
-	group.subscribe(current_user)
-        #return redirect(url_for('.index'))
+        group.subscribe(current_user)
+        # return redirect(url_for('.index'))
 
-
-    #flash(
-    #    _(
-    #        'You cannot invite yourself to the group '
-    #        '%(group_name)s',
-    #        group_name=group.name
-    #    ),
-    #    'error'
-    #)
+    # flash(
+    #     _(
+    #         'You cannot invite yourself to the group '
+    #         '%(group_name)s',
+    #         group_name=group.name
+    #       ),
+    #       'error'
+    # )
     return redirect(url_for('.index'))

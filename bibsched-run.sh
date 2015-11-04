@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-bibsched purge
+bibsched stop
 bibsched start
-bibindex -s5m -u admin
-bibrank -s5m -u admin
-bibreformat -s5m -o HB,HD -u admin
-bibsort -s5m -u admin
-webcoll -s5m -u admin
+bibsched purge 
+bibindex -s5m -u admin --continue-on-error
+bibrank -s5m -u admin --continue-on-error
+bibsort -s5m -u admin --continue-on-error
+webcoll -s5m -u admin --continue-on-error

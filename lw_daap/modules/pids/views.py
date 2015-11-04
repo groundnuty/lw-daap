@@ -19,18 +19,25 @@
 
 from __future__ import absolute_import
 
-from flask import Blueprint, abort, current_app, jsonify, url_for
+import os
+import urllib
+
+from flask import Blueprint, abort, current_app, jsonify, url_for, request, \
+    make_response
 from flask_login import current_user
 
+from invenio.base.globals import cfg 
 from invenio.ext.cache import cache
+from invenio.ext.sslify import ssl_required 
 from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.pidstore.tasks import datacite_register
 from invenio.modules.records.api import get_record
 
-
 from lw_daap.ext.login import login_required
+from lw_daap.modules.projects.models import Project
 from .utils import build_doi, get_cache_key
+
 
 blueprint = Blueprint(
     'lwdaap_pids',
@@ -41,6 +48,10 @@ blueprint = Blueprint(
 )
 
 DOI_PID_TYPE = 'doi'
+
+@blueprint.app_template_global()
+def get_pid(recid):                                                           
+    return 'lifewatch.openscience.%s' % recid       
 
 
 def add_doi(recid, doi):
@@ -61,16 +72,22 @@ def error_400(msg):
     return response
 
 
-@blueprint.route('mint/<int:recid>', methods=['POST'])
+@blueprint.route('/mint/<int:recid>/', methods=['POST'])
 @login_required
-def mint_doi(recid):
+def mint_doi(recid, project_id=None):
     """ mint a PID for the record """
     uid = current_user.get_id()
     record = get_record(recid)
 
-    # do only allow to mint to the owner
-    if uid != int(record.get('owner', {}).get('id', -1)):
-        abort(401)
+
+    if project_id:
+        project = Project.query.get_or_404(project_id)
+        if not project.is_user_allowed():
+            abort(401)
+    else:
+        # do only allow to mint to the owner
+        if uid != int(record.get('owner', {}).get('id', -1)):
+            abort(401)
 
     # don't try to mint a doi if the record already has one
     if record.get('doi', None) is not None:
@@ -80,7 +97,8 @@ def mint_doi(recid):
     key = get_cache_key(recid)
     cache_action = cache.get(key)
     if cache_action:
-        return error_400('DOI is being processed, you should wait some minutes.')
+        return error_400('DOI is being processed,'
+                         'you should wait some minutes.')
 
     doi = build_doi(recid)
     # Set 5 min cache to allow bibupload/bibreformat to finish
@@ -101,4 +119,11 @@ def mint_doi(recid):
 
     r = add_doi(recid, doi)
 
-    return jsonify({'status': 'ok', 'redirect': url_for('record.metadata', recid=recid)})
+    if project_id:
+        return jsonify({'status': 'ok',
+                        'redirect': url_for('lwdaap_projects.show',
+                                            project_id=project_id,
+                                            path='cite')})
+    else:
+        return jsonify({'status': 'ok',
+                        'redirect': url_for('record.metadata', recid=recid)})

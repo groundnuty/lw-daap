@@ -42,6 +42,7 @@ class ListLength(object):
     :param element_filter: Callable used to filter the list prior to testing
         the number of elements. Useful to remove empty elements.
     """
+
     def __init__(self, min_num=None, max_num=None,
                  element_filter=lambda x: True):
         self.min = min_num
@@ -119,6 +120,7 @@ class NotRequiredIf(RequiredIf):
 
 
 class Unchangeable(object):
+
     def __call__(self, form, field):
         field.data = field.object_data
 
@@ -187,6 +189,7 @@ class InvalidDOIPrefix(object):
     """
     Validates if DOI
     """
+
     def __init__(self, prefix='10.5072', message=None,
                  message_testing=None):
         """
@@ -198,9 +201,9 @@ class InvalidDOIPrefix(object):
             self.doi_prefix = self.doi_prefix[:-1]
 
         if not message_testing:
-            self.message_testing = "The prefix 10.5072 is invalid. The prefix" \
-                "is only used for testing purposes, and no DOIs with this " \
-                "prefix are attached to any meaningful content."
+            self.message_testing = "The prefix 10.5072 is invalid. The " \
+                "prefix is only used for testing purposes, and no DOIs with " \
+                "this prefix are attached to any meaningful content."
         if not message:
             self.message = 'The prefix %(prefix)s is ' \
                 'administered automatically by %(CFG_SITE_NAME)s.'
@@ -229,6 +232,7 @@ class MintedDOIValidator(object):
     """
     Validates if DOI
     """
+
     def __init__(self, prefix='10.5072', message=None):
         """
         @param doi_prefix: DOI prefix, e.g. 10.5072
@@ -263,6 +267,7 @@ class PreReservedDOI(object):
     """
     Validate that user did not edit pre-reserved DOI.
     """
+
     def __init__(self, field_name, message=None, prefix='10.5072'):
         self.field_name = field_name
         self.message = message or 'You are not allowed to edit a ' \
@@ -286,6 +291,7 @@ class PidValidator(object):
     """
     Validate that value is a persistent identifier understood by us.
     """
+
     def __init__(self, message=None):
         self.message = message or "Not a valid persistent identifier"
 

@@ -41,6 +41,11 @@ CFG_LWDAAP_VMKILLER_PERIOD = timedelta(minutes=30)
 CFG_LWDAAP_VMKILLER_MAXLIFE = timedelta(hours=5)
 
 #
+# VM Quotas
+#
+CFG_LWDAAP_MAX_VMS = 2
+
+#
 # Configuration of the etcd host
 #
 CFG_ANALYZE_ETCD_URL = 'http://193.146.75.165:4001'

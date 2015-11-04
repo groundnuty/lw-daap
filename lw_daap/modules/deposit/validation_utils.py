@@ -23,18 +23,19 @@ from wtforms.validators import StopValidation, ValidationError
 
 from flask import current_app
 
+
 class StartEndDate(DateRange):
 
     """Require start date before end date."""
 
     def __init__(self, min_from=None, max_from=None, **kwargs):
-        super(StartEndDate, self).__init__(**kwargs) 
+        super(StartEndDate, self).__init__(**kwargs)
         self.min_from = min_from
         self.max_from = max_from
-        
+
     def __call__(self, form, field):
         if self.min_from:
-            self.min = getattr(form, self.min_from).data 
+            self.min = getattr(form, self.min_from).data
         if self.max_from:
-            self.max = getattr(form, self.max_from).data 
-        super(StartEndDate, self).__call__(form, field) 
+            self.max = getattr(form, self.max_from).data
+        super(StartEndDate, self).__call__(form, field)

@@ -2,6 +2,7 @@
    "records":[
       {
          "metadata":{
+            "project_collection": "1",
             "upload_type":"dataset",
             "title":"(API) Dataset Open",
             "creators":[
@@ -80,7 +81,7 @@
          },
          "files":[
             {
-               "filename":"Dataset.json",
+               "filename": "Dataset.json",
                "description": "Whatever"
             }
          ]

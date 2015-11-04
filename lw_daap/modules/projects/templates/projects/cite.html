@@ -1,0 +1,90 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as doied by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+
+{% extends 'projects/show.html' %}
+{% set active='cite' %}
+
+
+{% from 'projects/macros.tpl' import record_table with context %}
+
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+var doiUrl
+require(['jquery'], function($) {
+    $('#doimodal').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      doiUrl = a.data('doiUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#doiform').attr('action', doiUrl);
+      });
+    });
+</script>
+{% endblock %}
+
+
+{% block project_body %}
+<div id="doimodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="doimodal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="doimodal_label">Mint DOI?</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
+            <li>The minting process will take some minutes, when available it will be shown in the record.</li>
+        </ul>
+      </div>
+      <div class="alert help-block alert-danger" id="doimodal-state-title" style="margin-top: 5px; display: none;">
+      </div>
+      <div class="modal-footer">
+        <form id="doiform" action="#" method="POST">
+          {%- for field in doiform %}{{ field }}{% endfor %}
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"
+                  onclick='$.post(doiUrl)
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#doimodal").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#doimodal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>Mint DOI</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-12">
+  <h3>Cite</h3>
+  <p>Plan to cite data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to cite, where to cite it, and what documentation needs to accompany the data.</p>
+  {{ record_table('cite', records, "Project records")|safe}}
+</div>
+{% endblock %}

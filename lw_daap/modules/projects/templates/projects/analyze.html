@@ -16,29 +16,16 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
+{% extends 'projects/show.html' %}
+{% set active='analyze' %}
+
+{% from 'projects/macros.tpl' import record_table with context %}
+
+{% block project_body %}
 <div class="col-md-12">
   <h3>Analyze</h3>
   <p>Use data from a citizen science project for analyses that meet project goals for professional researchers, participants, and other stakeholders, Many software tools are available to support data exploration, analysis and visualization.</p>
-  <table class="table table-hover">
-    <tbody>
-    {% for rec in records.items %}
-    <tr>
-      <td>{{ format_record(rec.id, of='hb', ln=g.ln)|safe }}</td>
-      <td style="vertical-align: middle;"><a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title='daap_record.title', flavor='daap_record.flavor', os='daap_record.os', app_env='daap_record.app_env', recid='recid') }}"><i class="fa fa-play-circle-o"></i> Run</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    {% if records.total > per_page %}
-    <tfoot>
-      <tr>
-        <td class="text-center" colspan="2">
-          {{ list_status(records, page) }}
-          {{ paginate(records, 'page', small=True) if records.items|length }}
-        </td>
-      </tr>
-    </tfoot>
-    {% endif %}
 
-  </table>
+  {{ record_table('analyze', records, "Analysis records")|safe}}
 </div>
-
+{% endblock %}

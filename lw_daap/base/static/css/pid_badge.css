@@ -1,0 +1,29 @@
+.pidbadge {
+    color: #FFF;
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+    font-family: monospace;
+    font-size: 10px;
+}
+
+.pidbadge > .tag {
+    padding: 3px 2px 3px 6px;
+    border-radius: 0px;
+}
+
+
+.pidbadge > .content {
+    padding: 3px 8px;
+    border-radius: 0px;
+    box-shadow: inset 1px 0px 1px rgba(255, 255, 255, 0.15);
+}
+
+.label {
+    border-radius: 0px;
+    font-weight: normal;
+    font-family: monospace;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+    font-size: 10px;
+}

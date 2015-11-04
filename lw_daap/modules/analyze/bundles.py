@@ -34,4 +34,3 @@ js = Bundle(
         "flight": "latest",
     }
 )
-

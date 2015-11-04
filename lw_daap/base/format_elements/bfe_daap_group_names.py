@@ -18,6 +18,7 @@ from lw_daap.modules.invenio_groups.models import Group
 
 from flask import current_app
 
+
 def format_element(bfo, groups=[], separator=', '):
     r = []
     for gid in groups:
@@ -28,6 +29,6 @@ def format_element(bfo, groups=[], separator=', '):
             pass
     return separator.join(r)
 
+
 def escape_values(bfo):
     return 0
-

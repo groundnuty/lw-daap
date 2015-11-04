@@ -34,7 +34,8 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 """
-BibUpload: Receive MARC XML file and update the appropriate database tables according to options.
+BibUpload: Receive MARC XML file and update the appropriate database
+tables according to options.
 
     Usage: bibupload [options] input.xml
     Examples:
@@ -42,14 +43,20 @@ BibUpload: Receive MARC XML file and update the appropriate database tables acco
 
     Options:
      -a, --append            new fields are appended to the existing record
-     -c, --correct           fields are replaced by the new ones in the existing record
-     -f, --format            takes only the FMT fields into account. Does not update
+     -c, --correct           fields are replaced by the new ones in
+                             the existing record
+     -f, --format            takes only the FMT fields into account.
+                             Does not update
      -i, --insert            insert the new record in the database
-     -r, --replace           the existing record is entirely replaced by the new one
+     -r, --replace           the existing record is entirely replaced by
+                             the new one
      -z, --reference         update references (update only 999 fields)
-     -s, --stage=STAGE       stage to start from in the algorithm (0: always done; 1: FMT tags;
-                             2: FFT tags; 3: BibFmt; 4: Metadata update; 5: time update)
-     -n,  --notimechange     do not change record last modification date when updating
+     -s, --stage=STAGE       stage to start from in the algorithm
+                             (0: always done; 1: FMT tags;
+                             2: FFT tags; 3: BibFmt; 4: Metadata update;
+                             5: time update)
+     -n,  --notimechange     do not change record last modification date
+                             when updating
 
     Scheduling options:
      -u, --user=USER         user name to store task, password needed

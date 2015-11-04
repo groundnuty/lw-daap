@@ -85,6 +85,7 @@ def requests_request_factory(method, endpoint, urlargs, data, is_json, headers,
 
 
 class ZenodoClient(object):
+
     def __init__(self, access_token, ssl_verify=True, request_factory=None):
         self.access_token = access_token
         self.ssl_verify = ssl_verify
