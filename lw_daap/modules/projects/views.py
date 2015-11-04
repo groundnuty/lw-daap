@@ -311,11 +311,12 @@ def delete(project_id):
     project = Project.query.get_or_404(project_id)
     if current_user.get_id() != project.id_user:
         flash('Only the owner of the project can delete it', category='error')
-        abort(404)
-    if project.is_public:
-        flash('Project has public records, cannot be deleted',
+        return redirect(url_for('.myprojects'))
+
+    if not project.is_empty():
+        flash('Project is not empty, cannot be deleted. Please contact <a href="mailto:%s">support</a> if needed.' % cfg.get('CFG_SITE_SUPPORT_EMAIL'),
               category='error')
-        abort(404)
+        return redirect(url_for('.myprojects'))
 
     form = DeleteProjectForm(request.values)
     if request.method == 'POST' and form.validate():
