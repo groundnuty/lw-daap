@@ -126,7 +126,7 @@ def project_acl_validator(form, field):
         p = Project.get_project_by_collection("project-%s" % field.data)
 
         if not p:
-            raise ValidationError("Invalidad project: %s" % field.data)
+            raise ValidationError("Invalid project: %s" % field.data)
 
         if not p.is_user_allowed():
             raise ValidationError("User does not have permissions "
