@@ -106,28 +106,27 @@ require(['jquery'], function($) {
     {% if not myprojects %}
     <p class="text-muted">{{ _('You currently have no projects') }}</p>
     {% else %}
-    {% for proj in myprojects if proj.is_empty() %}
-    {%- if loop.first %}
-    <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Empty projects') }}</h4>
-    <table class="table table-striped">
+      {% for proj in myprojects if proj.is_empty() %}
+      {%- if loop.first %}
+       <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Empty projects') }}</h4>
+       <table class="table table-striped">
       {%- endif %}
       {{ project_row(proj) }}
       {%- if loop.last %}
-    </table>
-    {%- endif %}
-    {% else %}
-    {% endfor %}
-    {% for proj in myprojects if not proj.is_empty() %}
-    {%- if loop.first %}
-    <div class="spacer30"></div>
-    <h4><i class="fa fa-fw fa-bolt"></i> {{ _('Active projects') }}</h4>
-    <table class="table">
+      </table>
+      <div class="spacer30"></div>
+      {%- endif %}
+      {% endfor %}
+      {% for proj in myprojects if not proj.is_empty() %}
+      {%- if loop.first %}
+      <h4><i class="fa fa-fw fa-bolt"></i> {{ _('Active projects') }}</h4>
+      <table class="table">
       {% endif %}
       {{ project_row(proj) }}
       {%- if loop.last %}
-    </table>
-    {%- endif %}
-    {%- endfor %}
+      </table>
+      {%- endif %}
+      {%- endfor %}
     {%- endif %}
     {% endcall %}
   </div>
