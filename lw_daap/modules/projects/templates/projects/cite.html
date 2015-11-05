@@ -84,7 +84,8 @@ require(['jquery'], function($) {
 
 <div class="col-md-12">
   <h3>Cite</h3>
-  <p>Plan to cite data in the short temr to minimize potencial losses (e.g., via accidents), and in the long term so thar project stakeholders and others can access, interpret , and use data in the future. Decide what data to cite, where to cite it, and what documentation needs to accompany the data.</p>
+  <p>By default, records are assigned a persistent and unique identifier in the context of this framework. In addition, a digital object identifier (DOI) can be minted for selected records so they become widely citable.</p>
+
   {{ record_table('cite', records, "Project records")|safe}}
 </div>
 {% endblock %}

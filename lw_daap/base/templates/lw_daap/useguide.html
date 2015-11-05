@@ -30,6 +30,7 @@
       <li><a href="#lwframe-projects">Projects</a></li>
       <li><a href="#lwframe-share">Share</a></li>
       <li><a href="#lwframe-analyze">Analyze</a></li>
+      <li><a href="#lwframe-groups">Groups</a></li>
     </ul>
   </div>
 
@@ -171,7 +172,7 @@
   <p><a href={{ url_for('lwdaap_projects.index') }}>Projects</a> allow to define the complete workflow of the data life-cycle. 
      Projects are searchable and any user can see public records within the projects. Authenticated users can create new
      projects or request to join an existing project. The projects accessible to the user are available at
-     <a href="{{ url_for('lwdaap_projects.myprojects') }}">My Projects</a> tab of your profile.</p>
+     <a href="{{ url_for('lwdaap_projects.myprojects') }}">My Projects</a> tab of your profile. Only empty projects can be deleted.</p>
 
      <p>Projects define the following steps in the data life-cycle workflow:</p>
      <dl>
@@ -188,38 +189,44 @@
         <dt>Cite</dt>
         <dd>Mint a DOI for the selected records so they become widely citable.</dd>
         <dt>Publish</dt>
-        <dd>Make records available publicly for all users or the framework.</dd>
+        <dd>Make records available publicly for all users of the framework.</dd>
      </dl>
+
+    <p>All the project records are created diretly from the project using a link to <a href="{{ url_for('deposit') }}">Deposit</a>.</p>
+    <p>Project analysis can be run from the project using a link to <a href="{{ url_for('analyze') }}">Analyze</a>.</p>
 
   <h3 id="lwframe-share">Share</h3>
 
-    <p>Become a {{ config.CFG_SITE_NAME }} user by logging into the portal,
-    and start creating your own records through 
-    <a href="{{ url_for('deposit') }}">Deposit</a>. A minimun amount of 
-    information will be required in order
-    to upload a record: title, authors, description, access rights to be granted;
-    in addition for those records that are not analysis records 
-    a minimun of one file needs to be also provided. 
-    A persistent and unique identifier is associated internally                     
-    to each of these records; the scientist is also capable of
-    minting a DOI for its own record. Metadata and 
-    upload files for those records are editable 
-    until a DOI has been minted. 
-    All records are accesible through <a href="{{ url_for('deposit.myuploads') }}">
-      My Uploads</a>.</p>
+    <p><a href="{{ url_for('deposit') }}">Deposit</a> allows authenticated users to create new records without the need 
+    of belonging to a project: 
+    <ul>
+    <li>A minimun amount of information is required in order to upload a record: title, authors, description, access rights to be granted.</li>
+    <li>A minimum of one file is required for those records different to analysis records.</li>
+    <li>A persistent and unique identifier is associated internally to each of the records in the framework; minting a DOI is also posible,
+    it is up to the onwer when to mint the DOI.</li> 
+    <li>Metadata are always editable, files only until a DOI has been minted.</li> 
+    <li>All records are accesible through <a href="{{ url_for('deposit.myuploads') }}">My Uploads</a>. Only unsubmitted records can be deleted.</li>
+    <li>Records are discoverable publicly once they are curated by the communities admins in the corresponding communities.</li>
+    </ul>
+    </p>
 
     <h3 id="lwframe-analyze">Analyze</h3>
-    <p>The {{ config.CFG_SITE_NAME }} brings also to the researchers with a 
-    non-passive feature, an execution environment defined by the research
-    itself. There are several combinations to build the execution environments
-    depending on the flavor, the operating system, and the application 
-    environment choosen. This feature is accesible for the <strong>Run</strong>
-    button at the software and analysis records: the predefined requirements
-    will be loaded into the request and the user only will confirm that wants to
-    run the associated instance. The user also can access this directly through
-    <a href ="{{ url_for('analyze.launch') }}">Run an analysis</a>.
-    The scientist can list, connect and terminate their instances.    
+    <p><a href ="{{ url_for('analyze') }}">Analyze</a> provides authenticated users with a pre-defined execution environment to use available data:
+    <ul>
+    <li>Several combinations to build the execution environments depending on the flavor, the operating system, and the application environment offered.</li> 
+    <li> Previous feature is accesible for the <strong>Run</strong> button at the software and analysis records: the predefined requirements
+    will be loaded into the request and the user only will confirm that wants to run the associated instance.</li> 
+    <li>A direct access to define an execution environment is available at <a href ="{{ url_for('analyze.launch') }}">Run an analysis</a>.</li>
+    <li>The user can list, connect and terminate their instances through the instances menu.</li>
+    <li>Resouces are available according to the ...</li>    
+    </ul>
     </p>
+
+    <h3 id="lwframe-groups">Groups</h3>
+    <p><a href ="{{ url_for('mygroups') }}">Groups</a> can be used to define access groups to restricted records. Authenticated users can create and manage their own groups,
+    send invitations and approved requests. Users willing to join a group will join it according to the privacy and subscription policy defined by the administrator of the group.
+    Projects groups are created at the time the project is created, joining a project group is posible directly from the public view of the project.
+    </p> 
 
   </div>
 </div>

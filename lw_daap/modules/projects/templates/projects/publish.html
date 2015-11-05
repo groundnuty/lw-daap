@@ -83,9 +83,8 @@ require(['jquery'], function($) {
 
 <div class="col-md-12">
   <h3>Publish</h3>
-  <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lacinia metus volutpat scelerisque facilisis. Cras arcu orci, facilisis eget bibendum eu, ullamcorper nec nulla. Donec et elementum mauris, non aliquet nisl. Aliquam vitae eros vel mi euismod laoreet. Vestibulum varius euismod suscipit. Mauris pulvinar, nisi vitae tincidunt rutrum, dolor elit vehic
-  </p>
+  <p>Make records available publicly for all users of the framework. Once you select publish your record it will become available for curation in the default community {{ config.CFG_SITE_NAME }} and in any other you have choosen. If the record is accepted, it will be shortly discoverable for the general public.</p>
+
   {{ record_table('publish', records, "Project records")|safe}}
 </div>
 {% endblock %}
