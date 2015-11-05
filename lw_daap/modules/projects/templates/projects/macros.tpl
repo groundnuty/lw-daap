@@ -103,21 +103,22 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>{{ title }}</th>
+        <th class="col-md-8">{{ title }}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
     {% for rec in record_set.items%}
-    <tr>
       {{ format_record(rec.id, of='hbprj', ln=g.ln, tab=tab, project=project, **kwargs)|safe }}
-    </tr>
     {% endfor %}
     </tbody>
     {% if record_set.total > per_page %}
     <tfoot>
       <tr>
         <td class="text-center" colspan="2">
+          <div class="spacer20"></div>
           {{ list_status(record_set, page) }}
+          <div class="spacer10"></div>
           {{ paginate(record_set, 'page', small=True) if record_set.items|length }}
         </td>
       </tr>
