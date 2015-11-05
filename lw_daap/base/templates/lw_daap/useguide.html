@@ -201,12 +201,12 @@
      </dl>
 
     <p>Records can be created from the project by using the buttons in the different data life-cycle workflow tabs.
-       All records must provide some minimal info as described in <a href="#lwframw-share">Share</a></p>
+       All records must provide some minimal info as described in <a href="#lwframw-share">Share</a>.</p>
 
 
   <h3 id="lwframe-share">Share</h3>
     <p>Authenticated users can create new records, either inside a project or as independent entities using the
-    <a href="{{ url_for('webdeposit.index') }}">Deposit link</a>:
+    <a href="{{ url_for('webdeposit.index') }}">Deposit</a> link:
     <ul>
     <li>A minimun amount of information is required in order to create a record:
          title, authors, description, and access rights to be granted.</li>
@@ -216,7 +216,7 @@
     </ul>
 
     <p>Once the record is uploaded, it will get a persistent and unique identifier in the framework.
-       Minting a DOI is also possible, the owner of the record can decide when to mint the DOI
+       Minting a DOI is also possible, the owner of the record decide when to mint the DOI
        using the button available when viewing the record details or through the <em>Cite</em>
        step of the data life-cycle in Projects.</p>
 
@@ -224,7 +224,7 @@
     <ul>
        <li>Record metadata are always editable, but files cannot be changed once a DOI has been minted for the record.</li>
        <li>Only not finalized records can be deleted, if you want to delete an already submitted record, please contact
-           <a href="mailto:{{config.CFG_SITE_SUPPORT_EMAIL}}">{{config.CFG_SITE_SUPPORT_EMAIL}}</a></li>
+           <a href="mailto:{{config.CFG_SITE_SUPPORT_EMAIL}}">{{config.CFG_SITE_SUPPORT_EMAIL}}</a>.</li>
     </ul>
     <div class="alert alert-warning">
       <p><strong>Discovering records</strong></p>
@@ -238,8 +238,8 @@
         with a pre-defined execution environment to use available data:</p>
     <ul>
     <li>Several combinations to build the execution environments depending on the flavor, the operating system, and the application environment are available.</li>
-    <li>You can click the <strong>Run</strong> button at any software and analysis records and the framework will load the
-        predefined requirements (flavor, OS, environment) so you just need to confirm the selected options.</li>
+    <li>User can click the Run button at any software and analysis records and the framework will load the
+        predefined requirements (flavor, OS, environment) so user just need to confirm the selected options.</li>
     <li>A direct access to define an execution environment is available at <a href ="{{ url_for('lwdaap_analyze.launch') }}">Run an analysis</a>.</li>
     <li>The user can list, connect and terminate instances through the <a href="{{ url_for('lwdaap_analyze.index') }}">Analyze</a> view.</li>
     <li>Resouces are available according to the ...</li>
