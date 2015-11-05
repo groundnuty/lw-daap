@@ -314,7 +314,9 @@ def delete(project_id):
         return redirect(url_for('.myprojects'))
 
     if not project.is_empty():
-        flash('Project is not empty, cannot be deleted. Please contact <a href="mailto:%s">support</a> if needed.' % cfg.get('CFG_SITE_SUPPORT_EMAIL'),
+        flash('Project is not empty, cannot be deleted. Please contact'
+              ' <a href="mailto:%s">support</a> if needed.'
+              % cfg.get('CFG_SITE_SUPPORT_EMAIL'),
               category='error')
         return redirect(url_for('.myprojects'))
 
