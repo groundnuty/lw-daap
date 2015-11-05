@@ -86,7 +86,6 @@ class Project(db.Model):
     group = db.relationship(Group, backref='projects',
                             foreign_keys=[id_group])
 
-
     #
     # Collection management
     #
@@ -286,12 +285,12 @@ class Project(db.Model):
             q = '980__:%s' % self.get_collection_name()
             recids = search_pattern(p=q)
             if len(recids) != 0:
-                self.eresable = False;
-                db.session.commit();
-                return False;
+                self.eresable = False
+                db.session.commit()
+                return False
             else:
-                return True;
-        return False;
+                return True
+        return False
 
     @classmethod
     def get_project(cls, id):

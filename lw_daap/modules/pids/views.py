@@ -49,6 +49,7 @@ blueprint = Blueprint(
 
 DOI_PID_TYPE = 'doi'
 
+
 @blueprint.app_template_global()
 def get_pid(recid):
     return 'lifewatch.openscience.%s' % recid
@@ -78,7 +79,6 @@ def mint_doi(recid, project_id=None):
     """ mint a PID for the record """
     uid = current_user.get_id()
     record = get_record(recid)
-
 
     if project_id:
         project = Project.query.get_or_404(project_id)
