@@ -113,14 +113,19 @@ a.btn {
   color: #FFF;
 }
 
-
-p a {
-  color: #FF9464 !important;
+p a, li a,
+p a:link, li a:link,
+p a:visited, li a:visited,
+p a:active, li a:active,
+{
+  color: #FF9464;
 }
 
-p a:hover, 
-p a:focus {
-  color: #FF5001 !important;
+p a:hover,
+p a:focus,
+li a:hover,
+li a:focus, {
+  color: #FF5001;
 }
 
 
