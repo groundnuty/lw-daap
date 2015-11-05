@@ -93,11 +93,13 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 {% endmacro -%}
 
 
-{%- macro pid_badge(tag, content, tbgc="#5D5D5D", cbgc="cadetblue") %}
+{%- macro label(tag, content, tbgc="#5D5D5D", cbgc="cadetblue") %}
 <div class="pidbadge">
+    {% if tag %}
     <span class="tag" style="background-color: {{tbgc}};">
         {{tag|safe}}
     </span>
+    {% endif %}
     <span class="content" style="background-color: {{cbgc}};">
         {{content|safe}}
     </span>

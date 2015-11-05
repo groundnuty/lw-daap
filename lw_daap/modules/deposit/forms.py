@@ -758,6 +758,12 @@ class BasicForm(WebDepositForm):
         label='',
     )
 
+    record_archived_in_project = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="False",
+        label='',
+    )
+
     record_public_from_project = fields.StringField(
         widget=widgets.HiddenInput(),
         default="False",

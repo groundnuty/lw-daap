@@ -268,14 +268,16 @@ def process_recjson(deposition, recjson):
     # =================
     if recjson.get('project'):
         if recjson['upload_type'] != 'dataset':
-            recjson['record_curated_in_project'] = True 
+            recjson['record_curated_in_project'] = True
         else:
             curated = ast.literal_eval(recjson['record_curated_in_project'])
             recjson['record_curated_in_project'] = curated
+        archived = ast.literal_eval(recjson['record_archived_in_project'])
+        recjson['record_archived_in_project'] = archived
         public = ast.literal_eval(recjson['record_public_from_project'])
         recjson['record_public_from_project'] = public
     else:
-        for k in ['record_curated_in_project', 'record_public_from_project']:
+        for k in ['record_curated_in_project', 'record_archived_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
 
@@ -365,8 +367,8 @@ def process_recjson_new(deposition, recjson):
     # ===========
     # Communities
     # ===========
-    # Specific user collection, used to curate content 
-    # 
+    # Specific user collection, used to curate content
+    #
     if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson[
             'provisional_communities']:
         recjson['provisional_communities'].append(

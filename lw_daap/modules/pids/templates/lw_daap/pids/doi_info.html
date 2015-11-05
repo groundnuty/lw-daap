@@ -24,15 +24,14 @@
 {% if daap_record %}
   {% if daap_record.doi %}
      <a href="http://dx.doi.org/{{daap_record.doi}}" title="DOI" target="_blank">
-        {{ pid_badge('DOI', daap_record.doi, cbgc='#D9634C')|safe}}
+        {{ label('DOI', daap_record.doi, cbgc='#0F81C2')|safe}}
      </a>
   {% else %}
   {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
       {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
           <p class="text-muted">DOI minting is in progress...</p>
       {% else %}
- <p>This record does not have yet a persistent identifier, we have prereserved the
-       <span class="doi">{{ bfe_prereserved_doi(bfo) }}</span> DOI for it.</p>
+      {{ label('DOI', bfe_prereserved_doi(bfo), cbgc='#0F81C2')|safe }} <small class="alert-danger"><small>We have pre-reserved this DOI for your record: it will not be minted until you request it.</small></small>
 
       {% endif %}
     {% endif %}

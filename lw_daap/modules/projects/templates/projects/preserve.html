@@ -18,7 +18,7 @@
 
 
 {% extends 'projects/show.html' %}
-{% set active='cite' %}
+{% set active='preserve' %}
 
 
 {% from 'projects/macros.tpl' import record_table with context %}
@@ -28,6 +28,7 @@
 {{ super() }}
 <script type="text/javascript">
 var doiUrl
+var archiveUrl
 require(['jquery'], function($) {
     $('#doimodal').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
@@ -35,6 +36,13 @@ require(['jquery'], function($) {
       var modal = $(this)
       modal.find('#doiform').attr('action', doiUrl);
       });
+    $('#archivemodal').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      archiveUrl = a.data('archiveUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#archiveform').attr('action', archiveUrl);
+      });
+
     });
 </script>
 {% endblock %}
@@ -82,10 +90,53 @@ require(['jquery'], function($) {
 </div>
 
 
-<div class="col-md-12">
-  <h3>Cite</h3>
-  <p>By default, records are assigned a persistent and unique identifier in the context of this framework. In addition, a digital object identifier (DOI) can be minted for selected records so they become widely citable.</p>
+<div id="archivemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="archivemodal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="archivemodal_label">Archive?</h4>
+      </div>
+      <div class="modal-body">
+        <ul><li>Would you like to archive this record?</li>
+          <li>If you archive it, the record will be safely backed up to tape.</li></ul>
+      </div>
+      <div class="alert help-block alert-danger" id="archivemodal-state-title" style="display: none;">
+      </div>
+      <div class="modal-footer">
+        <form id="archiveform" action="#" method="POST">
+          {%- for field in archiveform %}{{ field }}{% endfor %}
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"
+                  onclick='$.post(archiveUrl)
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#archivemodal").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#archivemodal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>Archive</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-  {{ record_table('cite', records, "Project records")|safe}}
+
+
+
+<div class="col-md-12">
+  <h3>Preserve</h3>
+  <p>By default, records are assigned a persistent and unique identifier in the context of this framework. In addition, a digital object identifier (DOI) can be minted for selected records so they become widely citable.</p>
+  <p>Records entered into this framework are stored safely in reliable disk systems. In addition, selected records are backed up to tape for preservation.
+  </p>
+
+  {{ record_table('preserve', records, "Project records")|safe}}
 </div>
 {% endblock %}

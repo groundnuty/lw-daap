@@ -32,7 +32,7 @@
 
 {% macro integrate_buttons(rec) -%} 
    <a class="btn btn-md pull-right integrate-chooser {{ 'btn-info' if rec.recid in selected_records else 'btn-danger' }}"
-      href="#" data-record-id="{{ rec.recid }}" data-selected="{{ 'true' if rec.recid in selected_records else 'false' }}">
+      href="#" rel="tooltip" title="Integrate record" data-record-id="{{ rec.recid }}" data-selected="{{ 'true' if rec.recid in selected_records else 'false' }}">
     {{ '<i class="fa fa-check"></i> Unselect' if rec.recid in selected_records else 'Select' }}
   </a>
 {%- endmacro %}
@@ -43,16 +43,28 @@
 {%- endmacro %}
 
 
-{% macro cite_buttons(rec) -%} 
+{% macro preserve_buttons(rec) -%} 
+<div class="pull-right">
   {% if not rec.doi %}
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.cite', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Mint DOI</a>
+      data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
+      rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Mint DOI</a>
   {% else %} 
     <a data-toggle="modal" data-target="#doimodal"
-      data-doi-url="{{ url_for('lwdaap_projects.cite', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-barcode"></i> Has a DOI</a>
+      data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
+      rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Has DOI</a>
   {% endif %}
+
+  {% if not rec.record_archive_in_project %}
+    <a data-toggle="modal" data-target="#archivemodal"
+      data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
+      rel="tooltip" title="Archive"><i class="fa fa-barcode"></i> Archive</a>
+  {% else %} 
+    <a data-toggle="modal" data-target="#archivemodal"
+      data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
+      rel="tooltip" title="Archive"><i class="fa fa-barcode"></i> Archived</a>
+  {% endif %}
+</div>
 {%- endmacro %}
 
 
@@ -61,7 +73,7 @@
     <a data-toggle="modal" data-target="#publishmodal"
       data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Publish</a>
-  {% else %} 
+   {% else %} 
     <a data-toggle="modal" data-target="#publishmodal"
       data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Public</a>
@@ -76,8 +88,8 @@
     {{ integrate_buttons(record) }}
   {% elif tab == "analyze" %}
     {{ analyze_buttons(record) }}
-  {% elif tab == "cite" %}
-    {{ cite_buttons(record) }}
+  {% elif tab == "preserve" %}
+    {{ preserve_buttons(record) }}
   {% elif tab == "publish" %}
     {{ publish_buttons(record) }}
   {% endif %}
@@ -91,7 +103,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th class="col-md-10">{{ title }}</th>
+        <th>{{ title }}</th>
       </tr>
     </thead>
     <tbody>
