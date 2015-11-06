@@ -337,9 +337,9 @@ def filter_empty_elements(recjson):
         recjson.get('related_identifiers', [])
     )
 
-    recjson['contributors'] = filter(
+    recjson['creators'] = filter(
         filter_empty_helper(keys=['name', 'affiliation']),
-        recjson.get('contributors', [])
+        recjson.get('creators', [])
     )
 
     return recjson
@@ -714,21 +714,38 @@ class upload(DepositionType):
     default = True
     api = True
 
+    marshal_period_fields = dict(
+        start=ISODate,
+        end=ISODate
+    )
+
     marshal_metadata_fields = dict(
         access_right=fields.String,
         access_conditions=fields.String,
         access_groups=fields.List(fields.Raw),
+        app_env=fields.Raw(),
         communities=fields.List(fields.Raw),
-        contributors=fields.Raw(default=[]),
+        creators=fields.Raw(),
         description=fields.String,
-        doi=fields.String(default=''),
+        doi=fields.String(),
         embargo_date=ISODate,
-        keywords=fields.Raw(default=[]),
+        flavor=fields.Raw(default=''),
+        frequency=fields.Raw(),
+        keywords=fields.Raw(),
         license=fields.String,
-        notes=fields.String(default=''),
+        notes=fields.String(),
+        os=fields.Raw(),
+        period=fields.List(fields.Nested(marshal_period_fields)), 
+        project=fields.String,
         publication_date=ISODate,
-        related_identifiers=fields.Raw(default=[]),
-        subjects=fields.Raw(default=[]),
+        record_archived_in_project=fields.Boolean,
+        record_curated_in_project=fields.Boolean,
+        record_public_from_project=fields.Boolean,
+        rel_dataset=fields.List(fields.Raw),
+        rel_software=fields.List(fields.Raw),
+        related_identifiers=fields.Raw(),
+        spatial=fields.Raw(),
+        subjects=fields.Raw(),
         title=fields.String,
         upload_type=fields.String,
     )
@@ -777,11 +794,14 @@ class upload(DepositionType):
             metadata_fields = cls.marshal_metadata_fields
 
         # Fix known differences in marshalling
+        current_app.logger.debug(draft.values)
         draft.values = filter_empty_elements(draft.values)
+        current_app.logger.debug(draft.values)
 
         # Set disabled values to None in output
         for field, flags in draft.flags.items():
             if 'disabled' in flags and field in draft.values:
+                current_app.logger.debug(field)
                 del draft.values[field]
 
         # Marshal deposition
