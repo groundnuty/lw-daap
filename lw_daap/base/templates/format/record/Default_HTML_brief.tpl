@@ -33,18 +33,18 @@
 {% block record_content %}
   <small class="text-muted">{{ record.description|sentences(3) }}</small>
 
-   {% if record.get('doi') %}
-        <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
-            {{ label('DOI', record.get('doi'), cbgc='#0F81C2') }}
-        </a> |
-    {% endif %}
     <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
         {{ label('PID', get_pid(record.recid), cbgc='#D9634C') }}
-    </a> |
+    </a> 
+    {% if record.get('doi') %}
+    <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
+       | {{ label('DOI', record.get('doi'), cbgc='#0F81C2') }}
+    </a> 
+    {% endif %}
+  | {{ render_access_rights(record) if record.get('access_right') }}  
+  | {{ render_deposition_type(record) if record.get('upload_type') }} 
+  | {{ record.publication_date }}
 
-  {{ render_access_rights(record) if record.get('access_right') }}  |
-  {{ render_deposition_type(record) if record.get('upload_type') }} |
-  {{ record.publication_date }}
 {% endblock %}
 
 {% block fulltext_snippets %}{% endblock %}

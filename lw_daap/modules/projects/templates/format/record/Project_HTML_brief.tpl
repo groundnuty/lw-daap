@@ -34,24 +34,26 @@
       {%- endblock %}
     </h4>
     {% block record_info %}
-    {% if record.get('doi') %}
-    <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
-      {{ label('DOI', record.get('doi'), cbgc='#0F81C2') }}
-    </a> |
-    {% endif %}
     <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
       {{ label('PID', get_pid(record.recid), cbgc='#D9634C') }}
-    </a> |
+    </a> 
+    {% if record.get('doi') %}
+    <a href="http://dx.doi.org/{{record.get('doi')}}" title="DOI" target="_blank">
+      | {{ label('DOI', record.get('doi'), cbgc='#0F81C2') }}
+    </a> 
+    {% endif %}
     {% if record.get('access_right') %}
-     {{ render_access_rights(record) }} |
+     | {{ render_access_rights(record) }} 
     {% endif %}
     {% if record.get('upload_type') %}
-      {{ render_deposition_type(record) }} |
+      | {{ render_deposition_type(record) }} 
     {% endif %}
     {% if record.record_public_from_project %} 
-      {{ label(content='public') }} |
+      | {{ label(content='public') }} 
     {% endif %}
-    {{ label(content='archived') if record.record_archive_in_project}}
+    {% if record.record_archive_in_project %} 
+        | {{ label(content='archived') }} 
+    {% endif %}
     {% endblock %}
   </td>
   <td style="vertical-align: middle;">
