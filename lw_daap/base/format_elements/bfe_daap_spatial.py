@@ -32,7 +32,6 @@ def format_element(bfo, spatial=[]):
     markers = []
     coords = ((float(c['north']), float(c['south']),
                float(c['east']), float(c['west'])) for c in spatial)
-    current_app.logger.debug("COORDS: %s" % coords)
     for n, s, e, w in coords:
         norths.append(n)
         souths.append(s)
