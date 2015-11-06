@@ -55,7 +55,7 @@
       rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Has DOI</a>
   {% endif %}
 
-  {% if not rec.record_archive_in_project %}
+  {% if not rec.record_archived_in_project %}
     <a data-toggle="modal" data-target="#archivemodal"
       data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
       rel="tooltip" title="Archive"><i class="fa fa-barcode"></i> Archive</a>

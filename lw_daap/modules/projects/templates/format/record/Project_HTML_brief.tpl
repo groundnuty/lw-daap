@@ -51,7 +51,7 @@
     {% if record.record_public_from_project %} 
       | {{ label(content='public') }} 
     {% endif %}
-    {% if record.record_archive_in_project %} 
+    {% if record.record_archived_in_project %} 
         | {{ label(content='archived') }} 
     {% endif %}
     {% endblock %}
