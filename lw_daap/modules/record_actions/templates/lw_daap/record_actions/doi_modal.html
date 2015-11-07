@@ -24,5 +24,6 @@
 <li>The minting process will take some minutes, when available it will be shown in the record.</li>
 </ul>
 {% endset %}
+{% set doi_url = '"' ~ url_for('lwdaap_actions.mint_doi', recid=recid) ~ '"'
 
-{{ record_action_modal('doi', 'Mint DOI', doibody, url_for('lwdaap_actions.mint_doi', recid=recid)) }}
+{{ record_action_modal('doi', 'Mint DOI', 'Mint DOI', doibody, doi_url) }}

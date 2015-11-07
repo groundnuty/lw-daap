@@ -19,11 +19,11 @@
 
 {% macro curate_buttons(rec) -%} 
   {% if not rec.record_curated_in_project %}
-    <a data-toggle="modal" data-target="#curatemodal"
+    <a data-toggle="modal" data-target="#curate-confirm-dialog"
       data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
       rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curate</a>
   {% else %} 
-    <a data-toggle="modal" data-target="#curatemodal"
+    <a data-toggle="modal" data-target="#curate-confirm-dialog"
       data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
       rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curated</a>
   {% endif %}
@@ -46,21 +46,21 @@
 {% macro preserve_buttons(rec) -%} 
 <div class="pull-right">
   {% if not rec.doi %}
-    <a data-toggle="modal" data-target="#doimodal"
+    <a data-toggle="modal" data-target="#doi-confirm-dialog"
       data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
       rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Mint DOI</a>
   {% else %} 
-    <a data-toggle="modal" data-target="#doimodal"
+    <a data-toggle="modal" data-target="#doi-confirm-dialog"
       data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
       rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Has DOI</a>
   {% endif %}
 
   {% if not rec.record_selected_for_archive %}
-    <a data-toggle="modal" data-target="#archivemodal"
+    <a data-toggle="modal" data-target="#archive-confirm-dialog"
       data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
       rel="tooltip" title="Archive"><i class="fa fa-archive"></i> Archive</a>
   {% else %} 
-    <a data-toggle="modal" data-target="#archivemodal"
+    <a data-toggle="modal" data-target="#archive-confirm-dialog"
       data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
       rel="tooltip" title="Archive"><i class="fa fa-archive"></i> Archived</a>
   {% endif %}
@@ -70,11 +70,11 @@
 
 {% macro publish_buttons(rec) -%} 
   {% if not rec.record_public_from_project %}
-    <a data-toggle="modal" data-target="#publishmodal"
+    <a data-toggle="modal" data-target="#publish-confirm-dialog"
       data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Publish</a>
    {% else %} 
-    <a data-toggle="modal" data-target="#publishmodal"
+    <a data-toggle="modal" data-target="#publish-confirm-dialog"
       data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
       rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Public</a>
   {% endif %}

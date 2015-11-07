@@ -29,11 +29,11 @@
 <script type="text/javascript">
 var publishUrl
 require(['jquery'], function($) {
-    $('#publishmodal').on('show.bs.modal', function (event) {
+    $('#publish-confirm-dialog').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
       publishUrl = a.data('publishUrl') // Extract info from data-* attributes
       var modal = $(this)
-      modal.find('#publishform').attr('action', publishUrl);
+      modal.find('#publish-form').attr('action', publishUrl);
       });
     });
 </script>
@@ -41,45 +41,17 @@ require(['jquery'], function($) {
 
 
 {% block project_body %}
-<div id="publishmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="publishmodal_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="publishmodal_label">Publish record?</h4>
-      </div>
-      <div class="modal-body">
-        <ul>
-            <li>Would you like to public this record?</li> 
-            <li>If you publish it, the record will be public according to the access right you had set.</li>
-        </ul>
-      </div>
-      <div class="alert help-block alert-danger" id="publishmodal-state-title" style="display: none;">
-      </div>
-      <div class="modal-footer">
-        <form id="publishform" action="#" method="POST">
-          {%- for field in publishform %}{{ field }}{% endfor %}
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" 
-                  onclick='$.post(publishUrl)
-                                .done(function(data) {
-                                        if (data.redirect) {
-                                           window.location.replace(data.redirect);
-                                        } else {
-                                          $("#publishmodal").modal("hide")
-                                        }
-                                      })
-                                .fail(function(jqXHR) {
-                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
-                                        var st = $("#publishmodal-state-title");
-                                        st.html("<p>" + m + "</p>");
-                                        st.show(); 
-                                      });'>Publish</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+
+{% from "lw_daap/record_actions/macros.html" import record_action_modal %}
+
+{% set modalbody %}
+<ul>
+  <li>Would you like to public this record?</li> 
+  <li>If you publish it, the record will be public according to the access right you had set.</li>
+</ul>
+{% endset %}
+
+{{ record_action_modal('publish', 'Publish record?', 'Publish', modalbody, 'publishUrl', publishform) }}
 
 <div class="col-md-12">
   <h3>Publish</h3>

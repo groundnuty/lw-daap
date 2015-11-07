@@ -16,14 +16,14 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{% macro record_action_modal(action, label, body, url) %}
+{% macro record_action_modal(action, title, btn, body, url, form=None) %}
 <div id="{{action}}-confirm-dialog" class="modal fade" tabindex="-1" 
      role="dialog" aria-labelledby="{{ action }}-dialog-Label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="{{ action }}-dialog-Label">{{ label }}</h4>
+        <h4 class="modal-title" id="{{ action }}-dialog-Label">{{ title }}</h4>
       </div>
       <div class="modal-body">
         <ul>
@@ -35,9 +35,13 @@
       </div>
     
       <div class="modal-footer">
+        {% if form %}
+        <form id="{{action}}-form" action="#" method="POST">
+        {%- for field in form %}{{ field }}{% endfor %}
+        {% endif %}
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary"
-                onclick='$.post("{{ url }}")
+                onclick='$.post({{ url }})
                                 .done(function(data) {
                                         if (data.redirect) {
                                            window.location.replace(data.redirect);
@@ -51,8 +55,11 @@
                                         st.html("<p>" + m + "</p>");
                                         st.show(); 
                                       });'>
-            {{ label }}
+            {{ btn }}
         </button>
+        {% if form %}
+        </form>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -30,17 +30,17 @@
 var doiUrl
 var archiveUrl
 require(['jquery'], function($) {
-    $('#doimodal').on('show.bs.modal', function (event) {
+    $('#doi-confirm-dialog').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
       doiUrl = a.data('doiUrl') // Extract info from data-* attributes
       var modal = $(this)
-      modal.find('#doiform').attr('action', doiUrl);
+      modal.find('#doi-form').attr('action', doiUrl);
       });
-    $('#archivemodal').on('show.bs.modal', function (event) {
+    $('#archive-confirm-dialog').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
       archiveUrl = a.data('archiveUrl') // Extract info from data-* attributes
       var modal = $(this)
-      modal.find('#archiveform').attr('action', archiveUrl);
+      modal.find('#archive-form').attr('action', archiveUrl);
       });
 
     });
@@ -49,86 +49,26 @@ require(['jquery'], function($) {
 
 
 {% block project_body %}
-<div id="doimodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="doimodal_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="doimodal_label">Mint DOI?</h4>
-      </div>
-      <div class="modal-body">
-        <ul>
-            <li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
-            <li>The minting process will take some minutes, when available it will be shown in the record.</li>
-        </ul>
-      </div>
-      <div class="alert help-block alert-danger" id="doimodal-state-title" style="display: none;">
-      </div>
-      <div class="modal-footer">
-        <form id="doiform" action="#" method="POST">
-          {%- for field in doiform %}{{ field }}{% endfor %}
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary"
-                  onclick='$.post(doiUrl)
-                                .done(function(data) {
-                                        if (data.redirect) {
-                                           window.location.replace(data.redirect);
-                                        } else {
-                                          $("#doimodal").modal("hide")
-                                        }
-                                      })
-                                .fail(function(jqXHR) {
-                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
-                                        var st = $("#doimodal-state-title");
-                                        st.html("<p>" + m + "</p>");
-                                        st.show(); 
-                                      });'>Mint DOI</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
+{% from "lw_daap/record_actions/macros.html" import record_action_modal %}
 
-<div id="archivemodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="archivemodal_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="archivemodal_label">Archive?</h4>
-      </div>
-      <div class="modal-body">
-        <ul><li>Would you like to archive this record?</li>
-          <li>If you archive it, the record will be safely backed up to tape.</li></ul>
-      </div>
-      <div class="alert help-block alert-danger" id="archivemodal-state-title" style="display: none;">
-      </div>
-      <div class="modal-footer">
-        <form id="archiveform" action="#" method="POST">
-          {%- for field in archiveform %}{{ field }}{% endfor %}
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary"
-                  onclick='$.post(archiveUrl)
-                                .done(function(data) {
-                                        if (data.redirect) {
-                                           window.location.replace(data.redirect);
-                                        } else {
-                                          $("#archivemodal").modal("hide")
-                                        }
-                                      })
-                                .fail(function(jqXHR) {
-                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
-                                        var st = $("#archivemodal-state-title");
-                                        st.html("<p>" + m + "</p>");
-                                        st.show(); 
-                                      });'>Archive</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+{% set doimodalbody %}
+<ul>
+  <li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
+  <li>The minting process will take some minutes, when available it will be shown in the record.</li>
+</ul>
+{% endset %}
 
+{{ record_action_modal('doi', 'Mint DOI?', 'Mint DOI', doimodalbody, 'doiUrl', doiform) }}
 
+{% set archivemodalbody %}
+<ul>
+  <li>Would you like to archive this record?</li>
+  <li>If you archive it, the record will be safely backed up to tape.</li>
+</ul>
+{% endset %}
+
+{{ record_action_modal('archive', 'Archive?', 'Archive', archvemodalbody, 'archiveUrl', archiveform) }}
 
 
 <div class="col-md-12">
