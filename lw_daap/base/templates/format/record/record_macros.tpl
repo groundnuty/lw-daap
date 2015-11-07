@@ -116,7 +116,7 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary"
-                onclick='$.post("{{ url_for('lwdaap_projects.archive', record_id=rec.recid) }}")
+                onclick='$.post("{{ url_for('lwdaap_pids.archive_record', recid=rec.recid) }}")
                                 .done(function(data) {
                                         if (data.redirect) {
                                            window.location.replace(data.redirect);

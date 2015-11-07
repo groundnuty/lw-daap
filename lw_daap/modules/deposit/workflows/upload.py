@@ -272,14 +272,14 @@ def process_recjson(deposition, recjson):
         else:
             curated = ast.literal_eval(recjson['record_curated_in_project'])
             recjson['record_curated_in_project'] = curated
-        archived = ast.literal_eval(recjson['record_selected_for_archive'])
-        recjson['record_selected_for_archive'] = archived
         public = ast.literal_eval(recjson['record_public_from_project'])
         recjson['record_public_from_project'] = public
     else:
-        for k in ['record_curated_in_project', 'record_selected_for_archive', 'record_public_from_project']:
+        for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
+    archived = ast.literal_eval(recjson['record_selected_for_archive'])
+    recjson['record_selected_for_archive'] = archived
 
     # Requirements
     # =================

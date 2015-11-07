@@ -39,6 +39,8 @@ from invenio.modules.records.api import get_record
 
 from lw_daap.ext.login import login_required
 from lw_daap.modules.invenio_groups.models import Group
+from lw_daap.modules.pids.actions import record_actions, doi_action, \
+    control_actions
 
 from .forms import ProjectForm, SearchForm, EditProjectForm,\
     DeleteProjectForm, IntegrateForm
@@ -355,76 +357,17 @@ def deposit(project_id, deposition_type):
                     deposition_type=deposition_type, next=next))
 
 
-def error_400(msg):
-    response = jsonify({'code': 400, 'msg': msg})
-    response.status_code = 400
-    return response
-
-
-def update_record_fields(record, curate=None, archive=None, publish=None):
-    rec = {}
-    record_add_field(rec, '001', controlfield_value=str(record['recid']))
-    if curate is None:
-        curate = record.get('record_curated_in_project', False)
-    if archive is None:
-        archive = record.get('record_selected_for_archive', False)
-    if publish is None:
-        publish = record.get('record_public_from_project', False)
-
-    project_info_fields = [('a', '%s' % curate)]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    project_info_fields = [('b', '%s' % publish)]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    project_info_fields = [('c', '%s' % archive)]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    from invenio.legacy.bibupload.utils import bibupload_record
-    bibupload_record(record=rec, file_prefix='project_info', mode='-c',
-                     opts=[], alias="project_info")
-
-
-def record_actions(action, project_id, record_id, action_verb=None,
-                   action_path=None):
-    project = Project.query.get_or_404(project_id)
-    record = get_record(record_id)
-    if not record:
-        abort(404)
-
-    # do only allow to curate to the owner
-    if not project.is_user_allowed():
-        abort(401)
-
-    if not action_path:
-        action_path = action
-    if not action_verb:
-        action_verb = action
-
-    # crazy invenio stuff, cache actions so they dont get duplicated
-    key = get_cache_key(record_id)
-    cache_action = cache.get(key)
-    if cache_action == action:
-        return error_400('Record is being %s, you should wait '
-                         'some minutes.' % action_verb)
-    # Set 5 min cache to allow bibupload/bibreformat to finish
-    cache.set(key, action, timeout=5*60)
-
-    kwargs = {action: True}
-    update_record_fields(record, **kwargs)
-
-    return jsonify({'status': 'ok',
-                    'redirect': url_for('.show',
-                                        project_id=project_id, path=action_path)})
-
-
-
 @blueprint.route('/<int:project_id>/curate/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
 def curation(project_id, record_id):
-    return record_actions("curate", project_id, record_id, "curated")
+    msg = 'Record is being curated.'
+    redirect_url = url_for('.show', project_id=project_id, path='curate')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='curate',
+                          action=lambda x: control_actions(x, curate=True),
+                          msg=msg, redirect_url=redirect_url)
 
 
 @blueprint.route('/<int:project_id>/mintdoi/<int:record_id>/',
@@ -432,8 +375,11 @@ def curation(project_id, record_id):
 @ssl_required
 @login_required
 def mintdoi(project_id, record_id):
-    from lw_daap.modules.pids.views import mint_doi
-    return mint_doi(record_id, project_id)
+    msg = 'DOI is being processed.'
+    redirect_url = url_for('.show', project_id=project_id, path='preserve')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='doi', action=doi_action,
+                          msg=msg, redirect_url=redirect_url)
 
 
 @blueprint.route('/<int:project_id>/archive/<int:record_id>/',
@@ -441,8 +387,12 @@ def mintdoi(project_id, record_id):
 @ssl_required
 @login_required
 def archive(project_id, record_id):
-    return record_actions("archive", project_id, record_id, "archived",
-                          "preserve")
+    msg = 'Archiving request is being processed.'
+    redirect_url = url_for('.show', project_id=project_id, path='preserve')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='archive',
+                          action=lambda x: control_actions(x, archive=True),
+                          msg=msg, redirect_url=redirect_url)
 
 
 @blueprint.route('/<int:project_id>/publish/<int:record_id>/',
@@ -450,7 +400,12 @@ def archive(project_id, record_id):
 @ssl_required
 @login_required
 def publication(project_id, record_id):
-    return record_actions("publish", project_id, record_id, "published")
+    msg = 'Record is being published.'
+    redirect_url = url_for('.show', project_id=project_id, path='publish')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='publish',
+                          action=lambda x: control_actions(x, publish=True),
+                          msg=msg, redirect_url=redirect_url)
 
 
 @blueprint.route('/<int:project_id>/join/',
@@ -463,5 +418,3 @@ def join(project_id):
     if group.can_join(current_user):
         group.subscribe(current_user)
     return redirect(url_for('.show', project_id=project_id, path='plan'))
-
-

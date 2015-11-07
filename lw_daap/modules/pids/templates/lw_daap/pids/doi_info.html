@@ -21,6 +21,7 @@
  #}
 
 
+{% if metadata_view %}
 {% if daap_record %}
   {% if daap_record.doi %}
      <a href="http://dx.doi.org/{{daap_record.doi}}" title="DOI" target="_blank">
@@ -36,4 +37,5 @@
       {% endif %}
     {% endif %}
   {% endif %}
+{% endif %}
 {% endif %}
