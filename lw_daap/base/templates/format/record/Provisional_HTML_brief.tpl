@@ -42,8 +42,6 @@ label
 with context
 %}
 
-{% include "lw_daap/pids/doi_modal.html" %}
-
 {% bundle "communities.js" %}
 
 {% macro render_record_footer(number_of_displayed_authors) %}
@@ -55,7 +53,7 @@ with context
       <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
           {{ label("PID", get_pid(record.recid), cbgc="#D9634C") }}
       </a>                                                                
-      {% include "lw_daap/pids/doi_info.html" %}   
+      {% include "lw_daap/record_actions/doi_info.html" %}   
       |
       {{ render_access_rights(record) if record.get('access_right') }}
       {% if record.record_selected_for_archive %}                                  

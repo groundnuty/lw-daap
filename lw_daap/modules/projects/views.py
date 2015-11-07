@@ -39,8 +39,8 @@ from invenio.modules.records.api import get_record
 
 from lw_daap.ext.login import login_required
 from lw_daap.modules.invenio_groups.models import Group
-from lw_daap.modules.pids.actions import record_actions, doi_action, \
-    control_actions
+from lw_daap.modules.record_actions.actions import record_actions, \
+    doi_action, control_actions
 
 from .forms import ProjectForm, SearchForm, EditProjectForm,\
     DeleteProjectForm, IntegrateForm

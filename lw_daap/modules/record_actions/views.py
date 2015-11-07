@@ -26,9 +26,9 @@ from .actions import record_actions, doi_action, control_actions
 
 
 blueprint = Blueprint(
-    'lwdaap_pids',
+    'lwdaap_actions',
     __name__,
-    url_prefix='/pids',
+    url_prefix='/record_actions',
     static_folder="static",
     template_folder="templates",
 )
@@ -39,7 +39,7 @@ def get_pid(recid):
     return 'lifewatch.openscience.%s' % recid
 
 
-@blueprint.route('/record_actions/<int:recid>/mint', methods=['POST'])
+@blueprint.route('/mint/<int:recid>', methods=['POST'])
 @login_required
 def mint_doi(recid):
     doi_msg = 'DOI is being processed.'
@@ -47,7 +47,7 @@ def mint_doi(recid):
                           msg=doi_msg)
 
 
-@blueprint.route('/record_actions/<int:recid>/archive', methods=['POST'])
+@blueprint.route('/archive/<int:recid>', methods=['POST'])
 @login_required
 def archive_record(recid):
     archive_msg = 'Archiving request is being processed.'

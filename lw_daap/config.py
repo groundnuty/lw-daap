@@ -93,7 +93,7 @@ PACKAGES = [
     "lw_daap.modules.invenio_groups",
     "lw_daap.modules.github",
     "lw_daap.modules.analyze",
-    "lw_daap.modules.pids",
+    "lw_daap.modules.record_actions",
     "lw_daap.modules.profile",
     "lw_daap.modules.projects",
     "lw_daap.deploy",

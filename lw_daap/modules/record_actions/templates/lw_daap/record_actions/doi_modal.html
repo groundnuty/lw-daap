@@ -16,7 +16,7 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{% from "lw_daap/pids/macros.html" import record_action_modal %}
+{% from "lw_daap/record_actions/macros.html" import record_action_modal %}
 
 {% set doibody %}
 <ul>
@@ -25,4 +25,4 @@
 </ul>
 {% endset %}
 
-{{ record_action_modal('doi', 'Mint DOI', doibody, url_for('lwdaap_pids.mint_doi', recid=recid)) }}
+{{ record_action_modal('doi', 'Mint DOI', doibody, url_for('lwdaap_actions.mint_doi', recid=recid)) }}

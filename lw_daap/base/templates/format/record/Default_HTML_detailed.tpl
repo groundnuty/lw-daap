@@ -33,7 +33,7 @@ archive_panel
 with context
 %}
 
-{% include "lw_daap/pids/doi_modal.html" %}
+{% include "lw_daap/record_actions/doi_modal.html" %}
 
 {% if not daap_record %}
 {% set daap_record = record %}
@@ -107,7 +107,7 @@ with context
             {{ label("PID", get_pid(daap_record.recid), cbgc="#D9634C") }}
             </a>
             <br />
-            {% include "lw_daap/pids/doi_info.html" %}
+            {% include "lw_daap/record_actions/doi_info.html" %}
           <h4>Access</h4>{{ render_access_rights(daap_record) }}
           <h4>Record type</h4>{{ render_deposition_type(daap_record) }}
           {% if record.record_selected_for_archive %}                                  
@@ -140,7 +140,7 @@ with context
                             {{ label("PID", get_pid(daap_record.recid), cbgc="#D9634C") }}
                 </a>
                 <br />
-                {% include "lw_daap/pids/doi_info.html" %}
+                {% include "lw_daap/record_actions/doi_info.html" %}
             </td>
           </tr>
 
