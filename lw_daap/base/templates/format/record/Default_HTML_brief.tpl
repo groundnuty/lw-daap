@@ -43,6 +43,9 @@
     {% endif %}
   | {{ render_access_rights(record) if record.get('access_right') }}  
   | {{ render_deposition_type(record) if record.get('upload_type') }} 
+  {% if record.record_selected_for_archive %}                                  
+        | {{ label(content='archived') }}                                       
+  {% endif %} 
   | {{ record.publication_date }}
 
 {% endblock %}

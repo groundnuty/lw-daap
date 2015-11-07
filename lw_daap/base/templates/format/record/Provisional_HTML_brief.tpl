@@ -58,6 +58,9 @@ with context
       {% include "lw_daap/pids/doi_info.html" %}   
       |
       {{ render_access_rights(record) if record.get('access_right') }}
+      {% if record.record_selected_for_archive %}                                  
+        | {{ label(content='archived') }}                                       
+      {% endif %} 
 
       {% if record['keywords']|length %} 
       |

@@ -29,6 +29,7 @@ render_rel_input,
 open_panel_section,
 close_panel_section,
 label,
+archive_panel,
 with context
 %}
 
@@ -37,6 +38,9 @@ with context
 {% if not daap_record %}
 {% set daap_record = record %}
 {% endif %}
+
+{{ archive_panel(daap_record) }}
+
 <div class="record-details">
   {% block header %}
   <div class="row">
@@ -73,10 +77,16 @@ with context
     <div class="col-sm-12 col-md-3">
 
       {% if metadata_view %}
-      {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %} {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
+      {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %} 
+      {% if not daap_record.doi and not bfe_is_doi_being_minted(bfo, recid=recid) %}
       <button class="btn btn-block btn-lg btn-default"
         data-toggle="modal" data-target="#doi-confirm-dialog">
         <i class="fa fa-barcode"></i> Mint Doi</button>
+      {% endif %}
+      {% if not daap_record.record_selected_for_archive %}
+      <button class="btn btn-block btn-lg btn-default"
+        data-toggle="modal" data-target="#archive-confirm-dialog">
+        <i class="fa fa-archive"></i> Archive</button>
       {% endif %}
       <a class="btn btn-block btn-lg btn-primary" href="{{ url_for('webdeposit.edit', uuid=daap_record.owner.deposition_id|int) }}"><i class="fa fa-pencil-square-o"></i> Edit</a>
       {% endif %}
@@ -100,6 +110,10 @@ with context
             {% include "lw_daap/pids/doi_info.html" %}
           <h4>Access</h4>{{ render_access_rights(daap_record) }}
           <h4>Record type</h4>{{ render_deposition_type(daap_record) }}
+          {% if record.record_selected_for_archive %}                                  
+          <h4>Archive</h4>
+          {{ label(content='archived') }}                                       
+          {% endif %} 
           {% if daap_files %}
           <h4>Files</h4>
           {{ daap_files|length }}

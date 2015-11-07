@@ -367,7 +367,7 @@ def update_record_fields(record, curate=None, archive=None, publish=None):
     if curate is None:
         curate = record.get('record_curated_in_project', False)
     if archive is None:
-        archive = record.get('record_archived_in_project', False)
+        archive = record.get('record_selected_for_archive', False)
     if publish is None:
         publish = record.get('record_public_from_project', False)
 
@@ -434,6 +434,7 @@ def curation(project_id, record_id):
 def mintdoi(project_id, record_id):
     from lw_daap.modules.pids.views import mint_doi
     return mint_doi(record_id, project_id)
+
 
 @blueprint.route('/<int:project_id>/archive/<int:record_id>/',
                  methods=['POST'])
