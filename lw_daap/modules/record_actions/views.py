@@ -36,7 +36,7 @@ blueprint = Blueprint(
 
 @blueprint.app_template_global()
 def get_pid(recid):
-    return 'lifewatch.openscience.%s' % recid
+    return 'lifewatch.openscience/%s' % recid
 
 
 @blueprint.route('/mint/<int:recid>', methods=['POST'])
