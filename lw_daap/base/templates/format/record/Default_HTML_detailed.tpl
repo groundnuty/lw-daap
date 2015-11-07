@@ -29,7 +29,7 @@ render_rel_input,
 open_panel_section,
 close_panel_section,
 label,
-archive_panel,
+archive_panel
 with context
 %}
 

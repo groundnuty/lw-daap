@@ -38,7 +38,7 @@
 {% from "communities/helpers.html" import curation_buttons with context %}
 {% from "format/record/record_macros.tpl" import render_authors, 
 render_access_rights, 
-pid_badge
+label
 with context
 %}
 
@@ -53,14 +53,14 @@ with context
       <i class="fa fa-calendar"></i> {{ record.get('creation_date')|invenio_format_date() }}
       |
       <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
-           {{ pid_badge("PID", get_pid(record.recid), cbgc="#0F81C2") }}  
+          {{ label("PID", get_pid(record.recid), cbgc="#D9634C") }}
       </a>                                                                
       {% include "lw_daap/pids/doi_info.html" %}   
       |
       {{ render_access_rights(record) if record.get('access_right') }}
       {% if record.record_selected_for_archive %}                                  
         | {{ label(content='archived') }}                                       
-      {% endif %} 
+      {% endif %}
 
       {% if record['keywords']|length %} 
       |
