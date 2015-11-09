@@ -57,6 +57,9 @@ CFG_SITE_DESCRIPTION = "LifeWatch Open Science Framework DESC"
 CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
+
+CFG_EMAIL_BACKEND = "flask_email.backends.smtp.Mail"
+
 CFG_SITE_SUPPORT_EMAIL = "support@mail"
 CFG_SITE_ADMIN_EMAIL = "support@mail"
 CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
