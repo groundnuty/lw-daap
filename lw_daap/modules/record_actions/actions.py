@@ -97,7 +97,7 @@ def record_actions(recid=None, project_id=None, action_name='',
     key = 'record_%s_%s' % (recid, action_name)
     cache_action = cache.get(key)
     if cache_action == action_name:
-        return json_error(400, ' '.join([msg, 'Please wait some minutes']))
+        return json_error(400, ' '.join([msg, 'Please wait some minutes.']))
     # Set 5 min cache to allow bibupload/bibreformat to finish
     cache.set(key, action_name, timeout=5*60)
 

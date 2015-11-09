@@ -34,6 +34,7 @@ require(['jquery'], function($) {
       curateUrl = a.data('curateUrl'); // Extract info from data-* attributes
       var modal = $(this);
       modal.find('#curate-form').attr('action', curateUrl);
+      modal.find('#curate-modal-state-title').hide();  
       });
     });
 </script>

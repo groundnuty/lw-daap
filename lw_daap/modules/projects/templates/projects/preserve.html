@@ -35,12 +35,14 @@ require(['jquery'], function($) {
       doiUrl = a.data('doiUrl') // Extract info from data-* attributes
       var modal = $(this)
       modal.find('#doi-form').attr('action', doiUrl);
+      modal.find('#doi-modal-state-title').hide();
       });
     $('#archive-confirm-dialog').on('show.bs.modal', function (event) {
       var a = $(event.relatedTarget)
       archiveUrl = a.data('archiveUrl') // Extract info from data-* attributes
       var modal = $(this)
       modal.find('#archive-form').attr('action', archiveUrl);
+      modal.find('#archive-modal-state-title').hide();
       });
 
     });
