@@ -105,13 +105,12 @@ REMOTE_APP = dict(
     disconnect_handler="invenio.modules.oauthclient.handlers"
                        ":disconnect_handler",
     signup_handler=dict(
-        info="invenio.modules.oauthclient.contrib.github:account_info",
-        setup="invenio.modules.oauthclient.contrib.github:account_setup",
+        info="lw_daap.base.auth.github:account_info",
+        setup="lw_daap.base.auth.github:account_setup",
         view="invenio.modules.oauthclient.handlers:signup_handler",
     ),
     params=dict(
-        request_token_params={'scope': ('user: email,'
-                                        'admin: repo_hook, read: org')},
+        request_token_params={'scope': ('user:email, read:org')},
         base_url='https://api.github.com/',
         request_token_url=None,
         access_token_url="https://github.com/login/oauth/access_token",
