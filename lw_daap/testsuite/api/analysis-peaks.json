@@ -9,17 +9,20 @@
                   "name":"Fernando Aguilar"
                }
              ],
-            "description": "Peak detection analysis for parameters at CdP Reservoir. Curation system.",
-            "keywords": [],
+            "description":"Peak detection analysis for parameters at CdP Reservoir. Curation system.",
+            "keywords":[],
             "access_right":"open",
-            "license":"cc-by",                                                          
+            "license":"cc-by",
+            "os": "ubuntu",
+            "flavor": "small",
+            "app_env": "jupyter-python",
             "rel_dataset": [                                                    
-              {"identifier": "3"}                                              
+              {"identifier": "10"}                                              
             ],                                                                  
             "rel_software": [                                                   
-              {"identifier": "4"}                                              
-            ] 
-         }   
+              {"identifier": "11"}                                              
+            ]      
+         }
       }
    ]
 }
