@@ -419,8 +419,8 @@ def join(project_id):
     if group.can_join(current_user):
         group.subscribe(current_user)
         # modify to/from/subject/content!
-        send_email('ayrodrig@gmail.com', 'ayrodrig@gmail.com',                  
-                   subject='Group pending request at LifeWatch Open Science Framework',
-                   content='You have group pending requests at LifeWatch...')   
+        #send_email('from@', 'to@',                  
+        #           subject='Group pending request at LifeWatch Open Science Framework',
+        #           content='You have group pending requests at LifeWatch...')   
         
     return redirect(url_for('.show', project_id=project_id, path='plan'))
