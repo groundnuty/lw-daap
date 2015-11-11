@@ -20,9 +20,10 @@ from __future__ import absolute_import
 
 from flask import Blueprint
 from invenio.ext.sslify import ssl_required
+from invenio.ext.cache import cache
 from lw_daap.ext.login import login_required
 
-from .actions import record_actions, doi_action, control_actions
+from .actions import record_actions, doi_action, control_actions, action_key
 
 
 blueprint = Blueprint(
@@ -37,6 +38,21 @@ blueprint = Blueprint(
 @blueprint.app_template_global()
 def get_pid(recid):
     return 'lifewatch.openscience/%s' % recid
+
+
+@blueprint.app_template_filter()
+def cached_record_action(record, action_name):
+    """Determine if a given action is underway."""
+    cache_action = cache.get(action_key(record['recid'], action_name))
+    if cache_action == action_name:
+        return True
+    attrs_for_actions = {
+        'curate': 'record_curated_in_project',
+        'publish': 'record_publish_from_project',
+        'archive': 'record_selected_for_archive',
+        'doi': 'doi',
+    }
+    return record.get(attrs_for_actions[action_name], False)
 
 
 @blueprint.route('/mint/<int:recid>', methods=['POST'])

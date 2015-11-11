@@ -27,6 +27,7 @@ from flask_login import current_user
 from flask_restful import abort
 
 from invenio.ext.cache import cache
+from invenio.ext.email import send_email     
 from invenio.legacy.bibrecord import record_add_field
 
 from invenio.base.decorators import wash_arguments
@@ -417,4 +418,9 @@ def join(project_id):
     group = project.group
     if group.can_join(current_user):
         group.subscribe(current_user)
+        # modify to/from/subject/content!
+        send_email('ayrodrig@gmail.com', 'ayrodrig@gmail.com',                  
+                   subject='Group pending request at LifeWatch Open Science Framework',
+                   content='You have group pending requests at LifeWatch...')   
+        
     return redirect(url_for('.show', project_id=project_id, path='plan'))

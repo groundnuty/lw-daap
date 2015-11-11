@@ -16,21 +16,21 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 #}
 
-
-{% macro curate_buttons(rec) -%} 
-  {% if not rec.record_curated_in_project %}
+{% macro curate_buttons(rec) -%}
+    {%- if rec|cached_record_action('curate') -%}
+        {%- set curate_state = "disabled" -%}
+    {%- else -%}
+        {%- set curate_state = "" -%}
+    {%- endif -%}
     <a data-toggle="modal" data-target="#curate-confirm-dialog"
-      data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curate</a>
-  {% else %} 
-    <a data-toggle="modal" data-target="#curate-confirm-dialog"
-      data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
-      rel="tooltip" title="Curate record"><i class="fa fa-check"></i> Curated</a>
-  {% endif %}
+      data-curate-url="{{ url_for('lwdaap_projects.curation', project_id=project.id, record_id=rec.recid) }}"
+      class="{{ curate_state }} btn btn-primary pull-right rmlink" rel="tooltip" title="Curate record">
+        <i class="fa fa-check"></i> {{ 'Curate' if curate_state == "" else 'Curated' }}
+    </a>
 {%- endmacro %}
 
 
-{% macro integrate_buttons(rec) -%} 
+{% macro integrate_buttons(rec) -%}
    <a class="btn btn-md pull-right integrate-chooser {{ 'btn-info' if rec.recid in selected_records else 'btn-danger' }}"
       href="#" rel="tooltip" title="Integrate record" data-record-id="{{ rec.recid }}" data-selected="{{ 'true' if rec.recid in selected_records else 'false' }}">
     {{ '<i class="fa fa-check"></i> Unselect' if rec.recid in selected_records else 'Select' }}
@@ -38,46 +38,48 @@
 {%- endmacro %}
 
 
-{% macro analyze_buttons(rec) -%} 
+{% macro analyze_buttons(rec) -%}
 <a class="btn btn-md btn-danger pull-right" href="{{ url_for('analyze.launch', title=rec.title, flavor=rec.flavor, os=rec.os, app_env=rec.app_env, recid=rec.recid) }}"><i class="fa fa-play-circle-o"></i> Run</a>
 {%- endmacro %}
 
 
-{% macro preserve_buttons(rec) -%} 
+{% macro preserve_buttons(rec) -%}
 <div class="pull-right">
-  {% if not rec.doi %}
-    <a data-toggle="modal" data-target="#doi-confirm-dialog"
-      data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
-      rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Mint DOI</a>
-  {% else %} 
-    <a data-toggle="modal" data-target="#doi-confirm-dialog"
-      data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
-      rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> Has DOI</a>
+  {%- if rec|cached_record_action('doi') -%}
+    {%- set doi_state = "disabled" -%}
+  {%- else -%}
+    {%- set doi_state = "" -%}
   {% endif %}
+  <a data-toggle="modal" data-target="#doi-confirm-dialog"
+     data-doi-url="{{ url_for('lwdaap_projects.mintdoi', project_id=project.id, record_id=rec.recid) }}"
+     class="{{ doi_state }} btn btn-danger rmlink"
+     rel="tooltip" title="Mint DOI"><i class="fa fa-barcode"></i> {{ 'Mint DOI' if doi_state else 'Has DOI' }}</a>
 
-  {% if not rec.record_selected_for_archive %}
-    <a data-toggle="modal" data-target="#archive-confirm-dialog"
-      data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger rmlink" 
-      rel="tooltip" title="Archive"><i class="fa fa-archive"></i> Archive</a>
-  {% else %} 
-    <a data-toggle="modal" data-target="#archive-confirm-dialog"
-      data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary rmlink" 
-      rel="tooltip" title="Archive"><i class="fa fa-archive"></i> Archived</a>
+
+  {%- if rec|cached_record_action('archive') -%}
+    {%- set archive_state = "disabled" -%}
+  {%- else -%}
+    {%- set archive_state = "" -%}
   {% endif %}
+  <a data-toggle="modal" data-target="#archive-confirm-dialog"
+     data-archive-url="{{ url_for('lwdaap_projects.archive', project_id=project.id, record_id=rec.recid) }}"
+     class="{{ archive_state }} btn btn-danger rmlink"
+     rel="tooltip" title="Archive"><i class="fa fa-archive"></i> {{ 'Archive' if archive_state else 'Archived' }}</a>
 </div>
 {%- endmacro %}
 
 
-{% macro publish_buttons(rec) -%} 
-  {% if not rec.record_public_from_project %}
-    <a data-toggle="modal" data-target="#publish-confirm-dialog"
-      data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="btn btn-danger pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Publish</a>
-   {% else %} 
-    <a data-toggle="modal" data-target="#publish-confirm-dialog"
-      data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}" class="disabled btn btn-primary pull-right rmlink" 
-      rel="tooltip" title="Publish record"><i class="fa fa-share"></i> Public</a>
+{% macro publish_buttons(rec) -%}
+  {%- if rec|cached_record_action('publish') -%}
+    {%- set publish_state = "disabled" -%}
+  {%- else -%}
+    {%- set publish_state = "" -%}
   {% endif %}
+
+  <a data-toggle="modal" data-target="#publish-confirm-dialog"
+     data-publish-url="{{ url_for('lwdaap_projects.publication', project_id=project.id, record_id=rec.recid) }}"
+     class="{{ publish_state }} btn btn-danger pull-right rmlink"
+     rel="tooltip" title="Publish record"><i class="fa fa-share"></i> {{ 'Publish' if publish_state else 'Public' }}</a>
 {%- endmacro %}
 
 

@@ -34,6 +34,10 @@ def build_doi(recid):
     return '10.5281/lwdaap.%s' % recid
 
 
+def action_key(recid, action_name):
+    return 'record_%s_%s' % (recid, action_name)
+
+
 def add_doi_to_record(recid, doi):
     rec = {}
     record_add_field(rec, '001', controlfield_value=str(recid))
@@ -94,7 +98,7 @@ def record_actions(recid=None, project_id=None, action_name='',
             abort(401)
 
     # crazy invenio stuff, cache actions so they dont get duplicated
-    key = 'record_%s_%s' % (recid, action_name)
+    key = action_key(recid, action_name)
     cache_action = cache.get(key)
     if cache_action == action_name:
         return json_error(400, ' '.join([msg, 'Please wait some minutes.']))
