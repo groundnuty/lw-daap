@@ -139,6 +139,7 @@ def rel_record_validator(form, field):
     from lw_daap.modules.projects.models import Project
 
     from flask import current_app
+    from flask_login import current_user
     for rel in field.data:
         current_app.logger.debug(field.data)
         current_app.logger.debug(rel)
