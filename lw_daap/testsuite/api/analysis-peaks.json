@@ -1,0 +1,25 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"analysis",
+            "title":"Cuerda del Pozo Peak Detector Analysis",
+            "creators":[
+               {
+                  "name":"Fernando Aguilar"
+               }
+             ],
+            "description": "Peak detection analysis for parameters at CdP Reservoir. Curation system.",
+            "keywords": [],
+            "access_right":"open",
+            "license":"cc-by",                                                          
+            "rel_dataset": [                                                    
+              {"identifier": "3"}                                              
+            ],                                                                  
+            "rel_software": [                                                   
+              {"identifier": "4"}                                              
+            ] 
+         }   
+      }
+   ]
+}

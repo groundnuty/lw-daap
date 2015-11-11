@@ -1,0 +1,50 @@
+{
+   "records":[
+      {
+         "metadata": {
+            "project": "1",
+            "upload_type":"dataset",
+            "title":"Physicochemical Water Parameters 2013",
+            "creators":[
+               {
+                  "name":"Ecohydros S.L."
+               }
+            ],
+            "description": "Physicochemical water data taken at Cuerda del Pozo Reservoir during 2013. This dataset includes different parameters like date, temperature, water pressure, salinity, dissolved oxygen, oxygen saturation or pH.",
+            "keywords": ["AMT, temperature, pressure, salinity, dissolved oxygen, saturation, pH, Cuerda del Pozo, reservoir, Soria, Duero, fresh water, confederacion hidrografica"],
+            "access_right":"open",
+            "license":"cc-by",
+            "communities":[
+               {
+                  "identifier":"cuerdadelpozo"
+               }
+            ],
+            "period":[
+               {
+                  "start":"2013-01-01",
+                  "end":"2013-12-31"
+               }
+            ],
+            "frequency":[
+               {
+                  "size":"1",
+                  "unit":"hour"
+               }
+            ],
+           "spatial":[
+           {
+              "west":"-2.835156",
+              "east":"-2.701603",
+              "north":"41.908956",
+              "south":"41.827653"
+           }]                                                                 
+         },
+         "files":[
+            {
+               "filename":"AMT2013.csv",
+               "description":"Data from year 2013"
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,34 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "project": "1",
+            "upload_type":"software",
+            "title":"Thermocline Analysis Software",
+            "creators":[
+               {
+                  "name":"Ecohydros S.L."
+               }
+             ],
+            "description": "Thermocline parameters calculation. It expects processed data with depth and temperature parameters.",
+            "keywords":["R, jupyter"],
+            "access_right":"open",
+            "license":"cc-by",
+            "os": "ubuntu",
+            "flavor": "tiny",
+            "app_env": "ssh",
+            "communities":[
+               {
+                  "identifier":"cuerdadelpozo"
+               }
+            ]                                                                  
+         },
+         "files":[
+            {
+               "filename":"AnalisisTermoclina.ipynb",
+               "description": "Jupyter Notebook with code"
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,24 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"software",
+            "title":"Level/Date plot",
+            "creators":[
+               {
+                  "name":"Fernando Aguilar"
+               }
+             ],
+            "description": "R script for charting parameters in depth and time.",
+            "keywords": [],
+            "access_right":"open",
+            "license":"cc-by"
+         },
+         "files":[
+            {
+               "filename":"levelplot.R"
+            }
+         ]
+      }
+   ]
+}

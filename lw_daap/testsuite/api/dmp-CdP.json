@@ -1,0 +1,31 @@
+{
+   "records":[
+      {
+         "metadata": {
+            "project": "1",
+            "upload_type":"dmp",
+            "title":"Data Management Plan for Cuerda del Pozo",
+            "creators":[
+               {
+                  "name":"Ecohydros S.L."
+               }
+            ],
+            "description": "Data Management Plan for Cuerda del Pozo",
+            "keywords": ["AMT, temperature, pressure, salinity, dissolved oxygen, saturation, pH, Cuerda del Pozo, reservoir, Soria, Duero, fresh water, confederacion hidrografica"],
+            "access_right":"open",
+            "license":"cc-by",
+            "communities":[
+               {
+                  "identifier":"cuerdadelpozo"
+               }
+            ]
+         },
+         "files":[
+            {
+               "filename":"dmp-cuerdadelpozo.pdf",
+               "description":"Data Management Plan for Cuerda del Pozo"
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,24 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"dataset",
+            "title":"Cuerda del Pozo Peak Detector Dataset",
+            "creators":[
+               {
+                  "name":"Fernando Aguilar"
+               }
+             ],
+            "description": "Peak detection dataset for parameters at CdP Reservoir. Curation system.",
+            "keywords": [],
+            "access_right":"open",
+            "license":"cc-by"
+         },
+         "files":[
+            {
+               "filename":"peaks.csv"
+            }
+         ]
+      }
+   ]
+}
