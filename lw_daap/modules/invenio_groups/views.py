@@ -52,7 +52,6 @@ from flask_menu import register_menu
 from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
 from invenio.ext.principal import permission_required
-from invenio.ext.email import send_email
 
 from invenio.modules.accounts.models import User
 
@@ -496,10 +495,6 @@ def join(group_id):
 
     if group.can_join(current_user):
         group.subscribe(current_user)
-        # modify to/from/subject/content!                                       
-        #send_email('from@', 'to@',                  
-        #           subject='Group pending request at LifeWatch Open Science Framework',
-        #           content='You have group pending requests at LifeWatch...')   
     # flash(
     #     _(
     #         'You cannot invite yourself to the group '
