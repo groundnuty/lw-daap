@@ -37,9 +37,25 @@
 
 {% extends "accounts/login_base.html" %}
 
-{%- block form_header %}{% endblock %}
+{#{%- block form_header %}{% endblock %}#}
+{%- block form_header_message scoped -%}{% endblock %}
 {%- block form_auth_external scoped -%}{% endblock %}
 {% block nickname_popover_placement %}left{% endblock%}
+
+
+{% if config.CFG_EXTERNAL_AUTH_USING_SSO %}{% block form_header_sso scoped %}
+  <div class="col-md-8 col-md-offset-2">
+    <p class="lead text-center">
+    {% autoescape false %}
+    {{ _("Login using %(x_url_open)sSingle-Sign-On%(x_url_close)s",
+      x_url_open='<a href="'+url_for('sso_login', _external=True, _scheme='https', referer=request.values.get('referer'))+'">',
+      x_url_close='</a>') }}
+    {% endautoescape %}
+    </p>
+    <hr/>
+  </div>
+{% endblock form_header_sso %}{% endif %}
+
 
 {%- block form_auth_internal -%}
 <!--<div class="col-sm-6 col-md-8">

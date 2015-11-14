@@ -22,7 +22,6 @@
 
 from datetime import timedelta
 import warnings
-import invenio.ext.login.legacy_user
 import lw_daap.base.auth.github
 import lw_daap.base.auth.google
 import lw_daap.base.auth.facebook
@@ -31,11 +30,12 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-# from invenio.base.config import EXTENSIONS
+from invenio.base.config import EXTENSIONS
 
 
 # MonkeyPatch the UserInfo so it gets our group stuff
 # must be done quite early!
+import invenio.ext.login.legacy_user
 old_login = invenio.ext.login.legacy_user.UserInfo._login
 
 
@@ -114,7 +114,11 @@ PACKAGES_EXCLUDE = [
     "invenio.modules.annotations",
 ]
 
-# EXTENSIONS.remove('invenio.ext.legacy')
+
+EXTENSIONS += [
+    "invenio.ext.sso"
+]
+
 
 DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.dmp:dmp",
@@ -172,6 +176,24 @@ OAUTHCLIENT_REMOTE_APPS = dict(
     google=lw_daap.base.auth.google.REMOTE_APP,
     facebook=lw_daap.base.auth.facebook.REMOTE_APP,
 )
+
+SSO_ATTRIBUTE_MAP = {
+    "Shib-Identity-Provider": (True, "idp"),
+    "persistent-id": (True, "persistent-id"),
+    #"HTTP_SHIB_SHARED_TOKEN": (True, "shared_token"),
+    "cn": (True, "cn"),
+    #"HTTP_SHIB_MAILi": (True, "email"),
+    "givenName": (False, "first_name"),
+    "unscoped-affiliation": (False, "unscoped-affiliation"),
+    "affiliation": (False, "affiliation"),
+    "manager": (False, "manager"),
+    "entitlement": (False, "entitlement"),
+    "eppn": (False, "eppn"),
+    "sn": (False, "last_name"),
+}
+CFG_EXTERNAL_AUTH_HIDDEN_GROUPS = ()
+CFG_EXTERNAL_AUTH_HIDDEN_GROUPS_RE = ()
+
 
 WEBHOOKS_DEBUG_RECEIVER_URLS = {
     'github': 'http://github.aeonium.ultrahook.com?access_token=%(token)s',
