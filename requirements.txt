@@ -7,6 +7,7 @@ idutils
 altmetric
 ###################
 github3.py
+flask-sso
 pymongo
 # e-infra stuff
 cryptography
