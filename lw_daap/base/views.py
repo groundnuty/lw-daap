@@ -237,7 +237,10 @@ def dcat():
     dcat +=    """      <dcat:Catalog rdf:about=\"""" + current_app.config['CFG_SITE_URL'] + """/collection/Dataset">\n"""
     dcat +=    """         <dc:language>""" + current_app.config['CFG_SITE_LANG'] + """</dc:language>\n"""
     dcat +=    """         <dct:title xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_NAME'] + """</dct:title>\n"""
-    dcat +=    """         <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_DESCRIPTION'] + """</dct:description>\n"""
+    if current_app.config['CFG_SITE_DESCRIPTION']:
+        dcat +=    """         <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_DESCRIPTION'] + """</dct:description>\n"""
+    else:
+        dcat +=    """         <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_NAME'] + """</dct:description>\n"""
     dcat +=    """         <dct:extent>\n"""
     dcat +=    """            <dct:SizeOrDuration>\n"""
     dcat +=    """               <rdf:value rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">""" + str(len(recids)) + """</rdf:value>\n"""
