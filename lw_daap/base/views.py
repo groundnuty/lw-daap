@@ -219,10 +219,8 @@ def register_receivers():
 def dcat():
     from invenio.legacy.search_engine import perform_request_search
     from invenio.modules.records.api import get_record
-    from invenio.modules.formatter.api import get_modification_date, \
-        get_creation_date
-    from invenio.utils.mimetype import guess_mimetype_and_encoding, \
-        guess_extension
+    from invenio.modules.formatter.api import get_modification_date, get_creation_date
+    from invenio.utils.mimetype import guess_mimetype_and_encoding, guess_extension
 
     recids = perform_request_search(cc='Dataset')
     dcat =     """<rdf:RDF\n"""
@@ -236,24 +234,17 @@ def dcat():
     dcat +=    """   xmlns:time="http://www.w3.org/2006/time#"\n"""
     dcat +=    """   xmlns:prism="http://prismstandard.org/namespaces/basic/3.0/"\n"""
     dcat +=    """   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n"""
-    dcat +=    """      <dcat:Catalog rdf:about=\"""" + \
-        current_app.config['CFG_SITE_URL'] + """/collection/Dataset">\n"""
-    dcat +=    """         <dc:language>""" + \
-        current_app.config['CFG_SITE_LANG'] + """</dc:language>\n"""
-    dcat +=    """         <dct:title xml:lang=\"""" + current_app.config[
-        'CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_NAME'] + """</dct:title>\n"""
-    dcat +=    """         <dct:description xml:lang=\"""" + current_app.config[
-        'CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_DESCRIPTION'] + """</dct:description>\n"""
+    dcat +=    """      <dcat:Catalog rdf:about=\"""" + current_app.config['CFG_SITE_URL'] + """/collection/Dataset">\n"""
+    dcat +=    """         <dc:language>""" + current_app.config['CFG_SITE_LANG'] + """</dc:language>\n"""
+    dcat +=    """         <dct:title xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_NAME'] + """</dct:title>\n"""
+    dcat +=    """         <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + current_app.config['CFG_SITE_DESCRIPTION'] + """</dct:description>\n"""
     dcat +=    """         <dct:extent>\n"""
     dcat +=    """            <dct:SizeOrDuration>\n"""
-    dcat +=    """               <rdf:value rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">""" + \
-        str(len(recids)) + """</rdf:value>\n"""
-    dcat +=    """                  <rdfs:label xml:lang=\"""" + current_app.config[
-        'CFG_SITE_LANG'] + """\">""" + str(len(recids)) + """ datasets</rdfs:label>\n"""
+    dcat +=    """               <rdf:value rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">""" + str(len(recids)) + """</rdf:value>\n"""
+    dcat +=    """                  <rdfs:label xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + str(len(recids)) + """ datasets</rdfs:label>\n"""
     dcat +=    """            </dct:SizeOrDuration>\n"""
     dcat +=    """         </dct:extent>\n"""
-    dcat +=    """         <foaf:homepage rdf:resource=\"""" + \
-        current_app.config['CFG_SITE_URL'] + """\"/>\n"""
+    dcat +=    """         <foaf:homepage rdf:resource=\"""" + current_app.config['CFG_SITE_URL'] + """\"/>\n"""
     dcat +=    """         <dct:publisher rdf:resource="http://www.lifewatch.eu/"/>\n"""
     dcat +=    """         <dcat:themeTaxonomy rdf:resource="http://datos.gob.es/kos/sector-publico/sector/medio-rural-pesca"/>\n"""
     dcat +=    """         <dcat:themeTaxonomy rdf:resource="http://datos.gob.es/kos/sector-publico/sector/medio-ambiente"/>\n"""
@@ -264,26 +255,21 @@ def dcat():
         issues.append(get_creation_date(recid))
         modifications.append(get_modification_date(recid))
 
-    dcat +=    """         <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">""" + \
-        str(min(issues)) + """</dct:issued>\n"""
-    dcat +=    """         <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">""" + \
-        str(max(modifications)) + """</dct:modified>\n"""
+    dcat +=    """         <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">""" + str(min(issues)) + """</dct:issued>\n"""
+    dcat +=    """         <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">""" + str(max(modifications)) + """</dct:modified>\n"""
 
     for recid in recids:
         record = get_record(recid)
-        dcat += str(record)
         dcat += """         <dcat:dataset>\n"""
         if 'doi' in record:
-            dcat += """            <dcat:Dataset rdf:about="http://dx.doi.org/""" + \
-                str(record['doi']) + """\">\n"""
-            dcat += """               <dct:identifier>http://dx.doi.org/""" + \
-                str(record['doi']) + """</dct:identifier>\n"""
+            dcat += """            <dcat:Dataset rdf:about="http://dx.doi.org/""" + str(record['doi']) + """\">\n"""
+            dcat += """               <dct:identifier>http://dx.doi.org/""" + str(record['doi']) + """</dct:identifier>\n"""
         else:
             dcat += """            <dcat:Dataset rdf:about=\"""" + current_app.config['CFG_SITE_URL'] + """/""" + current_app.config['CFG_SITE_RECORD'] + """/""" + str(recid) + """">\n"""
             dcat += """               <dct:identifier>""" + current_app.config['CFG_SITE_URL'] + """/""" + current_app.config['CFG_SITE_RECORD'] + """/""" + str(recid) + """     </dct:identifier>\n"""
         dcat += """               <dct:title xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + str(record['title']) + """</dct:title>\n"""
         dcat += """               <dct:description xml:lang=\"""" + current_app.config['CFG_SITE_LANG'] + """\">""" + str(record['description']) + """</dct:description>\n"""
-        dcat += """               <dcat:theme rdf:resource=""/>\n"""
+        dcat += """               <dcat:theme rdf:resource="http://datos.gob.es/kos/sector-publico/sector/ciencia-tecnologia"/>\n"""
         dcat += """               <dc:language>""" + current_app.config['CFG_SITE_LANG'] + """</dc:language>\n"""
         dcat += """               <dct:publisher rdf:resource="http://www.lifewatch.eu/"/>\n"""
         if record['access_right'] <> 'restricted' and record['access_right'] <> 'closed':
@@ -313,10 +299,35 @@ def dcat():
                 dcat += """                     </time:hasEnd>\n"""
                 dcat += """                  </time:Interval>\n"""
                 dcat += """               </dct:temporal>\n"""
+        if 'spatial' in record:
+            for spatial in record['spatial']:
+                dcat += """               <dct:spatial>\n"""
+                dcat += """                  <dct:Location>\n"""
+                dcat += """                      <locn:geometry rdf:datatype="https://www.iana.org/assignments/media-types/application/vnd.geo+json">\n"""
+                dcat += """                          {"type": "Polygon", "coordinates": [[[""" + str(spatial['north']) + """), """ + str(spatial['west']) + """], [""" + str(spatial['north']) + """, """ + str(spatial['east']) + """], [""" + str(spatial['south']) + """, """ + str(spatial['east']) + """], [""" + str(spatial['south']) + """, """ + str(spatial['west']) + """], [""" + str(spatial['north']) + """, """ + str(spatial['west']) + """]]]}\n"""
+                dcat += """                      </locn:geometry>\n"""
+                dcat += """                  </dct:Location>\n"""
+                dcat += """               </dct:spatial>\n"""
+        if 'frequency' in record:
+            for frequency in record['frequency']:
+                dcat += """               <dct:accrualPeriodicity>\n"""
+                dcat += """                  <dct:Frequency>\n"""
+                dcat += """                      <rdfs:label>Every """ + str(frequency['size']) + """ """ + str(frequency['unit']) + """s</rdfs:label>\n"""
+                dcat += """                      <rdf:value>\n"""
+                dcat += """                          <time:DurationDescription>\n"""
+                dcat += """                              <rdfs:label>""" + str(frequency['size']) + """ """ + str(frequency['unit']) + """s</rdfs:label>\n"""
+                dcat += """                              <time:""" + str(frequency['unit']) + """s rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">""" +  str(frequency['size']) + """</time:""" + str(frequency['unit']) + """s>\n"""
+                dcat += """                          </time:DurationDescription>\n"""
+                dcat += """                      </rdf:value>\n"""
+                dcat += """                  </dct:Frequency>\n"""
+                dcat += """               </dct:accrualPeriodicity>\n"""
+        if 'related_identifiers' in record:
+            for reference in record['related_identifiers']:
+                dcat += """               <dct:references rdf:resource="http://dx.doi.org/""" + str(reference['identifier']) + """"/>\n"""
         if 'fft' in record:
             for dis in record['fft']:
                 dcat += """               <dcat:distribution>\n"""
-                dcat += """                  <dcat:Distribution rdf:about="">\n"""
+                dcat += """                  <dcat:Distribution>\n"""
                 if 'description' in dis:
                     dcat += """                     <dct:title xml:lang="en">""" + str(dis['description']) + """</dct:title>\n"""
                 dcat += """                     <dct:accessURL  rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">""" + str(dis['url']) + """</dct:accessURL>\n"""
