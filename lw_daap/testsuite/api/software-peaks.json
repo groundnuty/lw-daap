@@ -1,0 +1,24 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"software",
+            "title":"Cuerda del Pozo Peak Detector Software",
+            "creators":[
+               {
+                  "name":"Fernando Aguilar"
+               }
+             ],
+            "description": "Peak detection software for parameters at CdP Reservoir. Curation system.",
+            "keywords": [],
+            "access_right":"open",
+            "license":"cc-by"
+         },
+         "files":[
+            {
+               "filename":"peaks_detector.py"
+            }
+         ]
+      }
+   ]
+}

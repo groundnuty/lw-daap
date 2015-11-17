@@ -1,0 +1,84 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as doied by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+
+{% extends 'projects/show.html' %}
+{% set active='preserve' %}
+
+
+{% from 'projects/macros.tpl' import record_table with context %}
+
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+var doiUrl
+var archiveUrl
+require(['jquery'], function($) {
+    $('#doi-confirm-dialog').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      doiUrl = a.data('doiUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#doi-form').attr('action', doiUrl);
+      modal.find('#doi-modal-state-title').hide();
+      });
+    $('#archive-confirm-dialog').on('show.bs.modal', function (event) {
+      var a = $(event.relatedTarget)
+      archiveUrl = a.data('archiveUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#archive-form').attr('action', archiveUrl);
+      modal.find('#archive-modal-state-title').hide();
+      });
+
+    });
+</script>
+{% endblock %}
+
+
+{% block project_body %}
+
+{% from "lw_daap/record_actions/macros.html" import record_action_modal %}
+
+{% set doimodalbody %}
+<ul>
+  <li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
+  <li>The minting process will take some minutes, when available it will be shown in the record.</li>
+</ul>
+{% endset %}
+
+{{ record_action_modal('doi', 'Mint DOI?', 'Mint DOI', doimodalbody, 'doiUrl', doiform) }}
+
+{% set archivemodalbody %}
+<ul>
+  <li>Would you like to archive this record?</li>
+  <li>If you archive it, the record will be safely backed up to tape.</li>
+</ul>
+{% endset %}
+
+{{ record_action_modal('archive', 'Archive?', 'Archive', archvemodalbody, 'archiveUrl', archiveform) }}
+
+
+<div class="col-md-12">
+  <h3>Preserve</h3>
+  <p>By default, records are assigned a persistent and unique identifier in the context of this framework. In addition, a digital object identifier (DOI) can be minted for selected records so they become widely citable.</p>
+  <p>Records entered into this framework are stored safely in reliable disk systems. In addition, selected records are backed up to tape for preservation.
+  </p>
+
+  {{ record_table('preserve', records, "Project records")|safe}}
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "upload_type":"software",
+            "title":" DB_chart",
+            "creators":[
+               {
+                  "name":"Fernando Aguilar"
+               }
+             ],
+            "description": "Python based script for charting data from DataBases (generic)",
+            "keywords": [],
+            "access_right":"open",
+            "license":"cc-by"
+         },
+         "files":[
+            {
+               "filename":"dbChart.py"
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,34 @@
+{
+   "records":[
+      {
+         "metadata":{
+            "project": "1",
+            "upload_type":"analysis",
+            "title":"Thermocline Demo Analysis",
+            "creators":[
+               {
+                  "name":"Ecohydros S.L."
+               }
+             ],
+            "description": "This is a demo analysis using the processed dataset of Cuerda del Pozo.",
+            "keywords":["Analysis, R"],
+            "access_right":"open",
+            "license":"cc-by",
+             "os": "ubuntu",
+            "flavor": "small",
+            "app_env": "jupyter-r",
+            "communities":[
+               {
+                  "identifier":"cuerdadelpozo"
+               }
+            ],                                                                 
+            "rel_dataset": [                                                    
+              {"identifier": "3"}                                              
+            ],                                                                  
+            "rel_software": [                                                   
+              {"identifier": "4"}                                              
+            ]      
+         }
+      }
+   ]
+}

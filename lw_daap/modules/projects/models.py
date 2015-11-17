@@ -58,9 +58,6 @@ class Project(db.Model):
                                   default=datetime.now)
     """ date of last modification"""
 
-    is_public = db.Column(db.Boolean, nullable=False, default=False)
-    """ does the project have any public records?"""
-
     # collection
     id_collection = db.Column(
         db.Integer(15, unsigned=True), db.ForeignKey(Collection.id),
@@ -78,6 +75,8 @@ class Project(db.Model):
     )
     owner = db.relationship(User, backref='projects',
                             foreign_keys=[id_user])
+
+    eresable = db.Column(db.Boolean, nullable=False, default=True)
 
     # group
     id_group = db.Column(
@@ -114,6 +113,7 @@ class Project(db.Model):
         p = (' AND '.join(q))
         recids = search_pattern_parenthesised(p=p)
         records = Record.query.filter(Record.id.in_(recids))
+        open('DEBUG', 'w+').write(str(recids))
         return records
 
     def save_collectionname(self, collection, title):
@@ -278,10 +278,22 @@ class Project(db.Model):
         groups = user.get('group', [])
         return self.id_user == uid or self.group.name in groups
 
+    def is_empty(self):
+        if self.eresable:
+            # Ensure project has not records.
+            from invenio.legacy.search_engine import search_pattern
+            q = '980__:%s' % self.get_collection_name()
+            recids = search_pattern(p=q)
+            if len(recids) != 0:
+                self.eresable = False
+                db.session.commit()
+                return False
+            else:
+                return True
+        return False
+
     @classmethod
-    def get_project_by_collection(cls, collection):
-        prefix = '%s-' % cfg['PROJECTS_COLLECTION_PREFIX']
-        id = collection[collection.startswith(prefix) and len(prefix):]
+    def get_project(cls, id):
         try:
             return cls.query.get(int(id))
         except ValueError:

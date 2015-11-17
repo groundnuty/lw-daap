@@ -1,20 +1,20 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 {#
 # This file is part of Invenio.
@@ -44,23 +44,23 @@
 <script type="text/javascript">
 require(['jquery'], function($) {
     $('#deletemodal').on('show.bs.modal', function (event) {
-        var a = $(event.relatedTarget)
-        var deleteUrl = a.data('deleteUrl') // Extract info from data-* attributes
-        var modal = $(this)
-        modal.find('#deleteform').attr('action', deleteUrl);
+      var a = $(event.relatedTarget)
+      var deleteUrl = a.data('deleteUrl') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('#deleteform').attr('action', deleteUrl);
+      });
     });
-});
 </script>
 {% endblock %}
 
 {% macro project_row(p) %}
 <tr>
   <td style="padding-left:20px; width: 50%;">
-    {% if not p.is_public and p.id_user == current_user.get_id() %}
+    {% if p.is_empty() and p.id_user == current_user.get_id() %}
     <a href="#" data-toggle="modal" data-target="#deletemodal"
-       data-delete-url="{{ url_for('.delete', project_id=p.id) }}"
-       class="rmlink" rel="tooltip" title="Delete project">
-       <i class="glyphicon glyphicon-trash"></i>&nbsp;
+      data-delete-url="{{ url_for('.delete', project_id=p.id) }}"
+      class="rmlink" rel="tooltip" title="Delete project">
+      <i class="glyphicon glyphicon-trash"></i>&nbsp;
     </a>
     {% endif %}
     <a href="{{ url_for('.show', project_id=p.id) }}">
@@ -79,10 +79,11 @@ require(['jquery'], function($) {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 id="deletemodal_label">Delete project?</h3>
+        <h3 id="deletemodal_label">Delete project</h3>
       </div>
       <div class="modal-body">
-        <div class="alert alert-danger"><h5>Warning</h5><ul><li>You will loose all connections to records currently attached to this project and you will not be able to recover them.</li></ul></div>
+        <div class="alert alert-danger"><strong>Warning.</strong> You will not be able to recover it.
+        </div>
       </div>
       <div class="modal-footer">
         <form id="deleteform" action="#" method="POST">
@@ -103,25 +104,25 @@ require(['jquery'], function($) {
     {% endcall %}
     {% call hb.panel_body() %}
     {% if not myprojects %}
-      <p class="text-muted">{{ _('You currently have no projects') }}</p>
+    <p class="text-muted">{{ _('You currently have no projects') }}</p>
     {% else %}
-      {% for proj in myprojects if not proj.is_public %}
+      {% for proj in myprojects if proj.is_empty() %}
       {%- if loop.first %}
-      <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Private') }}</h4>
-      <table class="table table-striped">
+       <h4><i class="fa fa-fw fa-paper-plane-o"></i> {{ _('Empty projects') }}</h4>
+       <table class="table table-striped">
       {%- endif %}
-        {{ project_row(proj) }}
+      {{ project_row(proj) }}
       {%- if loop.last %}
       </table>
+      <div class="spacer30"></div>
       {%- endif %}
-      {% else %}
       {% endfor %}
-      {% for proj in myprojects if proj.is_public %}
+      {% for proj in myprojects if not proj.is_empty() %}
       {%- if loop.first %}
-      <h4><i class="fa fa-fw fa-upload"></i> {{ _('Public') }}</h4>
-      <table class="table table-striped">
+      <h4><i class="fa fa-fw fa-bolt"></i> {{ _('Active projects') }}</h4>
+      <table class="table">
       {% endif %}
-        {{ project_row(proj) }}
+      {{ project_row(proj) }}
       {%- if loop.last %}
       </table>
       {%- endif %}

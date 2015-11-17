@@ -1,47 +1,61 @@
 {#
- # This file is part of Lifewatch DAAP.
- # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
- #
- # Lifewatch DAAP is free software; you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, either version 3 of the License, or
- # (at your option) any later version.
- #
- # Lifewatch DAAP is distributed in the hope that it will be useful,
- # but WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- # GNU General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
- # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
- #}
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
 
 {%- block footer %}
 <div class="footer-container">
- <div class="col-sm-12 col-md-6">
-    {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
-    <a href="{{url_for("lw_daap.about")}}">{{_("About")}}</a>
-    <span class="separator">|</span>
-    <a href="{{url_for("lw_daap.api")}}">{{_("API")}}</a>
-    <span class="separator">|</span>
-    <a href="{{url_for("lw_daap.contact")}}">{{- _("Contact") -}}</a>
-    <span class="separator">|</span>
-    <a href="{{url_for("lw_daap.privacypolicy")}}">{{- _("Privacy Policy") -}}</a>
-    <span class="separator">|</span>
-    <a href="{{url_for("lw_daap.termsofservices")}}">{{- _("Terms of Services") -}}</a>
-    <span class="separator">|</span>
-    <a href="{{url_for("lw_daap.useguide")}}">{{_("Use Guide")}}</a>
+  <div class="col-sm-12 col-md-4">
+    <div style="display: inline-block;">
+
+      {{ config["CFG_SITE_NAME_INTL"][g.ln] }}<br/>
+      <a href="{{url_for("lw_daap.about")}}">{{_("About")}}</a>
+      <span class="separator">|</span>
+      <a href="{{url_for("lw_daap.api")}}">{{_("API")}}</a>
+      <span class="separator">|</span>
+      <a href="{{url_for("lw_daap.contact")}}">{{- _("Contact") -}}</a>
+      <span class="separator">|</span>
+      <a href="{{url_for("lw_daap.privacypolicy")}}">{{- _("Privacy Policy") -}}</a>
+      <span class="separator">|</span>
+      <a href="{{url_for("lw_daap.termsofservices")}}">{{- _("Terms of Services") -}}</a>
+      <span class="separator">|</span>
+      <a href="{{url_for("lw_daap.useguide")}}">{{_("Use Guide")}}</a>
+    </div>
   </div>
 
-  <div class="col-sm-12 col-md-6 pull-right">
-    {{ _("Powered by") }}
-    <a href="http://invenio-software.org/">
-      <img id="invenio-logo" src="{{url_for('static', filename='img/invenio.png')}}"/>
-    </a>
-    <br/>
-    {{ _("Developed by") }} <a href="http://aeonium.eu">
-    aeonium.eu
-    </a>
+
+  <div class="col-sm-12 col-md-8 pull-right">
+    <div style="display: inline-block; margin-right: 10px; width: 250px;">
+      <small>This project has been funded with support from the European Commission</small></div>
+    <div style="display: inline-block; position: relative; top: -10px;">
+      <a href="http://www.mineco.gob.es"><img src="{{url_for('static', filename='img/mineco.jpg')}}" style="height: 50px;"/></a>
+      <a href="http://www.red.es/redes/%C2%BFquienes-somos/feder"><img src="{{url_for('static', filename='img/feder.png')}}" style="height: 50px;"/></a>
+    </div>
+    <div class="text-center" style="display: inline-block; margin-left: 10px;">
+      {{ _("Powered by") }}
+      <a href="http://invenio-software.org/">
+        <img id="invenio-logo" src="{{url_for('static', filename='img/invenio.png')}}"/>
+      </a>
+      <br/>
+      {{ _("Developed by") }} <a href="http://aeonium.eu">
+        aeonium.eu
+      </a>
+    </div>
+
+
   </div>
- </div>
+</div>
 {%- endblock footer %}

@@ -36,7 +36,11 @@
 #}
 
 {% from "communities/helpers.html" import curation_buttons with context %}
-{% from "format/record/record_macros.tpl" import render_authors, render_access_rights %}
+{% from "format/record/record_macros.tpl" import render_authors, 
+render_access_rights, 
+label
+with context
+%}
 
 {% bundle "communities.js" %}
 
@@ -46,13 +50,17 @@
       |
       <i class="fa fa-calendar"></i> {{ record.get('creation_date')|invenio_format_date() }}
       |
-      {% if record.doi %}
-      <a href="http://dx.doi.org/{{ record.doi }}s" title="DOI" target="_blank"><i class="fa fa-barcode"></i> {{ record.doi }}</a>
+      <a href="{{url_for('record.metadata', recid=record.recid)}}" title="PID" target="_blank">
+          {{ label("PID", get_pid(record.recid), cbgc="#D9634C") }}
+      </a>                                                                
+      {#{% include "lw_daap/record_actions/doi_info.html" %}#}   
       |
-      {% endif %}
       {{ render_access_rights(record) if record.get('access_right') }}
+      {% if record.record_selected_for_archive %}                                  
+        | {{ label(content='archived') }}                                       
+      {% endif %}
 
-      {% if record['keywords']|length %} | <i class="fa fa-tags"></i>
+      {% if record['keywords']|length %} 
       |
       {% for keyword in record['keywords'] %}
       <span class="label label-default" style="display: inline-block; margin: 5px, 5px;">

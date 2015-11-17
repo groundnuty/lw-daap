@@ -42,7 +42,7 @@
 
 {% block settings_body %}
 <div class="panel-list-wrapper">
-  <div class="panel panel-default ">
+  {#<div class="panel panel-default ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-cubes"></i> Developer Applications
     <a class="btn btn-primary  pull-right" href="{{ url_for('.client_new') }}">
@@ -65,7 +65,7 @@
     <p>You have not yet registered any applications. Click the 'New application' button to create an application to access the {{config['CFG_SITE_NAME']}} API.</p>
     {% endif %}
     {% endcall %}
-  </div>
+  </div>#}
 
   <div class="panel panel-default ">
     {% call hb.panel_head() %}
@@ -90,7 +90,7 @@
     {% endcall %}
   </div>
 
-  <div class="panel panel-default ">
+  {#<div class="panel panel-default ">
     {% call hb.panel_head() %}
     <i class="fa fa-fw fa-bookmark"></i> Authorized applications
     {% endcall %}
@@ -111,6 +111,6 @@
     <p>You have not yet granted any external applications access to your account.</p>
     {% endif %}
     {% endcall %}
-  </div>
+  </div>#}
 </div>
 {% endblock %}

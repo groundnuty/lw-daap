@@ -26,6 +26,7 @@
 {% endfor %}
 {% endmacro -%}
 
+
 {# TODO: use the max parameter #}
 {%- macro render_authors(record, max=None) %}
 {% if record.authors %}
@@ -42,6 +43,7 @@
 {% endif %}
 {% endmacro -%}
 
+
 {%- macro render_access_rights(record, max=None) %}
 {% set label_types = {'open': 'label-success',
 'closed': 'label-danger', 
@@ -56,6 +58,7 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 {% endif %}
 {% endif %}
 {% endmacro -%}
+
 
 {%- macro render_deposition_type(record, max=None) %}
 {% set label_types = {
@@ -88,16 +91,61 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
     <div class="panel-body">
 {% endmacro -%}
 
+
 {%- macro close_panel_section() %}
 </div></div></div>
 {% endmacro -%}
 
 
-{%- macro pid_badge(tag, content, tbgc="#5D5D5D", cbgc="cadetblue") %}
+{%- macro archive_panel(rec) %}
+<div id="archive-confirm-dialog" class="modal fade" tabindex="-1" 
+     role="dialog" aria-labelledby="archiveconfirmdialog-Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="archiveconfirmdialog-Label">Archive</h4>
+      </div>
+      <div class="modal-body">
+          <ul><li>Would you like to archive this record?</li>                     
+          <li>If you archive it, the record will be safely backed up to tape.</li></ul>
+        <div class="alert help-block alert-danger" id="archive-modal-state-title" style="margin-top: 5px; display: none;">
+        </div>
+      </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"
+                onclick='$.post("{{ url_for('lwdaap_actions.archive_record', recid=rec.recid) }}")
+                                .done(function(data) {
+                                        if (data.redirect) {
+                                           window.location.replace(data.redirect);
+                                        } else {
+                                          $("#archive-confirm-dialog").modal("hide")
+                                        }
+                                      })
+                                .fail(function(jqXHR) {
+                                        var m = jQuery.parseJSON(jqXHR.responseText).msg;
+                                        var st = $("#archive-modal-state-title");
+                                        st.html("<p>" + m + "</p>");
+                                        st.show(); 
+                                      });'>
+            Archive
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro -%}
+
+
+{%- macro label(tag, content, tbgc="#5D5D5D", cbgc="cadetblue") %}
 <div class="pidbadge">
+    {% if tag %}
     <span class="tag" style="background-color: {{tbgc}};">
         {{tag|safe}}
     </span>
+    {% endif %}
     <span class="content" style="background-color: {{cbgc}};">
         {{content|safe}}
     </span>

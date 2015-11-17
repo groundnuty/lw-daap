@@ -57,6 +57,9 @@ CFG_SITE_DESCRIPTION = "LifeWatch Open Science Framework DESC"
 CFG_SITE_NAME_INTL = {
     "en": CFG_SITE_NAME
 }
+
+CFG_EMAIL_BACKEND = "flask_email.backends.smtp.Mail"
+
 CFG_SITE_SUPPORT_EMAIL = "support@mail"
 CFG_SITE_ADMIN_EMAIL = "support@mail"
 CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
@@ -93,7 +96,7 @@ PACKAGES = [
     "lw_daap.modules.invenio_groups",
     "lw_daap.modules.github",
     "lw_daap.modules.analyze",
-    "lw_daap.modules.pids",
+    "lw_daap.modules.record_actions",
     "lw_daap.modules.profile",
     "lw_daap.modules.projects",
     "lw_daap.deploy",

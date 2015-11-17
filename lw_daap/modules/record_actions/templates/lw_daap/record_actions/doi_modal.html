@@ -16,25 +16,14 @@
  # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
  #}
 
-{#
- # whatever
- #}
+{% from "lw_daap/record_actions/macros.html" import record_action_modal %}
 
+{% set doibody %}
+<ul>
+<li>Once the Digital Object Identifier (DOI) is minted, you will not be able to modify, add or remove files. Metadata (title description, etc.) can still be modified.</li>
+<li>The minting process will take some minutes, when available it will be shown in the record.</li>
+</ul>
+{% endset %}
+{% set doi_url = '"' ~ url_for('lwdaap_actions.mint_doi', recid=recid) ~ '"' %}
 
-{% if daap_record %}
-  {% if daap_record.doi %}
-     <a href="http://dx.doi.org/{{daap_record.doi}}" title="DOI" target="_blank">
-        {{ pid_badge('DOI', daap_record.doi, cbgc='#D9634C')|safe}}
-     </a>
-  {% else %}
-  {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
-      {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
-          <p class="text-muted">DOI minting is in progress...</p>
-      {% else %}
- <p>This record does not have yet a persistent identifier, we have prereserved the
-       <span class="doi">{{ bfe_prereserved_doi(bfo) }}</span> DOI for it.</p>
-
-      {% endif %}
-    {% endif %}
-  {% endif %}
-{% endif %}
+{{ record_action_modal('doi', 'Mint DOI', 'Mint DOI', doibody, doi_url) }}

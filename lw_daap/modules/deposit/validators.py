@@ -123,15 +123,15 @@ def project_acl_validator(form, field):
     from lw_daap.modules.projects.models import Project
 
     if field.data:
-        p = Project.get_project_by_collection("project-%s" % field.data)
+        p = Project.get_project(field.data)
 
         if not p:
-            raise ValidationError("Invalidad project: %s" % field.data)
+            raise ValidationError("Invalid project: %s" % field.data)
 
         if not p.is_user_allowed():
             raise ValidationError("User does not have permissions "
                                   "to deposit records in project: %s"
-                                   % field.data)
+                                  % field.data)
 
 
 def rel_record_validator(form, field):
@@ -151,8 +151,8 @@ def rel_record_validator(form, field):
         msg = "User does not have permission to access this record"
         if not record.get('communities'):
             current_app.logger.debug(record.get('communities'))
-            if 'project_collection' in record:
-                p = Project.get_project_by_collection(record['project_collection'])
+            if 'project' in record:
+                p = Project.get_project(record['project'])
                 if not p.is_user_allowed():
                     raise ValidationError(msg)
             else:

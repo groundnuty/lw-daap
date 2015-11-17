@@ -113,7 +113,49 @@ a.btn {
   color: #FFF;
 }
 
+p a, li a,
+p a:link, li a:link,
+p a:visited, li a:visited,
+p a:active, li a:active,
+{
+  color: #FF9464;
+}
 
+p a:hover,
+p a:focus,
+li a:hover,
+li a:focus, {
+  color: #FF5001;
+}
+
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  margin-right: -50px;
+}
+
+.modal-backdrop
+{
+  opacity:0.6 !important;
+}
+
+.modal .alert {
+  margin: 0px 10px 10px 10px;
+}
 .alert-info {
   background-color: #D6F8E4;
   color: #50BB7B;
@@ -136,9 +178,6 @@ a.btn {
   background-color: #0A9C45;
   color: #FFFFFF;
 }
-
-
-
 
 .searchform  {
   background: #F1F1F1;

@@ -40,6 +40,7 @@
 
 from __future__ import absolute_import
 
+import ast
 import json
 from datetime import date
 
@@ -265,18 +266,20 @@ def process_recjson(deposition, recjson):
     # =================
     # Project info
     # =================
-    if recjson.get('project_collection'):
-        curated = recjson.get('record_curated_in_project', None) 
-        if curated is None:
-            curated = recjson['upload_type'] != 'dataset'
+    if recjson.get('project'):
+        if recjson['upload_type'] != 'dataset':
+            recjson['record_curated_in_project'] = True
+        else:
+            curated = ast.literal_eval(recjson['record_curated_in_project'])
             recjson['record_curated_in_project'] = curated
-        public = recjson.get('record_public_from_project', None) 
-        if public is None:
-            recjson['record_public_from_project'] = False
+        public = ast.literal_eval(recjson['record_public_from_project'])
+        recjson['record_public_from_project'] = public
     else:
         for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
+    archived = ast.literal_eval(recjson['record_selected_for_archive'])
+    recjson['record_selected_for_archive'] = archived
 
     # Requirements
     # =================
@@ -334,9 +337,9 @@ def filter_empty_elements(recjson):
         recjson.get('related_identifiers', [])
     )
 
-    recjson['contributors'] = filter(
+    recjson['creators'] = filter(
         filter_empty_helper(keys=['name', 'affiliation']),
-        recjson.get('contributors', [])
+        recjson.get('creators', [])
     )
 
     return recjson
@@ -364,8 +367,8 @@ def process_recjson_new(deposition, recjson):
     # ===========
     # Communities
     # ===========
-    # Specific user collection, used to curate content 
-    # 
+    # Specific user collection, used to curate content
+    #
     if CFG_DAAP_DEFAULT_COLLECTION_ID not in recjson[
             'provisional_communities']:
         recjson['provisional_communities'].append(
@@ -711,21 +714,38 @@ class upload(DepositionType):
     default = True
     api = True
 
+    marshal_period_fields = dict(
+        start=ISODate,
+        end=ISODate
+    )
+
     marshal_metadata_fields = dict(
         access_right=fields.String,
         access_conditions=fields.String,
         access_groups=fields.List(fields.Raw),
+        app_env=fields.Raw(),
         communities=fields.List(fields.Raw),
-        contributors=fields.Raw(default=[]),
+        creators=fields.Raw(),
         description=fields.String,
-        doi=fields.String(default=''),
+        doi=fields.String(),
         embargo_date=ISODate,
-        keywords=fields.Raw(default=[]),
+        flavor=fields.Raw(default=''),
+        frequency=fields.Raw(),
+        keywords=fields.Raw(),
         license=fields.String,
-        notes=fields.String(default=''),
+        notes=fields.String(),
+        os=fields.Raw(),
+        period=fields.List(fields.Nested(marshal_period_fields)), 
+        project=fields.String,
         publication_date=ISODate,
-        related_identifiers=fields.Raw(default=[]),
-        subjects=fields.Raw(default=[]),
+        record_selected_for_archive=fields.Boolean,
+        record_curated_in_project=fields.Boolean,
+        record_public_from_project=fields.Boolean,
+        rel_dataset=fields.List(fields.Raw),
+        rel_software=fields.List(fields.Raw),
+        related_identifiers=fields.Raw(),
+        spatial=fields.Raw(),
+        subjects=fields.Raw(),
         title=fields.String,
         upload_type=fields.String,
     )
@@ -774,11 +794,14 @@ class upload(DepositionType):
             metadata_fields = cls.marshal_metadata_fields
 
         # Fix known differences in marshalling
+        current_app.logger.debug(draft.values)
         draft.values = filter_empty_elements(draft.values)
+        current_app.logger.debug(draft.values)
 
         # Set disabled values to None in output
         for field, flags in draft.flags.items():
             if 'disabled' in flags and field in draft.values:
+                current_app.logger.debug(field)
                 del draft.values[field]
 
         # Marshal deposition

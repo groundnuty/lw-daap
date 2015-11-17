@@ -27,6 +27,7 @@ from flask_login import current_user
 from flask_restful import abort
 
 from invenio.ext.cache import cache
+from invenio.ext.email import send_email     
 from invenio.legacy.bibrecord import record_add_field
 
 from invenio.base.decorators import wash_arguments
@@ -39,6 +40,8 @@ from invenio.modules.records.api import get_record
 
 from lw_daap.ext.login import login_required
 from lw_daap.modules.invenio_groups.models import Group
+from lw_daap.modules.record_actions.actions import record_actions, \
+    doi_action, control_actions
 
 from .forms import ProjectForm, SearchForm, EditProjectForm,\
     DeleteProjectForm, IntegrateForm
@@ -188,7 +191,7 @@ def _build_integrate_draft(project, selected_records):
     current_app.logger.debug(rel_dataset)
     current_app.logger.debug(rel_software)
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project_collection'] = project.id
+    draft_cache.data['project'] = project.id
     draft_cache.data['record_curated_in_project'] = True
     draft_cache.data['record_public_from_project'] = False
     draft_cache.data['rel_dataset'] = rel_dataset
@@ -265,8 +268,8 @@ def show(project_id, path, page):
             'template': 'projects/analyze.html',
             'q': {'record_types': ['analysis']},
         },
-        'cite': {
-            'template': 'projects/cite.html',
+        'preserve': {
+            'template': 'projects/preserve.html',
             'q': {'curated': True},
         },
         'publish': {
@@ -311,11 +314,14 @@ def delete(project_id):
     project = Project.query.get_or_404(project_id)
     if current_user.get_id() != project.id_user:
         flash('Only the owner of the project can delete it', category='error')
-        abort(404)
-    if project.is_public:
-        flash('Project has public records, cannot be deleted',
+        return redirect(url_for('.myprojects'))
+
+    if not project.is_empty():
+        flash('Project is not empty, cannot be deleted. Please contact'
+              ' <a href="mailto:%s">support</a> if needed.'
+              % cfg.get('CFG_SITE_SUPPORT_EMAIL'),
               category='error')
-        abort(404)
+        return redirect(url_for('.myprojects'))
 
     form = DeleteProjectForm(request.values)
     if request.method == 'POST' and form.validate():
@@ -342,7 +348,7 @@ def deposit(project_id, deposition_type):
     from lw_daap.modules.invenio_deposit.models \
         import DepositionDraftCacheManager
     draft_cache = DepositionDraftCacheManager.get()
-    draft_cache.data['project_collection'] = project_id
+    draft_cache.data['project'] = project_id
     curated = deposition_type.lower() != 'dataset'
     draft_cache.data['record_curated_in_project'] = curated
     draft_cache.data['record_public_from_project'] = False
@@ -352,59 +358,55 @@ def deposit(project_id, deposition_type):
                     deposition_type=deposition_type, next=next))
 
 
-def error_400(msg):
-    response = jsonify({'code': 400, 'msg': msg})
-    response.status_code = 400
-    return response
-
-
 @blueprint.route('/<int:project_id>/curate/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
 def curation(project_id, record_id):
-    project = Project.query.get_or_404(project_id)
-    record = get_record(record_id)
-    if not record:
-        abort(404)
-
-    # do only allow to curate to the owner
-    if not project.is_user_allowed():
-        abort(401)
-
-    # crazy invenio stuff, cache actions so they dont get duplicated
-    key = get_cache_key(record_id)
-    cache_action = cache.get(key)
-    if cache_action == 'curate':
-        return error_400('Record is being curated, '
-                         'you should wait some minutes.')
-    # Set 5 min cache to allow bibupload/bibreformat to finish
-    cache.set(key, 'curate', timeout=5*60)
-
-    rec = {}
-    record_add_field(rec, '001', controlfield_value=str(record_id))
-    project_info_fields = [('a', 'True')]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    project_info_fields = [('b', 'False')]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    from invenio.legacy.bibupload.utils import bibupload_record
-    bibupload_record(record=rec, file_prefix='project_info', mode='-c',
-                     opts=[], alias="project_info")
-
-    return jsonify({'status': 'ok',
-                    'redirect': url_for('.show',
-                                        project_id=project_id, path='curate')})
+    msg = 'Record is being curated.'
+    redirect_url = url_for('.show', project_id=project_id, path='curate')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='curate',
+                          action=lambda x: control_actions(x, curate=True),
+                          msg=msg, redirect_url=redirect_url)
 
 
-@blueprint.route('/<int:project_id>/cite/<int:record_id>/',
+@blueprint.route('/<int:project_id>/mintdoi/<int:record_id>/',
                  methods=['POST'])
 @ssl_required
 @login_required
-def cite(project_id, record_id):
-    from lw_daap.modules.pids.views import mint_doi
-    return mint_doi(record_id, project_id)
+def mintdoi(project_id, record_id):
+    msg = 'DOI is being processed.'
+    redirect_url = url_for('.show', project_id=project_id, path='preserve')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='doi', action=doi_action,
+                          msg=msg, redirect_url=redirect_url)
+
+
+@blueprint.route('/<int:project_id>/archive/<int:record_id>/',
+                 methods=['POST'])
+@ssl_required
+@login_required
+def archive(project_id, record_id):
+    msg = 'Archiving request is being processed.'
+    redirect_url = url_for('.show', project_id=project_id, path='preserve')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='archive',
+                          action=lambda x: control_actions(x, archive=True),
+                          msg=msg, redirect_url=redirect_url)
+
+
+@blueprint.route('/<int:project_id>/publish/<int:record_id>/',
+                 methods=['POST'])
+@ssl_required
+@login_required
+def publication(project_id, record_id):
+    msg = 'Record is being published.'
+    redirect_url = url_for('.show', project_id=project_id, path='publish')
+    return record_actions(recid=record_id, project_id=project_id,
+                          action_name='publish',
+                          action=lambda x: control_actions(x, publish=True),
+                          msg=msg, redirect_url=redirect_url)
 
 
 @blueprint.route('/<int:project_id>/join/',
@@ -416,45 +418,9 @@ def join(project_id):
     group = project.group
     if group.can_join(current_user):
         group.subscribe(current_user)
+        # modify to/from/subject/content!
+        #send_email('from@', 'to@',                  
+        #           subject='Group pending request at LifeWatch Open Science Framework',
+        #           content='You have group pending requests at LifeWatch...')   
+        
     return redirect(url_for('.show', project_id=project_id, path='plan'))
-
-
-@blueprint.route('/<int:project_id>/publish/<int:record_id>/',
-                 methods=['POST'])
-@ssl_required
-@login_required
-def publication(project_id, record_id):
-    project = Project.query.get_or_404(project_id)
-    record = get_record(record_id)
-    if not record:
-        abort(404)
-
-    # do only allow to curate to the owner
-    if not project.is_user_allowed():
-        abort(401)
-
-    # crazy invenio stuff, cache actions so they dont get duplicated
-    key = get_cache_key(record_id)
-    cache_action = cache.get(key)
-    if cache_action == 'publish':
-        return error_400('Record is being published, '
-                         'you should wait some minutes.')
-    # Set 5 min cache to allow bibupload/bibreformat to finish
-    cache.set(key, 'publish', timeout=5*60)
-
-    rec = {}
-    record_add_field(rec, '001', controlfield_value=str(record_id))
-    project_info_fields = [('a', 'True')]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    project_info_fields = [('b', 'True')]
-    record_add_field(rec, tag='983', ind1='_',
-                     ind2='_', subfields=project_info_fields)
-    from invenio.legacy.bibupload.utils import bibupload_record
-    bibupload_record(record=rec, file_prefix='project_info', mode='-c',
-                     opts=[], alias="project_info")
-
-    return jsonify({'status': 'ok',
-                    'redirect': url_for('.show',
-                                        project_id=project_id,
-                                        path='publish')})

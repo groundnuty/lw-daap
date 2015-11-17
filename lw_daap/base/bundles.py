@@ -67,13 +67,13 @@ _i.bower.update({
 })
 
 # Remove MathJax (served from CDN instead).
-#del _j.bower['MathJax']
+# del _j.bower['MathJax']
 
 #
 # Site-wide styles
 #
-#_s.contents.remove("less/base.less")
-#_s.contents.remove("less/footer.less")
-#_s.contents += [
+# _s.contents.remove("less/base.less")
+# _s.contents.remove("less/footer.less")
+# _s.contents += [
 #    "less/zenodo.less",
-#]
+# ]

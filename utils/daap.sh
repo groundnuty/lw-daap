@@ -59,7 +59,6 @@ pip install -e .
 
 # Basic invenio config
 inveniomanage config create secret-key
-inveniomanage config set CFG_EMAIL_BACKEND flask.ext.email.backends.console.Mail
 inveniomanage config set CFG_BIBSCHED_PROCESS_USER $USER
 # this is needed to make URLs work (not needed for localhost)
 inveniomanage config set CFG_SITE_URL http://$IP:28080

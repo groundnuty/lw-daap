@@ -1,0 +1,41 @@
+{#
+ # This file is part of Lifewatch DAAP.
+ # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+ #
+ # Lifewatch DAAP is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Lifewatch DAAP is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{#
+ # whatever
+ #}
+
+
+{% if metadata_view %}
+{% if daap_record %}
+  {% if daap_record.doi %}
+     <a href="http://dx.doi.org/{{daap_record.doi}}" title="DOI" target="_blank">
+        {{ label('DOI', daap_record.doi, cbgc='#0F81C2')|safe}}
+     </a>
+  {% else %}
+  {% if current_user.get_id() == daap_record.get('owner', {}).get('id', -1)|int %}
+      {% if bfe_is_doi_being_minted(bfo, recid=recid) %}
+          <p class="text-muted">DOI minting is in progress...</p>
+      {% else %}
+      {{ label('DOI', bfe_prereserved_doi(bfo), cbgc='#0F81C2')|safe }} <small class="alert-danger"><small>We have pre-reserved this DOI for your record: it will not be minted until you request it.</small></small>
+
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% endif %}
