@@ -48,6 +48,16 @@
     {% endcall %}
   </div>
 
+    <div class="panel panel-default panel-sharp">
+    {% call hb.cpanel_head(3) %}
+    <i class="fa fa-database fa-fw"></i> Credentials
+    {% endcall %}
+    {% call hb.cpanel_body(3, collapsed=False) %}
+    {{ render_field(form.db_credentials, show_description=True) }}
+    {{ render_field(form.onedata_token, show_description=True) }}
+    {% endcall %}
+  </div>
+
   <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(2) %}
      <i class="fa fa-cloud fa-fw"></i> e-Insfracture info
@@ -69,22 +79,12 @@
   {% endcall %}
   </div>
 
-  <div class="panel panel-default panel-sharp">
-    {% call hb.cpanel_head(2) %}
-    <i class="fa fa-database fa-fw"></i> Credentials
-    {% endcall %}
-    {% call hb.cpanel_body(2, collapsed=False) %}
-    {{ render_field(form.db_credentials, show_description=True) }}
-    {{ render_field(form.onedata_token, show_description=True) }}
-    {% endcall %}
-  </div>
-
-<div class="spacer20"></div>
-  <div class="btn-toolbar">
-    <button type="submit" class="btn btn-primary   pull-right">
-      <i class="fa fa-check"></i> {{_('Update')}}
-    </button>
-  </div>
+  <div class="spacer20"></div>
+    <div class="btn-toolbar">
+      <button type="submit" class="btn btn-primary   pull-right">
+        <i class="fa fa-check"></i> {{_('Update')}}
+      </button>
+    </div>
 </form>
 </div>
 {{ helpers.delegate_modal() }}
