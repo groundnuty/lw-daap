@@ -68,6 +68,16 @@
   {{helpers.panel_end()}}
   {% endcall %}
 </div>
+<div class="panel panel-default panel-sharp">
+    {% call hb.cpanel_head(3) %}
+    <i class="fa fa-info-circle fa-fw"></i> Credentials
+    {% endcall %}
+    {% call hb.cpanel_body(1, collapsed=False) %}
+    {{ render_field(form.db_credentials, show_description=True) }}
+    {{ render_field(form.onedata_token, show_description=True) }}
+    {% endcall %}
+  </div>
+
 <div class="spacer20"></div>
   <div class="btn-toolbar">
     <button type="submit" class="btn btn-primary   pull-right">

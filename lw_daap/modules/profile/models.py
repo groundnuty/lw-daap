@@ -102,6 +102,22 @@ class UserProfile(db.Model):
                                    )
                                )
 
+    db_credentials = db.Column(db.Text(length=2000),
+                               nullable=True, default='',
+                               info=dict(
+                                   label=_("DB credentials"),
+                                   description=_(''),
+                                   )
+                               )
+
+    onedata_token = db.Column(db.Text(length=2000),
+                               nullable=True, default='',
+                               info=dict(
+                                   label=_("OneData token"),
+                                   description=_(''),
+                                   )
+                               )
+
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False, default=datetime.now,
                          onupdate=datetime.now)
