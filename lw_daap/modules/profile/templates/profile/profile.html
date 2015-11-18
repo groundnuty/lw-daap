@@ -72,7 +72,7 @@
     {% call hb.cpanel_head(3) %}
     <i class="fa fa-info-circle fa-fw"></i> Credentials
     {% endcall %}
-    {% call hb.cpanel_body(1, collapsed=False) %}
+    {% call hb.cpanel_body(3, collapsed=False) %}
     {{ render_field(form.db_credentials, show_description=True) }}
     {{ render_field(form.onedata_token, show_description=True) }}
     {% endcall %}
