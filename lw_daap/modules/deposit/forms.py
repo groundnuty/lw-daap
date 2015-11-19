@@ -204,22 +204,30 @@ class CreatorForm(WebDepositForm):
     name = fields.StringField(
         placeholder="Family name, First name",
         widget_classes='form-control',
-        widget=ColumnInput(class_="col-xs-6"),
+        widget=ColumnInput(class_="col-xs-4"),
         validators=[
             required_if(
                 'affiliation',
                 [lambda x: bool(x.strip()), ],  # non-empty
                 message="Creator name is required if you specify affiliation."
             ),
+            required_if(
+                'orcid',
+                [lambda x: bool(x.strip()), ],  # non-empty
+                message="Creator name is required if you specify ORCID"
+            ),
         ],
     )
     affiliation = fields.StringField(
         placeholder="Affiliation",
         widget_classes='form-control',
-        widget=ColumnInput(class_="col-xs-4 col-pad-0"),
+        widget=ColumnInput(class_="col-xs-3 col-pad-0"),
     )
     orcid = fields.StringField(
-        widget=widgets.HiddenInput(),
+        placeholder="ORCID",
+        #widget=widgets.HiddenInput(),
+        widget_classes='form-control',
+        widget=ColumnInput(class_="col-xs-3"),
         processors=[
             PidNormalize(scheme='orcid'),
         ],
