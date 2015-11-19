@@ -41,9 +41,9 @@ Simple tasklet that is called after a bibupload of a new record
 """
 
 from invenio.modules.pidstore.tasks import datacite_register
-from zenodo.modules.deposit.tasks import openaire_create_icon, \
-    openaire_altmetric_update, openaire_upload_notification
-from zenodo.modules.preservationmeter.tasks import calculate_preservation_score
+# from zenodo.modules.deposit.tasks import openaire_create_icon, \
+#    openaire_altmetric_update, openaire_upload_notification
+# from zenodo.modules.preservationmeter.tasks import calculate_preservation_score
 
 
 def bst_openaire_new_upload(recid=None):
@@ -53,10 +53,10 @@ def bst_openaire_new_upload(recid=None):
 
     # Ship of tasks to Celery for background processing
     datacite_register.delay(recid)
-    openaire_create_icon.delay(recid=recid)
-    openaire_altmetric_update.delay([recid])
-    openaire_upload_notification.delay(recid=recid)
-    calculate_preservation_score.delay(recid=recid)
+    # openaire_create_icon.delay(recid=recid)
+    # openaire_altmetric_update.delay([recid])
+    # openaire_upload_notification.delay(recid=recid)
+    # calculate_preservation_score.delay(recid=recid)
 
 if __name__ == '__main__':
     bst_openaire_new_upload()

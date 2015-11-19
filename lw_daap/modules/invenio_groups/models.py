@@ -48,6 +48,7 @@ from invenio.ext.login.legacy_user import UserInfo
 from invenio.ext.sqlalchemy import db
 from invenio.ext.template import render_template_to_string
 from invenio.ext.email import send_email
+from invenio.ext.email import scheduled_send_email
 
 from invenio.modules.accounts.models import User
 
@@ -468,10 +469,10 @@ class Group(db.Model):
             )
             subject = 'New Group Request at LifeWatch Open Science Framework'
             to = [User.query.get(a.admin_id).email for a in self.admins]
-            send_email(fromaddr=cfg['CFG_SITE_ADMIN_EMAIL'],
-                       toaddr=to,
-                       subject=subject,
-                       content=email_body)
+            scheduled_send_email(fromaddr=cfg['CFG_SITE_ADMIN_EMAIL'],
+                                 toaddr=to,
+                                 subject=subject,
+                                 content=email_body)
             return self.add_member(user, state=MembershipState.PENDING_ADMIN)
         elif self.subscription_policy == SubscriptionPolicy.CLOSED:
             return None

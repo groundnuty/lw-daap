@@ -39,8 +39,8 @@ Simple tasklet that is called after a bibupload of an updated record.
 
 from invenio.modules.pidstore.tasks import datacite_update
 
-from zenodo.modules.deposit.tasks import openaire_altmetric_update
-from zenodo.modules.preservationmeter.tasks import calculate_preservation_score
+# from zenodo.modules.deposit.tasks import openaire_altmetric_update
+# from zenodo.modules.preservationmeter.tasks import calculate_preservation_score
 
 
 def bst_openaire_update_upload(recid=None):
@@ -50,8 +50,8 @@ def bst_openaire_update_upload(recid=None):
 
     # Ship of tasks to Celery for background processing
     datacite_update.delay(recid)
-    openaire_altmetric_update.delay([recid])
-    calculate_preservation_score.delay(recid=recid)
+    # openaire_altmetric_update.delay([recid])
+    # calculate_preservation_score.delay(recid=recid)
 
 
 if __name__ == '__main__':
