@@ -1,0 +1,40 @@
+lwosf:
+  build: .
+  environment:
+    - CACHE_REDIS_HOST=cache
+    - INVENIO_APP_CONFIG_ENVS=CACHE_REDIS_HOST
+  volumes:
+    - /tmp
+  links:
+    - mysql:db
+    - redis:cache
+  ports:
+    - "80:80"
+
+worker:
+  build: .
+  command: celery worker --purge -E -A invenio.celery.celery
+  environment:
+    - BROKER_URL=redis://cache:6379/1
+    - CACHE_REDIS_HOST=cache
+    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+    - CFG_DATABASE_HOST=db
+    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
+  volumes_from:
+    - lwosf
+  links:
+    - mysql:db
+    - redis:cache
+
+redis:
+  image: redis
+
+mysql:
+  image: mysql
+  environment:
+    - MYSQL_DATABASE=lwosf_portal
+    - MYSQL_USER=lwosf
+    - MYSQL_PASSWORD=lwosf_pass
+    - MYSQL_ROOT_PASSWORD=root_password
+  volumes:
+    - /data:/var/lib/mysql

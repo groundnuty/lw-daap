@@ -155,17 +155,6 @@ DEPOSIT_CONTRIBUTOR_MARC2DATACITE = dict(
 DEPOSIT_CONTRIBUTOR_DATACITE2MARC = dict(
     [(x['datacite'], x['marc']) for x in DEPOSIT_CONTRIBUTOR_TYPES])
 
-CFG_DATABASE_NAME = "lwdaap"
-CFG_DATABASE_USER = "lwdaap"
-
-# <-- Debug toolbar configuration
-DEBUG = True
-ASSETS_DEBUG = True
-ASSETS_AUTO_BUILD = True
-DEBUG_TB_ENABLED = True
-DEBUG_TB_INTERCEPT_REDIRECTS = False
-# -->
-
 RECORDS_BREADCRUMB_TITLE_KEY = 'title'
 
 # OAuth configuration
