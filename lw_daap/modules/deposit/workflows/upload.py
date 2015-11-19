@@ -42,6 +42,7 @@ from __future__ import absolute_import
 
 import ast
 import json
+import six
 from datetime import date
 
 from flask import render_template, url_for, request, current_app
@@ -267,19 +268,22 @@ def process_recjson(deposition, recjson):
     # Project info
     # =================
     if recjson.get('project'):
-        if recjson['upload_type'] != 'dataset':
-            recjson['record_curated_in_project'] = True
-        else:
-            curated = ast.literal_eval(recjson['record_curated_in_project'])
-            recjson['record_curated_in_project'] = curated
-        public = ast.literal_eval(recjson['record_public_from_project'])
-        recjson['record_public_from_project'] = public
+        if 'record_curated_in_project' in recjson and recjson['record_curated_in_project']:
+            if recjson['upload_type'] != 'dataset':
+                recjson['record_curated_in_project'] = True
+            else:
+                curated = ast.literal_eval(recjson['record_curated_in_project'])
+                recjson['record_curated_in_project'] = curated
+        if 'record_public_from_project' in recjson and recjson['record_public_from_project']:
+            public = ast.literal_eval(recjson['record_public_from_project'])
+            recjson['record_public_from_project'] = public
     else:
         for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
-    archived = ast.literal_eval(recjson['record_selected_for_archive'])
-    recjson['record_selected_for_archive'] = archived
+    if 'record_selected_for_archive' in recjson and recjson['record_selected_for_archive']:
+        archived = ast.literal_eval(recjson['record_selected_for_archive'])
+        recjson['record_selected_for_archive'] = archived
 
     # Requirements
     # =================
