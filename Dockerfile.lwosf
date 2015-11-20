@@ -1,0 +1,72 @@
+FROM python:2.7-slim
+MAINTAINER Aeonium <info@aeonium.eu>
+
+RUN apt-get update \
+    && apt-get -qy install --fix-missing --no-install-recommends curl \
+    && curl -sL https://deb.nodesource.com/setup | bash -
+
+RUN apt-get update && \
+    apt-get -qy upgrade --fix-missing --no-install-recommends \
+    && apt-get -qy install --fix-missing --no-install-recommends \
+        apache2 \
+        gcc \
+        git \
+        libapache2-mod-wsgi \
+        libffi-dev \
+        libjpeg-dev \
+        libmysqlclient-dev \
+        libssl-dev \
+        libxslt-dev \
+        nodejs \
+        sudo \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/{apt,dpkg}/ \
+    && (find /usr/share/doc -depth -type f ! -name copyright -delete || true) \
+    && (find /usr/share/doc -empty -delete || true) \
+    && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
+
+RUN pip install -U pip virtualenv uwsgi
+RUN npm update \
+    && npm install --silent -g bower less clean-css uglify-js requirejs
+
+COPY misc/lwosf_vhost.conf /etc/apache2/sites-available/lwosf.conf
+
+RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
+
+RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
+
+COPY requirements.txt setup.py /home/lwosf/code/
+COPY misc /home/lwosf/code/misc/
+COPY lw_daap /home/lwosf/code/lw_daap/
+
+WORKDIR /home/lwosf/
+RUN virtualenv venv \
+    && . venv/bin/activate \
+    && cd  /home/lwosf/code \
+    && pip install -r requirements.txt --exists-action i \
+    && pip install -e .
+
+RUN chown -R lwosf:lwosf /home/lwosf
+
+
+USER lwosf
+
+RUN . venv/bin/activate \
+    && mkdir -p /home/lwosf/venv/var/invenio.base-instance \
+    && inveniomanage config create secret-key \
+    && cat /home/lwosf/code/misc/invenio.cfg >> $(inveniomanage config locate) \
+    && cd /home/lwosf/venv/var/invenio.base-instance \
+    && echo '{"directory": "/static/vendors"}' > .bowerrc \
+    && inveniomanage bower > bower.json \
+    && CI=true bower install --silent \
+    && rm .bowerrc  bower.json \
+    && inveniomanage collect \
+    && inveniomanage assets build
+
+RUN true
+#VOLUME /home/lwosf
+#VOLUME /tmp
+
+CMD ["bash"]
+

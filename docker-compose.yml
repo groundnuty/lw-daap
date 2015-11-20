@@ -1,5 +1,7 @@
-lwosf:
+app:
   build: .
+  dockerfile: Dockerfile.lwosf
+  command: uwsgi --master --process 4 --threads 2 --wsgi-file /home/lwosf/venv/src/invenio/invenio/invenio.wsgi --home /home/lwosf/venv --http-socket :28080
   environment:
     - CACHE_REDIS_HOST=cache
     - INVENIO_APP_CONFIG_ENVS=CACHE_REDIS_HOST
@@ -9,22 +11,26 @@ lwosf:
     - mysql:db
     - redis:cache
   ports:
-    - "80:80"
+    - "80:28080"
 
-worker:
-  build: .
-  command: celery worker --purge -E -A invenio.celery.celery
-  environment:
-    - BROKER_URL=redis://cache:6379/1
-    - CACHE_REDIS_HOST=cache
-    - CELERY_RESULT_BACKEND=redis://cache:6379/1
-    - CFG_DATABASE_HOST=db
-    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
-  volumes_from:
-    - lwosf
-  links:
-    - mysql:db
-    - redis:cache
+
+#httpd:
+#  build: ./lwosf/Dockerfile.httpd
+
+#worker:
+#  build: .
+#  dockerfile: Dockerfile.lwosf
+#  command: source venv/bin/activate && celery worker --purge -E -A invenio.celery.celery
+#  environment:
+#    - BROKER_URL=redis://cache:6379/1
+#    - CACHE_REDIS_HOST=cache
+#    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+#    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
+#  volumes_from:
+#    - app
+#  links:
+#    - mysql:db
+#     redis:cache
 
 redis:
   image: redis
