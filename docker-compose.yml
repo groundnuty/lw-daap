@@ -9,7 +9,6 @@ app:
     - mysql:db
     - redis:cache
 
-
 httpd:
   build: .
   dockerfile: Dockerfile.httpd

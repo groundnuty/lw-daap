@@ -1,5 +1,5 @@
 FROM python:2.7-slim
-MAINTAINER Aeonium <info@aeonium.eu>
+MAINTAINER aeonium <info@aeonium.eu>
 
 RUN apt-get update \
     && apt-get -qy install --fix-missing --no-install-recommends curl \
@@ -38,21 +38,17 @@ COPY misc /lwosf/misc/
 
 WORKDIR /lwosf
 
-RUN pwd
-RUN ls -ltr
+RUN pip install -r requirements.txt --exists-action i
+RUN pip install -e .
 
-RUN pip install -r requirements.txt --exists-action i  \
-    && pip install -e .
-
-RUN mkdir -p /usr/local/var/log/
+RUN mkdir -p /usr/local/var/log/ /usr/local/var/invenio.base-instance/
 
 RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
 RUN chown -R lwosf:lwosf /lwosf \
              /usr/local/var/
 
 USER lwosf
-RUN inveniomanage config create secret-key \
-    && cat /lwosf/misc/invenio.cfg >> $(inveniomanage config locate) \
+RUN cat /lwosf/misc/invenio.cfg >> /usr/local/var/invenio.base-instance/invenio.cfg \
     && cd /usr/local/var/invenio.base-instance/ \
     && echo '{"directory": "static/vendors"}' > .bowerrc \
     && inveniomanage bower > bower.json \
@@ -61,6 +57,6 @@ RUN inveniomanage config create secret-key \
     && inveniomanage collect \
     && inveniomanage assets build
 
-VOLUME /usr/local/var/invenio.base-instance/static
+VOLUME /usr/local/var/invenio.base-instance/
 
 CMD ["bash"]
