@@ -32,9 +32,7 @@ RUN pip install -U pip uwsgi
 
 RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
 
-COPY lw_daap /lwosf/lw_daap
-COPY requirements.txt setup.py /lwosf/
-COPY misc /lwosf/misc/
+COPY . /lwosf
 
 WORKDIR /lwosf
 
@@ -59,4 +57,5 @@ RUN cat /lwosf/misc/invenio.cfg >> /usr/local/var/invenio.base-instance/invenio.
 
 VOLUME /usr/local/var/invenio.base-instance/
 
+ENTRYPOINT ["/lwsof/misc/app/entry.sh"]
 CMD ["bash"]
