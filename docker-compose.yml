@@ -1,21 +1,28 @@
 app:
   build: .
   dockerfile: Dockerfile.lwosf
-  command: uwsgi --master --process 4 --threads 2 --wsgi-file /home/lwosf/venv/src/invenio/invenio/invenio.wsgi --home /home/lwosf/venv --http-socket :28080
+  command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
   environment:
     - CACHE_REDIS_HOST=cache
     - INVENIO_APP_CONFIG_ENVS=CACHE_REDIS_HOST
-  volumes:
-    - /tmp
   links:
     - mysql:db
     - redis:cache
+
+
+httpd:
+  build: .
+  dockerfile: Dockerfile.httpd
+  environment:
+    - SERVERNAME=daap-devel.aeonium.eu
+    - UWSGI_URI="uwsgi://app:3031"
+  volumes_from:
+    - app:ro
+  links:
+    - app:app
   ports:
-    - "80:28080"
-
-
-#httpd:
-#  build: ./lwosf/Dockerfile.httpd
+    - "80:80"
+    - "443:443"
 
 #worker:
 #  build: .

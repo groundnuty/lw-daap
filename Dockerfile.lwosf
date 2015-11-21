@@ -18,7 +18,6 @@ RUN apt-get update && \
         libssl-dev \
         libxslt-dev \
         nodejs \
-        sudo \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/{apt,dpkg}/ \
@@ -26,47 +25,42 @@ RUN apt-get update && \
     && (find /usr/share/doc -empty -delete || true) \
     && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
 
-RUN pip install -U pip virtualenv uwsgi
 RUN npm update \
     && npm install --silent -g bower less clean-css uglify-js requirejs
 
-COPY misc/lwosf_vhost.conf /etc/apache2/sites-available/lwosf.conf
+RUN pip install -U pip uwsgi
 
 RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
 
-RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
+COPY lw_daap /lwosf/lw_daap
+COPY requirements.txt setup.py /lwosf/
+COPY misc /lwosf/misc/
 
-COPY requirements.txt setup.py /home/lwosf/code/
-COPY misc /home/lwosf/code/misc/
-COPY lw_daap /home/lwosf/code/lw_daap/
+WORKDIR /lwosf
 
-WORKDIR /home/lwosf/
-RUN virtualenv venv \
-    && . venv/bin/activate \
-    && cd  /home/lwosf/code \
-    && pip install -r requirements.txt --exists-action i \
+RUN pwd
+RUN ls -ltr
+
+RUN pip install -r requirements.txt --exists-action i  \
     && pip install -e .
 
-RUN chown -R lwosf:lwosf /home/lwosf
+RUN mkdir -p /usr/local/var/log/
 
+RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
+RUN chown -R lwosf:lwosf /lwosf \
+             /usr/local/var/
 
 USER lwosf
-
-RUN . venv/bin/activate \
-    && mkdir -p /home/lwosf/venv/var/invenio.base-instance \
-    && inveniomanage config create secret-key \
-    && cat /home/lwosf/code/misc/invenio.cfg >> $(inveniomanage config locate) \
-    && cd /home/lwosf/venv/var/invenio.base-instance \
-    && echo '{"directory": "/static/vendors"}' > .bowerrc \
+RUN inveniomanage config create secret-key \
+    && cat /lwosf/misc/invenio.cfg >> $(inveniomanage config locate) \
+    && cd /usr/local/var/invenio.base-instance/ \
+    && echo '{"directory": "static/vendors"}' > .bowerrc \
     && inveniomanage bower > bower.json \
-    && CI=true bower install --silent \
+    && CI=true bower install --production --silent \
     && rm .bowerrc  bower.json \
     && inveniomanage collect \
     && inveniomanage assets build
 
-RUN true
-#VOLUME /home/lwosf
-#VOLUME /tmp
+VOLUME /usr/local/var/invenio.base-instance/static
 
 CMD ["bash"]
-
