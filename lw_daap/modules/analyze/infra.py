@@ -57,9 +57,7 @@ def _make_client(proxy_file):
     client = novaclient.client.Client(version, username, password,
                                       tenant, url,
                                       auth_plugin=auth_plugin,
-                                      auth_system=auth_system,
-                                      # XXX REMOVE THIS ASAP!
-                                      insecure=True)
+                                      auth_system=auth_system)
     try:
         client.authenticate()
     except requests.exceptions.RequestException as e:
