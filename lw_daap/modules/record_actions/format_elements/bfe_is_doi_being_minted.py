@@ -20,7 +20,7 @@ from __future__ import absolute_import
 
 from invenio.ext.cache import cache
 
-from ..actions import build_doi, get_cache_key
+from ..actions import build_doi, action_key 
 
 
 def format_element(bfo, recid=None):
