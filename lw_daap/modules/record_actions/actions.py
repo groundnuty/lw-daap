@@ -20,6 +20,7 @@ from flask import current_app, url_for, abort, jsonify
 from flask_login import current_user
 
 from invenio.ext.cache import cache
+from invenio.ext.logging import register_exception
 from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.pidstore.tasks import datacite_register

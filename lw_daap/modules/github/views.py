@@ -116,7 +116,6 @@ def releases(owner, name):
 @blueprint.route('/releases/<owner>/<name>/<release_id>')
 def select_release(owner, name, release_id):
     token = get_token()
-    ctx = dict(connected=False)
 
     if token is not None and check_token(token):
         extra_data = token.remote_account.extra_data
