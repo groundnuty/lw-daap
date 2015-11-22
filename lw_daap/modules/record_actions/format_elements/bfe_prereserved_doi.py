@@ -18,7 +18,7 @@
 
 from __future__ import absolute_import
 
-from ..utils import build_doi
+from ..actions import build_doi
 
 
 def format_element(bfo):
