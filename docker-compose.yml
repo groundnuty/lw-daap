@@ -1,10 +1,13 @@
 app:
   build: .
   dockerfile: Dockerfile.lwosf
+  entrypoint: /lwosf/misc/app/bibsched_entry.sh
   command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
   environment:
     - CACHE_REDIS_HOST=cache
     - INVENIO_APP_CONFIG_ENVS=CACHE_REDIS_HOST
+  volumes:
+    - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
   links:
     - mysql:db
     - redis:cache
@@ -17,26 +20,33 @@ httpd:
     - UWSGI_URI="uwsgi://app:3031"
   volumes_from:
     - app:ro
+  volumes:
+    # Use here the actual certificates
+    - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
+    - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
   links:
     - app:app
   ports:
     - "80:80"
     - "443:443"
 
-#worker:
-#  build: .
-#  dockerfile: Dockerfile.lwosf
-#  command: source venv/bin/activate && celery worker --purge -E -A invenio.celery.celery
-#  environment:
-#    - BROKER_URL=redis://cache:6379/1
-#    - CACHE_REDIS_HOST=cache
-#    - CELERY_RESULT_BACKEND=redis://cache:6379/1
-#    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
-#  volumes_from:
-#    - app
-#  links:
-#    - mysql:db
-#     redis:cache
+celery:
+  build: .
+  dockerfile: Dockerfile.celery
+  command: supervisord -n -c /lwosf/misc/app/celery.conf
+  environment:
+    - BROKER_URL=redis://cache:6379/1
+    - CACHE_REDIS_HOST=cache
+    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
+  volumes_from:
+    - app
+  volumes:
+    # Use here the actual location of the robot certificate
+    - ../.globus:/home/lwosf/.globus
+  links:
+    - mysql:db
+    - redis:cache
 
 redis:
   image: redis
@@ -44,9 +54,6 @@ redis:
 mysql:
   image: mysql
   environment:
-    - MYSQL_DATABASE=lwosf_portal
-    - MYSQL_USER=lwosf
-    - MYSQL_PASSWORD=lwosf_pass
     - MYSQL_ROOT_PASSWORD=root_password
   volumes:
     - /data:/var/lib/mysql

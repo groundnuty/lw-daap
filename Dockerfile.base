@@ -1,0 +1,63 @@
+FROM ubuntu:trusty 
+MAINTAINER aeonium <info@aeonium.eu>
+
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qy install --fix-missing --no-install-recommends curl ca-certificates \
+    && curl -sL https://deb.nodesource.com/setup | bash - \
+    && echo "deb http://repository.egi.eu/sw/production/cas/1/current egi-igtf core" > /etc/apt/sources.list.d/egi-trustanchors.list \
+    && curl -s https://dist.eugridpma.info/distribution/igtf/current/GPG-KEY-EUGridPMA-RPM-3 | apt-key add -
+
+RUN apt-get update \
+    && apt-get -qy upgrade --fix-missing --no-install-recommends \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qy install --fix-missing --no-install-recommends \
+        gcc \
+        git \
+        libffi-dev \
+        libjpeg-dev \
+        libmysqlclient-dev \
+        libssl-dev \
+        libxslt-dev \
+        nodejs \
+        supervisor \
+        python-pip \
+        python-dev \ 
+    && apt-get -qy install ca-policy-egi-core \
+    && update-rc.d -f supervisord remove \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/{apt,dpkg}/ \
+    && (find /usr/share/doc -depth -type f ! -name copyright -delete || true) \
+    && (find /usr/share/doc -empty -delete || true) \
+    && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* 
+
+RUN npm update \
+    && npm install --silent -g bower less clean-css uglify-js requirejs
+
+RUN pip install -U pip uwsgi
+
+RUN mkdir /lwosf
+WORKDIR /lwosf
+
+COPY requirements.txt /lwosf
+RUN pip install -r requirements.txt --exists-action i
+
+#RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
+
+COPY . /lwosf
+
+RUN pip install -e .
+
+# Add the CAs to the requests bundle
+RUN cat /etc/grid-security/certificates/*.pem >> \
+    $(python -c 'import pkg_resources; print pkg_resources.resource_filename("requests", "cacert.pem")')
+
+RUN mkdir -p /usr/var/log/ /usr/var/invenio.base-instance/ \
+             /usr/var/run/
+
+RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
+RUN chown -R lwosf:lwosf /lwosf /usr/var/
+
+USER lwosf
+
+CMD ["bash"]

@@ -1,53 +1,8 @@
-FROM python:2.7-slim
+FROM lwosf-base:latest 
 MAINTAINER aeonium <info@aeonium.eu>
 
-RUN apt-get update \
-    && apt-get -qy install --fix-missing --no-install-recommends curl \
-    && curl -sL https://deb.nodesource.com/setup | bash -
-
-RUN apt-get update && \
-    apt-get -qy upgrade --fix-missing --no-install-recommends \
-    && apt-get -qy install --fix-missing --no-install-recommends \
-        apache2 \
-        gcc \
-        git \
-        libapache2-mod-wsgi \
-        libffi-dev \
-        libjpeg-dev \
-        libmysqlclient-dev \
-        libssl-dev \
-        libxslt-dev \
-        nodejs \
-    && apt-get clean autoclean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/{apt,dpkg}/ \
-    && (find /usr/share/doc -depth -type f ! -name copyright -delete || true) \
-    && (find /usr/share/doc -empty -delete || true) \
-    && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
-
-RUN npm update \
-    && npm install --silent -g bower less clean-css uglify-js requirejs
-
-RUN pip install -U pip uwsgi
-
-RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
-
-COPY . /lwosf
-
-WORKDIR /lwosf
-
-RUN pip install -r requirements.txt --exists-action i
-RUN pip install -e .
-
-RUN mkdir -p /usr/local/var/log/ /usr/local/var/invenio.base-instance/
-
-RUN useradd --home-dir /home/lwosf --create-home --shell /bin/bash --uid 1000 lwosf
-RUN chown -R lwosf:lwosf /lwosf \
-             /usr/local/var/
-
-USER lwosf
-RUN cat /lwosf/misc/invenio.cfg >> /usr/local/var/invenio.base-instance/invenio.cfg \
-    && cd /usr/local/var/invenio.base-instance/ \
+RUN cat /lwosf/misc/app/invenio.cfg >> /usr/var/invenio.base-instance/invenio.cfg \
+    && cd /usr/var/invenio.base-instance/ \
     && echo '{"directory": "static/vendors"}' > .bowerrc \
     && inveniomanage bower > bower.json \
     && CI=true bower install --production --silent \
@@ -55,7 +10,6 @@ RUN cat /lwosf/misc/invenio.cfg >> /usr/local/var/invenio.base-instance/invenio.
     && inveniomanage collect \
     && inveniomanage assets build
 
-VOLUME /usr/local/var/invenio.base-instance/
+VOLUME /usr/var/invenio.base-instance/
 
-ENTRYPOINT ["/lwsof/misc/app/entry.sh"]
 CMD ["bash"]
