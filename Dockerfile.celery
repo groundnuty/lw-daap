@@ -8,9 +8,9 @@ RUN curl http://repository.egi.eu/sw/production/umd/UMD-DEB-PGP-KEY | apt-key ad
     && curl http://repository.egi.eu/sw/production/umd/3/repofiles/debian-squeeze/UMD-3-base.list > /etc/apt/sources.list.d/UMD-3-base.list \
     && curl http://repository.egi.eu/sw/production/umd/3/repofiles/debian-squeeze/UMD-3-updates.list > /etc/apt/sources.list.d/UMD-3-updates.list
 
-RUN apt-get update && \
-    apt-get -qy upgrade --fix-missing --no-install-recommends \
-    && apt-get -qy install \
+RUN apt-get update \
+    && apt-get -qy upgrade --fix-missing --no-install-recommends \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qy install \
         fetch-crl \
         voms-clients3 \
     && apt-get clean autoclean \

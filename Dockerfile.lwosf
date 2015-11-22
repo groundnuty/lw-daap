@@ -1,8 +1,8 @@
 FROM lwosf-base:latest 
 MAINTAINER aeonium <info@aeonium.eu>
 
-RUN cat /lwosf/misc/app/invenio.cfg >> /usr/var/invenio.base-instance/invenio.cfg \
-    && cd /usr/var/invenio.base-instance/ \
+RUN cat /lwosf/misc/app/invenio.cfg >> /usr/local/var/invenio.base-instance/invenio.cfg \
+    && cd /usr/local/var/invenio.base-instance/ \
     && echo '{"directory": "static/vendors"}' > .bowerrc \
     && inveniomanage bower > bower.json \
     && CI=true bower install --production --silent \
@@ -10,6 +10,6 @@ RUN cat /lwosf/misc/app/invenio.cfg >> /usr/var/invenio.base-instance/invenio.cf
     && inveniomanage collect \
     && inveniomanage assets build
 
-VOLUME /usr/var/invenio.base-instance/
+VOLUME /usr/local/var/invenio.base-instance/
 
 CMD ["bash"]
