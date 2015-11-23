@@ -30,4 +30,5 @@ class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         only = ['name', 'institution', 'email', 'social_profiles',
-                'ssh_public_key', 'user_db', 'pass_db', 'token_onedata']
+                'ssh_public_key', 'user_db', 'pass_db',
+                'token_onedata']
