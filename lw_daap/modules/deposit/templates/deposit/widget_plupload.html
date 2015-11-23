@@ -52,9 +52,11 @@
           {% if config.DEPOSIT_DROPBOX_API_KEY %}
           <a id="dropboxuploader" href="javascript:;" class="btn btn-danger  "><i class="fa fa-dropbox"></i> Import from Dropbox</a>
           {% endif %}
+          {% if config.GITHUB_APP_CREDENTIALS %}
           <a id="githubuploader" href="javascript:;" class="btn btn-danger  ">
             <i class="fa fa-github"></i> Import from GitHub
           </a>
+          {% endif %}
           <div class="spacer30"></div>
           </li>
 
