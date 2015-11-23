@@ -118,7 +118,7 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    onedata_token = db.Column(db.String(length=255),
+    token_onedata = db.Column(db.String(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("OneData token"),
