@@ -150,6 +150,17 @@ def process_draft(draft):
     return draft
 
 
+def _get_bool_value_from_bool_or_str(value):
+    if isinstance(value, bool):
+        return value
+    # not a boolean
+    try:
+        return ast.literal_eval(value)
+    except ValueError:
+        # stay on the safe side
+        return False
+
+
 def process_recjson(deposition, recjson):
     """
     Process exported recjson (common for both new and edited records)
@@ -266,24 +277,24 @@ def process_recjson(deposition, recjson):
     # Project info
     # =================
     if recjson.get('project'):
-        if 'record_curated_in_project' in recjson and \
-           recjson['record_curated_in_project']:
+        if 'record_curated_in_project' in recjson:
             if recjson['upload_type'] != 'dataset':
                 recjson['record_curated_in_project'] = True
             else:
-                curated = ast.literal_eval(recjson['record_curated_in_project'])
+                curated = _get_bool_value_from_bool_or_str(
+                    recjson['record_curated_in_project'])
                 recjson['record_curated_in_project'] = curated
-        if 'record_public_from_project' in recjson and \
-           recjson['record_public_from_project']:
-            public = ast.literal_eval(recjson['record_public_from_project'])
+        if 'record_public_from_project' in recjson:
+            public = _get_bool_value_from_bool_or_str(
+                recjson['record_public_from_project'])
             recjson['record_public_from_project'] = public
     else:
         for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
-    if 'record_selected_for_archive' in recjson and \
-       recjson['record_selected_for_archive']:
-        archived = ast.literal_eval(recjson['record_selected_for_archive'])
+    if 'record_selected_for_archive' in recjson:
+        archived = _get_bool_value_from_bool_or_str(
+            recjson['record_selected_for_archive'])
         recjson['record_selected_for_archive'] = archived
 
     # Requirements
