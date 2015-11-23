@@ -22,6 +22,11 @@
 {%- from "paginate.html" import paginate with context -%}
 {%- from "paginate.html" import list_status with context -%}
 
+{% block global_bundles %}
+{{ super() }}
+{% bundles "projects.js" %}
+{% endblock %}
+
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
