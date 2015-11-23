@@ -20,6 +20,10 @@
 {% extends "page.html" %}
 {%- from "analyze/modals.html" import terminate_modal, connector_modal with context %}
 
+{% block global_bundles %}
+  {{ super() }}
+  {% bundles "analyze.js" %}
+{% endblock %}
 
 {% block javascript %}
 {{ super() }}
