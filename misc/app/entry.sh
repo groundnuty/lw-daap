@@ -5,7 +5,7 @@
 sleep 1m
 KEY=$(inveniomanage config get SECRET_KEY)
 if [ "x$KEY" = "xchange_me" ]; then
-    inveniomanage config create secret_key
+    inveniomanage config create secret-key
     bibsched start
     bibsched purge
     bibindex -s5m -u admin --continue-on-error
