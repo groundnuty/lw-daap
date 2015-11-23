@@ -102,15 +102,23 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    db_credentials = db.Column(db.Text(length=2000),
+    user_db = db.Column(db.String(length=255),
                                nullable=True, default='',
                                info=dict(
-                                   label=_("DB credentials"),
+                                   label=_("User DB"),
                                    description=_(''),
                                    )
                                )
 
-    onedata_token = db.Column(db.Text(length=2000),
+    pass_db = db.Column(db.String(length=255),
+                               nullable=True, default='',
+                               info=dict(
+                                   label=_("Password DB"),
+                                   description=_(''),
+                                   )
+                               )
+
+    onedata_token = db.Column(db.String(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("OneData token"),

@@ -48,21 +48,30 @@
     {% endcall %}
   </div>
 
-    <div class="panel panel-default panel-sharp">
+  <div class="panel panel-default panel-sharp">
+    {% call hb.cpanel_head(2) %}
+    <i class="fa fa-database fa-fw"></i> DB credentials
+    {% endcall %}
+    {% call hb.cpanel_body(2, collapsed=False) %}
+    {{ render_field(form.user_db, show_description=True) }}
+    {{ render_field(form.pass_db, show_description=True) }}
+    {% endcall %}
+  </div>
+
+  <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(3) %}
-    <i class="fa fa-database fa-fw"></i> Credentials
+    <i class="fa fa-database fa-fw"></i> OneData
     {% endcall %}
     {% call hb.cpanel_body(3, collapsed=False) %}
-    {{ render_field(form.db_credentials, show_description=True) }}
     {{ render_field(form.onedata_token, show_description=True) }}
     {% endcall %}
   </div>
 
   <div class="panel panel-default panel-sharp">
-    {% call hb.cpanel_head(2) %}
+    {% call hb.cpanel_head(4) %}
      <i class="fa fa-cloud fa-fw"></i> e-Insfracture info
      {% endcall %}
-     {% call hb.cpanel_body(2, collapsed=False) %}
+     {% call hb.cpanel_body(4, collapsed=False) %}
       {% if user_dn %}
   {{ helpers.delegation_info() }}
   {% else %}
