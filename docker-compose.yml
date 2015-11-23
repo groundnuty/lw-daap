@@ -1,13 +1,16 @@
 app:
   build: .
   dockerfile: Dockerfile.lwosf
-  entrypoint: /lwosf/misc/app/bibsched_entry.sh
+  entrypoint: /lwosf/misc/app/entry.sh
   command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
   environment:
+    - BROKER_URL=redis://cache:6379/1
     - CACHE_REDIS_HOST=cache
-    - INVENIO_APP_CONFIG_ENVS=CACHE_REDIS_HOST
+    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
   volumes:
-    - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
+    #- ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
+    - ./lw_daap/:/lwosf/lw_daap/
   links:
     - mysql:db
     - redis:cache
@@ -24,6 +27,9 @@ httpd:
     # Use here the actual certificates
     - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
     - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
+    # Missing:
+    # /etc/shibboleth/shibboleth2.xml
+    # /etc/shibboleth/attribute-map.xml
   links:
     - app:app
   ports:
@@ -33,7 +39,8 @@ httpd:
 celery:
   build: .
   dockerfile: Dockerfile.celery
-  command: supervisord -n -c /lwosf/misc/app/celery.conf
+  entrypoint: /lwosf/misc/celery/entry.sh
+  command: supervisord -n -c /lwosf/misc/celery/celery.conf
   environment:
     - BROKER_URL=redis://cache:6379/1
     - CACHE_REDIS_HOST=cache

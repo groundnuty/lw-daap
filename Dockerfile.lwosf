@@ -10,6 +10,6 @@ RUN cat /lwosf/misc/app/invenio.cfg >> /usr/local/var/invenio.base-instance/inve
     && inveniomanage collect \
     && inveniomanage assets build
 
-VOLUME /usr/local/var/invenio.base-instance/
+VOLUME /usr/local/var
 
 CMD ["bash"]

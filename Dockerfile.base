@@ -79,11 +79,7 @@ RUN apt-get update \
         libssl-dev \
         libxslt-dev \
         nodejs \
-        supervisor \
-        python-pip \
-        python-dev \ 
     && apt-get -qy install ca-policy-egi-core \
-    && update-rc.d -f supervisord remove \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/{apt,dpkg}/ \
@@ -94,7 +90,7 @@ RUN apt-get update \
 RUN npm update \
     && npm install --silent -g bower less clean-css uglify-js requirejs
 
-RUN pip install -U pip uwsgi
+RUN pip install -U pip uwsgi supervisor
 
 RUN mkdir /lwosf
 WORKDIR /lwosf
@@ -102,7 +98,7 @@ WORKDIR /lwosf
 COPY requirements.txt /lwosf
 RUN pip install -r requirements.txt --exists-action i
 
-#RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
+RUN ln -s /usr/lib/python2.7/plat-*/_sysconfigdata_nd.py /usr/lib/python2.7/
 
 COPY . /lwosf
 

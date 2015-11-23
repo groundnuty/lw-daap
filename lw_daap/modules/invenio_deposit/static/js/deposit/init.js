@@ -23,6 +23,7 @@ require([
     'js/deposit/uploader/uploader',
     "js/deposit/uploader/uploaders/pluploader",
     "js/deposit/uploader/uploaders/dropboxuploader",
+    "js/deposit/uploader/uploaders/githubuploader",
     "js/deposit/uploader/ui/filelist",
     "js/deposit/uploader/ui/errorlist"
 ], function() {});
