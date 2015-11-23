@@ -18,18 +18,12 @@
 
 {%- extends "records/metadata_base.html" -%}
 
-{%- block global_stylesheets %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename="vendors/leaflet/dist/leaflet.css") }}" />
-{% endblock %}
-
-
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
 require(['jquery'], function($) {
     if ($('#spatial').length != 0) {
-        require(["leaflet/leaflet"], function(leaflet) {
+        require(["vendors/leaflet/dist/leaflet"], function(leaflet) {
             var center = $('#spatial').data('center')
             if (center == undefined) {
                 center = [0, 0]
