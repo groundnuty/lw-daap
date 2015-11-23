@@ -130,7 +130,7 @@ def doi_action(record):
         datacite_register.delay(recid)
     except Exception, e:
         register_exception(alert_admin=True)
-        return json_error(400, e.msg)
+        return json_error(400, '%s' % e)
 
     add_doi_to_record(recid, doi)
     return None

@@ -26,7 +26,7 @@ from ..actions import build_doi, action_key
 def format_element(bfo, recid=None):
     key = action_key(recid, 'doi')
     cache_action = cache.get(key)
-    return cache_action == 'doi'
+    return cache_action
 
 
 def escape_values(bfo):
