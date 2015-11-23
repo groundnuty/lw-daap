@@ -85,10 +85,10 @@ class UserProfile(db.Model):
                             )
                         )
 
-    user_proxy = db.Column(db.String(length=10000),
+    user_proxy = db.Column(db.Text(length=10000),
                            nullable=True, default='',)
 
-    csr_priv_key = db.Column(db.String(length=10000),
+    csr_priv_key = db.Column(db.Text(length=10000),
                              nullable=True, default='')
 
     ssh_public_key = db.Column(db.Text(length=2000),
@@ -118,7 +118,7 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    token_onedata = db.Column(db.Text(length=255),
+    token_onedata = db.Column(db.String(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("OneData token"),
