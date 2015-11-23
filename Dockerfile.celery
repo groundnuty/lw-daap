@@ -1,4 +1,4 @@
-FROM lwosf-base:latest
+FROM lwosf:latest
 MAINTAINER aeonium <info@aeonium.eu>
 
 # go back to root to install voms stuff
@@ -24,8 +24,8 @@ RUN apt-get update \
 RUN ln -s /usr/share/java/commons-io.jar /var/lib/voms-clients3/lib/
 
 RUN mkdir -p /etc/grid-security/vomsdir/vo.lifewatch.eu /etc/vomses \
-    && cp /lwosf/misc/celery/ibergrid-voms.ifca.es.lsc /etc/grid-security/vomsdir/vo.lifewatch.eu/ibergrid-voms.ifca.es.lsc \
-    && cp /lwosf/misc/celery/vo.lifewatch.eu.ibergrid-voms.ifca.es /etc/vomses/vo.lifewatch.eu.ibergrid-voms.ifca.es
+    && cp /lwosf/deploy/celery/ibergrid-voms.ifca.es.lsc /etc/grid-security/vomsdir/vo.lifewatch.eu/ibergrid-voms.ifca.es.lsc \
+    && cp /lwosf/deploy/celery/vo.lifewatch.eu.ibergrid-voms.ifca.es /etc/vomses/vo.lifewatch.eu.ibergrid-voms.ifca.es
 
 # Make /etc/grid-security/certificates writable by lwosf so it can run fetch-crl
 RUN chown -R lwosf:lwosf /etc/grid-security/certificates

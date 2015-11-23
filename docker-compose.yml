@@ -1,7 +1,7 @@
 app:
   build: .
-  dockerfile: Dockerfile.lwosf
-  entrypoint: /lwosf/misc/app/entry.sh
+  dockerfile: Dockerfile.app
+  #entrypoint: /lwosf/deploy/app/entry.sh
   command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
   environment:
     - BROKER_URL=redis://cache:6379/1
@@ -39,8 +39,8 @@ httpd:
 celery:
   build: .
   dockerfile: Dockerfile.celery
-  entrypoint: /lwosf/misc/celery/entry.sh
-  command: supervisord -n -c /lwosf/misc/celery/celery.conf
+  entrypoint: /lwosf/deploy/celery/entry.sh
+  command: supervisord -n -c /lwosf/deploy/celery/celery.conf
   environment:
     - BROKER_URL=redis://cache:6379/1
     - CACHE_REDIS_HOST=cache
