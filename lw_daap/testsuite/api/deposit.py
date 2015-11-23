@@ -20,7 +20,6 @@
 import os
 import requests
 import json
-import codecs
 import sys
 
 from deposit_conf import *

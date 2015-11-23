@@ -19,7 +19,6 @@
 from __future__ import absolute_import
 
 from flask import Blueprint
-from invenio.ext.sslify import ssl_required
 from invenio.ext.cache import cache
 from lw_daap.ext.login import login_required
 

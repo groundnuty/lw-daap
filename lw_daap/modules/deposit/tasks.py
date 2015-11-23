@@ -46,15 +46,13 @@ import re
 from tempfile import mkstemp
 import time
 
-from invenio.base.globals import cfg
 from invenio.legacy.bibdocfile.api import BibDoc, BibRecDocs, \
     InvenioBibDocFileError
-from invenio.modules.formatter import format_record
 from invenio.legacy.bibrecord import record_add_field, record_xml_output
 from invenio.legacy.bibsched.bibtask import task_low_level_submission
 from invenio.modules.records.api import get_record
 from invenio.celery import celery
-from invenio.config import CFG_TMPSHAREDDIR, CFG_DATACITE_SITE_URL, \
+from invenio.config import CFG_TMPSHAREDDIR, \
     CFG_SITE_SUPPORT_EMAIL, CFG_SITE_NAME
 from invenio.ext.email import send_email
 from invenio.legacy.dbquery import run_sql
@@ -62,7 +60,6 @@ from invenio.ext.logging.wrappers import register_exception
 from invenio.legacy.search_engine import search_pattern, get_fieldvalues
 from invenio.legacy.websubmit.icon_creator import create_icon, \
     InvenioWebSubmitIconCreatorError
-from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.communities.models import Community
 from invenio.ext.template import render_template_to_string
 

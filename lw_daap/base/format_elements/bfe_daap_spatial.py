@@ -18,8 +18,6 @@
 
 import json
 
-from flask import current_app
-
 
 def format_element(bfo, spatial=[]):
     if not spatial:

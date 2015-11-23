@@ -19,7 +19,7 @@
 
 def format_element(bfo, frequency={}):
     if frequency.get('size', 0) > 1:
-        return frequency.get('unit', '')+"s"
+        return frequency.get('unit', '') + "s"
     else:
         return frequency.get('unit')
 

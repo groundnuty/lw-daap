@@ -20,14 +20,11 @@
 from __future__ import absolute_import
 
 from flask import Blueprint, render_template, request, flash, \
-    url_for, redirect, current_app, jsonify
+    url_for, redirect, current_app
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 from flask_login import current_user
 from flask_restful import abort
-
-from invenio.ext.cache import cache
-from invenio.legacy.bibrecord import record_add_field
 
 from invenio.base.decorators import wash_arguments
 from invenio.base.i18n import _
@@ -38,7 +35,6 @@ from invenio.modules.formatter import format_record
 from invenio.modules.records.api import get_record
 
 from lw_daap.ext.login import login_required
-from lw_daap.modules.invenio_groups.models import Group
 from lw_daap.modules.record_actions.actions import record_actions, \
     doi_action, control_actions
 
@@ -46,7 +42,6 @@ from .forms import ProjectForm, SearchForm, EditProjectForm,\
     DeleteProjectForm, IntegrateForm
 from .models import Project
 
-from .utils import get_cache_key
 
 blueprint = Blueprint(
     'lwdaap_projects',

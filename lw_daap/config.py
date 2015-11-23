@@ -21,6 +21,7 @@
 # Configuration
 
 from datetime import timedelta
+from invenio.base.config import EXTENSIONS
 import warnings
 import lw_daap.base.auth.github
 import lw_daap.base.auth.google
@@ -29,9 +30,6 @@ import lw_daap.base.auth.facebook
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-
-from invenio.base.config import EXTENSIONS
-
 
 # MonkeyPatch the UserInfo so it gets our group stuff
 # must be done quite early!
@@ -180,9 +178,9 @@ OAUTHCLIENT_REMOTE_APPS = dict(
 SSO_ATTRIBUTE_MAP = {
     "Shib-Identity-Provider": (True, "idp"),
     "persistent-id": (True, "persistent-id"),
-    #"HTTP_SHIB_SHARED_TOKEN": (True, "shared_token"),
+    # "HTTP_SHIB_SHARED_TOKEN": (True, "shared_token"),
     "cn": (True, "cn"),
-    #"HTTP_SHIB_MAILi": (True, "email"),
+    # "HTTP_SHIB_MAILi": (True, "email"),
     "givenName": (False, "first_name"),
     "unscoped-affiliation": (False, "unscoped-affiliation"),
     "affiliation": (False, "affiliation"),

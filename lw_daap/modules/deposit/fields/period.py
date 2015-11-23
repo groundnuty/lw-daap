@@ -17,8 +17,7 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 
-from wtforms import validators, widgets
-from wtforms_components import DateRange
+from wtforms import validators
 from datetime import date
 
 from invenio.base.i18n import _
@@ -29,7 +28,6 @@ from lw_daap.modules.deposit.field_widgets import date_widget
 from lw_daap.modules.invenio_deposit.validation_utils import required_if
 from lw_daap.modules.deposit.validation_utils import StartEndDate
 
-from flask import current_app
 
 __all__ = ['PeriodField']
 

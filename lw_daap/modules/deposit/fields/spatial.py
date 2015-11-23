@@ -17,14 +17,11 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 
-from wtforms import validators, widgets
-from wtforms.validators import StopValidation, ValidationError
+from wtforms import validators
 
-from invenio.base.i18n import _
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
 from lw_daap.modules.invenio_deposit import fields
 from lw_daap.modules.invenio_deposit.field_widgets import ColumnInput
-from lw_daap.modules.invenio_deposit.validation_utils import required_if
 
 
 __all__ = ['SpatialField']

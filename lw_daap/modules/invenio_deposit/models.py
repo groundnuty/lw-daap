@@ -1292,7 +1292,7 @@ class Deposition(object):
                     record = get_record(recid, True)
                     if record:
                         return record.get('doi', None) is not None
-                except Exception as e:
+                except Exception:
                     pass
         return False
 

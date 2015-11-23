@@ -41,7 +41,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from urlparse import urlparse
 
 from flask import Blueprint, flash, redirect, \
-    render_template, request, url_for, current_app
+    render_template, request, url_for
 
 from flask_breadcrumbs import default_breadcrumb_root, register_breadcrumb
 

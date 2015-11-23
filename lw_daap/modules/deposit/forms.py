@@ -18,13 +18,12 @@
 
 from __future__ import absolute_import
 
-import json
 from datetime import date
 
 import idutils
 from flask import request
 from jinja2 import Markup
-from wtforms import FormField, validators, widgets
+from wtforms import validators, widgets
 from wtforms.validators import ValidationError
 from wtforms_components import DateRange
 
@@ -33,9 +32,8 @@ from invenio.base.i18n import _
 from invenio.config import CFG_DATACITE_DOI_PREFIX, CFG_SITE_NAME, \
     CFG_SITE_SUPPORT_EMAIL
 from lw_daap.modules.invenio_deposit import fields
-from lw_daap.modules.invenio_deposit.autocomplete_utils import kb_autocomplete
 from lw_daap.modules.invenio_deposit.field_widgets \
-    import ButtonWidget, CKEditorWidget, ColumnInput, ExtendedListWidget, \
+    import CKEditorWidget, ColumnInput, ExtendedListWidget, \
     ItemWidget, TagInput, TagListWidget, plupload_widget
 from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
     strip_string
@@ -44,9 +42,8 @@ from lw_daap.modules.invenio_deposit.processor_utils import PidNormalize, \
     PidSchemeDetection, datacite_lookup, replace_field_data
 from lw_daap.modules.invenio_deposit.validation_utils \
     import DOISyntaxValidator, invalid_doi_prefix_validator, list_length, \
-    minted_doi_validator, not_required_if, pid_validator, required_if, \
+    pid_validator, required_if, \
     unchangeable
-from invenio.modules.knowledge.api import get_kb_mapping
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from lw_daap.modules.invenio_groups.models import Group
@@ -57,7 +54,7 @@ from .autocomplete import community_autocomplete, accessgroups_autocomplete, \
     inputrecords_autocomplete_dataset, inputrecords_autocomplete_software
 from .validators import community_validator, project_acl_validator, \
     rel_record_validator
-from .utils import create_doi, filter_empty_helper
+from .utils import filter_empty_helper
 
 
 __all__ = (
@@ -225,7 +222,7 @@ class CreatorForm(WebDepositForm):
     )
     orcid = fields.StringField(
         placeholder="ORCID",
-        #widget=widgets.HiddenInput(),
+        # widget=widgets.HiddenInput(),
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-3"),
         processors=[

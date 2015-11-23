@@ -47,7 +47,6 @@ from invenio.base.globals import cfg
 from invenio.ext.login.legacy_user import UserInfo
 from invenio.ext.sqlalchemy import db
 from invenio.ext.template import render_template_to_string
-from invenio.ext.email import send_email
 from invenio.ext.email import scheduled_send_email
 
 from invenio.modules.accounts.models import User

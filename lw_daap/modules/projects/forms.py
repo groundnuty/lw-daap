@@ -26,8 +26,6 @@ from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 from wtforms import HiddenField, StringField, TextAreaField,\
     SelectMultipleField, validators
 
-from .models import Project
-
 
 class SearchForm(Form):
     """Search Form."""
