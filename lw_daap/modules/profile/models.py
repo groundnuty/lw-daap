@@ -102,7 +102,7 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    user_db = db.Column(db.String(length=255),
+    user_db = db.Column(db.Text(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("User DB"),
@@ -110,7 +110,7 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    pass_db = db.Column(db.String(length=255),
+    pass_db = db.Column(db.Text(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("Password DB"),
@@ -118,7 +118,7 @@ class UserProfile(db.Model):
                                    )
                                )
 
-    token_onedata = db.Column(db.String(length=255),
+    token_onedata = db.Column(db.Text(length=255),
                                nullable=True, default='',
                                info=dict(
                                    label=_("OneData token"),
