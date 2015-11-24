@@ -34,6 +34,9 @@
   <a id="btn-deposit-software" class="btn btn-block btn-danger  "
     href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="software") }}"
     role="button"><i class="fa fa-cogs fa-fw fa-2x valign"></i>Register new software</a>
+  <a id="btn-deposit-instrument" class="btn btn-block btn-danger  "
+    href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="instrument") }}"
+    role="button"><i class="fa fa-flask fa-fw fa-2x valign"></i>Register new instrument</a>
 </div>
 
   {{ record_table('collect', records, "Dataset and Software records")|safe}}
