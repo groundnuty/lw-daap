@@ -55,6 +55,7 @@ blueprint = Blueprint(
 )
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def index():
+    current_app.logger.debug("INDEX")
     profile = UserProfile.get_or_create()
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
@@ -86,6 +87,7 @@ def index():
 @login_required
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def delegate():
+    current_app.logger.debug("DELEGATE")
     profile = UserProfile.get_or_create()
     ctx = dict(profile=profile)
     ctx.update(get_client_proxy_info(profile))
@@ -99,6 +101,7 @@ def delegate():
 @ssl_required
 @login_required
 def csr_request():
+    current_app.logger.debug("CSR REQUEST")
     profile = UserProfile.get_or_create()
     priv_key, csr = generate_proxy_request()
     profile.update(csr_priv_key=priv_key)
@@ -109,6 +112,7 @@ def csr_request():
 @ssl_required
 @login_required
 def delegate_proxy():
+    current_app.logger.debug("DELEGATE PROXY")
     profile = UserProfile.get_or_create()
     if not profile.csr_priv_key:
         current_app.logger.debug("NO KEY!")
@@ -134,6 +138,6 @@ def delegate_proxy():
 @ssl_required
 @login_required
 def delete_proxy():
-    profile = UserProfile.get_or_create()
+    current_app.logger.debug("DELETE PROXY")
     profile.update(user_proxy=None)
     return ''
