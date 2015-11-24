@@ -206,6 +206,7 @@ def new():
 @login_required
 @permission_required('usegroups')
 def manage(group_id):
+    current_app.logger.debug("HOLA")
     """Manage your group."""
     group = Group.query.get_or_404(group_id)
     form = GroupForm(request.form, obj=group)
