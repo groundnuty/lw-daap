@@ -9,8 +9,7 @@ app:
     - CELERY_RESULT_BACKEND=redis://cache:6379/1
     - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
   volumes:
-    #- ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
-    - ./lw_daap/:/lwosf/lw_daap/
+    - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
   links:
     - mysql:db
     - redis:cache
@@ -19,17 +18,16 @@ httpd:
   build: .
   dockerfile: Dockerfile.httpd
   environment:
-    - SERVERNAME=daap-devel.aeonium.eu
+    - SERVERNAME=localhost
     - UWSGI_URI="uwsgi://app:3031"
   volumes_from:
     - app:ro
-  volumes:
-    # Use here the actual certificates
-    - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
-    - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
-    # Missing:
-    # /etc/shibboleth/shibboleth2.xml
-    # /etc/shibboleth/attribute-map.xml
+  # Configure on this section the certificates for https and shibboleth
+  #volumes:
+  #  - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
+  #  - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
+  #  - shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+  #  - attribute-map.xml:/etc/shibboleth/attribute-map.xml
   links:
     - app:app
   ports:
@@ -48,9 +46,9 @@ celery:
     - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
   volumes_from:
     - app
-  volumes:
-    # Use here the actual location of the robot certificate
-    - ../.globus:/home/lwosf/.globus
+  # Configure here the actual location of the robot certificate
+  #volumes:
+  #  - ../.globus:/home/lwosf/.globus
   links:
     - mysql:db
     - redis:cache
