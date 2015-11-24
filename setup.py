@@ -24,7 +24,7 @@ print packages
 
 setup(
     name="lw_daap",
-    version="0.1",
+    version="1.0",
     url="http://aeonium.eu/",
     author="aeonium",
     author_email="info@aeonium.eu",
