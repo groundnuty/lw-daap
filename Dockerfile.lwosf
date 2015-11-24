@@ -90,7 +90,7 @@ RUN apt-get update \
 RUN npm update \
     && npm install --silent -g bower less clean-css uglify-js requirejs
 
-RUN pip install -U pip uwsgi supervisor
+RUN pip install -U pip uwsgi supervisor setuptools==18.5
 
 RUN mkdir /lwosf
 WORKDIR /lwosf

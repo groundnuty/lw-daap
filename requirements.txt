@@ -18,3 +18,5 @@ PyYaml
 python-etcd
 # v2.2.1 breaks everything :(
 intbitset==2.0
+# setuptools 18.6 breaks installing with -e
+setuptools==18.5
