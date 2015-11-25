@@ -33,16 +33,19 @@ def getServiceJsonParamenters():
     lfw_service_json = json.loads(lfw_service_json)
     return lfw_service_json
 
-def existUserDB(userDB):
+def getBase64StringAuth(lfw_service_json):
+    user = lfw_service_json['lfw_user']
+    passw = lfw_service_json['lfw_pass']
+    return base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
+
+def existDBUser(userDB):
     """
     Returns true if the DB user exist in the database
     """
     lfw_service_json = getServiceJsonParamenters();
     lfw_url = lfw_service_json['lfw_service']
-    user = lfw_service_json['lfw_user']
-    passw = lfw_service_json['lfw_pass']
-    req = urllib2.Request('%suser/findbydatabaseuser?databaseUser=%s' % (lfw_url, userDB))
-    base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
+    req = urllib2.Request('%sdatabase/existdbuser?dbuser=%s' % (lfw_url, userDB))
+    base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
     if not result.read().strip():
@@ -50,16 +53,53 @@ def existUserDB(userDB):
     else:
        return True
 
-def existPortalUser(portalUser):
+def createDBUser(userDB, passDB):
+    """
+    Create a database user.
+    """
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/database/createdbuser?dbuser=%s&dbpassword=%s' % (lfw_url, userDB, passDB))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    urllib2.urlopen(req)
+
+def changeDBPassword(userDB, passDB):
+    """
+    Create a database user.
+    """
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/database/changedbpassword?dbuser=%s&dbpassword=%s' % (lfw_url, userDB, passDB))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    urllib2.urlopen(req)
+
+
+
+def findByDatabaseUser(userDB):
+    """
+    Returns true if the DB user exist in the database
+    """
+    lfw_service_json = getServiceJsonParamenters();
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/user/findbydatabaseuser?databaseUser=%s' % (lfw_url, userDB))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    if not result.read().strip():
+       return False
+    else:
+       return True
+
+def findByPortalUser(portalUser):
     """
     Returns true if the Portal user exist in the database
     """
     lfw_service_json = getServiceJsonParamenters();
     lfw_url = lfw_service_json['lfw_service']
-    user = lfw_service_json['lfw_user']
-    passw = lfw_service_json['lfw_pass']
     req = urllib2.Request('%suser/findbyportaluser?portalUser=%s' % (lfw_url, portalUser))
-    base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
+    base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
     if not result.read().strip():
@@ -73,11 +113,8 @@ def addUserDB(userDB, portalUser):
     """
     lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
-    user = lfw_service_json['lfw_user']
-    passw = lfw_service_json['lfw_pass']
     req = urllib2.Request('%s/user/adduser?databaseUser=%s&portalUser=%s' % (lfw_url, userDB, portalUser))
-    base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
+    base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     urllib2.urlopen(req)
-
 
