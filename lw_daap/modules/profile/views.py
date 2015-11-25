@@ -63,11 +63,20 @@ def index():
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
-            if not existUserDB(form.user_db.data and not existPortalUser(current_user['nickname'])):
-                try:
-                    addUserDB(form.user_db.data, current_user['nickname'])
-                except urllib2.HTTPError, err:
-                    flash("Unable to create user database", 'error')
+            msg = ''
+            if not existUserDB(form.user_db.data):
+                if not existPortalUser(current_user['nickname']):
+                    try:
+                        addUserDB(form.user_db.data, current_user['nickname'])
+                    except urllib2.HTTPError, err:
+                        flash("Unable to create user database", 'error')
+                else:
+                    msg += 'The portal user "%s" already exists in the database' % current_user['nickname']
+            else:
+                msg += 'The database user "%s" already exists in the database' % form.user_db.data
+
+            if msg:
+                flash(msg, 'info')
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
