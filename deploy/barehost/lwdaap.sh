@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Version 0.1b 
+# Version 0.1b
 # Next TODO
 #   -Config SSL Apache
 #   -Remove HARDCODE celeryd config args
@@ -24,7 +24,7 @@ sudo apt-get -y install build-essential git redis-server \
 		   libjpeg-dev libfreetype6-dev libtiff-dev \
 		   libffi-dev libssl-dev \
 		   software-properties-common python-dev \
-		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile 
+		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 curl -sL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y nodejs
@@ -69,11 +69,11 @@ CFG_LWDAAP_USER=${USER:=$(whoami)}
 #
 # INSTALL
 #
-source $(which virtualenvwrapper.sh) 
+source $(which virtualenvwrapper.sh)
 mkvirtualenv $CFG_LWDAAP_VIRTUALENV
 git clone $CFG_LWDAAP_REPOSITORY $CFG_LWDAAP_WORKDIR
 pushd $CFG_LWDAAP_WORKDIR
-pip install -r requirements-devel.txt --exists-action i 
+pip install -r requirements.txt --exists-action i
 pip install -e .
 
 #
@@ -132,8 +132,8 @@ sudo chown root:root /etc/init.d/celeryd
 sudo chown root:root /etc/default/celeryd
 sudo mkdir -p /var/log/celery
 sudo mkdir -p /var/run/celery
-sudo chown ubuntu:ubuntu /var/log/celery
-sudo chown ubuntu:ubuntu /var/run/celery
+sudo chown $USER /var/log/celery
+sudo chown $USER /var/run/celery
 sudo update-rc.d celeryd defaults
 sudo service celeryd restart
 sudo service redis-server restart
