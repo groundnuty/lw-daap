@@ -63,12 +63,11 @@ def index():
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
-            try:
-                if not (existUserDB(form.user_db.data)):
+            if not (existUserDB(form.user_db.data)):
+                try:
                     addUserDB(form.user_db.data, current_user['nickname'])
-            except Exception as err:
-                current_app.logger.debug(err)
-                flash(str(err), 'error')
+                except urllib2.HTTPError, err:
+                    flash(str(e.code), 'error')
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
