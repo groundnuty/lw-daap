@@ -35,13 +35,30 @@ def getServiceJsonParamenters():
 
 def existUserDB(userDB):
     """
-    Returns the Lifewatch service parameters in JSON format
+    Returns true if the DB user exist in the database
     """
     lfw_service_json = getServiceJsonParamenters();
     lfw_url = lfw_service_json['lfw_service']
     user = lfw_service_json['lfw_user']
     passw = lfw_service_json['lfw_pass']
     req = urllib2.Request('%suser/findbydatabaseuser?databaseUser=%s' % (lfw_url, userDB))
+    base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    if not result.read().strip():
+       return False
+    else:
+       return True
+
+def existPortalUser(portalUser):
+    """
+    Returns true if the Portal user exist in the database
+    """
+    lfw_service_json = getServiceJsonParamenters();
+    lfw_url = lfw_service_json['lfw_service']
+    user = lfw_service_json['lfw_user']
+    passw = lfw_service_json['lfw_pass']
+    req = urllib2.Request('%suser/findbyportaluser?portalUser=%s' % (lfw_url, portalUser))
     base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
@@ -61,10 +78,6 @@ def addUserDB(userDB, portalUser):
     req = urllib2.Request('%s/user/adduser?databaseUser=%s&portalUser=%s' % (lfw_url, userDB, portalUser))
     base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
     req.add_header("Authorization", "Basic %s" % base64string)
-    result = urllib2.urlopen(req)
-    if not result.read().strip():
-       return False
-    else:
-       return True
+    urllib2.urlopen(req)
 
 
