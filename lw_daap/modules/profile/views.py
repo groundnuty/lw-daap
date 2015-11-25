@@ -34,6 +34,8 @@ from .models import UserProfile
 from .proxy_utils import add_voms_info, get_client_proxy_info, \
     generate_proxy_request, build_proxy
 
+from .service_utils import existUserDB, addUserDB
+
 
 blueprint = Blueprint(
     'userprofile',
@@ -55,11 +57,17 @@ blueprint = Blueprint(
 )
 @register_breadcrumb(blueprint, 'breadcrumbs.settings.profile', _('Profile'))
 def index():
-    current_app.logger.debug("INDEX")
     profile = UserProfile.get_or_create()
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
+            try:
+                user = existUserDB(form.user_db.data)
+                if not user:
+                    addUserDB(form.user_db.data, current_user.nickname)
+            except urllib2.HTTPError, err:
+                current_app.logger.debug(err.code)
+                current_app.logger.debug(err)
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
