@@ -64,8 +64,7 @@ def index():
     if form.validate_on_submit():
         try:
             try:
-                user_exist = existUserDB(form.user_db.data)
-                if not user_exist:
+                if not (existUserDB(form.user_db.data)):
                     addUserDB(form.user_db.data, current_user['nickname'])
             except Exception as err:
                 current_app.logger.debug(err)
