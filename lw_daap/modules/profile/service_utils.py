@@ -54,7 +54,7 @@ def addUserDB(userDB, portalUser):
     """
     Add a new user to the database
     """
-    lfw_service_json = getServiceJsonParamenters();
+    lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
     req = urllib2.Request('%s/user/adduser?databaseUser=%s&portalUser=%s' % (lfw_url, userDB, portalUser))
     base64string = base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')

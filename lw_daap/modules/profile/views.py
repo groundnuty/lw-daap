@@ -35,6 +35,8 @@ from .proxy_utils import add_voms_info, get_client_proxy_info, \
     generate_proxy_request, build_proxy
 
 from .service_utils import existUserDB, addUserDB
+from flask_login import current_user
+import urllib2
 
 
 blueprint = Blueprint(
@@ -62,15 +64,16 @@ def index():
     if form.validate_on_submit():
         try:
             try:
-                user = existUserDB(form.user_db.data)
-                if not user:
-                    addUserDB(form.user_db.data, current_user.nickname)
-            except urllib2.HTTPError, err:
-                current_app.logger.debug(err.code)
+                user_exist = existUserDB(form.user_db.data)
+                if not user_exist:
+                    addUserDB(form.user_db.data, current_user['nickname'])
+            except Exception as err:
                 current_app.logger.debug(err)
+                flash(str(err), 'error')
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
+            current_app.logger.debug("ERROR")
             flash(str(e), 'error')
     else:
         for field, errors in form.errors.items():
