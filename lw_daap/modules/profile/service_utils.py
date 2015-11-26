@@ -23,6 +23,7 @@
 from invenio.base.globals import cfg
 import json
 import urllib2, base64
+from flask import current_app
 
 def getServiceJsonParamenters():
     """
@@ -48,10 +49,11 @@ def existDBUser(userDB):
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
-    if not result.read().strip():
+    if result.read().strip() == "false":
        return False
     else:
        return True
+
 
 def createDBUser(userDB, passDB):
     """
@@ -62,7 +64,7 @@ def createDBUser(userDB, passDB):
     req = urllib2.Request('%s/database/createdbuser?dbuser=%s&dbpassword=%s' % (lfw_url, userDB, passDB))
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
-    urllib2.urlopen(req)
+    result = urllib2.urlopen(req)
 
 def changeDBPassword(userDB, passDB):
     """

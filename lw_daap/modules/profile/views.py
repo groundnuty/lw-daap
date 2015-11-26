@@ -67,13 +67,19 @@ def index():
             dbPass = form.pass_db.data
             portalUser = current_user['nickname']
 
-            if not existDBUser(dbUser):
-                createDBUser(dbUser, dbPass)
-            else:
+            exist_user = existDBUser(dbUser)
+
+            if exist_user:
                 changeDBPassword(dbUser, dbPass)
+            else:
+                createDBUser(dbUser, dbPass)
 
             if not findByDatabaseUser(dbUser) and not findByPortalUser(portalUser):
                 addUserDB(dbUser, portalUser)
+            else:
+                if not findByDatabaseUser(dbUser) and findByPortalUser(portalUser):
+                    flash('The portal user already exists in the system. You can not modify the DB username.', 'error')
+
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
