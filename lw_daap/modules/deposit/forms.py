@@ -66,6 +66,7 @@ __all__ = (
     'DatasetForm',
     'SoftwareForm',
     'AnalysisForm',
+    'InstrumentForm',
 )
 
 #
@@ -1281,6 +1282,52 @@ class AnalysisForm(BasicForm):
         }),
     ]
 
+class InstrumentForm(BasicForm):
+
+    """Dataset Upload Form."""
+    upload_type = fields.StringField(
+        widget=widgets.HiddenInput(),
+        default="instrument",
+    ),
+
+    name = fields.StringField(
+        label="Instrument",
+        description='Required. Instrument name.',
+        validators=[validators.DataRequired()],
+    ),
+
+    #
+    # Form configuration
+    #
+    _title = _('New instrument')
+    _drafting = True   # enable and disable drafting
+
+    #
+    # Grouping of fields
+    #
+    groups = [
+        ('<i class="fa fa-info"></i> Basic information', [
+            'name',
+        ], {
+            # 'classes': '',
+            'indication': 'required',
+        }),
+        ('<i class="fa fa-certificate"></i> License', [
+            'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups',
+        ], {
+            # 'classes': '',
+            'indication': 'required',
+            'description': (
+                'Unless you explicitly specify the license conditions below'
+                ' for Open Access and Embargoed Access uploads, you agree to'
+                ' release your data files under the terms of the Creative'
+                ' Commons Zero (CC0) waiver. All authors of the data and'
+                ' publications have agreed to the terms of this waiver and'
+                ' license.')
+        }),
+    ]
+
 
 def filter_fields(groups):
     def _inner(element):
@@ -1330,4 +1377,7 @@ class SoftwareEditForm(BasicEditForm, SoftwareForm):
 
 
 class AnalysisEditForm(BasicEditForm, AnalysisForm):
+    pass
+
+class InstrumentEditForm(BasicEditForm, InstrumentForm):
     pass
