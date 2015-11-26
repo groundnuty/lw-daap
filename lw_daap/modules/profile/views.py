@@ -37,7 +37,6 @@ from .proxy_utils import add_voms_info, get_client_proxy_info, \
 from .service_utils import existDBUser, createDBUser, changeDBPassword, findByDatabaseUser, findByPortalUser, addUserDB
 from flask_login import current_user
 import urllib2
-import hashlib
 
 
 blueprint = Blueprint(
@@ -64,9 +63,17 @@ def index():
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
-            current_app.logger.debug(form.db_pass.data)
-            set_password(self, form.db_pass.data)
-            current_app.logger.debug(self.password)
+            dbUser = form.user_db.data
+            dbPass = form.pass_db.data
+            portalUser = current_user['nickname']
+
+            if not existDBUser(dbUser):
+                createDBUser(dbUser, dbPass)
+            else:
+                changeDBPassword(dbUser, dbPass)
+
+            if not findByDatabaseUser(dbUser) and not findByPortalUser(portalUser):
+                addUserDB(dbUser, portalUser)
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
@@ -145,19 +152,3 @@ def delegate_proxy():
 def delete_proxy():
     profile.update(user_proxy=None)
     return ''
-
-
-def set_password(self, raw_password):
-    import random
-    algo = 'sha1'
-    salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
-    hsh = get_hexdigest(algo, salt, raw_password)
-    self.password = '%s$%s$%s' % (algo, salt, hsh)
-
-def check_password(raw_password, enc_password):
-    """
-    Returns a boolean of whether the raw_password was correct. Handles
-    encryption formats behind the scenes.
-    """
-    algo, salt, hsh = enc_password.split('$')
-    return hsh == get_hexdigest(algo, salt, raw_password)
