@@ -29,5 +29,5 @@ from lw_daap.modules.deposit.forms import InstrumentForm, \
 class instrument(upload):
     draft_definitions = {
         '_metadata': InstrumentForm,
-        '_edit': InstrumentEditForm
+        '_edit': InstrumentForm
     }
