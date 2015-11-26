@@ -7,7 +7,6 @@
 #   -Set custom conf args for redis-server
 #
 
-
 die () {
    echo >&2 "$@"
    exit 1
@@ -24,7 +23,8 @@ sudo apt-get -y install build-essential git redis-server \
 		   libjpeg-dev libfreetype6-dev libtiff-dev \
 		   libffi-dev libssl-dev \
 		   software-properties-common python-dev \
-		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile
+		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile \
+		   libapache2-mod-shib2
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 curl -sL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y nodejs
@@ -94,6 +94,7 @@ CFG_DATABASE_USER = u'$CFG_LWDAAP_DATABASE_USER'
 CFG_SITE_URL = u'$CFG_LWDAAP_SITE_URL'
 CFG_SITE_SECURE_URL = u'$CFG_LWDAAP_SITE_SECURE_URL'
 DEBUG = True
+DEBUG_TB_ENABLED = False
 ASSETS_DEBUG = True
 ASSETS_AUTO_BUILD = True
 EOF
@@ -101,6 +102,7 @@ EOF
 # INSTALL AND COLLECT ASSETS
 #
 inveniomanage bower -i bower-base.json > bower.json
+echo '{"directory": "lw_daap/base/static/vendors"}' > .bowerrc
 CI=true bower install
 inveniomanage collect
 
