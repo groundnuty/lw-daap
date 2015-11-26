@@ -1282,7 +1282,7 @@ class AnalysisForm(BasicForm):
         }),
     ]
 
-class InstrumentForm(BasicForm):
+class InstrumentForm(WebDepositForm):
 
     instrument = fields.TitleField(
         validators=[
@@ -1295,6 +1295,29 @@ class InstrumentForm(BasicForm):
         ],
         export_key='instrument',
         icon='fa fa-md fa-fw',
+    )
+    access_right = zfields.AccessRightField(
+        label="Access right",
+        description="Required. Open access uploads have considerably higher "
+        "visibility on %s." % CFG_SITE_NAME,
+        default="open",
+        validators=[validators.DataRequired()]
+    )
+    embargo_date = fields.Date(
+        label=_('Embargo date'),
+        icon='fa fa-calendar fa-fw',
+        description='Required only for Embargoed Access uploads.'
+        'The date your upload will be made publicly available '
+        'in case it is under an embargo period from your publisher.',
+        default=date.today(),
+        validators=[
+            required_if('access_right', ['embargoed']),
+            validators.optional()
+        ],
+        widget=date_widget,
+        widget_classes='input-small',
+        hidden=True,
+        disabled=True,
     )
 
     """Instrument Upload Form."""
