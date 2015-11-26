@@ -17,7 +17,7 @@ die () {
 # INSTALL PREREQUISITES
 #
 sudo apt-get update
-sudo apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo apt-get -y install build-essential git redis-server \
 		   libmysqlclient-dev libxml2-dev libxslt-dev \
 		   libjpeg-dev libfreetype6-dev libtiff-dev \
@@ -25,7 +25,7 @@ sudo apt-get -y install build-essential git redis-server \
 		   software-properties-common python-dev \
 		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile \
 		   libapache2-mod-shib2 \
-	           supervisor
+           supervisor
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 curl -sL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y nodejs
@@ -120,14 +120,14 @@ sudo truncate -s 0 /etc/apache2/ports.conf
 #
 
 cat $CFG_LWDAAP_WORKDIR/deploy/barehost/supervisor/celerybeat.conf \
-    sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g" | \
-    sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" | \
-    sudo tee /etc/supervisor/conf.d/celerybeat.conf
+    | sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g" \
+    | sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g"  \
+    | sudo tee /etc/supervisor/conf.d/celerybeat.conf
 cat $CFG_LWDAAP_WORKDIR/deploy/barehost/supervisor/celeryd.conf \
-    sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g" | \
-    sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" | \
-    sudo tee /etc/supervisor/conf.d/celeryd.conf
-sudo service supervisord start
+    | sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g"  \
+    | sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" \
+    | sudo tee /etc/supervisor/conf.d/celeryd.conf
+sudo service supervisor start
 sudo mkdir -p /var/log/celery
 sudo mkdir -p /var/run/celery
 sudo chown $USER /var/log/celery
