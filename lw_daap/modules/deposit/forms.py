@@ -1297,36 +1297,28 @@ class AnalysisForm(BasicForm):
 
 class InstrumentForm(BasicForm):
 
-    """Dataset Upload Form."""
+    """Instrument Upload Form."""
     #
     # Form configuration
     #
     _title = _('New instrument')
-    _drafting = True   # enable and disable drafting
+    _drafting = False   # enable and disable drafting
 
     #
     # Grouping of fields
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'instrument',
+            'instrument'
         ], {
             # 'classes': '',
             'indication': 'required',
         }),
         ('<i class="fa fa-certificate"></i> License', [
-            'access_right', 'embargo_date', 'license',
-            'access_conditions', 'access_groups',
+            'access_right', 'embargo_date',
         ], {
             # 'classes': '',
-            'indication': 'required',
-            'description': (
-                'Unless you explicitly specify the license conditions below'
-                ' for Open Access and Embargoed Access uploads, you agree to'
-                ' release your data files under the terms of the Creative'
-                ' Commons Zero (CC0) waiver. All authors of the data and'
-                ' publications have agreed to the terms of this waiver and'
-                ' license.')
+            'indication': 'optional'
         }),
     ]
 
@@ -1381,5 +1373,5 @@ class SoftwareEditForm(BasicEditForm, SoftwareForm):
 class AnalysisEditForm(BasicEditForm, AnalysisForm):
     pass
 
-class InstrumentEditForm(BasicEditForm, InstrumentForm):
+class InstrumentEditForm(InstrumentForm):
     pass
