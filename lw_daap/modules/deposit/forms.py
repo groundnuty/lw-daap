@@ -808,7 +808,6 @@ class BasicForm(WebDepositForm):
         min_entries=1,
     )
 
-
 #
 # Form
 #
@@ -1284,6 +1283,19 @@ class AnalysisForm(BasicForm):
     ]
 
 class InstrumentForm(BasicForm):
+
+    instrument = fields.TitleField(
+        validators=[
+            validators.DataRequired(),
+            validators.Length(min=5),
+        ],
+        description='Required.',
+        filters=[
+            strip_string,
+        ],
+        export_key='instrument',
+        icon='fa fa-md fa-fw',
+    )
 
     """Instrument Upload Form."""
     #
