@@ -66,7 +66,6 @@ __all__ = (
     'DatasetForm',
     'SoftwareForm',
     'AnalysisForm',
-    'InstrumentForm',
 )
 
 #
@@ -1281,8 +1280,6 @@ class AnalysisForm(BasicForm):
             ' field in basic information section.',
         }),
     ]
-
-class AnalysisForm(BasicForm):
 
 
 def filter_fields(groups):

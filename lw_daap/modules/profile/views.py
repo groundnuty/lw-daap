@@ -34,9 +34,10 @@ from .models import UserProfile
 from .proxy_utils import add_voms_info, get_client_proxy_info, \
     generate_proxy_request, build_proxy
 
-from .service_utils import existUserDB, addUserDB, existPortalUser
+from .service_utils import existDBUser, createDBUser, changeDBPassword, findByDatabaseUser, findByPortalUser, addUserDB
 from flask_login import current_user
 import urllib2
+import hashlib
 
 
 blueprint = Blueprint(
@@ -63,20 +64,9 @@ def index():
     form = ProfileForm(request.form, obj=profile)
     if form.validate_on_submit():
         try:
-            msg = ''
-            if not existUserDB(form.user_db.data):
-                if not existPortalUser(current_user['nickname']):
-                    try:
-                        addUserDB(form.user_db.data, current_user['nickname'])
-                    except urllib2.HTTPError, err:
-                        flash("Unable to create user database", 'error')
-                else:
-                    msg += 'The portal user "%s" already exists in the database' % current_user['nickname']
-            else:
-                msg += 'The database user "%s" already exists in the database' % form.user_db.data
-
-            if msg:
-                flash(msg, 'info')
+            current_app.logger.debug(form.db_pass.data)
+            set_password(self, form.db_pass.data)
+            current_app.logger.debug(self.password)
             profile.update(**form.data)
             flash(_('Profile was updated'), 'success')
         except Exception as e:
@@ -155,3 +145,19 @@ def delegate_proxy():
 def delete_proxy():
     profile.update(user_proxy=None)
     return ''
+
+
+def set_password(self, raw_password):
+    import random
+    algo = 'sha1'
+    salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
+    hsh = get_hexdigest(algo, salt, raw_password)
+    self.password = '%s$%s$%s' % (algo, salt, hsh)
+
+def check_password(raw_password, enc_password):
+    """
+    Returns a boolean of whether the raw_password was correct. Handles
+    encryption formats behind the scenes.
+    """
+    algo, salt, hsh = enc_password.split('$')
+    return hsh == get_hexdigest(algo, salt, raw_password)
