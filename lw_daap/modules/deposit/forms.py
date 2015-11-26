@@ -808,6 +808,19 @@ class BasicForm(WebDepositForm):
         min_entries=1,
     )
 
+    instrument = fields.TitleField(
+        validators=[
+            validators.DataRequired(),
+            validators.Length(min=5),
+        ],
+        description='Required.',
+        filters=[
+            strip_string,
+        ],
+        export_key='instrument',
+        icon='fa fa-md fa-fw',
+    )
+
 #
 # Form
 #
@@ -1285,17 +1298,6 @@ class AnalysisForm(BasicForm):
 class InstrumentForm(BasicForm):
 
     """Dataset Upload Form."""
-    upload_type = fields.StringField(
-        widget=widgets.HiddenInput(),
-        default="instrument",
-    ),
-
-    name = fields.StringField(
-        label="Instrument",
-        description='Required. Instrument name.',
-        validators=[validators.DataRequired()],
-    ),
-
     #
     # Form configuration
     #
@@ -1307,7 +1309,7 @@ class InstrumentForm(BasicForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Basic information', [
-            'name',
+            'instrument',
         ], {
             # 'classes': '',
             'indication': 'required',
