@@ -1308,11 +1308,11 @@ class InstrumentForm(BasicForm):
     # Grouping of fields
     #
     groups = [
-        ('<i class="fa fa-info"></i> Basic information', [
+        ('<i class="fa fa-info"></i> Instrument information', [
             'instrument'
         ], {
             # 'classes': '',
-            'indication': 'required',
+            'indication': 'optional',
         }),
         ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date',
