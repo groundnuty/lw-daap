@@ -1319,6 +1319,26 @@ class InstrumentForm(WebDepositForm):
         hidden=True,
         disabled=True,
     )
+    license = zfields.LicenseField(
+        validators=[
+            required_if('access_right', ['embargoed', 'open', ]),
+            validators.DataRequired()
+        ],
+        default='cc-zero',
+        domain_data=True,
+        domain_content=True,
+        domain_software=True,
+        description='Required. The selected license applies to all of your '
+        'files displayed in the bottom of the form. If you want to upload '
+        'some files under a different license, please do so in two separate'
+        ' uploads. If you think a license missing is in the list, please '
+        'inform us at %s.' % CFG_SITE_SUPPORT_EMAIL,
+        filters=[
+            strip_string,
+        ],
+        placeholder="Start typing a license name or abbreviation...",
+        icon='fa fa-certificate fa-fw',
+    )
 
     """Instrument Upload Form."""
     #
