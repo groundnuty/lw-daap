@@ -24,7 +24,8 @@ sudo apt-get -y install build-essential git redis-server \
 		   libffi-dev libssl-dev \
 		   software-properties-common python-dev \
 		   python-pip apache2 libapache2-mod-wsgi libapache2-mod-xsendfile \
-		   libapache2-mod-shib2
+		   libapache2-mod-shib2 \
+	           supervisor
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 curl -sL https://deb.nodesource.com/setup | sudo bash -
 sudo apt-get install -y nodejs
@@ -32,25 +33,6 @@ sudo su -c "npm install -g bower"
 sudo npm install -g less@1.7.5 clean-css requirejs uglify-js bower
 sudo pip install -U virtualenvwrapper pip
 
-#
-# INSTALL CUSTOM PYTHON FOR USE IN VIRTUALENV
-#
-:<<'KK'
-PY_DIR=$HOME/.python
-PY_VERSION=2.7.10
-if [ ! -f $PY_DIR/bin/python ]; then
-   mkdir -p ~/src
-   mkdir -p $PY_DIR
-   pushd ~/src
-   wget -qO - https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz | tar zxv
-   cd Python-${PY_VERSION}
-   make clean
-   ./configure --prefix=$PY_DIR
-   make
-   make install
-   popd
-fi
-KK
 
 #
 # PRECONFIGURE
@@ -63,7 +45,7 @@ CFG_LWDAAP_DATABASE_USER=lwdaap
 CFG_LWDAAP_DATABASE_HOST=localhost
 CFG_LWDAAP_DATABASE_PORT=3306
 CFG_LWDAAP_SITE_URL=$1
-CFG_LWDAAP_SITE_SECURE_URL=$1
+CFG_LWDAAP_SITE_SECURE_URL=$(echo $1 | sed 's/http/https/')
 CFG_LWDAAP_USER=${USER:=$(whoami)}
 
 #
@@ -118,28 +100,48 @@ inveniomanage database create
 inveniomanage apache create-config > /dev/null
 sudo a2enmod rewrite
 sudo a2enmod xsendfile
+sudo a2enmod ssl
+sudo a2enmod shib2
 sudo cp ${VIRTUAL_ENV}/var/invenio.base-instance/apache/invenio-apache-vhost.conf /etc/apache2/sites-available/lwdaap.conf
+sudo sed -i '/Listen 80/s/^#//g' /etc/apache2/sites-available/lwdaap.conf
 sudo a2dissite *default*
 sudo a2ensite lwdaap
+sudo cp ${VIRTUAL_ENV}/var/invenio.base-instance/apache/invenio-apache-vhost-ssl.conf /etc/apache2/sites-available/lwdaap-ssl.conf
+sudo sed -i '/Listen 443/s/^#//g' /etc/apache2/sites-available/lwdaap-ssl.conf
+sudo sed -i 's#^SSLCertificateFile.*#SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem#' /etc/apache2/sites-available/lwdaap-ssl.conf
+sudo sed -i 's#^\#SSLCertificateKeyFile.*#SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key#' /etc/apache2/sites-available/lwdaap-ssl.conf
+# ShibRequireAll not supported on Apache 2.4+: This command is subsumed by Apache 2.4's own support for controlling authorization rule composition.
+sudo sed -i 's/^\(.*ShibRequireAll.*\)/#\1/' /etc/apache2/sites-available/lwdaap-ssl.conf
+sudo a2ensite lwdaap-ssl
 sudo truncate -s 0 /etc/apache2/ports.conf
 
 #
-# CONFIGURE SERVICES
+# CELERY
 #
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-sudo cp $DIR/celeryd-initd /etc/init.d/celeryd
-sudo cp $DIR/celeryd-default /etc/default/celeryd
-sudo chmod 755 /etc/init.d/celeryd
-sudo chown root:root /etc/init.d/celeryd
-sudo chown root:root /etc/default/celeryd
+
+cat $CFG_LWDAAP_WORKDIR/deploy/barehost/supervisor/celerybeat.conf \
+    sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g" | \
+    sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" | \
+    sudo tee /etc/supervisor/conf.d/celerybeat.conf
+cat $CFG_LWDAAP_WORKDIR/deploy/barehost/supervisor/celeryd.conf \
+    sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g" | \
+    sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" | \
+    sudo tee /etc/supervisor/conf.d/celeryd.conf
+sudo service supervisord start
 sudo mkdir -p /var/log/celery
 sudo mkdir -p /var/run/celery
 sudo chown $USER /var/log/celery
 sudo chown $USER /var/run/celery
-sudo update-rc.d celeryd defaults
-sudo service celeryd restart
+
+#
+# REDIS
+#
 sudo service redis-server restart
 
+
+#
+# BIBSCHED
+#
 cat << EOF > bibsched-run.sh
 #!/usr/bin/env bash
 bibsched purge
@@ -160,5 +162,5 @@ ln -s ${VIRTUAL_ENV}/var/log ./log
 ln -s $(inveniomanage config locate 2> /dev/null) ./invenio.cfg
 popd
 
+sudo service apache2 restart
 echo "INSTALL DONE"
-echo "Uncomment #Listen 80 in /etc/apache2/sites-available/lwdaap.conf and restart apache"
