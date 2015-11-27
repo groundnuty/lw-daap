@@ -20,6 +20,11 @@
 {% extends "page.html" %}
 {%- from "_formhelpers.html" import render_field with context %}
 
+{% block global_bundles %}
+  {{ super() }}
+  {% bundles "analyze.js" %}
+{% endblock %}
+
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">

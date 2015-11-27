@@ -18,19 +18,16 @@
 
 from __future__ import absolute_import
 
-import json
-
 from flask import Blueprint, current_app, render_template, \
     request, redirect, url_for
 
 from flask_menu import register_menu
 
-from flask import Response, jsonify, flash
+from flask import jsonify, flash
 
 from invenio.ext.principal import permission_required
 from invenio.modules.access.control import acc_add_action, acc_get_action_id
 
-from lw_daap.modules.profile.decorators import delegation_required
 from lw_daap.modules.profile.models import UserProfile
 
 from . import infra

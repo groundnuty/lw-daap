@@ -43,8 +43,8 @@ def home():
 
 
 # Projects module in modules/projects
-#@blueprint.route('/project', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
+# @blueprint.route('/project', methods=['GET', ])
+# @register_breadcrumb(blueprint, 'breadcrumbs.project', _("Project"))
 # def project():
 #    return render_template('lw_daap/project.html')
 
@@ -58,19 +58,19 @@ def styles():
 # Footer
 #
 @blueprint.route('/about', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.about', _("About"))
+# @register_breadcrumb(blueprint, 'breadcrumbs.about', _("About"))
 def about():
     return render_template('lw_daap/about.html')
 
 
 @blueprint.route('/dev', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.api', _("API"))
+# @register_breadcrumb(blueprint, 'breadcrumbs.api', _("API"))
 def api():
     return render_template('lw_daap/api.html')
 
 
 @blueprint.route('/contact', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.contact', _("Contact"))
+# @register_breadcrumb(blueprint, 'breadcrumbs.contact', _("Contact"))
 def contact():
     return render_template('lw_daap/contact.html')
 
@@ -83,13 +83,14 @@ def privacypolicy():
 
 
 @blueprint.route('/termsofservices', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.termsofservices',
-#_("Terms of Services"))
+# @register_breadcrumb(blueprint, 'breadcrumbs.termsofservices',
+# _("Terms of Services"))
 def termsofservices():
     return render_template('lw_daap/termsofservices.html')
 
+
 @blueprint.route('/useguide', methods=['GET', ])
-#@register_breadcrumb(blueprint, 'breadcrumbs.useguide', _("Use guide"))
+# @register_breadcrumb(blueprint, 'breadcrumbs.useguide', _("Use guide"))
 def useguide():
     return render_template('lw_daap/useguide.html')
 

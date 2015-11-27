@@ -32,7 +32,7 @@
     role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
   <a class="btn btn-block btn-danger"
     href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp", next='NEXTNEXT') }}"
-    role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register DMP file</a>
+    role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register new DMP</a>
 </div>
 
 {{ record_table('dmp', records, "DMP records")|safe}}

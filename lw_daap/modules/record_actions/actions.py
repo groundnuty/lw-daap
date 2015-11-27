@@ -16,10 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-from flask import current_app, url_for, make_response, abort, jsonify
+from flask import current_app, url_for, abort, jsonify
 from flask_login import current_user
 
 from invenio.ext.cache import cache
+from invenio.ext.logging import register_exception
 from invenio.legacy.bibrecord import record_add_field
 from invenio.modules.pidstore.models import PersistentIdentifier
 from invenio.modules.pidstore.tasks import datacite_register
@@ -103,7 +104,7 @@ def record_actions(recid=None, project_id=None, action_name='',
     if cache_action == action_name:
         return json_error(400, ' '.join([msg, 'Please wait some minutes.']))
     # Set 5 min cache to allow bibupload/bibreformat to finish
-    cache.set(key, action_name, timeout=5*60)
+    cache.set(key, action_name, timeout=5 * 60)
 
     r = action(record)
     if r is not None:
@@ -129,7 +130,7 @@ def doi_action(record):
         datacite_register.delay(recid)
     except Exception, e:
         register_exception(alert_admin=True)
-        return json_error(400, e.msg)
+        return json_error(400, '%s' % e)
 
     add_doi_to_record(recid, doi)
     return None

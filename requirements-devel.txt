@@ -1,5 +1,0 @@
--r requirements.txt
-
-Flask-DebugToolbar
-flower
-honcho

@@ -1,0 +1,36 @@
+FROM lwosf:latest
+MAINTAINER aeonium <info@aeonium.eu>
+
+# go back to root to install voms stuff
+USER root
+
+RUN curl http://repository.egi.eu/sw/production/umd/UMD-DEB-PGP-KEY | apt-key add - \
+    && curl http://repository.egi.eu/sw/production/umd/3/repofiles/debian-squeeze/UMD-3-base.list > /etc/apt/sources.list.d/UMD-3-base.list \
+    && curl http://repository.egi.eu/sw/production/umd/3/repofiles/debian-squeeze/UMD-3-updates.list > /etc/apt/sources.list.d/UMD-3-updates.list
+
+RUN apt-get update \
+    && apt-get -qy upgrade --fix-missing --no-install-recommends \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qy install \
+        fetch-crl \
+        voms-clients3 \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/{apt,dpkg}/ \
+    && (find /usr/share/doc -depth -type f ! -name copyright -delete || true) \
+    && (find /usr/share/doc -empty -delete || true) \
+    && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
+
+# This is to make voms-proxy-init work
+RUN ln -s /usr/share/java/commons-io.jar /var/lib/voms-clients3/lib/
+
+RUN mkdir -p /etc/grid-security/vomsdir/vo.lifewatch.eu /etc/vomses \
+    && cp /lwosf/deploy/celery/ibergrid-voms.ifca.es.lsc /etc/grid-security/vomsdir/vo.lifewatch.eu/ibergrid-voms.ifca.es.lsc \
+    && cp /lwosf/deploy/celery/vo.lifewatch.eu.ibergrid-voms.ifca.es /etc/vomses/vo.lifewatch.eu.ibergrid-voms.ifca.es
+
+# Make /etc/grid-security/certificates writable by lwosf so it can run fetch-crl
+RUN chown -R lwosf:lwosf /etc/grid-security/certificates
+
+USER lwosf
+RUN fetch-crl -v || true
+
+CMD ["bash"]

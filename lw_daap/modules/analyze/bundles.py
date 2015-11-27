@@ -23,10 +23,7 @@ from invenio.base.bundles import jquery as _j, invenio as _i
 # Site-wide JS
 #
 js = Bundle(
-    "js/analyze/analyze.js",
-    "js/analyze/terminator.js",
-    "js/analyze/connector.js",
-    "js/analyze/flavors.js",
+    "js/analyze/init.js",
     output="analyze.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     weight=60,

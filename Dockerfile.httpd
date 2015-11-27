@@ -1,0 +1,58 @@
+FROM debian:jessie
+MAINTAINER aeonium <info@aeonium.eu>
+
+#
+# Dockerfile for the apache that serves the LW OpenScience Framework
+# It includes mod_shib for Shibboleth support
+#
+# Apache expects to find static content in /usr/local/var/invenio.base-instance/
+# this should be mounted as a volume with content provided by the app container
+# Shibboleth configuration should also be provided at
+# /etc/shibboleth/shibboleth2.xml
+#
+# ENV variables that should be overwritten by the docker run command
+# These are used in the Apache config file (see deploy/httpd/lwosf.conf)
+#
+ENV SERVERNAME localhost
+ENV SERVERADMIN admin@localhost
+ENV UWSGI_URI uwsgi://localhost:3031/
+
+RUN apt-get update && \
+    apt-get install -y \
+        supervisor \
+        apache2 \
+        libapache2-mod-proxy-uwsgi \
+        libapache2-mod-shib2 && \
+    apt-get clean autoclean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg}/ && \
+    (find /usr/share/doc -depth -type f ! -name copyright -delete || true) && \
+    (find /usr/share/doc -empty -delete || true) && \
+    rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
+
+RUN update-rc.d -f apache2 remove && \
+    update-rc.d -f shibd remove && \
+    update-rc.d -f supervisord remove
+
+COPY deploy/httpd/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY deploy/httpd/lwosf.conf /etc/apache2/sites-available/lwosf.conf
+COPY deploy/httpd/setup_shib.sh /root/setup_shib.sh
+
+RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd \
+             /usr/local/var/invenio.base-instance/static \
+             /var/log/supervisor /var/run/shibboleth /var/log/shibboleth
+
+RUN chown -Rh _shibd /var/run/shibboleth /var/log/shibboleth
+
+# This is for avoiding failures here and in the entrypoint that does
+# copy the certificates to the shibboleth directory
+RUN cp /etc/ssl/certs/ssl-cert-snakeoil.pem  /etc/ssl/certs/ssl-cert.pem && \
+    cp /etc/ssl/private/ssl-cert-snakeoil.key /etc/ssl/private/ssl-cert.key
+
+RUN a2enmod ssl && a2enmod shib2 && a2enmod proxy && a2enmod rewrite && \
+    a2dissite 000-default && a2ensite lwosf
+
+EXPOSE 80 443
+
+ENTRYPOINT ["/root/setup_shib.sh"]
+CMD ["supervisord"]

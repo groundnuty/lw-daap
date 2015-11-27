@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
-from invenio.legacy.search_engine import get_all_collections_of_a_record
 from invenio.modules.communities.models import Community
 
 

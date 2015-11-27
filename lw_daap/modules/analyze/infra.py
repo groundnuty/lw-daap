@@ -17,7 +17,6 @@
 # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime, timedelta
-from itertools import chain
 from tempfile import NamedTemporaryFile
 from urlparse import urlsplit
 
@@ -32,7 +31,6 @@ import pytz
 import requests.exceptions
 
 from invenio.base.globals import cfg
-from invenio.ext.cache import cache
 
 from .utils import get_requirements
 from .context import build_user_data
@@ -59,9 +57,7 @@ def _make_client(proxy_file):
     client = novaclient.client.Client(version, username, password,
                                       tenant, url,
                                       auth_plugin=auth_plugin,
-                                      auth_system=auth_system,
-                                      # XXX REMOVE THIS ASAP!
-                                      insecure=True)
+                                      auth_system=auth_system)
     try:
         client.authenticate()
     except requests.exceptions.RequestException as e:

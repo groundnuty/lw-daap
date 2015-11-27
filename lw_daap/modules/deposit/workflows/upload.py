@@ -62,7 +62,6 @@ from lw_daap.modules.invenio_deposit.tasks import  \
     prepare_sip, \
     finalize_record_sip, \
     upload_record_sip, \
-    mint_pid, \
     prefill_draft, \
     has_submission, \
     load_record, \
@@ -72,7 +71,7 @@ from lw_daap.modules.invenio_deposit.tasks import  \
 from lw_daap.modules.invenio_deposit.helpers import record_to_draft
 from lw_daap.modules.invenio_deposit.tasks import merge_changes, \
     is_sip_uploaded
-from lw_daap.modules.deposit.utils import create_doi, filter_empty_helper
+from lw_daap.modules.deposit.utils import filter_empty_helper
 from invenio.ext.restful import error_codes, ISODate
 from invenio.ext.sqlalchemy import db
 from invenio.base.helpers import unicodifier
@@ -149,6 +148,17 @@ def process_draft(draft):
         draft.values.get('communities', [])
     )
     return draft
+
+
+def _get_bool_value_from_bool_or_str(value):
+    if isinstance(value, bool):
+        return value
+    # not a boolean
+    try:
+        return ast.literal_eval(value)
+    except ValueError:
+        # stay on the safe side
+        return False
 
 
 def process_recjson(deposition, recjson):
@@ -267,19 +277,25 @@ def process_recjson(deposition, recjson):
     # Project info
     # =================
     if recjson.get('project'):
-        if recjson['upload_type'] != 'dataset':
-            recjson['record_curated_in_project'] = True
-        else:
-            curated = ast.literal_eval(recjson['record_curated_in_project'])
-            recjson['record_curated_in_project'] = curated
-        public = ast.literal_eval(recjson['record_public_from_project'])
-        recjson['record_public_from_project'] = public
+        if 'record_curated_in_project' in recjson:
+            if recjson['upload_type'] != 'dataset':
+                recjson['record_curated_in_project'] = True
+            else:
+                curated = _get_bool_value_from_bool_or_str(
+                    recjson['record_curated_in_project'])
+                recjson['record_curated_in_project'] = curated
+        if 'record_public_from_project' in recjson:
+            public = _get_bool_value_from_bool_or_str(
+                recjson['record_public_from_project'])
+            recjson['record_public_from_project'] = public
     else:
         for k in ['record_curated_in_project', 'record_public_from_project']:
             if k in recjson:
                 del recjson[k]
-    archived = ast.literal_eval(recjson['record_selected_for_archive'])
-    recjson['record_selected_for_archive'] = archived
+    if 'record_selected_for_archive' in recjson:
+        archived = _get_bool_value_from_bool_or_str(
+            recjson['record_selected_for_archive'])
+        recjson['record_selected_for_archive'] = archived
 
     # Requirements
     # =================
@@ -439,7 +455,7 @@ def process_files(deposition, bibrecdocs):
     for bf in bibrecdocs.list_latest_files():
         try:
             order, uuid = bf.comment.split('-', 1)
-        except ValueError as e:
+        except ValueError:
             continue
         if uuid in fft:
             sip.metadata['fft'].append({
@@ -597,7 +613,7 @@ def process_file_descriptions():
             draft = d.get_draft("_files")
         except DraftDoesNotExists:
             return
-        draft_files = draft.values.get('file_description', [])
+        # draft_files = draft.values.get('file_description', [])
         for f in d.files:
             for df in draft.values.get('file_description', []):
                 if f.uuid == df.get('file_id', None):
@@ -735,7 +751,7 @@ class upload(DepositionType):
         license=fields.String,
         notes=fields.String(),
         os=fields.Raw(),
-        period=fields.List(fields.Nested(marshal_period_fields)), 
+        period=fields.List(fields.Nested(marshal_period_fields)),
         project=fields.String,
         publication_date=ISODate,
         record_selected_for_archive=fields.Boolean,

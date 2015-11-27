@@ -412,7 +412,7 @@ def bibupload(
                 write_message(msg, verbose=1, stream=sys.stderr)
                 write_message(
                     msg, ("     Continuing anyway in case there are FFT"
-                          " or other tags")
+                          " or other tags"))
             except InvenioBibUploadConflictingRevisionsError as err:
                 msg="     -ERROR: Conflicting Revisions - %s" % err
                 write_message(msg, verbose=1, stream=sys.stderr)

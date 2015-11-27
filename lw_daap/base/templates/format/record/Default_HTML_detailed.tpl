@@ -66,10 +66,10 @@ with context
         <i class="fa fa-list-alt"></i> Go to project
     </a>
     </div>
+    {% endif %}
     <div class="col-sm-9">
       <h4 style="margin-top: 0px">{{ render_authors(daap_record, 4) }}</h4>
     </div>
-       {% endif %}
   </div>
 
   <div class="spacer30"></div>

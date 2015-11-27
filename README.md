@@ -1,5 +1,1 @@
-# lw-daap
-
-LifeWatch Data Access and Preservation Portal
-
-
+# LifeWatch Open Science Framework

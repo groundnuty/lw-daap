@@ -41,15 +41,15 @@
 from __future__ import absolute_import
 
 from flask import Blueprint, render_template, \
-    request, current_app, abort, jsonify
+    abort, jsonify
 
 from invenio.ext.sslify import ssl_required
 
 from lw_daap.ext.login import login_required
 
-from .utils import sync, utcnow, parse_timestamp, remove_hook, create_hook, \
+from .utils import sync, \
     init_account
-from .helpers import get_api, get_token, get_account, check_token
+from .helpers import get_api, get_token, check_token
 
 
 blueprint = Blueprint(
@@ -116,7 +116,6 @@ def releases(owner, name):
 @blueprint.route('/releases/<owner>/<name>/<release_id>')
 def select_release(owner, name, release_id):
     token = get_token()
-    ctx = dict(connected=False)
 
     if token is not None and check_token(token):
         extra_data = token.remote_account.extra_data

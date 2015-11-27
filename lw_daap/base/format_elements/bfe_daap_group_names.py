@@ -16,8 +16,6 @@
 
 from lw_daap.modules.invenio_groups.models import Group
 
-from flask import current_app
-
 
 def format_element(bfo, groups=[], separator=', '):
     r = []

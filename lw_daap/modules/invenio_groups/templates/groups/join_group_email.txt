@@ -1,0 +1,3 @@
+Dear {{ group.name }} group admin:
+
+You have a new request for joining the group. Please visit {{ url_for('groups_settings.requests') }} at your convenience for accepting or rejecting this request.

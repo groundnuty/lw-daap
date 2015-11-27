@@ -39,7 +39,6 @@
 """Requirements field."""
 
 import json
-from operator import itemgetter
 
 from wtforms import SelectField
 

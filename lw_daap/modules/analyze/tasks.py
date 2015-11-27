@@ -43,6 +43,9 @@ class ProxyRenewalTask(PeriodicTask):
     run_every = cfg['CFG_LWDAAP_ROBOT_RENEWAL_PERIOD']
 
     def run(self, *args, **kwargs):
+        logger.info("Fetching CRLs")
+        proc = subprocess.Popen(['fetch-crl'], shell=False)
+        proc.wait()
         logger.info("Renewing proxy")
         with NamedTemporaryFile(mode='rw') as new_proxy:
             cmd = ['voms-proxy-init',

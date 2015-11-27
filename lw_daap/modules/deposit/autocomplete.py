@@ -38,7 +38,6 @@
 
 import re
 
-from flask import current_app
 from flask_login import current_user
 
 from lw_daap.modules.invenio_deposit.validation_utils import DOISyntaxValidator

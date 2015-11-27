@@ -60,6 +60,7 @@ _s.contents += [
 #
 _i.contents += [
     "js/zenodo/init.js",
+    "vendors/leaflet/dist/leaflet.js",
 ]
 _i.bower.update({
     "zeroclipboard": "~2.1.6",
@@ -74,6 +75,6 @@ _i.bower.update({
 #
 # _s.contents.remove("less/base.less")
 # _s.contents.remove("less/footer.less")
-# _s.contents += [
-#    "less/zenodo.less",
-# ]
+_s.contents += [
+    "vendors/leaflet/dist/leaflet.css",
+]

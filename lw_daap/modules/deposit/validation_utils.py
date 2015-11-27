@@ -19,10 +19,6 @@
 """Validation functions."""
 from wtforms_components import DateRange
 
-from wtforms.validators import StopValidation, ValidationError
-
-from flask import current_app
-
 
 class StartEndDate(DateRange):
 

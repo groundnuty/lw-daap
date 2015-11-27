@@ -39,8 +39,7 @@
 from wtforms import TextAreaField
 from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 from wtforms.compat import text_type
-from wtforms.validators import Regexp, ValidationError
-from invenio.utils.text import wash_for_xml
+from wtforms.validators import ValidationError
 import re
 
 

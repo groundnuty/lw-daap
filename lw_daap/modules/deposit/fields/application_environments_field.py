@@ -37,7 +37,6 @@
 # or submit itself to any jurisdiction.
 
 import json
-from operator import itemgetter
 
 from wtforms import RadioField
 from wtforms.widgets import RadioInput, HTMLString

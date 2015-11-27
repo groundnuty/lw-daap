@@ -21,7 +21,7 @@ from invenio.base.bundles import jquery as _j, invenio as _i
 
 js = Bundle(
     "js/projects/integrate.js",
-    output="integrate.js",
+    output="projects.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     weight=60,
 )
