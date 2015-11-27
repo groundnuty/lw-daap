@@ -1478,7 +1478,4 @@ class AnalysisEditForm(BasicEditForm, EditFormMixin):
     pass
 
 class InstrumentEditForm(InstrumentForm, EditFormMixin):
-    """Specialized form for editing a record."""
-    doi = None
-    _title = _('Edit instrument')
-    template = "deposit/edit.html"
+    pass
