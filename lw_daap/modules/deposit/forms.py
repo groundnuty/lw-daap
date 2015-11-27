@@ -1416,8 +1416,7 @@ class InstrumentForm(WebDepositForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instrument', 'access_right', 'embargo_date', 'license',
-            'access_conditions', 'access_groups'
+            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',
