@@ -127,7 +127,7 @@ cat $CFG_LWDAAP_WORKDIR/deploy/barehost/supervisor/celeryd.conf \
     | sed "s#%VIRTUAL_ENV%#$VIRTUAL_ENV#g"  \
     | sed "s#%CFG_LWDAAP_USER%#$CFG_LWDAAP_USER#g" \
     | sudo tee /etc/supervisor/conf.d/celeryd.conf
-sudo service supervisor start
+sudo service supervisor restart
 sudo mkdir -p /var/log/celery
 sudo mkdir -p /var/run/celery
 sudo chown $USER /var/log/celery
