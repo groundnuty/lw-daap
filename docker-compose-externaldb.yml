@@ -1,0 +1,55 @@
+app:
+  build: .
+  dockerfile: Dockerfile.app
+  #entrypoint: /lwosf/deploy/app/entry.sh
+  command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
+  environment:
+    - BROKER_URL=redis://cache:6379/1
+    - CACHE_REDIS_HOST=cache
+    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
+  volumes:
+    - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
+  links:
+    - redis:cache
+
+httpd:
+  build: .
+  dockerfile: Dockerfile.httpd
+  environment:
+    - SERVERNAME=localhost
+    - UWSGI_URI="uwsgi://app:3031"
+  volumes_from:
+    - app:ro
+  # Configure on this section the certificates for https and shibboleth
+  #volumes:
+  #  - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
+  #  - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
+  #  - shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+  #  - attribute-map.xml:/etc/shibboleth/attribute-map.xml
+  links:
+    - app:app
+  ports:
+    - "80:80"
+    - "443:443"
+
+celery:
+  build: .
+  dockerfile: Dockerfile.celery
+  entrypoint: /lwosf/deploy/celery/entry.sh
+  command: supervisord -n -c /lwosf/deploy/celery/celery.conf
+  environment:
+    - BROKER_URL=redis://cache:6379/1
+    - CACHE_REDIS_HOST=cache
+    - CELERY_RESULT_BACKEND=redis://cache:6379/1
+    - INVENIO_APP_CONFIG_ENVS=BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST
+  volumes_from:
+    - app
+  # Configure here the actual location of the robot certificate
+  #volumes:
+  #  - ../.globus:/home/lwosf/.globus
+  links:
+    - redis:cache
+
+redis:
+  image: redis
