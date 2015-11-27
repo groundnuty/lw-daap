@@ -97,6 +97,7 @@ PACKAGES = [
     "lw_daap.modules.record_actions",
     "lw_daap.modules.profile",
     "lw_daap.modules.projects",
+    "lw_daap.modules.instrument",
     "lw_daap.deploy",
     "invenio.base",
     "invenio.modules.*",
