@@ -1283,6 +1283,9 @@ class AnalysisForm(BasicForm):
     ]
 
 class InstrumentForm(WebDepositForm):
+    template = 'deposit/metadata.html'
+
+    """Instrument Form."""
 
     instrument = fields.TitleField(
         validators=[
@@ -1474,5 +1477,8 @@ class SoftwareEditForm(BasicEditForm, SoftwareForm):
 class AnalysisEditForm(BasicEditForm, AnalysisForm):
     pass
 
-class InstrumentEditForm(InstrumentForm):
-    pass
+class BasicEditForm(InstrumentForm, EditFormMixin):
+    """Specialized form for editing a record."""
+    doi = None
+    _title = _('Edit instrument')
+    template = "deposit/edit.html"
