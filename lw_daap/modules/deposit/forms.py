@@ -1474,10 +1474,10 @@ class SoftwareEditForm(BasicEditForm, SoftwareForm):
     pass
 
 
-class AnalysisEditForm(BasicEditForm, AnalysisForm):
+class AnalysisEditForm(BasicEditForm, EditFormMixin):
     pass
 
-class BasicEditForm(InstrumentForm, EditFormMixin):
+class InstrumentEditForm(InstrumentForm, EditFormMixin):
     """Specialized form for editing a record."""
     doi = None
     _title = _('Edit instrument')
