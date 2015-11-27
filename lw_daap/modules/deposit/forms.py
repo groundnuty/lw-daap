@@ -1383,6 +1383,27 @@ class InstrumentForm(WebDepositForm):
         disabled=True,
     )
 
+    access_groups = fields.DynamicFieldList(
+        fields.FormField(
+            AccessGroupsForm,
+            widget=ExtendedListWidget(html_tag=None, item_widget=ItemWidget()),
+            description=("Optional. Specify the groups you "
+                         "will grant the access"),
+        ),
+        validators=[
+            # required_if('access_right', ['restricted']),
+            validators.optional()
+        ],
+        label=_('Access groups'),
+        description='Optional. Specify the groups you will grant the access.',
+        default="",
+        widget=TagListWidget(template="{{title}}"),
+        widget_classes=' dynamic-field-list',
+        icon='fa fa-group fa-fw',
+        hidden=True,
+        disabled=True,
+    )
+
     """Instrument Upload Form."""
     #
     # Form configuration
@@ -1395,7 +1416,8 @@ class InstrumentForm(WebDepositForm):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions'
+            'instrument', 'access_right', 'embargo_date', 'license',
+            'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',
