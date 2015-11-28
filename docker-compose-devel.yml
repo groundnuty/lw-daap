@@ -11,6 +11,7 @@ app:
   volumes:
     - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
   links:
+    - mysql:db
     - redis:cache
 
 httpd:
@@ -49,7 +50,15 @@ celery:
   #volumes:
   #  - ../.globus:/home/lwosf/.globus
   links:
+    - mysql:db
     - redis:cache
 
 redis:
   image: redis
+
+mysql:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=root_password
+  volumes:
+    - /data:/var/lib/mysql

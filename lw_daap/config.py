@@ -60,8 +60,6 @@ CFG_EMAIL_BACKEND = "flask_email.backends.smtp.Mail"
 
 CFG_SITE_SUPPORT_EMAIL = "support@mail"
 CFG_SITE_ADMIN_EMAIL = "support@mail"
-CFG_WEBALERT_ALERT_ENGINE_EMAIL = "support@mail"
-CFG_WEBCOMMENT_ALERT_ENGINE_EMAIL = "support@mail"
 CFG_ACCESS_CONTROL_LEVEL_ACCOUNTS = 5
 
 COMMUNITIES_PARENT_NAME = 'Communities'
