@@ -30,14 +30,56 @@ from invenio.modules.accounts.models import User
 
 
 class Instrument(db.Model):
-    __tablename__ = 'Instrument'
+    __tablename__ = 'instrument'
 
     """ Fields """
-    id = db.Column(db.Integer(255, unsigned=True), primary_key=True)
-    """ Instrument id """
+    id = db.Column(db.Integer(255, unsigned=True),
+                        nullable=False, primary_key=True,
+                        )
+    user_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(User.id),
+                        nullable=False,
+                        )
 
-    name = db.Column(db.String(length=255), nullable=False, default='')
-    """ Instrument name """
+    name = db.Column(db.String(length=255),
+                     nullable=True, default='',
+                     info=dict(
+                         label=_("Name"),
+                         description=_(''),
+                         )
+                     )
+
+    access_right = db.Column(db.String(length=255),
+                            nullable=True, default='',
+                            info=dict(
+                                label=_("Access right"),
+                                description=_(''),
+                                )
+                            )
+
+    embargo_date = db.Column(db.DateTime, nullable=True)
+
+    conditions = db.Column(db.String(length=4000),
+                            nullable=True, default='',
+                            info=dict(
+                                label=_("Conditions"),
+                                description=_(''),
+                                )
+                           )
+
+    license = db.Column(db.Integer(2, unsigned=True),
+                            nullable=True, default='',
+                            info=dict(
+                                label=_("License"),
+                                description=_(''),
+                                )
+                           )
+
+
+    """ Relationships """
+
+    user = db.relationship(
+        User, backref=db.backref("instrument", uselist=False,
+                                 cascade="all, delete-orphan"))
 
     @classmethod
     def create(cls):
