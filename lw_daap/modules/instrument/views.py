@@ -48,5 +48,5 @@ blueprint = Blueprint(
 @blueprint.route("/instrument/create", methods=['GET', 'POST'])
 @ssl_required
 @login_required
-def index():
-    return render_template('index.html', title="New instrument")
+def form():
+    return render_template('form.html', title="New instrument")
