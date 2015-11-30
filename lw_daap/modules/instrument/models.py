@@ -28,6 +28,8 @@ from invenio.base.i18n import _
 from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
 
+from flask import current_app
+
 
 class Instrument(db.Model):
     __tablename__ = 'instrument'
@@ -89,7 +91,9 @@ class Instrument(db.Model):
             )
             db.session.add(obj)
             db.session.commit()
-            # PROFILE CREATE SIGNAL
+
+            current_app.logger.debug(obj)
+
             return obj
         except IntegrityError as e:
             db.session.rollback()
