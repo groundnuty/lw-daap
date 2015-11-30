@@ -32,7 +32,6 @@ from lw_daap.ext.login import login_required
 from .forms import InstrumentForm
 from .models import Instrument
 
-from .service_utils import createInstrument
 from flask_login import current_user
 import urllib2
 
@@ -46,7 +45,7 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route("/instrument", methods=['GET', 'POST'])
+@blueprint.route("/instrument/create", methods=['GET', 'POST'])
 @ssl_required
 @login_required
 def index():
