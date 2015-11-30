@@ -11,6 +11,7 @@ app:
   volumes:
     - ./lw_daap/instance_config.py:/lwosf/lw_daap/instance_config.py
   links:
+    - mysql:db
     - redis:cache
 
 httpd:
@@ -18,7 +19,6 @@ httpd:
   dockerfile: Dockerfile.httpd
   environment:
     - SERVERNAME=localhost
-    - SERVERADMIN=admin@mail.com
     - UWSGI_URI="uwsgi://app:3031"
   volumes_from:
     - app:ro
@@ -50,7 +50,15 @@ celery:
   #volumes:
   #  - ../.globus:/home/lwosf/.globus
   links:
+    - mysql:db
     - redis:cache
 
 redis:
   image: redis
+
+mysql:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=root_password
+  volumes:
+    - /data:/var/lib/mysql
