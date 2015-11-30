@@ -31,8 +31,6 @@ from lw_daap.ext.login import login_required
 
 from .forms import InstrumentForm
 from .models import Instrument
-from .proxy_utils import add_voms_info, get_client_proxy_info, \
-    generate_proxy_request, build_proxy
 
 from .service_utils import createInstrument
 from flask_login import current_user
@@ -52,4 +50,4 @@ blueprint = Blueprint(
 @ssl_required
 @login_required
 def index():
-    return "New Instrument"
+    return render_template('index.html', title="New instrument")
