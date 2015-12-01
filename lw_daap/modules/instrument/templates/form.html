@@ -46,15 +46,13 @@
     {% call hb.cpanel_body(1, collapsed=False) %}
     {{ render_field(form.name, show_description=False) }}
     <div class="input-group datepicker" style="width: 10em">
-     <label class="control-label col-md-3 " for="embargo_date">
-      <span class=""><i class="fa fa-calendar fa-fw"></i></span>
-      Embargo date
-     </label>
-     <div class="input-group datepicker" style="width: 10em">
-      {{ form.openid(size=10) }}
+      {{ form.embargo_date(size=10) }}
       <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
      </div>
+
+    {{ render_field(form.access_right, show_description=False) }}
     </div>
+
     {% endcall %}
   </div>
 
