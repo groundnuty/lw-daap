@@ -45,14 +45,24 @@
 {{ super() }}
 {% endblock form_header%}
 
-{#
-# Add action bar in bottom, just before the file upload field
-#}
-{% block form_group_header scoped %}
-{% if group %}
-{{ form_group_accordion_start(group, grouploop.index) }}
-{% endif %}
-{% endblock %}
+<div class="well">
+  <span class="pull-right">
+    <span class="loader collapse">
+      <img src="{{ url_for('static', filename='img/loading.gif' ) }}" />
+    </span>
+    <small>
+      <span class="status-indicator text-muted"></span>
+    </small>&nbsp;
+    <button class="btn btn-default form-save"
+      data-toggle="tooltip"
+      title="{{_('Press Save to save your upload for editing later, as many times you like.')}}"
+      type="button">
+      <i class="fa fa-floppy-o"></i> Save
+    </button>
+  </span>
+  <span class="clearfix"></span>
+</div>
+<div class="spacer10"></div>
 
 {% block form_footer scoped %}
 {{ form_action_bar() }}

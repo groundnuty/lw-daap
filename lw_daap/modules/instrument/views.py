@@ -49,4 +49,4 @@ blueprint = Blueprint(
 @ssl_required
 @login_required
 def form():
-    return render_template('metadata.html', title="New instrument")
+    return render_template('form.html', title="New instrument")
