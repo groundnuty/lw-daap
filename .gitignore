@@ -17,4 +17,3 @@ bower.json
 
 # secrets
 lw_daap/secrets.py
-lw_daap/testsuite/api/deposit_conf.py
