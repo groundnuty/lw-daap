@@ -49,4 +49,4 @@ blueprint = Blueprint(
 @ssl_required
 @login_required
 def index():
-    return render_template('index.html', title="New instrument")
+    return render_template('index.html')
