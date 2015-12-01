@@ -50,7 +50,7 @@ class Instrument(db.Model):
                          )
                      )
 
-    access_right = db.Column(db.String(length=255),
+    access_right = db.Column(db.String(length=12),
                             nullable=True, default='',
                             info=dict(
                                 label=_("Access right"),
@@ -61,7 +61,7 @@ class Instrument(db.Model):
     embargo_date = db.Column(db.DateTime,
                             nullable=True, default='',
                             info=dict(
-                                label=_("Conditions"),
+                                label=_("Embargo date"),
                                 description=_(''),
                                 )
                            )
@@ -74,7 +74,7 @@ class Instrument(db.Model):
                                 )
                            )
 
-    license = db.Column(db.Integer(2, unsigned=True),
+    license = db.Column(db.String(length=50),
                             nullable=True, default='',
                             info=dict(
                                 label=_("License"),

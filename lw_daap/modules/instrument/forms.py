@@ -21,12 +21,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 from invenio.utils.forms import InvenioBaseForm
 
 from wtforms_alchemy import model_form_factory
-from .models import Instrument
+from wtforms import StringField, BooleanField
+from wtforms.validators import DataRequired
+from flask.ext.wtf import Form
 
-ModelForm = model_form_factory(InvenioBaseForm)
-
-class InstrumentForm(ModelForm):
-    class Meta:
-        model = Instrument
-        only = ['user_id', 'name', 'access_right', 'embargo_date',
-                'conditions', 'license']
+class InstrumentForm(Form):
+    name = StringField("Name", validators=[DataRequired])
