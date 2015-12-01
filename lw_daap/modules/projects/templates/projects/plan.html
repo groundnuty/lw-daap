@@ -28,7 +28,7 @@
 <div class="col-md-3">
   <div class="spacer20"></div>
   <a class="btn btn-block btn-danger"
-    href="http://pc90.viavansi.com/"
+    href="{{ config.CFG_DMPTOOL_URL }}"
     role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
   <a class="btn btn-block btn-danger"
     href="{{ url_for("lwdaap_projects.deposit", project_id=project.id, deposition_type="dmp", next='NEXTNEXT') }}"
