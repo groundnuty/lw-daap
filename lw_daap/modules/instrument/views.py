@@ -49,4 +49,5 @@ blueprint = Blueprint(
 @ssl_required
 @login_required
 def index():
-    return render_template('index.html')
+    form = InstrumentForm()
+    return render_template('index.html', form=form)

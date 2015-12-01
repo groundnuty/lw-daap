@@ -35,4 +35,8 @@
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-<strong>HOLA</strong>
+<form action="" method="post" name="login">
+      <p>Name: {{ form.name(size=80) }}</p>
+      <p>{{ form.access_right }}</p>
+      <p><input type="submit" value="Sign In"></p>
+</form>
