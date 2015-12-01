@@ -19,7 +19,7 @@
 from __future__ import absolute_import
 
 from flask import abort, Blueprint, current_app, flash, jsonify, \
-    render_template, request, Flask
+    render_template, request
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 
@@ -44,15 +44,9 @@ blueprint = Blueprint(
     template_folder="templates",
 )
 
-app = Flask(__name__)
-app.config.from_object(__name__)
-class SimpleInstrumentForm(InstrumentForm):
-    access_right_radio = RadioField('Label', choices=[('value','description'),('value_two','whatever')])
-
-
 @blueprint.route("/instrument/create", methods=['GET', 'POST'])
 @ssl_required
 @login_required
 def index():
-    form = SimpleInstrumentForm()
+    form = InstrumentForm()
     return render_template('index.html', form=form)
