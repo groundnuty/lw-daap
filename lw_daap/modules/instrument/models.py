@@ -58,7 +58,13 @@ class Instrument(db.Model):
                                 )
                             )
 
-    embargo_date = db.Column(db.DateTime, nullable=True)
+    embargo_date = db.Column(db.DateTime,
+                            nullable=True, default='',
+                            info=dict(
+                                label=_("Conditions"),
+                                description=_(''),
+                                )
+                           )
 
     conditions = db.Column(db.String(length=4000),
                             nullable=True, default='',
