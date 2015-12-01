@@ -27,10 +27,6 @@ from .models import Instrument
 ModelForm = model_form_factory(InvenioBaseForm)
 
 class InstrumentForm(ModelForm):
+    name = TextField('name', validators = [Required()])
     access_right = RadioField('Access right', choices=[('open',' Open Access'),('embargoed',' Embargoed Access'),
                                       ('restricted',' Restricted Access'), ('closed',' Closed Access')], default='open')
-
-    class Meta:
-        model = Instrument
-        only = ['user_id', 'name', 'access_right', 'embargo_date',
-                'conditions', 'license']

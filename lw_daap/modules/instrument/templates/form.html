@@ -44,14 +44,16 @@
     <i class="fa fa-info-circle fa-fw"></i> Instrument
     {% endcall %}
     {% call hb.cpanel_body(1, collapsed=False) %}
-    {{ render_field(form.name, show_description=False) }}
-    <div class="input-group datepicker" style="width: 10em">
-      {{ form.embargo_date(size=10) }}
-      <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span></span>
-     </div>
 
-    {{ form.access_right }}
-    </div>
+    <p>
+      Name:
+      {{form.name(size=80)}}
+    </p>
+
+    <p>
+      Access right:
+      {{form.access_right(size=10)}}
+    </p>
 
     {% endcall %}
   </div>
