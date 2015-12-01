@@ -67,7 +67,6 @@ def ssh_context(app_env, ssh_key, context):
             "default",
             {
                 "name": "lw",
-                "sudo": "ALL=(ALL) NOPASSWD:ALL",
                 "ssh-import-id": None,
                 "lock-passwd": True,
                 "ssh-authorized-keys": [ssh_key],
