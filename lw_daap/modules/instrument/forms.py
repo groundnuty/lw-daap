@@ -21,9 +21,14 @@ from __future__ import absolute_import, print_function, unicode_literals
 from invenio.utils.forms import InvenioBaseForm
 
 from wtforms_alchemy import model_form_factory
-from wtforms import StringField, BooleanField
+from wtforms import StringField, BooleanField, RadioField
 from wtforms.validators import DataRequired
 from flask.ext.wtf import Form
 
 class InstrumentForm(Form):
     name = StringField("Name", validators=[DataRequired])
+    choice_switcher = RadioField(
+        'Choice?',
+        [validators.Required()],
+        choices=[('choice1', 'Choice One'), ('choice2', 'Choice Two')], default='choice1'
+    )
