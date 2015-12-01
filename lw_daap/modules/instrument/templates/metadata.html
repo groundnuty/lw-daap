@@ -34,30 +34,12 @@
 ## along with Invenio; if not, write to the Free Software Foundation, Inc.,
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
-{% extends "page.html" %}
 
-
-{% block form_title scoped %}
-{% endblock form_title %}
-
-
-{% block form_header scoped %}
-{{ super() }}
-{% endblock form_header%}
-
-{#
-# Add action bar in bottom, just before the file upload field
-#}
-{% block form_group_header scoped %}
-{% if group %}
-{{ form_group_accordion_start(group, grouploop.index) }}
-{% endif %}
+{% block file_container %}
+  <div id="file_container" class="col-md-12 form-feedback-warning">
+    <div id="flash-message"></div>
+    {% include "metadata_form.html" %}
+  </div>
 {% endblock %}
 
-{% block form_footer scoped %}
-{{ form_action_bar() }}
-{% endblock %}
 
-{% block field_body scoped %}
-
-{% endblock field_body %}
