@@ -1,0 +1,37 @@
+{#
+ # This file is part of Lifewatch DAAP.
+ # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+ #
+ # Lifewatch DAAP is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Lifewatch DAAP is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+<div class="well">
+  <span class="pull-right">
+    <span class="loader collapse">
+      <img src="{{ url_for('static', filename='img/loading.gif' ) }}" />
+    </span>
+    <small>
+      <span class="status-indicator text-muted"></span>
+    </small>&nbsp;
+    <button class="btn btn-default form-save"
+      data-toggle="tooltip"
+      title="{{_('Press Save to save your upload for editing later, as many times you like.')}}"
+      type="button">
+      <i class="fa fa-floppy-o"></i> Save
+    </button>
+  </span>
+  <span class="clearfix"></span>
+</div>
+<div class="spacer10"></div>
+
