@@ -21,11 +21,15 @@ from __future__ import absolute_import, print_function, unicode_literals
 from invenio.utils.forms import InvenioBaseForm
 
 from wtforms_alchemy import model_form_factory
+from wtforms import validators, RadioField
 from .models import Instrument
 
 ModelForm = model_form_factory(InvenioBaseForm)
 
 class InstrumentForm(ModelForm):
+    access_right = RadioField('Access right', choices=[('open',' Open Access'),('embargoed',' Embargoed Access'),
+                                      ('restricted',' Restricted Access'), ('closed',' Closed Access')], default='open')
+
     class Meta:
         model = Instrument
         only = ['user_id', 'name', 'access_right', 'embargo_date',

@@ -22,7 +22,6 @@ from flask import abort, Blueprint, current_app, flash, jsonify, \
     render_template, request
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
-from wtforms import validators, RadioField
 
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
@@ -51,6 +50,4 @@ blueprint = Blueprint(
 @login_required
 def index():
     form = InstrumentForm()
-    form.access_right = RadioField('Access right', choices=[('open',' Open Access'),('embargoed',' Embargoed Access'),
-                                      ('restricted',' Restricted Access'), ('closed',' Closed Access')], default='open')
     return render_template('index.html', form=form)
