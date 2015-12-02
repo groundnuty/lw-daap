@@ -948,6 +948,19 @@ class DatasetForm(BasicForm):
         min_entries=1,
     )
 
+    instrument = zfields.InstrumentField(
+        validators=[
+            validators.optional()
+        ],
+        default='-1',
+        description='Instrument used for data collection.',
+        filters=[
+            strip_string,
+        ],
+        placeholder="Start typing an instrument name or abbreviation...",
+        icon='fa fa-flask fa-fw',
+    )
+
     #
     # Form configuration
     #
@@ -964,6 +977,14 @@ class DatasetForm(BasicForm):
         ], {
             # 'classes': '',
             'indication': 'required',
+        }),
+        ('<i class="fa fa-flask"></i> Instrument', [
+            'instrument',
+        ], {
+            # 'classes': '',
+            'indication': 'optional',
+            'description': (
+                'Si se selecciona un instrumento, este marcará los datos de licencia a utilizar.')
         }),
         ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license',
