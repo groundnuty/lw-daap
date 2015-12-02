@@ -50,6 +50,7 @@ from .file_field import FileField
 from .keywords_field import KeywordsField
 from .requirements_field import RequirementsField
 from .application_environments_field import ApplicationEnvironmentsField
+from .instrument_field import InstrumentField
 
 
 __all__ = [
