@@ -63,7 +63,7 @@ class InstrumentField(WebDepositField, SelectField):
             instruments = getAllInstruments()
             instruments_json = json.loads(instruments)
             for instrument in instruments_json:
-                current_app.logger.debug(instrument)
-                kwargs['choices'] = instrument['name']
+                inst_choice = [(instrument['idInstrument'], instrument['name'])]
+                kwargs['choices'].append(inst_choice)
         kwargs['processors'] = [set_flag('touched'), ]
         super(InstrumentField, self).__init__(**kwargs)
