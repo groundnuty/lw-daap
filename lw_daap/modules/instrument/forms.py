@@ -49,6 +49,8 @@ from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenList
 from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
     strip_string
 
+from lw_daap.modules.invenio_deposit.form import WebDepositForm
+
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from datetime import date
