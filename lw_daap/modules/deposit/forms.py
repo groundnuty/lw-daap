@@ -1288,7 +1288,7 @@ class AnalysisForm(BasicForm):
     ]
 
 class InstrumentForm(WebDepositForm):
-    template = 'deposit/metadata.html'
+    template = 'deposit/instrument_metadata.html'
 
     """Instrument Form."""
 
@@ -1482,5 +1482,5 @@ class SoftwareEditForm(BasicEditForm, SoftwareForm):
 class AnalysisEditForm(BasicEditForm, EditFormMixin):
     pass
 
-class InstrumentEditForm(InstrumentForm, EditFormMixin):
+class InstrumentEditForm(BasicEditForm, EditFormMixin):
     pass
