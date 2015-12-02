@@ -63,6 +63,6 @@ class InstrumentField(WebDepositField, SelectField):
             instruments = getAllInstruments()
             current_app.logger.debug("ERROR")
             current_app.logger.debug(instruments)
-            kwargs['choices'] =
+            kwargs['choices'] = ""
         kwargs['processors'] = [set_flag('touched'), ]
         super(InstrumentField, self).__init__(**kwargs)
