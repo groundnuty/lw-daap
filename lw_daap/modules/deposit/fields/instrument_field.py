@@ -53,16 +53,17 @@ __all__ = ['InstrumentField']
 
 class InstrumentField(WebDepositField, SelectField):
 
-    """License field."""
+    """Instrument field."""
 
     def __init__(self, **kwargs):
-        """Initialize license field."""
+        """Initialize instrument field."""
         kwargs.setdefault("icon", "icon-certificate")
 
         if 'choices' not in kwargs:
             instruments = getAllInstruments()
-            current_app.logger.debug("ERROR")
-            current_app.logger.debug(instruments)
-            kwargs['choices'] = ""
+            instruments_json = json.loads(instruments)
+            for instrument in instruments_json:
+                current_app.logger.debug(instrument)
+                kwargs['choices'] = instrument['name']
         kwargs['processors'] = [set_flag('touched'), ]
         super(InstrumentField, self).__init__(**kwargs)
