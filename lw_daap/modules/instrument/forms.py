@@ -65,7 +65,7 @@ __all__ = (
 
 
 class InstrumentForm(Form):
-    name = StringField("Name", validators=[validators.DataRequired])
+    name = fields.StringField(label="Name", descrtiption="Instrument name", validators=[validators.DataRequired])
 
     #
     # Access rights
