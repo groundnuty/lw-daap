@@ -49,6 +49,8 @@ from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenList
 from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
     strip_string
 
+from invenio.base.i18n import _
+
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
 
 from lw_daap.modules.deposit.forms import accessgroups_obj_value, AccessGroupsForm
