@@ -47,9 +47,9 @@
       <div class="spacer30"></div>
       <div class="text-center">
         <a id="btn-deposit-dmp" class="btn btn-md btn-danger"
-          href="http://pc90.viavansi.com/"
+          href="{{ config.CFG_DMPTOOL_URL }}"
           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Create DMP</a>
-        <a id="btn-deposit-dmp2" class="btn btn-md btn-danger  "
+        <a id="btn-deposit-dmp" class="btn btn-md btn-danger  "
           href="{{ url_for(".create", deposition_type="dmp") }}"
           role="button"><i class="fa fa-book fa-2x fa-fw valign"></i>Register new DMP</a>
         <a id="btn-deposit-dataset" class="btn btn-md btn-danger   "

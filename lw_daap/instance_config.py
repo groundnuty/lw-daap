@@ -25,6 +25,10 @@ CFG_DATABASE_PASS = u'my123p$ss'
 CFG_DATABASE_TYPE = u'mysql'
 CFG_DATABASE_PORT = 3306
 
+#
+# Use here the URL of the DMPTool instance
+#
+CFG_DMPTOOL_URL = 'http://localhost/dmptool'
 
 #
 # emails configuration
