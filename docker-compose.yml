@@ -1,7 +1,7 @@
 app:
   build: .
   dockerfile: Dockerfile.app
-  #entrypoint: /lwosf/deploy/app/entry.sh
+  entrypoint: /lwosf/deploy/app/entry.sh
   command: uwsgi --master --process 4 --threads 2 --module lw_daap.uwsgi --socket :3031
   environment:
     - BROKER_URL=redis://cache:6379/1
