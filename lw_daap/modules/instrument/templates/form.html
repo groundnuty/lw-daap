@@ -38,14 +38,32 @@
 {%- from "_formhelpers.html" import render_field with context %}
 {%- import "helpers_base.html" as hb -%}
 
+{% macro form_action_bar(margin="") -%}
+{% block form_action_bar scoped %}
+{% include "deposit/run_action_bar.html" %}
+{% endblock %}
+{%- endmacro %}
+
+{%- macro form_group_accordion_start(group, idx) -%}
+{% include "deposit/run_group_start.html" %}
+{%- endmacro -%}
+
+{%- macro form_group_accordion_end(group, idx) -%}
+{% include "deposit/run_group_end.html" %}
+{%- endmacro -%}
+
+{%- macro field_label(thisfield) -%}
+{% include "deposit/run_field_label.html" %}
+{%- endmacro -%}
+
 {%- macro field_display(thisfield, field_size=None, field_class="form-control", container_class="form-group") -%}
 {%- set field_size = field_size if field_size else (form.field_sizes.get(thisfield.name) if form.field_sizes else none) -%}
 {%- set field_kwargs = kwargs -%}
 {% include "deposit/run_field.html" %}
 {%- endmacro -%}
 
-{%- macro field_label(thisfield) -%}
-{% include "deposit/run_field_label.html" %}
+{%- macro field_display_subform(thisfield) -%}
+{% include "deposit/run_field_subform.html" %}
 {%- endmacro -%}
 
 <form method="POST" role="form">
