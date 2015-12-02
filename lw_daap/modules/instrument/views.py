@@ -30,7 +30,6 @@ from invenio.ext.sslify import ssl_required
 from lw_daap.ext.login import login_required
 
 from .forms import InstrumentForm
-from .models import Instrument
 
 from flask_login import current_user
 import urllib2

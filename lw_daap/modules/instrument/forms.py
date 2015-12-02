@@ -26,7 +26,8 @@ from wtforms.validators import DataRequired
 from flask.ext.wtf import Form
 
 class InstrumentForm(Form):
-    name = StringField("Name", validators=[DataRequired])
+    name2 = StringField("Name", validators=[DataRequired])
+
     access = RadioField(
         'Choice?',
         [validators.Required()],
