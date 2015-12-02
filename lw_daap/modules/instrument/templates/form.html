@@ -44,6 +44,10 @@
 {% include "deposit/run_field.html" %}
 {%- endmacro -%}
 
+{%- macro field_label(thisfield) -%}
+{% include "deposit/run_field_label.html" %}
+{%- endmacro -%}
+
 <form method="POST" role="form">
   <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(1) %}
