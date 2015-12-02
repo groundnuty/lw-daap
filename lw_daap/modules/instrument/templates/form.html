@@ -46,8 +46,18 @@
     {% call hb.cpanel_body(1, collapsed=False) %}
 
     <p>
-      Name:
-      {{form.name2(size=80)}}
+     Name:
+      {{ form.name(size=80)}}
+     Access Right:
+      {{ field_display(form.access_right) }}
+     Embargo date:
+      {{ field_display(form.embargo_date) }}
+     License:
+      {{ field_display(form.license) }}
+     Conditions:
+      {{ field_display(form.access_conditions) }}
+     Groups:
+      {{ field_display(form.access_groups) }}
     </p>
 
     {% endcall %}
