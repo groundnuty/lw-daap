@@ -958,7 +958,7 @@ class DatasetForm(BasicForm):
             strip_string,
         ],
         placeholder="Start typing an instrument name or abbreviation...",
-        icon='fa fa-flask fa-fw',
+        icon='fa fa-fw',
     )
 
     #

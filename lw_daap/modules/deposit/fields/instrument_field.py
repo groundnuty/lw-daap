@@ -62,8 +62,10 @@ class InstrumentField(WebDepositField, SelectField):
         if 'choices' not in kwargs:
             instruments = getAllInstruments()
             instruments_json = json.loads(instruments)
+            choices = []
             for instrument in instruments_json:
-                inst_choice = [(instrument['idInstrument'], instrument['name'])]
-                kwargs['choices'].append(inst_choice)
+                choices.append((str(instrument['idInstrument']), str(instrument['name'])))
+
+            kwargs['choices'] = choices
         kwargs['processors'] = [set_flag('touched'), ]
         super(InstrumentField, self).__init__(**kwargs)
