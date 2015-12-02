@@ -38,6 +38,8 @@
 {%- from "_formhelpers.html" import render_field with context %}
 {%- import "helpers_base.html" as hb -%}
 
+{%- macro field_display(thisfield, field_size=None, field_class="form-control", container_class="form-group") -%}
+
 <form method="POST" role="form">
   <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(1) %}
