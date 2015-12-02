@@ -51,6 +51,8 @@ from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
 
 from lw_daap.modules.invenio_deposit.form import WebDepositForm
 
+from lw_daap.modules.deposit.forms import accessgroups_obj_value, AccessGroupsForm
+
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from datetime import date
@@ -58,20 +60,6 @@ from datetime import date
 __all__ = (
     'InstrumentForm',
 )
-
-class AccessGroupsForm(WebDepositForm):
-    identifier = fields.StringField(
-        widget=widgets.HiddenInput(),
-        processors=[
-            replace_field_data('title', accessgroups_obj_value('name')),
-        ],
-    )
-    title = fields.StringField(
-        placeholder="Start typing a group name...",
-        autocomplete_fn=accessgroups_autocomplete,
-        widget=TagInput(),
-        widget_classes='form-control',
-    )
 
 
 class InstrumentForm(Form):
