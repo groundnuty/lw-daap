@@ -65,11 +65,10 @@ __all__ = (
 
 
 class InstrumentForm(Form):
-    
+
     name = fields.StringField(
         placeholder="Instrument",
         widget_classes='form-control',
-        widget=ColumnInput(class_="col-xs-4"),
         validators=[validators.DataRequired],
     )
 
