@@ -63,7 +63,7 @@ __all__ = (
 
 
 class InstrumentForm(Form):
-    name = StringField("Name", validators=[DataRequired])
+    name = StringField("Name", validators=[validators.DataRequired])
 
     #
     # Access rights
