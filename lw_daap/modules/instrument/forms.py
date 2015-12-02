@@ -27,8 +27,3 @@ from flask.ext.wtf import Form
 
 class InstrumentForm(Form):
     name = StringField("Name", validators=[DataRequired])
-    choice_switcher = RadioField(
-        'Choice?',
-        [validators.Required()],
-        choices=[('choice1', 'Choice One'), ('choice2', 'Choice Two')], default='choice1'
-    )
