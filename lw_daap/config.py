@@ -112,7 +112,7 @@ PACKAGES_EXCLUDE = [
 
 
 EXTENSIONS += [
-    "invenio.ext.sso"
+    "lw_daap.ext.sso"
 ]
 
 
@@ -164,17 +164,11 @@ OAUTHCLIENT_REMOTE_APPS = dict(
 
 SSO_ATTRIBUTE_MAP = {
     "Shib-Identity-Provider": (True, "idp"),
-    "persistent-id": (True, "persistent-id"),
-    # "HTTP_SHIB_SHARED_TOKEN": (True, "shared_token"),
-    "cn": (True, "cn"),
-    # "HTTP_SHIB_MAILi": (True, "email"),
+    #"persistent-id": (True, "persistent-id"),
     "givenName": (False, "first_name"),
-    "unscoped-affiliation": (False, "unscoped-affiliation"),
-    "affiliation": (False, "affiliation"),
-    "manager": (False, "manager"),
-    "entitlement": (False, "entitlement"),
-    "eppn": (False, "eppn"),
     "sn": (False, "last_name"),
+    "uid": (True, "uid"),
+    "mail": (True, "email"),
 }
 CFG_EXTERNAL_AUTH_HIDDEN_GROUPS = ()
 CFG_EXTERNAL_AUTH_HIDDEN_GROUPS_RE = ()

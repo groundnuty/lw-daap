@@ -43,7 +43,6 @@
 {% block nickname_popover_placement %}left{% endblock%}
 
 
-
 {%- block form_auth_internal -%}
 {%- block form_auth_internal_form -%}
 <div class="col-sm-12 col-md-4"></div>
@@ -53,19 +52,36 @@
 <div class="spacer20"></div>
 {% set next = request.script_root + request.path if request.endpoint != 'webaccount.logout' and
     request.endpoint != 'webaccount.login' else config.CFG_SITE_SECURE_URL %}
-    <a href="{{url_for('sso_login', _external=True, _scheme='https', referer=request.values.get('referer'), next=next)}}" class="btn btn-primary btn-lg btn-block"><i class="fa fa-pagelines"></i> LifeWatch</a> 
+{% set target = url_for('sso_login', _external=True, _scheme='https',
+                        referer=request.values.get('referer'), next=next) %}
+
+    <a href="{{ config.CFG_SITE_SECURE_URL }}/Shibboleth.sso/Login?{{
+        {'entityID': config.CFG_IDP_LIFEWATCH, 'target': target }|urlencode
+       }}" class="btn btn-primary btn-lg btn-block"><i class=""></i> LifeWatch</a>
+
     <div class="spacer10"></div>
 
-    <a href=""
-    class="btn btn-primary btn-lg btn-block"><i class="fa fa-search"></i> CSIC</a>
+    <a href="{{ config.CFG_SITE_SECURE_URL }}/Shibboleth.sso/Login?{{
+        {'entityID': config.CFG_IDP_CSIC, 'target': target }|urlencode
+       }}" class="btn btn-primary btn-lg btn-block"><i class=""></i> CSIC</a>
+
     <div class="spacer10"></div>
 
-    <a class="btn btn-primary btn-lg btn-block" role="button" data-toggle="collapse" 
-    href="#luser_login" aria-expanded="false" aria-controls="luser_login"><i class="fa fa-user"></i> Local users</a>
+    <a class="btn btn-primary btn-lg btn-block" role="button" data-toggle="collapse"
+       href="#luser_login" aria-expanded="false" aria-controls="luser_login">
+         <i class="fa fa-user"></i> Local users
+    </a>
     <div class="spacer10"></div>
-        <div id="luser_login" {% if get_flashed_messages(with_categories=True, category_filter=['', 'info', 'danger', 'error', 'warning', 'success']) %} class="collapse in" {% else %} class="collapse out"{% endif %}>
-        {{ super() }}
-    </div>
+        {% if get_flashed_messages(with_categories=True,
+                category_filter=['', 'info', 'danger', 'error', 'warning', 'success']) %}
+            {% set collapse_class = 'in' %}
+        {% else %}
+            {% set collapse_class = 'out' %}
+        {% endif %}
+
+        <div id="luser_login" class="collapse {{ collapse_class }}">
+            {{ super() }}
+        </div>
 </div>
 </div>
 {%- endblock -%}
