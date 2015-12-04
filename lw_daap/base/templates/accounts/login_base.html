@@ -204,11 +204,11 @@
     {%- if form.password.errors %}{% for error in form.password.errors %}
         <span class="help-block">{{ error }}</span>
     {%- endfor %}{% endif %}
-
-      <label class="checkbox">
-        {{ form.remember(class_="checkbox") }} {{ form.remember.label.text }}
+    {{ form.submit(class_="btn btn-info btn-block") }}
+ <label class="checkbox pull-right">
+        {{ form.remember(class_="checkbox") }} <div style="margin-top: 3px;">{{ form.remember.label.text }}</div>
       </label>
-      {{ form.submit(class_="btn btn-info btn-block") }}
+
     </form>
     {#<p class="text-center"><small>
       <a href="{{ url_for('webaccount.lost') }}">
