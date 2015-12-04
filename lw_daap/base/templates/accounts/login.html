@@ -51,9 +51,6 @@
 <div class="well">
 <h2>Sign In</h2>
 <div class="spacer20"></div>
-{% if request.path == "/admin/" %}
-{{ super() }}
-{% else %}
 {% set next = request.script_root + request.path if request.endpoint != 'webaccount.logout' and
     request.endpoint != 'webaccount.login' else config.CFG_SITE_SECURE_URL %}
     <a href="{{url_for('sso_login', _external=True, _scheme='https', referer=request.values.get('referer'), next=next)}}" class="btn btn-primary btn-lg btn-block"><i class="fa fa-pagelines"></i> LifeWatch</a> 
@@ -69,7 +66,6 @@
         <div id="luser_login" {% if get_flashed_messages(with_categories=True, category_filter=['', 'info', 'danger', 'error', 'warning', 'success']) %} class="collapse in" {% else %} class="collapse out"{% endif %}>
         {{ super() }}
     </div>
-{% endif %}
 </div>
 </div>
 {%- endblock -%}
