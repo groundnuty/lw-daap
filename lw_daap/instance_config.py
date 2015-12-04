@@ -28,8 +28,8 @@ CFG_DATABASE_PORT = 3306
 #
 # IDP entity IDs.
 #
-CFG_IDP_LIFEWATCH = 'http://lifewatch.idp/idp/shibboleth'
-CFG_IDP_CSIC = 'http://csic.idp/idp/shibboleth'
+CFG_IDP_LIFEWATCH = 'http://lifewatch.idp:8080/idp/shibboleth'
+CFG_IDP_CSIC = 'http://csic.idp:8080/idp/shibboleth'
 
 #
 # Use here the URL of the DMPTool instance
