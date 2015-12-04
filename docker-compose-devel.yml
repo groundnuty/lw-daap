@@ -22,12 +22,16 @@ httpd:
     - UWSGI_URI="uwsgi://app:3031"
   volumes_from:
     - app:ro
-  # Configure on this section the certificates for https and shibboleth
-  #volumes:
-  #  - /etc/ssl/certs/ssl-cert-snakeoil.pem:/etc/ssl/certs/ssl-cert.pem
-  #  - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/private/ssl-cert.key
-  #  - shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-  #  - attribute-map.xml:/etc/shibboleth/attribute-map.xml
+  # Configure on this section the certificates for https and
+  # shibboleth configuration. Update files before deploying
+  # in production
+  volumes:
+    - ./deploy/httpd/ssl-cert.pem:/etc/ssl/certs/ssl-cert.pem
+    - ./deploy/httpd/ssl-cert.key:/etc/ssl/private/ssl-cert.key
+    - ./deploy/httpd/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+    - ./deploy/httpd/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+    - ./deploy/httpd/idp-metadata.xml:/etc/shibboleth/idp-metadata.xml
+    - ./deploy/httpd/idp-csic-metadata.xml:/etc/shibboleth/idp-csic-metadata.xml
   links:
     - app:app
   ports:
