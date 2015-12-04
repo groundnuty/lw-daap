@@ -53,7 +53,7 @@
 {% set next = request.script_root + request.path if request.endpoint != 'webaccount.logout' and
     request.endpoint != 'webaccount.login' else config.CFG_SITE_SECURE_URL %}
 {% set target = url_for('sso_login', _external=True, _scheme='https',
-                        referer=request.values.get('referer'), next=next) %}
+                        referer=next) %}
 
     <a href="{{ config.CFG_SITE_SECURE_URL }}/Shibboleth.sso/Login?{{
         {'entityID': config.CFG_IDP_LIFEWATCH, 'target': target }|urlencode
