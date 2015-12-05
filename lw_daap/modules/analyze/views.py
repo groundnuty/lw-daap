@@ -28,6 +28,7 @@ from flask import jsonify, flash
 from invenio.ext.principal import permission_required
 from invenio.modules.access.control import acc_add_action, acc_get_action_id
 
+from lw_daap.ext.login import login_required
 from lw_daap.modules.profile.models import UserProfile
 
 from . import infra
@@ -58,6 +59,7 @@ def create_infra_action_roles():
 @blueprint.route('/')
 @register_menu(blueprint, 'main.analyze', 'Analyze', order=4)
 #@permission_required(INFRA_ACCESS)
+@login_required
 def index():
     profile = UserProfile.get_or_create()
     ctx = {}
@@ -71,6 +73,7 @@ def index():
 
 @blueprint.route('/launch', methods=['GET', 'POST'])
 #@permission_required(INFRA_ACCESS)
+@login_required
 def launch():
     profile = UserProfile.get_or_create()
     reqs = get_requirements()
@@ -105,6 +108,7 @@ def launch():
 
 @blueprint.route('/terminate/<vm_id>', methods=['POST'])
 #@permission_required(INFRA_ACCESS)
+@login_required
 def terminate(vm_id):
     profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
@@ -114,6 +118,7 @@ def terminate(vm_id):
 
 @blueprint.route('/connect/<vm_id>', methods=['GET'])
 #@permission_required(INFRA_ACCESS)
+@login_required
 def connect(vm_id):
     profile = UserProfile.get_or_create()
     client = infra.get_client(profile.user_proxy)
