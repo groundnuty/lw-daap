@@ -62,6 +62,10 @@ CFG_EMAIL_BACKEND = 'flask_email.backends.console.Mail'
 # Set here the URL for the bridge machine
 #CFG_ANALYZE_ETCD_URL = 'http://localhost:4001'
 
+# Optionally set here a public key that will be used for
+# the analysis VMs
+# CFG_ANALYZE_PUBLIC_KEY = ''
+
 #
 # Github integration
 #
