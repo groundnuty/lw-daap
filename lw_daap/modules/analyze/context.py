@@ -39,7 +39,7 @@ def nato_context():
         render_template_to_string('analyze/etcd_updater_cron',
                                   context_script_path=context_script_path)
     )
-    return {
+    context = {
         'write_files': [
             {
                 'encoding': 'b64',
@@ -59,6 +59,11 @@ def nato_context():
             [context_script_path],
         ],
     }
+    if cfg.get('CFG_ANALYZE_PUBLIC_KEY'):
+        context['ssh_authorized_keys'] = [cfg.get('CFG_ANALYZE_PUBLIC_KEY')]
+    from flask import current_app
+    current_app.logger.debug("CONTEXT: %s" % context)
+    return context
 
 
 def ssh_context(app_env, ssh_key, context):

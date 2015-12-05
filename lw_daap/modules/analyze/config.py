@@ -53,3 +53,7 @@ CFG_ANALYZE_ETCD_PORT = 4001
 
 CFG_ANALYZE_MAPPINGS_KEY = 'mappings'
 CFG_ANALYZE_NODES_KEY = 'nodes'
+
+#
+# Public key for root user in Analysis VMs
+CFG_ANALYZE_PUBLIC_KEY = ''
