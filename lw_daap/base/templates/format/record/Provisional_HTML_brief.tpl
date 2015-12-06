@@ -45,7 +45,6 @@ with context
 {% bundle "communities.js" %}
 
 {% macro render_record_footer(number_of_displayed_authors) %}
-    <p>
       {{ render_authors(record, 4) if record.get('authors') }}
       |
       <i class="fa fa-calendar"></i> {{ record.get('creation_date')|invenio_format_date() }}
@@ -71,7 +70,6 @@ with context
       &nbsp
       {% endfor %}
       {% endif %}
-    </p>
 {% endmacro %}
 
 {% block record_brief %}
@@ -84,9 +82,9 @@ with context
     {% endblock %}
     {% block record_content %}
     <div>
-        <p class="record-abstract">
+        <div class="record-abstract">
           {{ record.get('description', '')|sentences(3) }}
-        </p>
+        </div>
     </div>
     {% endblock %}
 
