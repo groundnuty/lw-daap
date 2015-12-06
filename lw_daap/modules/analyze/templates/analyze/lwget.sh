@@ -22,8 +22,8 @@ TOKEN="{{ token.access_token }}"
 ACCESS_TOKEN="?access_token=$TOKEN"
 FILE_LIST_REQUEST="{{ url_for('recordfileslistresource', recid=recid) }}"
 
-LW_USER=jupyter
-USER_DIR=/home/jupyter
+LW_USER={{ lw_user }}
+USER_DIR=$(getent passwd "$LW_USER" | cut -d: -f6)
 
 mkdir -p $USER_DIR
 

@@ -96,17 +96,25 @@ def jupyter_context(app_env, ssh_key, context):
     context['runcmd'].append([jupyter_script_path])
 
 
-def record_context(recid, context):
+def record_context(recid, app_env, context):
     token = Token.query.filter(
         Token.user_id == current_user.get_id()
     ).filter(Token.is_internal == True).first()
     if not token:
         token = Token.create_personal('analyze', current_user.get_id(),
                                       is_internal=True)
+
+    user_map = {
+        'ssh': 'lw',
+        'jupyter-python': 'jupyter',
+        'jupyter-r': 'jupyter',
+    }
+
     record_script = b64encode(
         render_template_to_string('analyze/lwget.sh',
                                   token=token,
-                                  recid=recid)
+                                  recid=recid,
+                                  lw_user = user_map.get(app_env, 'ubuntu'))
     )
     record_script_path = '/usr/local/bin/lwget.sh'
     context['write_files'].append({
@@ -131,7 +139,7 @@ def build_user_data(app_env, ssh_key=None, recid=None):
     if app_env_context:
         app_env_context(app_env, ssh_key, context)
     if recid:
-        record_context(recid, context)
+        record_context(recid, app_env, context)
 
     return '\n'.join(['#cloud-config',
                       yaml.safe_dump(context,
