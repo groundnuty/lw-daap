@@ -23,8 +23,11 @@ Contextualization
 from base64 import b64encode
 import yaml
 
+from flask_login import current_user
+
 from invenio.base.globals import cfg
 from invenio.ext.template import render_template_to_string
+from invenio.modules.oauth2server.models import Token
 
 
 def nato_context():
@@ -61,8 +64,6 @@ def nato_context():
     }
     if cfg.get('CFG_ANALYZE_PUBLIC_KEY'):
         context['ssh_authorized_keys'] = [cfg.get('CFG_ANALYZE_PUBLIC_KEY')]
-    from flask import current_app
-    current_app.logger.debug("CONTEXT: %s" % context)
     return context
 
 
@@ -96,7 +97,25 @@ def jupyter_context(app_env, ssh_key, context):
 
 
 def record_context(recid, context):
-    context['runcmd'].append(['/usr/bin/touch', '/tmp/comefrom%s' % recid])
+    token = Token.query.filter(
+        Token.user_id == current_user.get_id()
+    ).filter(Token.is_internal == True).first()
+    if not token:
+        token = Token.create_personal('analyze', current_user.get_id(),
+                                      is_internal=True)
+    record_script = b64encode(
+        render_template_to_string('analyze/lwget.sh',
+                                  token=token,
+                                  recid=recid)
+    )
+    record_script_path = '/usr/local/bin/lwget.sh'
+    context['write_files'].append({
+        'encoding': 'b64',
+        'content': record_script,
+        'permissions': '755',
+        'path': record_script_path,
+    })
+    context['runcmd'].append([record_script_path])
 
 
 CONTEXT_MAP = {
