@@ -26,6 +26,8 @@ from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 from wtforms import HiddenField, StringField, TextAreaField,\
     SelectMultipleField, validators
 
+from lw_daap.modules.deposit import fields as zfields
+
 class SearchForm(Form):
     """Search Form."""
     p = StringField(
