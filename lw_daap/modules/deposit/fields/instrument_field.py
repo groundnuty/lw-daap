@@ -62,7 +62,7 @@ class InstrumentField(WebDepositField, SelectField):
         if 'choices' not in kwargs:
             instruments = getAllInstruments()
             instruments_json = json.loads(instruments)
-            choices = ["-1", 'Select an instrument']
+            choices = [("-1", 'Select an instrument')]
             for instrument in instruments_json:
                 choices.append((str(instrument['idInstrument']), str(instrument['name'])))
 
