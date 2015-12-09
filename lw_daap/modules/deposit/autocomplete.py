@@ -134,17 +134,16 @@ def inputrecords_autocomplete_dataset(dummy_form, dummy_field, term, limit=50):
 
     return map(
         lambda o: {
-            'value': "%s (record id: %s)" % (o[1], o[0]),
+            'value': "%s (record id: %s)" % (o[1]['title'], o[0]),
             'fields': {
                 'identifier': o[0],
-                'title': "%s (record id: %s)" % (o[1], o[0]),
+                'title': "%s (record id: %s)" % (o[1]['title'], o[0]),
             }
         },
-        map(lambda o: (o.id, get_record(o.id)['title']),
-            filter(lambda o: get_record(o.id)['project'] != None and
-                   get_record(o.id)['record_curated_in_project'] == True,
-                   objs)
-            )
+        filter(lambda o: (o[1].get('project', None) == None or
+                          o[1].get('record_curated_in_project', False)),
+               map(lambda o: (o.id, get_record(o.id)), objs)
+        )
     )
 
 

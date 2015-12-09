@@ -33,6 +33,7 @@
 {% for author in record.authors %}
 <a href="{{ url_for('search.search', p='author:"' + author.name + '"') }}">
   {{ author.name }}
+</a>
 {% if author.orcid %}
 <a href="http://orcid.org/{{author.orcid}}" title="ORCID" target="_blank" style="color:#A6CE39;">
 <sup>orcid</sup></a>

@@ -26,6 +26,12 @@ CFG_DATABASE_TYPE = u'mysql'
 CFG_DATABASE_PORT = 3306
 
 #
+# IDP entity IDs.
+#
+CFG_IDP_LIFEWATCH = 'http://lifewatch.idp:8080/idp/shibboleth'
+CFG_IDP_CSIC = 'http://csic.idp:8080/idp/shibboleth'
+
+#
 # Use here the URL of the DMPTool instance
 #
 CFG_DMPTOOL_URL = 'http://localhost/dmptool'
@@ -55,6 +61,10 @@ CFG_EMAIL_BACKEND = 'flask_email.backends.console.Mail'
 
 # Set here the URL for the bridge machine
 #CFG_ANALYZE_ETCD_URL = 'http://localhost:4001'
+
+# Optionally set here a public key that will be used for
+# the analysis VMs
+# CFG_ANALYZE_PUBLIC_KEY = ''
 
 #
 # Github integration

@@ -113,7 +113,6 @@ class Project(db.Model):
         p = (' AND '.join(q))
         recids = search_pattern_parenthesised(p=p)
         records = Record.query.filter(Record.id.in_(recids))
-        open('DEBUG', 'w+').write(str(recids))
         return records
 
     def save_collectionname(self, collection, title):

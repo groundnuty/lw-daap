@@ -164,11 +164,9 @@ def launch_vm(client, name, image, flavor,
                 'lwdaap_user': "%s" % current_user.get_id(),
                 'app_env': app_env}
     try:
-        # Robot Cert ('lw_wp' User Cert?)
         s = client.servers.create(name, image=image, flavor=flavor,
                                   meta=metadata,
-                                  userdata=userdata,
-                                  key_name='lwkey')
+                                  userdata=userdata)
     except Exception as e:
         raise InfraException(e.message)
     return s
