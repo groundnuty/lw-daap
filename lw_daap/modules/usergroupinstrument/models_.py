@@ -20,9 +20,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from invenio.ext.sqlalchemy import db
 from invenio_accounts.models import Usergroup
-#from lw_daap.modules.instrument.models import Instrument
-#import lw_daap.modules.instrument.models
-from lw_daap.modules.instrument.models import Instrument
+#from lw_daap.modules.instruments.models import Instrument
+#import lw_daap.modules.instruments.models
+from lw_daap.modules.instruments.models import Instrument
 
 
 class GroupInstrument(db.Model):

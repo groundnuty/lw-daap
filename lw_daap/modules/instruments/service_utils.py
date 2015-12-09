@@ -21,13 +21,13 @@ def getBase64StringAuth(lfw_service_json):
 
 def createInstrument(name, embargoDate, accessRight, idUser, license, conditions):
     """
-    Create an instrument
+    Create an instruments
     """
     lfw_service_json = getServiceJsonParamenters();
     lfw_url = lfw_service_json['lfw_service']
-    req = urllib2.Request('%sdatabase/instrument' % (lfw_url))
+    req = urllib2.Request('%sdatabase/instruments' % (lfw_url))
 
-    url = '%sdatabase/instrument' % (lfw_url)
+    url = '%sdatabase/instruments' % (lfw_url)
     req = urllib2.Request(url)
     data = urllib.urlencode({'name' : name,
                              'embargoDate' : embargoDate,
@@ -51,7 +51,7 @@ def getAllInstruments():
     """
     lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
-    req = urllib2.Request('%s/instrument' % lfw_url)
+    req = urllib2.Request('%s/instruments' % lfw_url)
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)

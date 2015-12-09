@@ -46,7 +46,7 @@ from wtforms import SelectField
 from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 from lw_daap.modules.invenio_deposit.processor_utils import set_flag
 from invenio.modules.knowledge.api import get_kb_mappings
-from lw_daap.modules.instrument.service_utils import getAllInstruments
+from lw_daap.modules.instruments.service_utils import getAllInstruments
 from flask import current_app
 
 __all__ = ['InstrumentField']
@@ -56,13 +56,13 @@ class InstrumentField(WebDepositField, SelectField):
     """Instrument field."""
 
     def __init__(self, **kwargs):
-        """Initialize instrument field."""
+        """Initialize instruments field."""
         kwargs.setdefault("icon", "icon-certificate")
 
         if 'choices' not in kwargs:
             instruments = getAllInstruments()
             instruments_json = json.loads(instruments)
-            choices = [("-1", 'Select an instrument')]
+            choices = [("-1", 'Select an instruments')]
             for instrument in instruments_json:
                 choices.append((str(instrument['idInstrument']), str(instrument['name'])))
 

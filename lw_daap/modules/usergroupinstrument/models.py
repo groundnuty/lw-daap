@@ -27,7 +27,7 @@ from sqlalchemy.exc import IntegrityError
 from invenio.base.i18n import _
 from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import Usergroup
-from lw_daap.modules.instrument.models import Instrument
+from lw_daap.modules.instruments.models import Instrument
 
 
 class UsergroupInstrument(db.Model):

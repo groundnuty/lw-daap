@@ -20,7 +20,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
-from lw_daap.modules.instrument.models import Instrument
+from lw_daap.modules.instruments.models import Instrument
 
 
 class UserInstrument(db.Model):

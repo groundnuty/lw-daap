@@ -26,13 +26,22 @@ from invenio.utils.forms import InvenioBaseForm, InvenioForm as Form
 from wtforms import HiddenField, StringField, TextAreaField,\
     SelectMultipleField, validators
 
+class SearchForm(Form):
+    """Search Form."""
+    p = StringField(
+        validators=[validators.DataRequired()]
+    )
+
+class DeleteInstrumentForm(Form):
+    delete = HiddenField(default='yes', validators=[validators.DataRequired()])
+
 class InstrumentForm(Form):
 
     """Instrument Form."""
 
     field_sets = [
         ('Information', [
-            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -76,7 +85,7 @@ class InstrumentForm(Form):
         return hasattr(field, 'autocomplete')
 
     field_icons = {
-        'instrument': 'fa fa-md fa-fw',
+        'instruments': 'fa fa-md fa-fw',
         'embargo_date': 'fa fa-calendar fa-fw',
         'license': 'fa fa-certificate fa-fw',
         'access_conditions': 'fa fa-pencil fa-fw',
@@ -92,7 +101,7 @@ class InstrumentForm(Form):
         filters=[
             strip_string,
         ],
-        export_key='instrument',
+        export_key='instruments',
         icon='fa fa-md fa-fw',
     )
     access_right = zfields.AccessRightField(
@@ -207,7 +216,7 @@ class InstrumentForm(Form):
     #
     # Form configuration
     #
-    _title = _('New instrument')
+    _title = _('New instruments')
     _drafting = False   # enable and disable drafting
 
     #
@@ -215,9 +224,17 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',
         }),
     ]
+
+class EditInstrumentForm(InstrumentForm):
+    pass
+
+class IntegrateForm(Form):
+    records = SelectMultipleField('records', coerce=int)
+    integrate = HiddenField(default='no',
+                            validators=[validators.DataRequired()])
