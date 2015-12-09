@@ -1,0 +1,130 @@
+{#
+# This file is part of Lifewatch DAAP.
+# Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+#
+# Lifewatch DAAP is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Lifewatch DAAP is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014, 2015 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{% import "helpers_base.html" as hb %}
+
+{%- from "paginate.html" import paginate with context -%}
+{%- from "paginate.html" import list_status with context -%}
+
+{% extends "page.html" %}
+
+{% block title %}{% endblock %}
+
+{% block global_bundles %}
+{{ super() }}
+{% bundles "communities.css" %}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+
+  <div class="col-md-10">
+    <h1>
+      <i class="fa fa-list-alt"></i>
+      {{ _("Instruments") }} <small>{{ _("created by ") + config.CFG_SITE_NAME + _(" users") }}</small>
+    </h1>
+  </div>
+  <div class="col-md-2">
+    <a href="{{url_for('.new')}}"
+      class="btn btn-primary btn-lg pull-right"
+      style="margin-top: 20px;">
+      <i class="fa fa-plus-circle"></i> New Instrumet
+    </a>
+  </div>
+  <div class="clearfix"></div>
+  <div class="spacer50"></div>
+  <div class="col-md-12">
+    <nav class="navbar searchform" role="navigation">
+      <div class="navbar-collapse">
+        <form action="." method="GET" id="search_form" class="navbar-form" role="form">
+          <div class="input-group">
+            {{ form.p(class_="form-control " + form.p.short_name, ) }}
+            <span class="input-group-btn"  style="width: 1%;">
+              <button type="submit" class="btn btn-primary btn-inline-icon-hide-sm">
+                <i class="glyphicon glyphicon-search glyphicon-white"></i>
+                <span>{{ _("Search") }}</span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+
+  {%- set args = request.args.copy().to_dict() -%}
+  <div class="clearfix"></div>
+  <div class="spacer20"></div>
+
+
+  {% for obj in instruments.items %}
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="panel panel-primary">
+      {% call hb.panel_head() %}
+      <a href="{{ url_for('.show', instrument_id=obj.id, path='plan') }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
+      {{ obj.title }}
+      {% endcall %}
+      {% call hb.panel_body() %}
+      {% if obj.description %}
+      <p>{{ obj.description|striptags|truncate }}</p>
+      {% endif %}
+      <small class="text-muted">Created by: {{ obj.owner.nickname }}</small>
+      {% endcall %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="col-md-12">
+    {% if instruments.items %}
+    {% if instruments.total > per_page %}
+    <div class="row">
+      <ul class="list-group">
+      <li class="list-group-item text-center">
+      {{ list_status(instruments, page) }}
+      {{ paginate(instruments, 'page', small=True) if instruments.items|length }}
+      </li>
+      </ul>
+    </div>
+    {% endif %}
+    {% else %}
+    <p class="text-muted text-center well">
+    <strong>{{ _('Your search did not match any instruments. Please try again.') }}</strong>
+    </p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
