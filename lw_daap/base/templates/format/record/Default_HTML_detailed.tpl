@@ -53,7 +53,6 @@ with context
     {% set record_project_path = {
         'dataset': 'collect',
         'software': 'collect',
-        'instrument': 'collect',
         'dmp': 'plan',
         'analysis': 'analyze',
     }%}

@@ -124,7 +124,6 @@ DEPOSIT_TYPES = [
     "lw_daap.modules.deposit.workflows.dataset:dataset",
     "lw_daap.modules.deposit.workflows.software:software",
     "lw_daap.modules.deposit.workflows.analysis:analysis",
-    "lw_daap.modules.deposit.workflows.instrument:instrument",
 ]
 
 DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.dataset:dataset"

@@ -70,7 +70,6 @@ will be available as <span class="label {{ label_types['open'] }}">open access</
 'dataset': 'label-danger',
 'analysis': 'label-warning',
 'dmp': 'label-info',
-'instrument': 'label-info',
 }
 %}
 {% if record.upload_type %}

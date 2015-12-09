@@ -56,11 +56,6 @@ class CollectionData(DataSet):
         id = 7
         name = 'Projects'
 
-    class instrument(object):
-        id = 8
-        name = 'Instrument'
-        dbquery = '980__a:instrument AND 980__a:community-*'
-
 
 class CollectionCollectionData(DataSet):
     class site_analysis:
@@ -84,11 +79,5 @@ class CollectionCollectionData(DataSet):
     class site_dmp:
         dad = siteCollection
         son = CollectionData.dmp
-        score = 0
-        type = 'r'
-
-    class site_instrument:
-        dad = siteCollection
-        son = CollectionData.instrument
         score = 0
         type = 'r'

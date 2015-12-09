@@ -252,7 +252,7 @@ def show(project_id, path, page):
         },
         'collect': {
             'template': 'projects/collect.html',
-            'q': {'record_types': ['dataset', 'software', 'instrument']},
+            'q': {'record_types': ['dataset', 'software']},
         },
         'curate': {
             'template': 'projects/curate.html',
