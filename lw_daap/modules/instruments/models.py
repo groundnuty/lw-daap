@@ -32,7 +32,7 @@ from flask import current_app
 
 
 class Instrument(db.Model):
-    __tablename__ = 'instruments'
+    __tablename__ = 'instrument'
 
     """ Fields """
     id = db.Column(db.Integer(255, unsigned=True),
@@ -86,7 +86,7 @@ class Instrument(db.Model):
     """ Relationships """
 
     user = db.relationship(
-        User, backref=db.backref("instruments", uselist=False,
+        User, backref=db.backref("instrument", uselist=False,
                                  cascade="all, delete-orphan"))
 
     #
@@ -303,15 +303,15 @@ class Instrument(db.Model):
 
     @classmethod
     def filter_instruments(cls, p, so):
-        """Search for instruments.
+        """Search for instrument.
 
-        Helper function which takes from database only those instruments which
-        match search criteria. Uses parameter 'so' to set instruments in the
+        Helper function which takes from database only those instrument which
+        match search criteria. Uses parameter 'so' to set instrument in the
         correct order.
 
         Parameter 'page' is introduced to restrict results and return only
         slice of them for the current page. If page == 0 function will return
-        all instruments that match the pattern.
+        all instrument that match the pattern.
         """
         query = cls.query
         if p:

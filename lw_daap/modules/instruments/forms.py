@@ -28,6 +28,18 @@ from wtforms import HiddenField, StringField, TextAreaField,\
 
 from lw_daap.modules.invenio_deposit import fields
 from lw_daap.modules.deposit import fields as zfields
+from lw_daap.modules.invenio_deposit.filter_utils import sanitize_html, \
+    strip_string
+from datetime import date
+from invenio.config import CFG_DATACITE_DOI_PREFIX, CFG_SITE_NAME, \
+    CFG_SITE_SUPPORT_EMAIL
+
+from lw_daap.modules.invenio_deposit.validation_utils \
+    import DOISyntaxValidator, invalid_doi_prefix_validator, list_length, \
+    pid_validator, required_if, \
+    unchangeable
+
+from .field_widgets import date_widget, DynamicHiddenListWidget
 
 class SearchForm(Form):
     """Search Form."""
@@ -44,7 +56,7 @@ class InstrumentForm(Form):
 
     field_sets = [
         ('Information', [
-            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -88,7 +100,7 @@ class InstrumentForm(Form):
         return hasattr(field, 'autocomplete')
 
     field_icons = {
-        'instruments': 'fa fa-md fa-fw',
+        'instrument': 'fa fa-md fa-fw',
         'embargo_date': 'fa fa-calendar fa-fw',
         'license': 'fa fa-certificate fa-fw',
         'access_conditions': 'fa fa-pencil fa-fw',
@@ -104,7 +116,7 @@ class InstrumentForm(Form):
         filters=[
             strip_string,
         ],
-        export_key='instruments',
+        export_key='instrument',
         icon='fa fa-md fa-fw',
     )
     access_right = zfields.AccessRightField(
@@ -219,7 +231,7 @@ class InstrumentForm(Form):
     #
     # Form configuration
     #
-    _title = _('New instruments')
+    _title = _('New instrument')
     _drafting = False   # enable and disable drafting
 
     #
@@ -227,7 +239,7 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',

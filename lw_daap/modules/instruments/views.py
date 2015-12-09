@@ -29,24 +29,24 @@ from invenio.ext.sslify import ssl_required
 
 from lw_daap.ext.login import login_required
 
-from .forms import InstrumentForm
+from lw_daap.modules.instruments.forms import InstrumentForm
 
 from flask_login import current_user
 import urllib2
-from .models import Instrument
-from .forms import ProjectForm, SearchForm, EditProjectForm,\
+from lw_daap.modules.instruments.models import Instrument
+from lw_daap.modules.instruments.forms import ProjectForm, SearchForm, EditProjectForm,\
     DeleteProjectForm, IntegrateForm
 
 
 blueprint = Blueprint(
     'lwdaap_instruments',
     __name__,
-    url_prefix="/instruments",
+    url_prefix="/instrument",
     static_folder="static",
     template_folder="templates",
 )
 @blueprint.route('/', methods=['GET', ])
-@register_menu(blueprint, 'main.instruments', _('Instruments'), order=3)
+@register_menu(blueprint, 'main.instrument', _('Instruments'), order=3)
 @register_breadcrumb(blueprint, '.', _('Instruments'))
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),
@@ -68,6 +68,6 @@ def index(p, so, page):
         per_page=per_page,
     )
     return render_template(
-        "instruments/index.html",
+        "instrument/index.html",
         **ctx
     )

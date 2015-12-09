@@ -956,7 +956,7 @@ class DatasetForm(BasicForm):
         filters=[
             strip_string,
         ],
-        placeholder="Start typing an instruments name or abbreviation...",
+        placeholder="Start typing an instrument name or abbreviation...",
         icon='fa fa-fw',
     )
 
@@ -978,7 +978,7 @@ class DatasetForm(BasicForm):
             'indication': 'required',
         }),
         ('<i class="fa fa-flask"></i> Instrument', [
-            'instruments',
+            'instrument',
         ], {
             # 'classes': '',
             'indication': 'optional',
