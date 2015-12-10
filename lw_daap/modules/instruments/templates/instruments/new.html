@@ -1,0 +1,153 @@
+{#
+ # This file is part of Lifewatch DAAP.
+ # Copyright (C) 2015 Ana Yaiza Rodriguez Marrero.
+ #
+ # Lifewatch DAAP is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Lifewatch DAAP is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with Lifewatch DAAP. If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{#
+# This file is part of Invenio.
+# Copyright (C) 2013, 2014, 2015 CERN.
+#
+# Invenio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{% extends "page.html" %}
+
+{% from "_formhelpers.html" import render_field with context %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-12">
+    <h1>{% if is_new -%}
+      <i class="fa fa-plus fa-fw"></i> {{ _("New instrument") }}
+      {%- else -%}
+      <i class="fa fa-pencil-square-o fa-fw"></i> {{ _("Edit instrument") }}
+      {%- endif %}</h1>
+  </div>
+</div>
+
+<div class="spacer20"></div>
+
+<div class="row">
+  <div id="file_container" class="col-sm-12 col-md-12">
+    <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
+      <div class="well">
+        <button type="submit" class="btn btn-primary pull-right edit-form-submit">
+          <i class="fa fa-floppy-o fa-fw"></i>
+          {% if is_new %}Create{% else %}Save{% endif %}
+        </button>
+        <div class="clearfix"></div>
+
+      </div>
+
+      <div class="panel-list-wrapper">
+        {%- for instrument, fieldnames, conf in form.field_sets %}
+        <div class="panel panel-default">
+          {%- if instrument %}
+          <div class="panel-heading">
+            <a class="panel-toggle" data-toggle="collapse" data-idx="{{loop.index}}" href="#collapse{{loop.index}}">
+    <span class="show-on-collapsed pull-right">
+                <i class="fa fa-chevron-down"></i>
+              </span>
+              <span class="hide-on-collapsed pull-right">
+                <i class="fa fa-chevron-up"></i>
+              </span>
+              <i class="fa fa-info fa-fw"></i>{{instrument}}</a>
+          </div>
+          {%- endif %}
+          <div id="collapse{{loop.index}}" class="panel-body collapse{% if conf.classes %} {{conf.classes}}{% endif %}">
+            <div class="panel-inner">
+              {%- if conf.description %}
+              <p>{{ conf.description|urlize }}</p>
+              {%- endif %}
+              <fieldset>
+                {%- for f in fieldnames %}
+                {% if f == '-' %}<hr />
+                {%- else %}
+                {%- set field = form.get_field_by_name(f) %}
+                {% if field %}
+                <div class="form-group field-{{ field.name }}{% if field.errors %} error{% endif %}">
+                  <label class="control-label{{' required' if field.required else ''}} col-md-3" for="{{field.label.field_id}}">
+                    {%- if field._icon_html or form.get_field_icon(f) %}
+                    {% if form.get_field_icon(f) %}<i class="icon-{{ form.get_field_icon(f) }}"></i>{% else %}{{ field._icon_html|safe }}{% endif %}
+                    {%- endif %}
+                    {{ field.label.text }}
+                  </label>
+                  <div class="controls col-md-9">
+                    {{ field(class_="form-control col-md-5 " + field.short_name, placeholder=form.get_field_placeholder(f)) }}
+                    {% if field.description %}<p class="text-muted field-desc"><small>{{field.description|urlize}}</small></p>{% endif %}
+                    {% if field.errors %}
+                    <span class="alert alert-danger help-inline" id="error-{{ field.name }}">{% for error in field.errors %}{{ error }}{% if not loop.last %}<br />{% endif %}{% endfor %}</span>
+                    {% else %}
+                    <span class="alert alert-danger help-inline" id="error-{{ field.name }}" style="display:none;"></span>
+                    {% endif %}
+                  </div>
+                </div>
+                {%- endif %}
+                {%- endif %}
+                {%- endfor %}
+              </fieldset>
+            </div>
+          </div>
+        </div>
+        {%- endfor %}
+      </div>
+    </form>
+    <div class="spacer30"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/vendors/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+var CKEDITOR_BASEPATH = '/ckeditor/';
+
+function init_ckeditor(selector, type) {
+  if(type=="simple"){
+    CKEDITOR.replace( selector, {
+toolbar: [
+['PasteText','PasteFromWord'],
+['Bold','Italic','Strike','-','Subscript','Superscript',],
+['NumberedList','BulletedList', 'Blockquote'],
+['Undo','Redo','-','Find','Replace','-', 'RemoveFormat'],
+['Mathjax', 'SpecialChar', 'ScientificChar'],
+['Source'], ['Maximize'],
+],
+extraPlugins: 'scientificchar,mathjax,blockquote',
+disableNativeSpellChecker: false,
+removePlugins: 'elementspath',
+removeButtons: ''
+});
+}
+}
+
+#init_ckeditor("description", 'simple');
+</script>
+{% endblock %}

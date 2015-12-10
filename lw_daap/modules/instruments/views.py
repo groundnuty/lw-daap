@@ -16,7 +16,7 @@ from flask_login import current_user
 import urllib2
 
 from lw_daap.modules.instruments.models import Instrument
-from lw_daap.modules.instruments.forms import SearchForm
+from lw_daap.modules.instruments.forms import SearchForm, InstrumentForm
 
 
 blueprint = Blueprint(
@@ -49,6 +49,36 @@ def index(p, so, page):
         per_page=per_page,
     )
     return render_template(
-        "instrument/index.html",
+        "instruments/index.html",
+        **ctx
+    )
+
+@blueprint.route('/new/', methods=['GET', 'POST'])
+@ssl_required
+@login_required
+@register_breadcrumb(blueprint, '.new', _('Create new'))
+def new():
+    uid = current_user.get_id()
+    form = InstrumentForm(request.values, crsf_enabled=False)
+
+    ctx = {
+        'form': form,
+        'is_new': True,
+        'instrument': None,
+    }
+
+    if request.method == 'POST' and form.validate():
+        # Map form
+        data = form.data
+        i = Instrument(id_user=uid, **data)
+        db.session.add(i)
+        db.session.commit()
+        i.save_collection()
+        i.save_group()
+        flash("Instrument was successfully created.", category='success')
+        return redirect(url_for('.show', instrument_id=p.id))
+
+    return render_template(
+        "instruments/new.html",
         **ctx
     )
