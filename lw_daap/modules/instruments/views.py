@@ -81,7 +81,7 @@ def new():
         i.save_collection()
         #i.save_group()
         flash("Instrument was successfully created.", category='success')
-        return redirect(url_for('.show', instrument_id=p.id))
+        return redirect(url_for('.show', instrument_id=i.id))
 
     return render_template(
         "instruments/new.html",
