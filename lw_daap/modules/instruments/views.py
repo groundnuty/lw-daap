@@ -71,11 +71,10 @@ def new():
     if request.method == 'POST' and form.validate():
         # Map form
         data = form.data
-        current_app.logger.debug(data)
-        embargo_date = data['access_groups']
+        # Extract access_groups from Instrument data
+        access_groups = data['access_groups']
         del data['access_groups']
-        current_app.logger.debug("HEY!")
-        current_app.logger.debug(data)
+        
         i = Instrument(user_id=uid, **data)
         db.session.add(i)
         db.session.commit()
