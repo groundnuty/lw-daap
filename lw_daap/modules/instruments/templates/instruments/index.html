@@ -95,7 +95,7 @@
     <div class="panel panel-primary">
       {% call hb.panel_head() %}
       <a href="{{ url_for('.show', instrument_id=obj.id, path='plan') }}" class="btn btn-danger pull-right">{{ _('View') }}</a>
-      {{ obj.title }}
+      {{ obj.name }}
       {% endcall %}
       {% call hb.panel_body() %}
       {% if obj.description %}
