@@ -101,7 +101,7 @@
       {% if obj.description %}
       <p>{{ obj.description|striptags|truncate }}</p>
       {% endif %}
-      <small class="text-muted">Created by: {{ obj.owner.nickname }}</small>
+      <small class="text-muted">Created by: {{ obj.user.nickname }}</small>
       {% endcall %}
     </div>
   </div>
