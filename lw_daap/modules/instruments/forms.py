@@ -41,7 +41,7 @@ class InstrumentForm(Form):
 
     field_sets = [
         ('Information', [
-            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'name', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -85,14 +85,14 @@ class InstrumentForm(Form):
         return hasattr(field, 'autocomplete')
 
     field_icons = {
-        'instrument': 'fa fa-md fa-fw',
+        'name': 'fa fa-md fa-fw',
         'embargo_date': 'fa fa-calendar fa-fw',
         'license': 'fa fa-certificate fa-fw',
         'access_conditions': 'fa fa-pencil fa-fw',
         'access_groups': 'fa fa-group fa-fw'
     }
 
-    instrument = fields.TitleField(
+    name = fields.TitleField(
         validators=[
             validators.DataRequired(),
             validators.Length(min=5),
