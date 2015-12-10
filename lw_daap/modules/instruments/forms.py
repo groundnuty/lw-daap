@@ -101,7 +101,7 @@ class InstrumentForm(Form):
         filters=[
             strip_string,
         ],
-        export_key='instrument',
+        export_key='instruments',
         icon='fa fa-md fa-fw',
     )
     access_right = zfields.AccessRightField(
@@ -216,7 +216,7 @@ class InstrumentForm(Form):
     #
     # Form configuration
     #
-    _title = _('New instrument')
+    _title = _('New instruments')
     _drafting = False   # enable and disable drafting
 
     #
@@ -224,7 +224,7 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instrument', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',

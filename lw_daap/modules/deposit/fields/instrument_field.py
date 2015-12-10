@@ -56,13 +56,13 @@ class InstrumentField(WebDepositField, SelectField):
     """Instrument field."""
 
     def __init__(self, **kwargs):
-        """Initialize instrument field."""
+        """Initialize instruments field."""
         kwargs.setdefault("icon", "icon-certificate")
 
         if 'choices' not in kwargs:
             instruments = getAllInstruments()
             instruments_json = json.loads(instruments)
-            choices = [("-1", 'Select an instrument')]
+            choices = [("-1", 'Select an instruments')]
             for instrument in instruments_json:
                 choices.append((str(instrument['idInstrument']), str(instrument['name'])))
 

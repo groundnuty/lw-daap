@@ -29,7 +29,7 @@ blueprint = Blueprint(
     template_folder="templates",
 )
 @blueprint.route('/', methods=['GET', ])
-@register_menu(blueprint, 'main.instrument', _('Instruments'), order=2)
+@register_menu(blueprint, 'main.instruments', _('Instruments'), order=2)
 @register_breadcrumb(blueprint, '.', _('Instruments'))
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),
@@ -66,7 +66,7 @@ def new():
     ctx = {
         'form': form,
         'is_new': True,
-        'instrument': None,
+        'instruments': None,
     }
 
     if request.method == 'POST' and form.validate():

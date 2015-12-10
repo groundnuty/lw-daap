@@ -23,7 +23,7 @@ from flask import current_app
 
 
 class Instrument(db.Model):
-    __tablename__ = 'instrument'
+    __tablename__ = 'instruments'
 
     """ Fields """
     id = db.Column(db.Integer(255, unsigned=True),
@@ -77,7 +77,7 @@ class Instrument(db.Model):
     """ Relationships """
 
     user = db.relationship(
-        User, backref=db.backref("instrument", uselist=False,
+        User, backref=db.backref("instruments", uselist=False,
                                  cascade="all, delete-orphan"))
 
     #
@@ -90,7 +90,7 @@ class Instrument(db.Model):
         return '%s:%s' % ("980__a", self.get_collection_name())
 
     def get_instrument_records(self, record_types=[], public=None, curated=None):
-        """ Return all records of this instrument"""
+        """ Return all records of this instruments"""
         from invenio.legacy.search_engine import search_pattern_parenthesised
         from invenio.modules.records.models import Record
         q = ['980__:%s' % self.get_collection_name()]
@@ -179,7 +179,7 @@ class Instrument(db.Model):
             rule = 'allow group "%s"\ndeny any' % self.get_group_name()
             role = AccROLE(
                 name=role_name,
-                description='Owner of instrument %s' % self.name,
+                description='Owner of instruments %s' % self.name,
                 firerole_def_ser=serialize(compile_role_definition(rule)),
                 firerole_def_src=rule)
             db.session.add(role)
@@ -248,13 +248,13 @@ class Instrument(db.Model):
             db.session.commit()
 
     def get_group_name(self):
-        return 'instrument-group-%d' % self.id
+        return 'instruments-group-%d' % self.id
 
     def save_group(self):
         g = self.group
         if not g:
             g = Group.create(self.get_group_name(),
-                             description='Group for instrument %s' % self.id,
+                             description='Group for instruments %s' % self.id,
                              privacy_policy=PrivacyPolicy.MEMBERS,
                              subscription_policy=SubscriptionPolicy.APPROVAL,
                              is_managed=False,
@@ -273,7 +273,7 @@ class Instrument(db.Model):
 
     def is_empty(self):
         if self.eresable:
-            # Ensure instrument has not records.
+            # Ensure instruments has not records.
             from invenio.legacy.search_engine import search_pattern
             q = '980__:%s' % self.get_collection_name()
             recids = search_pattern(p=q)
@@ -294,15 +294,15 @@ class Instrument(db.Model):
 
     @classmethod
     def filter_instruments(cls, p, so):
-        """Search for instrument.
+        """Search for instruments.
 
-        Helper function which takes from database only those instrument which
-        match search criteria. Uses parameter 'so' to set instrument in the
+        Helper function which takes from database only those instruments which
+        match search criteria. Uses parameter 'so' to set instruments in the
         correct order.
 
         Parameter 'page' is introduced to restrict results and return only
         slice of them for the current page. If page == 0 function will return
-        all instrument that match the pattern.
+        all instruments that match the pattern.
         """
         query = cls.query
         if p:
