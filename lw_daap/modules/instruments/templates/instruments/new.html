@@ -35,16 +35,6 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
-{%- macro field_label(thisfield) -%}
-{% include "deposit/run_field_label.html" %}
-{%- endmacro -%}
-
-{%- macro field_display(thisfield, field_size=None, field_class="form-control", container_class="form-group") -%}
-{%- set field_size = field_size if field_size else (form.field_sizes.get(thisfield.name) if form.field_sizes else none) -%}
-{%- set field_kwargs = kwargs -%}
-{% include "deposit/run_field.html" %}
-{%- endmacro -%}
-
 {% extends "page.html" %}
 
 {% from "_formhelpers.html" import render_field with context %}
@@ -103,7 +93,21 @@
                 {%- set field = form.get_field_by_name(f) %}
                 {% if field %}
                 <div class="form-group field-{{ field.name }}{% if field.errors %} error{% endif %}">
-                  {{ field_display(field, field_class=field.icon) }}
+                  <label class="control-label{{' required' if field.required else ''}} col-md-3" for="{{field.label.field_id}}">
+                    {%- if field.icon %}
+                    <i class="{{ form.get_field_icon(f) }}"></i>
+                    {%- endif %}
+                    {{ field.label.text }}
+                  </label>
+                  <div class="controls col-md-9">
+                    {{ field(class_="form-control col-md-5 " + field.short_name, placeholder=form.get_field_placeholder(f)) }}
+                    {% if field.description %}<p class="text-muted field-desc"><small>{{field.description|urlize}}</small></p>{% endif %}
+                    {% if field.errors %}
+                    <span class="alert alert-danger help-inline" id="error-{{ field.name }}">{% for error in field.errors %}{{ error }}{% if not loop.last %}<br />{% endif %}{% endfor %}</span>
+                    {% else %}
+                    <span class="alert alert-danger help-inline" id="error-{{ field.name }}" style="display:none;"></span>
+                    {% endif %}
+                  </div>
                 </div>
                 {%- endif %}
                 {%- endif %}
