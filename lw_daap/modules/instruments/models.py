@@ -15,6 +15,9 @@ from invenio.base.globals import cfg
 
 from invenio.modules.search.models import \
     Collection, CollectionCollection, CollectionFormat, Collectionname, Format
+from invenio.modules.access.models import \
+    AccACTION, AccARGUMENT, AccAuthorization, AccROLE, UserAccROLE
+from invenio.modules.access.firerole import compile_role_definition, serialize
 
 from flask import current_app
 
@@ -200,13 +203,13 @@ class Instrument(db.Model):
         if alluserroles:
             # Remove any user which is not the owner
             for ur in alluserroles:
-                if ur.id_user == self.id_user:
+                if ur.id_user == self.user_id:
                     db.session.delete(ur)
                 else:
                     userrole = ur
 
         if not userrole:
-            userrole = UserAccROLE(id_user=self.id_user, role=role)
+            userrole = UserAccROLE(id_user=self.user_id, role=role)
             db.session.add(userrole)
 
         # Authorization
@@ -269,7 +272,7 @@ class Instrument(db.Model):
             user = current_user
         uid = user.get_id()
         groups = user.get('group', [])
-        return self.id_user == uid or self.group.name in groups
+        return self.user_id == uid or self.group.name in groups
 
     def is_empty(self):
         if self.eresable:
