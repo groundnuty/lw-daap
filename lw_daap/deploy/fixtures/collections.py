@@ -57,7 +57,7 @@ class CollectionData(DataSet):
         name = 'Projects'
 
     class instrumentparent(object):
-        id = 7
+        id = 8
         name = 'Instruments'
 
 class CollectionCollectionData(DataSet):

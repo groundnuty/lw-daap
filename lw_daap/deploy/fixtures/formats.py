@@ -42,3 +42,12 @@ class FormatData(defaults.FormatData):
         content_type = u'text/html'
         visibility = 1
         name = u'HTML brief Project'
+
+    class FormatHBIns:
+        code = u'hbins'
+        last_updated = None
+        description = (u'HTML brief output format instrument,'
+                       'used in instrument views.')
+        content_type = u'text/html'
+        visibility = 1
+        name = u'HTML brief Instrument'
