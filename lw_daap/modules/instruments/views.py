@@ -70,7 +70,7 @@ def new():
     if request.method == 'POST' and form.validate():
         # Map form
         data = form.data
-        i = Instrument(id_user=uid, **data)
+        i = Instrument(user_id=uid, **data)
         db.session.add(i)
         db.session.commit()
         i.save_collection()
