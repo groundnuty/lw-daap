@@ -97,7 +97,7 @@ def show(instrument_id, page):
 
     tabs = {
         'public': {
-            'template': 'projects/show.html',
+            'template': 'instruments/show.html',
             'q': {'public': True},
         }
     }
