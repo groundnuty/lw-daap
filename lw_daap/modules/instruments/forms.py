@@ -1,5 +1,3 @@
-__author__ = 'Rafael'
-
 from __future__ import absolute_import
 
 from invenio.base.i18n import _
@@ -21,7 +19,7 @@ from lw_daap.modules.invenio_deposit.validation_utils \
     pid_validator, required_if, \
     unchangeable
 
-from .field_widgets import date_widget, DynamicHiddenListWidget
+from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenListWidget
 
 class SearchForm(Form):
     """Search Form."""

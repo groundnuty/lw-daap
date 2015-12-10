@@ -1,5 +1,3 @@
-__author__ = 'Rafael'
-
 from __future__ import absolute_import
 
 from flask import abort, Blueprint, current_app, flash, jsonify, \
@@ -10,16 +8,14 @@ from flask_menu import register_menu
 from invenio.base.i18n import _
 from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
+from invenio.base.decorators import wash_arguments
 
 from lw_daap.ext.login import login_required
 
-from lw_daap.modules.instruments.forms import InstrumentForm
-
 from flask_login import current_user
 import urllib2
+
 from lw_daap.modules.instruments.models import Instrument
-from lw_daap.modules.instruments.forms import ProjectForm, SearchForm, EditProjectForm,\
-    DeleteProjectForm, IntegrateForm
 
 
 blueprint = Blueprint(
@@ -30,7 +26,7 @@ blueprint = Blueprint(
     template_folder="templates",
 )
 @blueprint.route('/', methods=['GET', ])
-@register_menu(blueprint, 'main.instrument', _('Instruments'), order=3)
+@register_menu(blueprint, 'main.instrument', _('Instruments'), order=2)
 @register_breadcrumb(blueprint, '.', _('Instruments'))
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),

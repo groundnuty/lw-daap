@@ -1,5 +1,3 @@
-__author__ = 'Rafael'
-
 from __future__ import absolute_import, print_function, unicode_literals
 
 from datetime import datetime
@@ -11,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from invenio.base.i18n import _
 from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
+from invenio.base.globals import cfg
 
 from flask import current_app
 
