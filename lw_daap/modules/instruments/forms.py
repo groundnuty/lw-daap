@@ -19,6 +19,8 @@ from lw_daap.modules.invenio_deposit.validation_utils \
     pid_validator, required_if, \
     unchangeable
 
+from lw_daap.modules.invenio_deposit.field_widgets import CKEditorWidget
+
 from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenListWidget
 
 class SearchForm(Form):
