@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from flask import abort, Blueprint, current_app, flash, jsonify, \
-    render_template, request
+    render_template, request, redirect
 from flask_breadcrumbs import register_breadcrumb
 from flask_menu import register_menu
 
