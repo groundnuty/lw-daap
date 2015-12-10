@@ -94,8 +94,8 @@
                 {% if field %}
                 <div class="form-group field-{{ field.name }}{% if field.errors %} error{% endif %}">
                   <label class="control-label{{' required' if field.required else ''}} col-md-3" for="{{field.label.field_id}}">
-                    {%- if field.icon or form.get_field_icon(f) %}
-                    {% if form.get_field_icon(f) %}<i class="icon-{{ form.get_field_icon(f) }}"></i>{% else %}{{ field.icon|safe }}{% endif %}
+                    {%- if field.icon %}
+                    <i class="{{ form.get_field_icon(f) }}"></i>
                     {%- endif %}
                     {{ field.label.text }}
                   </label>
