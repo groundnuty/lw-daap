@@ -132,9 +132,6 @@ class Instrument(db.Model):
         dad = Collection.query.filter_by(
             name=cfg['INSTRUMENTS_PARENT_NAME']).first()
 
-        current_app.logger.debug("Hey!")
-        current_app.logger.debug(dad)
-
         if collection.id:
             c_tree = CollectionCollection.query.filter_by(
                 id_dad=dad.id,

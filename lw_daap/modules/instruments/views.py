@@ -10,6 +10,7 @@ from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
 from invenio.base.decorators import wash_arguments
 from invenio.ext.sqlalchemy import db
+from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
 
@@ -91,7 +92,7 @@ def new():
 @blueprint.route('/<int:instrument_id>/show/', methods=['GET', 'POST'])
 @register_breadcrumb(blueprint, '.show', 'Show')
 @wash_arguments({'page': (int, 1)})
-def show(instrument_id, path, page):
+def show(instrument_id, page):
     instrument = Instrument.query.get_or_404(instrument_id)
 
     tabs = {
