@@ -147,7 +147,7 @@ class InstrumentForm(Form):
         placeholder="Start typing a license name or abbreviation...",
         icon='fa fa-certificate fa-fw',
     )
-    access_conditions = fields.TextAreaField(
+    conditions = fields.TextAreaField(
         label=_('Conditions'),
         icon='fa fa-pencil fa-fw',
         description='Specify the conditions under which you grant users '
