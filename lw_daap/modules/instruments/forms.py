@@ -41,7 +41,7 @@ class InstrumentForm(Form):
 
     field_sets = [
         ('Information', [
-            'name', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'name', 'access_right', 'embargo_date', 'license', 'conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
