@@ -56,6 +56,9 @@ class CollectionData(DataSet):
         id = 7
         name = 'Projects'
 
+    class instrumentparent(object):
+        id = 7
+        name = 'Instruments'
 
 class CollectionCollectionData(DataSet):
     class site_analysis:
