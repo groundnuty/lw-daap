@@ -11,6 +11,9 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
 from invenio.base.globals import cfg
 
+from invenio.modules.search.models import \
+    Collection, CollectionCollection, CollectionFormat, Collectionname, Format
+
 from flask import current_app
 
 
