@@ -116,7 +116,6 @@ def show(instrument_id, page):
     current_app.logger.debug("TEMPLATE: %s" % template)
 
     ctx = dict(
-        path=path,
         instrument=instrument,
         records=records,
         format_record=format_record,
