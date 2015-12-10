@@ -9,6 +9,7 @@ from invenio.base.i18n import _
 from invenio.base.globals import cfg
 from invenio.ext.sslify import ssl_required
 from invenio.base.decorators import wash_arguments
+from invenio.ext.sqlalchemy import db
 
 from lw_daap.ext.login import login_required
 
