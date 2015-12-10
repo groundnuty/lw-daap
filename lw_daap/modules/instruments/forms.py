@@ -24,8 +24,6 @@ from lw_daap.modules.invenio_deposit.field_widgets import CKEditorWidget, \
 from lw_daap.modules.deposit.forms import AccessGroupsForm
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
-from flask.ext.admin.form.widgets import DatePickerWidget
-
 from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenListWidget
 
 class SearchForm(Form):
@@ -124,7 +122,7 @@ class InstrumentForm(Form):
             required_if('access_right', ['embargoed']),
             validators.optional()
         ],
-        widget=DatePickerWidget(),
+        widget=date_widget,
         widget_classes='input-small',
         hidden=True,
         disabled=True,
