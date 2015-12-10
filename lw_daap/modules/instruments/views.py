@@ -16,6 +16,7 @@ from flask_login import current_user
 import urllib2
 
 from lw_daap.modules.instruments.models import Instrument
+from lw_daap.modules.instruments.forms import SearchForm
 
 
 blueprint = Blueprint(
