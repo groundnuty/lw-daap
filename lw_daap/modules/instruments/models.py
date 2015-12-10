@@ -23,7 +23,7 @@ from flask import current_app
 
 
 class Instrument(db.Model):
-    __tablename__ = 'instruments'
+    __tablename__ = 'instrument'
 
     """ Fields """
     id = db.Column(db.Integer(255, unsigned=True),
