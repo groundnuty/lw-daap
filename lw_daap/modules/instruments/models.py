@@ -104,20 +104,20 @@ class Instrument(db.Model):
         records = Record.query.filter(Record.id.in_(recids))
         return records
 
-    def save_collectionname(self, collection, title):
+    def save_collectionname(self, collection, name):
         if collection.id:
             c_name = Collectionname.query.filter_by(
                 id_collection=collection.id, ln=CFG_SITE_LANG, type='ln'
             ).first()
             if c_name:
-                update_changed_fields(c_name, dict(value=title))
+                update_changed_fields(c_name, dict(value=name))
                 return c_name
 
         c_name = Collectionname(
             collection=collection,
             ln=CFG_SITE_LANG,
             type='ln',
-            value=title,
+            value=name,
         )
         db.session.add(c_name)
         return c_name
@@ -174,7 +174,7 @@ class Instrument(db.Model):
             rule = 'allow group "%s"\ndeny any' % self.get_group_name()
             role = AccROLE(
                 name=role_name,
-                description='Owner of instrument %s' % self.title,
+                description='Owner of instrument %s' % self.name,
                 firerole_def_ser=serialize(compile_role_definition(rule)),
                 firerole_def_src=rule)
             db.session.add(role)
@@ -225,7 +225,7 @@ class Instrument(db.Model):
             db.session.add(c)
             db.session.commit()
         self.collection = c
-        self.save_collectionname(c, self.title)
+        self.save_collectionname(c, self.name)
         self.save_collectioncollection(c)
         self.save_collectionformat(c)
         self.save_acl(c)
@@ -303,11 +303,11 @@ class Instrument(db.Model):
         if p:
             query = query.filter(db.or_(
                 cls.id.like("%" + p + "%"),
-                cls.title.like("%" + p + "%"),
+                cls.name.like("%" + p + "%"),
                 cls.description.like("%" + p + "%"),
             ))
         if so in cfg['INSTRUMENTS_SORTING_OPTIONS']:
-            order = so == 'title' and db.asc or db.desc
+            order = so == 'name' and db.asc or db.desc
             query = query.order_by(order(getattr(cls, so)))
         return query
 
