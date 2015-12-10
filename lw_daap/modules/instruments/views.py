@@ -21,7 +21,7 @@ from lw_daap.modules.instruments.models import Instrument
 blueprint = Blueprint(
     'lwdaap_instruments',
     __name__,
-    url_prefix="/instrument",
+    url_prefix="/instruments",
     static_folder="static",
     template_folder="templates",
 )
