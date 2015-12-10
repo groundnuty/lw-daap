@@ -87,3 +87,40 @@ def new():
         "instruments/new.html",
         **ctx
     )
+
+@blueprint.route('/<int:instrument_id>/show/', methods=['GET', 'POST'])
+@register_breadcrumb(blueprint, '.show', 'Show')
+@wash_arguments({'page': (int, 1)})
+def show(instrument_id, path, page):
+    instrument = Instrument.query.get_or_404(instrument_id)
+
+    tabs = {
+        'public': {
+            'template': 'projects/show.html',
+            'q': {'public': True},
+        }
+    }
+
+    try:
+        tab_info = tabs['public']
+    except KeyError:
+        abort(404)
+    query_opts = tab_info.get('q', {})
+    records = instrument.get_instrument_records(**query_opts)
+    page = max(page, 1)
+    per_page = cfg.get('RECORDS_IN_INSTRUMENTS_DISPLAYED_PER_PAGE', 5)
+    records = records.paginate(page, per_page=per_page)
+
+    template = tab_info.get('template')
+    current_app.logger.debug("TEMPLATE: %s" % template)
+
+    ctx = dict(
+        path=path,
+        instrument=instrument,
+        records=records,
+        format_record=format_record,
+        page=page,
+        per_page=per_page,
+    )
+
+    return render_template(template, **ctx)
