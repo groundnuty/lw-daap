@@ -6,6 +6,8 @@ from flask_login import current_user
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 
+from invenio.config import CFG_SITE_LANG
+
 from invenio.base.i18n import _
 from invenio.ext.sqlalchemy import db
 from invenio.modules.accounts.models import User
