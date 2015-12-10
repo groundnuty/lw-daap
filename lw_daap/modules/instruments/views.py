@@ -71,8 +71,8 @@ def new():
         # Map form
         data = form.data
         current_app.logger.debug(data)
-        embargo_date = data['embargo_date']
-        del data['embargo_date']
+        embargo_date = data['access_groups']
+        del data['access_groups']
         current_app.logger.debug("HEY!")
         current_app.logger.debug(data)
         i = Instrument(user_id=uid, **data)
