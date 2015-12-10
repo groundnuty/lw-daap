@@ -309,7 +309,6 @@ class Instrument(db.Model):
             query = query.filter(db.or_(
                 cls.id.like("%" + p + "%"),
                 cls.name.like("%" + p + "%"),
-                cls.description.like("%" + p + "%"),
             ))
         if so in cfg['INSTRUMENTS_SORTING_OPTIONS']:
             order = so == 'name' and db.asc or db.desc
