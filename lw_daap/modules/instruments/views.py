@@ -70,6 +70,11 @@ def new():
     if request.method == 'POST' and form.validate():
         # Map form
         data = form.data
+        current_app.logger.debug(data)
+        embargo_date = data['embargo_date']
+        del data['embargo_date']
+        current_app.logger.debug("HEY!")
+        current_app.logger.debug(data)
         i = Instrument(user_id=uid, **data)
         db.session.add(i)
         db.session.commit()
