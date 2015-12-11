@@ -84,7 +84,6 @@ def new():
         db.session.commit()
         #user = UserProfile.get(current_user.get_id)
         #userStr = findByPortalUser(user.)
-        createInstrument(name, embargoDate, accessRight, idUser, license, conditions, databaseUser, "admin")
         respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
         current_app.logger.debug(respInstrument)
         #i.save_collection()

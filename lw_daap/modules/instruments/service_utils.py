@@ -2,7 +2,7 @@ __author__ = 'Rafael'
 
 from invenio.base.globals import cfg
 import json
-import urllib2, base64
+import urllib2, base64, urllib
 from flask import current_app
 
 def getServiceJsonParamenters():
@@ -29,17 +29,19 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
 
     url = '%sdatabase/instruments' % (lfw_url)
     req = urllib2.Request(url)
-    data = urllib.urlencode({'name' : name,
-                             'embargoDate' : embargoDate,
-                             'accessRight' : accessRight,
-                             'idUser' : idUser,
-                             'license' : license,
-                             'conditions' : conditions,
-                             "owner": {
-                                "idUser": idUser,
-                                "databaseUser": databaseUser,
-                                "portalUser": portalUser
-                              }})
+    f = {'name' : name,
+         'embargoDate' : embargoDate,
+         'accessRight' : accessRight,
+         'idUser' : idUser,
+         'license' : license,
+         'conditions' : conditions,
+         'owner': {
+             'idUser': idUser,
+             'databaseUser': databaseUser,
+             'portalUser': portalUser
+         }
+        }
+    data = urllib.urlencode(f)
 
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
