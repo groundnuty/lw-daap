@@ -77,7 +77,7 @@ def new():
         del data['access_groups']
 
         i = Instrument(user_id=uid, **data)
-        db.session.add(i)
+        #db.session.add(i)
         db.session.commit()
         #i.save_collection()
         #i.save_group()
