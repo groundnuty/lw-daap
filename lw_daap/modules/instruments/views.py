@@ -13,6 +13,9 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
+from .service_utils import createInstrument
+from lw_daap.modules.profile.service_utils import findByPortalUser
+from lw_daap.modules.profile.models import UserProfile
 
 from flask_login import current_user
 import urllib2
@@ -79,6 +82,11 @@ def new():
         i = Instrument(user_id=uid, **data)
         #db.session.add(i)
         db.session.commit()
+        #user = UserProfile.get(current_user.get_id)
+        #userStr = findByPortalUser(user.)
+        createInstrument(name, embargoDate, accessRight, idUser, license, conditions, databaseUser, "admin")
+        respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+        current_app.logger.debug(respInstrument)
         #i.save_collection()
         #i.save_group()
         flash("Instrument was successfully created.", category='success')
