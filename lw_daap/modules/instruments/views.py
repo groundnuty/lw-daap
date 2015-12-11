@@ -84,7 +84,11 @@ def new():
         db.session.commit()
         #user = UserProfile.get(current_user.get_id)
         #userStr = findByPortalUser(user.)
-        respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+        try:
+            respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+        except Exception as e:
+            current_app.logger.debug("ERROR")
+            flash(str(e), 'error')
         current_app.logger.debug(respInstrument)
         #i.save_collection()
         #i.save_group()
