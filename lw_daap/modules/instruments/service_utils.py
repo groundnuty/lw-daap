@@ -19,7 +19,7 @@ def getBase64StringAuth(lfw_service_json):
     passw = lfw_service_json['lfw_pass']
     return base64.encodestring('%s:%s' % (user, passw)).replace('\n', '')
 
-def createInstrument(name, embargoDate, accessRight, idUser, license, conditions):
+def createInstrument(name, embargoDate, accessRight, idUser, license, conditions, databaseUser, portalUser):
     """
     Create an instruments
     """
@@ -34,7 +34,12 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
                              'accessRight' : accessRight,
                              'idUser' : idUser,
                              'license' : license,
-                             'conditions' : conditions})
+                             'conditions' : conditions,
+                             "owner": {
+                                "idUser": idUser,
+                                "databaseUser": databaseUser,
+                                "portalUser": portalUser
+                              }})
 
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
