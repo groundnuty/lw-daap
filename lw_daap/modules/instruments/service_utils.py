@@ -27,7 +27,7 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
     lfw_url = lfw_service_json['lfw_service']
     req = urllib2.Request('%sdatabase/instruments' % (lfw_url))
 
-    url = '%sdatabase/instruments' % (lfw_url)
+    url = '%instrument' % (lfw_url)
     req = urllib2.Request(url)
     f = {'name' : name,
          'embargoDate' : embargoDate,
