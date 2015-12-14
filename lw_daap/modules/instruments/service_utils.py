@@ -46,12 +46,11 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req, json.dumps(data))
 
-    current_app.logger.debug("APP " + result.read())
+    idInstrument = -1
+    if result.read().strip() != "false":
+        idInstrument = (result.read())["idInstrument"]
 
-    if result.read().strip() == "false":
-       return False
-    else:
-       return True
+    return idInstrument
 
 def getAllInstruments():
     """

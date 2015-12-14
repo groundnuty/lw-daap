@@ -84,23 +84,17 @@ def new():
         db.session.commit()
         #user = UserProfile.get(current_user.get_id)
         #userStr = findByPortalUser(user.)
-        try:
-            respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
-            current_app.logger.debug("ERROR")
-            current_app.logger.debug(respInstrument)
+        idInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+        if (idInstrument) >= 0:
+            i.id = idInstrument
             flash("Instrument was successfully created.", category='success')
             return redirect(url_for('.show', instrument_id=i.id))
-        except Exception as e:
-            current_app.logger.debug("ERROR")
+        else:
             flash("There was an error. Please, contact with the Lifewatch site administrator.", category='error')
+            return render_template("instruments/new.html", **ctx)
         #i.save_collection()
         #i.save_group()
 
-
-    return render_template(
-        "instruments/new.html",
-        **ctx
-    )
 
 @blueprint.route('/<int:instrument_id>/show/', methods=['GET', 'POST'])
 @register_breadcrumb(blueprint, '.show', 'Show')
