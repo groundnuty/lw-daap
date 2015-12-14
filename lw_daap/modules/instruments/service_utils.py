@@ -59,3 +59,12 @@ def getAllInstruments():
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
     return result.read().strip()
+
+def getFilteredInstrumentsByIdUser(idUser, fiter=""):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/findfilteredselectablebyiduser?userId=%s&filter=%s' % (lfw_url, idUser, fiter))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()

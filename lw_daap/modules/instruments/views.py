@@ -13,7 +13,7 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
-from .service_utils import createInstrument
+from .service_utils import createInstrument, getFilteredInstrumentsByIdUser
 from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
 
@@ -40,6 +40,8 @@ blueprint = Blueprint(
                  })
 def index(p, so, page):
     instruments = Instrument.filter_instruments(p, so)
+    current_app.logger.debug(instruments)
+    #instruments = getFilteredInstrumentsByIdUser(current_user['id'])
 
     page = max(page, 1)
     per_page = cfg.get('INSTRUMENTS_DISPLAYED_PER_PAGE', 9)
