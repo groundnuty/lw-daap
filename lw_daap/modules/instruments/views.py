@@ -82,10 +82,10 @@ def new():
         i = Instrument(user_id=uid, **data)
         #db.session.add(i)
         db.session.commit()
-        userInfo = getUserInfoByPortalUser(current_user.nickname)
+        userInfo = getUserInfoByPortalUser(current_user['nickname'])
         userInfoJson = json.loads(userInfo)
         if userInfoJson['databaseUser']:
-            instrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, userInfoJson['databaseUser'], current_user.nickname)
+            instrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, userInfoJson['databaseUser'], current_user['nickname'])
             jsonInstrument = json.loads(instrument)
             if (jsonInstrument['idInstrument']) >= 0:
                 i.id = int(jsonInstrument['idInstrument'])
