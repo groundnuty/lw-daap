@@ -22,6 +22,7 @@ import urllib2, json
 
 from lw_daap.modules.instruments.models import Instrument
 from lw_daap.modules.instruments.forms import SearchForm, InstrumentForm
+from lw_daap.modules.deposit.fields.license_field import _kb_license_choices
 
 
 blueprint = Blueprint(
@@ -106,6 +107,8 @@ def new():
 @wash_arguments({'page': (int, 1)})
 def show(instrument_id, page):
     instrument = Instrument.query.get_or_404(instrument_id)
+    current_app.logger.debug(instrument)
+    current_app.logger.debug(_kb_license_choices(True, False, False))
 
     tabs = {
         'public': {
