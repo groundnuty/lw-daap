@@ -82,11 +82,13 @@ def new():
         i = Instrument(user_id=uid, **data)
         #db.session.add(i)
         db.session.commit()
-        #user = UserProfile.get(current_user.get_id)
-        #userStr = findByPortalUser(user.)
-        idInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
-        if (idInstrument) >= 0:
-            i.id = int(idInstrument)
+        user = UserProfile.get(current_user.get_id)
+        current_app.logger.debug("USER--")
+        current_app.logger.debug(user)
+        instrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+        jsonInstrument = json.loads(instrument)
+        if (jsonInstrument['idInstrument']) >= 0:
+            i.id = int(jsonInstrument['idInstrument'])
             flash("Instrument was successfully created.", category='success')
             return redirect(url_for('.show', instrument_id=i.id))
         else:

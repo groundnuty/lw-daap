@@ -45,12 +45,8 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req, json.dumps(data))
+    return result.read()
 
-    idInstrument = -1
-    if result.read().strip() != "false":
-        idInstrument = (result.read())["idInstrument"]
-
-    return idInstrument
 
 def getAllInstruments():
     """
