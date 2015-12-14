@@ -22,6 +22,7 @@ from invenio.modules.access.firerole import compile_role_definition, serialize
 from flask import current_app
 
 from lw_daap.modules.deposit.fields.access_rights_field import ACCESS_RIGHTS_CHOICES
+from lw_daap.modules.deposit.fields.license_field import _kb_license_choices
 
 
 class Instrument(db.Model):
@@ -318,10 +319,17 @@ class Instrument(db.Model):
         return query
 
     @classmethod
-    def get_access_right(self, access_right):
+    def get_access_right(self, id_access_right):
         for tuple in ACCESS_RIGHTS_CHOICES:
-            if tuple[0] == access_right:
+            if tuple[0] == id_access_right:
                 return tuple[1]
+
+    def get_license(self, id_license):
+        licenses = _kb_license_choices(True, False, False)
+        for tuple in licenses:
+            if tuple[0] == id_license:
+                return tuple[1]
+
 
 #    @classmethod
 #    def get_user_instruments(cls, user):

@@ -46,7 +46,7 @@ require(['jquery'], function($) {
       {% if instrument.access_right == 'open' or instrument.access_right == 'embargoed' %}
       <div style="padding: 10px 0 0 40px;">
         <label>License: </label>
-          {{ instrument.license }}
+          {{ instrument.get_license(instrument.license) }}
       </div>
       {% endif %}
       {% if instrument.access_right == 'embargoed' %}
