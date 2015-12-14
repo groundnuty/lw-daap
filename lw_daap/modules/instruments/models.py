@@ -318,8 +318,10 @@ class Instrument(db.Model):
         return query
 
     @classmethod
-    def get_access_right(self):
-        return ACCESS_RIGHTS_CHOICES[self.access_right]
+    def get_access_right(self, access_right):
+        for tuple in ACCESS_RIGHTS_CHOICES:
+            if tuple[0] == access_right:
+                return tuple[1]
 
 #    @classmethod
 #    def get_user_instruments(cls, user):
