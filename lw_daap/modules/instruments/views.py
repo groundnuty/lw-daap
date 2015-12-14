@@ -86,14 +86,16 @@ def new():
         #userStr = findByPortalUser(user.)
         try:
             respInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
+            current_app.logger.debug("ERROR")
+            current_app.logger.debug(respInstrument)
+            flash("Instrument was successfully created.", category='success')
+            return redirect(url_for('.show', instrument_id=i.id))
         except Exception as e:
             current_app.logger.debug("ERROR")
-            flash(str(e), 'error')
-        current_app.logger.debug(respInstrument)
+            flash("There was an error. Please, contact with the Lifewatch site administrator.", category='error')
         #i.save_collection()
         #i.save_group()
-        flash("Instrument was successfully created.", category='success')
-        return redirect(url_for('.show', instrument_id=i.id))
+
 
     return render_template(
         "instruments/new.html",
