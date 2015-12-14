@@ -39,6 +39,10 @@ require(['jquery'], function($) {
   <div id="target" class="panel-body">
     <div class="col-md-11">
       <h1><i class="fa fa-fw fa-list-alt"></i>{{ instrument.name }}</h1>
+      <div style="padding: 20px;">
+        <label>Access right: </label>
+          {{ instrument.get_access_right() }}
+      </div>
     </div>
     {% if current_user.get_id() == instrument.user_id %}
 

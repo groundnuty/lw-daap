@@ -21,6 +21,8 @@ from invenio.modules.access.firerole import compile_role_definition, serialize
 
 from flask import current_app
 
+from lw_daap.modules.deposit.fields.access_rights_field import ACCESS_RIGHTS_CHOICES
+
 
 class Instrument(db.Model):
     __tablename__ = 'instrument'
@@ -314,6 +316,10 @@ class Instrument(db.Model):
             order = so == 'name' and db.asc or db.desc
             query = query.order_by(order(getattr(cls, so)))
         return query
+
+    @classmethod
+    def get_access_right(self):
+        return ACCESS_RIGHTS_CHOICES[self.access_right]
 
 #    @classmethod
 #    def get_user_instruments(cls, user):
