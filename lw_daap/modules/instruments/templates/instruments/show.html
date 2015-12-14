@@ -39,28 +39,28 @@ require(['jquery'], function($) {
   <div id="target" class="panel-body">
     <div class="col-md-11">
       <h1><i class="fa fa-fw fa-list-alt"></i>{{ instrument.name }}</h1>
-      <div style="padding: 40px;">
+      <div style="padding: 10px 0 0 40px;">
         <label>Access right: </label>
           {{ instrument.get_access_right(instrument.access_right) }}
       </div>
       {% if instrument.access_right == 'open' or instrument.access_right == 'embargoed' %}
-      <div style="padding: 40px;">
+      <div style="padding: 10px 0 0 40px;">
         <label>License: </label>
           {{ instrument.license }}
       </div>
       {% endif %}
       {% if instrument.access_right == 'embargoed' %}
-      <div style="padding: 40px;">
+      <div style="padding: 10px 0 0 40px;">
         <label>Embargo Date: </label>
           {{ instrument.embargo_date }}
       </div>
       {% endif %}
       {% if instrument.access_right == 'restricted' %}
-      <div style="padding: 40px;">
+      <div style="padding: 10px 0 0 40px;">
         <label>Conditions: </label>
           {{ instrument.conditions }}
       </div>
-      <div style="padding: 40px;">
+      <div style="padding: 10px 0 0 40px;">
         <label>Groups: </label>
 
       </div>
