@@ -325,7 +325,7 @@ class Instrument(db.Model):
                 return tuple[1]
 
     def get_license(self, id_license):
-        licenses = _kb_license_choices(True, False, False)
+        licenses = _kb_license_choices(True, True, True)
         for tuple in licenses:
             if tuple[0] == id_license:
                 return tuple[1]
