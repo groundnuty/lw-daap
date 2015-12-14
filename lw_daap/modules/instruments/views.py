@@ -18,7 +18,7 @@ from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
 
 from flask_login import current_user
-import urllib2
+import urllib2, json
 
 from lw_daap.modules.instruments.models import Instrument
 from lw_daap.modules.instruments.forms import SearchForm, InstrumentForm
