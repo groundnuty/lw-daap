@@ -27,24 +27,26 @@ def createInstrument(name, embargoDate, accessRight, idUser, license, conditions
     lfw_url = lfw_service_json['lfw_service']
 
     url = '%sinstrument' % (lfw_url)
-    req = urllib2.Request(url)
-    f = {'name' : name,
-         'embargoDate' : embargoDate,
-         'accessRight' : accessRight,
-         'idUser' : idUser,
-         'license' : license,
-         'conditions' : conditions,
+    data = {'name' : str(name),
+         'embargoDate' : str(embargoDate),
+         'accessRight' : str(accessRight),
+         'idInstrument' : "",
+         'license' : str(license),
+         'conditions' : str(conditions),
          'owner': {
-             'idUser': idUser,
-             'databaseUser': databaseUser,
-             'portalUser': portalUser
+             'idUser': str(idUser),
+             'databaseUser': str(databaseUser),
+             'portalUser': str(portalUser)
          }
         }
-    data = urllib.urlencode(f)
 
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
-    result = urllib2.urlopen(req, data=data)
+    result = urllib2.urlopen(req, json.dumps(data))
+
+    current_app.logger.debug("APP " + result.read())
 
     if result.read().strip() == "false":
        return False
