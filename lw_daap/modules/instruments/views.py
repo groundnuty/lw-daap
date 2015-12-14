@@ -86,12 +86,13 @@ def new():
         #userStr = findByPortalUser(user.)
         idInstrument = createInstrument(i.name, i.embargo_date, i.access_right, i.user_id, i.license, i.conditions, "admin", "admin")
         if (idInstrument) >= 0:
-            i.id = idInstrument
+            i.id = int(idInstrument)
             flash("Instrument was successfully created.", category='success')
             return redirect(url_for('.show', instrument_id=i.id))
         else:
             flash("There was an error. Please, contact with the Lifewatch site administrator.", category='error')
-            return render_template("instruments/new.html", **ctx)
+
+    return render_template("instruments/new.html", **ctx)
         #i.save_collection()
         #i.save_group()
 
