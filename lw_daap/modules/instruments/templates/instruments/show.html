@@ -41,13 +41,7 @@ require(['jquery'], function($) {
       <h1><i class="fa fa-fw fa-list-alt"></i>{{ instrument.name }}</h1>
     </div>
     {% if current_user.get_id() == instrument.user_id %}
-    <div class="col-md-1">
-      <a href="{{ url_for('.edit', instrument_id=instrument.id) }}"
-        class="btn btn-lg btn-primary pull-right"
-        style="margin-top: 20px;">
-        <i class="fa fa-pencil-square-o"></i> Edit
-      </a>
-    </div>
+
     {% endif %}
   </div>
 </div>
