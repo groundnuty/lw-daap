@@ -978,7 +978,7 @@ class DatasetForm(BasicForm):
             'indication': 'required',
         }),
         ('<i class="fa fa-flask"></i> Instrument', [
-            'instruments',
+            'instrument',
         ], {
             # 'classes': '',
             'indication': 'optional',
