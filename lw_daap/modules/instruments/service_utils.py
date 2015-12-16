@@ -54,7 +54,7 @@ def getAllInstruments():
     """
     lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
-    req = urllib2.Request('%s/instruments' % lfw_url)
+    req = urllib2.Request('%sinstrument' % lfw_url)
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
