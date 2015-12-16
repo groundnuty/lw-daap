@@ -41,7 +41,8 @@ class InstrumentForm(Form):
 
     field_sets = [
         ('Information', [
-            'name', 'access_right', 'embargo_date', 'license', 'conditions', 'access_groups'
+            'name', 'access_right', 'embargo_date'
+            #, 'license', 'conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -224,7 +225,8 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instruments', 'access_right', 'embargo_date', 'license', 'access_conditions', 'access_groups'
+            'instruments', 'access_right', 'embargo_date'
+            #, 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',
