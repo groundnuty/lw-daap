@@ -328,14 +328,14 @@ def delete(project_id):
     return redirect(url_for('.myprojects'))
 
 
-@blueprint.route('/<int:project_id>/deposit/<depositions:deposition_type>',
+@blueprint.route('/<int:project_id>/instruments/<depositions:deposition_type>',
                  methods=['GET'])
 @ssl_required
 @login_required
 def deposit(project_id, deposition_type):
     project = Project.query.get_or_404(project_id)
     if not project.is_user_allowed():
-        flash('Only the owner of the project can deposit records on it',
+        flash('Only the owner of the project can instruments records on it',
               category='error')
         abort(404)
 

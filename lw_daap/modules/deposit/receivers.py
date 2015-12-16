@@ -52,7 +52,7 @@ class UploadForm(WebDepositForm):
     plupload_file = FileUploadField(
         label="",
         widget=PLUploadWidget(
-            template="deposit/widget_plupload.html"
+            template="instruments/widget_plupload.html"
         )
     )
 
@@ -61,14 +61,14 @@ class SpaUloadForm(WebDepositForm):
     spaupload_file = FileUploadField(
         label="",
         widget=SPAUploadWidget(
-            template="deposit/widget_spaupload.html"
+            template="instruments/widget_spaupload.html"
         )
     )
 
 
 def index_context_listener(sender, context=None):
     """
-    Add extra variables into deposit index template to create
+    Add extra variables into instruments index template to create
     """
     if context:
         context['form'] = UploadForm()
@@ -108,7 +108,7 @@ def large_file_notification(sender, deposition=None, deposition_file=None,
                 cfg['CFG_SITE_NAME'], nice_size(deposition_file.size)
             ),
             content=render_template_to_string(
-                "deposit/email_large_file.html",
+                "instruments/email_large_file.html",
                 deposition=deposition,
                 deposition_file=deposition_file,
             )

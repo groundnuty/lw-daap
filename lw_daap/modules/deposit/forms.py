@@ -448,7 +448,7 @@ class FileDescriptionForm(WebDepositForm):
 
 
 class FilesForm(WebDepositForm):
-    template = 'deposit/files.html'
+    template = 'instruments/files.html'
     files_require = True
 
     files_errors = fields.StringField(
@@ -499,7 +499,7 @@ class AnalysisFilesForm(FilesForm):
 # BasicForm
 #
 class BasicForm(WebDepositForm):
-    template = 'deposit/metadata.html'
+    template = 'instruments/metadata.html'
 
     """Basic Upload Form."""
 
@@ -1339,7 +1339,7 @@ class BasicEditForm(BasicForm, EditFormMixin):
     """Specialized form for editing a record."""
     doi = None
     _title = _('Edit upload')
-    template = "deposit/edit.html"
+    template = "instruments/edit.html"
 
 
 class DMPEditForm(BasicEditForm, DatasetForm):

@@ -24,10 +24,10 @@ import sys
 
 from deposit_conf import *
 
-create_url = site_url + "api/deposit/depositions/?access_token=%s"
-files_url = site_url + "api/deposit/depositions/%d/files?access_token=%s"
+create_url = site_url + "api/instruments/depositions/?access_token=%s"
+files_url = site_url + "api/instruments/depositions/%d/files?access_token=%s"
 publish_url = site_url
-publish_url += "api/deposit/depositions/%d/actions/publish?access_token=%s"
+publish_url += "api/instruments/depositions/%d/actions/publish?access_token=%s"
 
 
 def create(metadata):

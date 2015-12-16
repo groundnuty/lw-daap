@@ -71,7 +71,7 @@ from ..storage import ChunkedDepositionStorage, \
 blueprint = Blueprint(
     'webdeposit',
     __name__,
-    url_prefix='/deposit',
+    url_prefix='/instruments',
     template_folder='../templates',
     static_folder='../static'
 )
@@ -140,7 +140,7 @@ def index():
         context=ctx
     )
 
-    return render_template('deposit/index.html', **ctx)
+    return render_template('instruments/index.html', **ctx)
 
 
 @blueprint.route('/<depositions:deposition_type>')
@@ -169,7 +169,7 @@ def deposition_type_index(deposition_type):
     )
 
     return render_template(
-        'deposit/deposition_type.html',
+        'instruments/deposition_type.html',
         **ctx
     )
 
@@ -191,7 +191,7 @@ def myuploads():
     )
 
     return render_template(
-        'deposit/myview.html',
+        'instruments/myview.html',
         **ctx
     )
 

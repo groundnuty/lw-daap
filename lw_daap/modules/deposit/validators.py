@@ -130,7 +130,7 @@ def project_acl_validator(form, field):
 
         if not p.is_user_allowed():
             raise ValidationError("User does not have permissions "
-                                  "to deposit records in project: %s"
+                                  "to instruments records in project: %s"
                                   % field.data)
 
 

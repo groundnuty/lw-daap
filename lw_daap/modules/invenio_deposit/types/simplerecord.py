@@ -76,7 +76,7 @@ class SimpleRecordDeposition(DepositionType):
             format_record=format_record,
         )
 
-        return render_template('deposit/completed.html', **ctx)
+        return render_template('instruments/completed.html', **ctx)
 
     @classmethod
     def process_sip_metadata(cls, deposition, metadata):

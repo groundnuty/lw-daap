@@ -35,24 +35,19 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 #}
 
+{%- macro field_label(thisfield) -%}
+{% include "deposit/run_field_label.html" %}
+{%- endmacro -%}
+
 {%- macro field_display(thisfield, field_size=None, field_class="form-control", container_class="form-group") -%}
 {%- set field_size = field_size if field_size else (form.field_sizes.get(thisfield.name) if form.field_sizes else none) -%}
 {%- set field_kwargs = kwargs -%}
+{% include "deposit/run_field.html" %}
 {%- endmacro -%}
 
 {% extends "page.html" %}
 
 {% from "_formhelpers.html" import render_field with context %}
-
-{% block javascript_1 %}
-{{ super() }}
-<script type="text/javascript">
-require([
-    'jquery'
-], function() {
-console.sudo info("js/instruments/init is loaded");});
-</script>
-{% endblock %}
 
 {% block title %}{% endblock %}
 
@@ -72,33 +67,32 @@ console.sudo info("js/instruments/init is loaded");});
 <div class="row">
   <div id="file_container" class="col-sm-12 col-md-12">
     <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
+      <div class="well">
+        <button type="submit" class="btn btn-primary pull-right edit-form-submit">
+          <i class="fa fa-floppy-o fa-fw"></i>
+          Save
+        </button>
+        <div class="clearfix"></div>
+
+      </div>
           {% block form_body scoped %}
           {% for group, fields in form.get_groups() %}
           {% set grouploop = loop %}
           {% block form_group scoped %}
-          {% if grouploop.first %}
           <div class="panel-list-wrapper">
             <div id="webdeposit_form_accordion">
-              {% endif %}
-              {% block form_group_body scoped %}
-              {% if group and group.meta.description %}
-              <p>{{ group.meta.description|urlize }}</p>
-              {% endif %}
 
               {% block fieldset scoped %}
               {% for field in fields %}
               {% block field_body scoped %}
-              {{ field_display(field, field_class="") }}
+              {{ field_display(field, field_class="form-control") }}
               {% endblock field_body %}
               {% endfor %}
               {% endblock fieldset %}
-              {% endblock form_group_body%}
 
-              {% if grouploop.last %}
             </div>
           </div>
           <div class="spacer30"></div>
-          {% endif %}
           {% endblock form_group %}
           {% endfor %}
           {% endblock form_body %}
@@ -108,31 +102,53 @@ console.sudo info("js/instruments/init is loaded");});
 </div>
 {% endblock %}
 
-{% block javascript %}
-<script type="text/javascript" src="/vendors/ckeditor/ckeditor.js"></script>
+{%- block form_script_options %}
+{{super()}}
 <script type="text/javascript">
-
-var CKEDITOR_BASEPATH = '/ckeditor/';
-
-function init_ckeditor(selector, type) {
-  if(type=="simple"){
-    CKEDITOR.replace( selector, {
-toolbar: [
-['PasteText','PasteFromWord'],
-['Bold','Italic','Strike','-','Subscript','Superscript',],
-['NumberedList','BulletedList', 'Blockquote'],
-['Undo','Redo','-','Find','Replace','-', 'RemoveFormat'],
-['Mathjax', 'SpecialChar', 'ScientificChar'],
-['Source'], ['Maximize'],
-],
-extraPlugins: 'scientificchar,mathjax,blockquote',
-disableNativeSpellChecker: false,
-removePlugins: 'elementspath',
-removeButtons: ''
+{#
+// var date_options = undefined;
+require(["jquery", "js/zenodo/zenodo", "js/instruments/form"], function($, zenodo, form) {
+    function init_submit_zenodo(url, selector, form_selector, dialog) {
+        $(selector).click(function(e){
+            e.preventDefault();
+            $(form_selector).trigger('dataFormSubmit', {
+              url: url,
+              form_selector: form_selector,
+              dialog: dialog
+            });
+        });
+    }
 });
-}
-}
-
-init_ckeditor('conditions', 'simple');
+#}
 </script>
-{% endblock %}
+
+<script type="text/javascript">
+  require(
+    [
+      "jquery",
+      "js/instruments/form"
+    ],
+
+    function(
+      $,
+      form
+    ) {
+
+      $(function () {
+        var config = {
+          form: {
+            datepicker_element: '.datepicker',
+            datepicker_options: {dateFormat: "YYYY-MM-DD", pickTime: false},
+            added_hook: function(options, element) {
+                         alert('pumpum');
+ }
+          }
+        };
+
+      });
+    }
+  );
+
+</script>
+
+{%- endblock form_script_options %}

@@ -86,7 +86,7 @@ DISABLE_WARNINGS = True
 
 PACKAGES = [
     "lw_daap.base",
-    "lw_daap.modules.deposit",
+    "lw_daap.modules.instruments",
     "lw_daap.modules.communities",
     "lw_daap.modules.invenio_deposit",
     "lw_daap.modules.invenio_groups",
@@ -105,7 +105,7 @@ PACKAGES = [
 
 
 PACKAGES_EXCLUDE = [
-    "invenio.modules.deposit",
+    "invenio.modules.instruments",
     "invenio.modules.groups",
     "invenio.modules.messages",
     "invenio.modules.documentation",
@@ -120,13 +120,13 @@ EXTENSIONS += [
 
 
 DEPOSIT_TYPES = [
-    "lw_daap.modules.deposit.workflows.dmp:dmp",
-    "lw_daap.modules.deposit.workflows.dataset:dataset",
-    "lw_daap.modules.deposit.workflows.software:software",
-    "lw_daap.modules.deposit.workflows.analysis:analysis",
+    "lw_daap.modules.instruments.workflows.dmp:dmp",
+    "lw_daap.modules.instruments.workflows.dataset:dataset",
+    "lw_daap.modules.instruments.workflows.software:software",
+    "lw_daap.modules.instruments.workflows.analysis:analysis",
 ]
 
-DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.deposit.workflows.dataset:dataset"
+DEPOSIT_DEFAULT_TYPE = "lw_daap.modules.instruments.workflows.dataset:dataset"
 DEPOSIT_MAX_UPLOAD_SIZE = "1000mb"
 # Don't commit anything. Testmode implies prefix is set to 10.5072
 CFG_DATACITE_TESTMODE = True
