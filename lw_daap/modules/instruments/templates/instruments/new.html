@@ -72,13 +72,6 @@ console.sudo info("js/instruments/init is loaded");});
 <div class="row">
   <div id="file_container" class="col-sm-12 col-md-12">
     <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
-          {% block form_title scoped %}
-          <h1>{{ form._title }}</h1>
-          {% if form._subtitle %}
-          <p class="text-muted"><small>{{ form._subtitle|safe }}</small></p>
-          {% endif %}
-          {% endblock form_title %}
-
           {% block form_body scoped %}
           {% for group, fields in form.get_groups() %}
           {% set grouploop = loop %}
