@@ -19,5 +19,6 @@
 
 require([
     'jquery',
-    'js/deposit/form'
-], function() {});
+    'js/instruments/form'
+], function() {
+console.sudo info("js/instruments/init is loaded");});
