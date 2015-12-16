@@ -37,7 +37,24 @@
 
 {% extends "page.html" %}
 
+
+
+require([
+    'jquery',
+    'js/instruments/form'
+], function() {
+console.sudo info("js/instruments/init is loaded");});
+
 {% from "_formhelpers.html" import render_field with context %}
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+require([
+    'jquery'
+], function() {
+console.sudo info("js/instruments/init is loaded");});
+</script>
 
 {% block title %}{% endblock %}
 
@@ -127,33 +144,6 @@
 {% block javascript %}
 <script type="text/javascript" src="/vendors/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-
-  require(
-    [
-      "jquery",
-      "js/instruments/form"
-    ],
-
-    function(
-      $,
-      form
-    ) {
-
-      $(function () {
-
-        var config = {
-          form: {
-            datepicker_element: '.datepicker',
-            datepicker_options: {
-                format: "YYYY-MM-DD",
-                pickTime: false
-            }
-          }
-        };
-      });
-    }
-  );
-
 
 var CKEDITOR_BASEPATH = '/ckeditor/';
 
