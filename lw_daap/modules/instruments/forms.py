@@ -26,6 +26,13 @@ from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenListWidget
 
+CFG_GROUPS_META = {
+    'classes': None,
+    'indication': None,
+    'description': None
+}
+
+
 class SearchForm(Form):
     """Search Form."""
     p = StringField(
