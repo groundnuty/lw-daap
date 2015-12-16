@@ -37,14 +37,6 @@
 
 {% extends "page.html" %}
 
-
-
-require([
-    'jquery',
-    'js/instruments/form'
-], function() {
-console.sudo info("js/instruments/init is loaded");});
-
 {% from "_formhelpers.html" import render_field with context %}
 
 {% block javascript %}
@@ -55,6 +47,7 @@ require([
 ], function() {
 console.sudo info("js/instruments/init is loaded");});
 </script>
+{% endblock %}
 
 {% block title %}{% endblock %}
 
