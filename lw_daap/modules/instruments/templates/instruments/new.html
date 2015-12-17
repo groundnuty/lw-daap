@@ -77,6 +77,14 @@ console.sudo info("js/instruments/init is loaded");});
 <div class="row">
   <div id="file_container" class="col-sm-12 col-md-12">
     <form action="." method="POST" id="edit_form" class="form-horizontal" role="form">
+        <div class="well">
+        <button type="submit" class="btn btn-primary pull-right edit-form-submit">
+          <i class="fa fa-floppy-o fa-fw"></i>
+          Save
+        </button>
+        <div class="clearfix"></div>
+
+      </div>
           {% block form_body scoped %}
           {% for group, fields in form.get_groups() %}
           {% set grouploop = loop %}
