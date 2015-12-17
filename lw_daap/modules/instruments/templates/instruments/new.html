@@ -93,7 +93,7 @@ console.sudo info("js/instruments/init is loaded");});
               {% block fieldset scoped %}
               {% for field in fields %}
               {% block field_body scoped %}
-              {{ field_display(field, field_class="") }}
+              {{ field_display(field, field_class="form-control") }}
               {% endblock field_body %}
               {% endfor %}
               {% endblock fieldset %}
