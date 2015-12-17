@@ -143,6 +143,7 @@ class InstrumentForm(Form):
     }
 
     name = fields.TitleField(
+        label="Instrument name",
         validators=[
             validators.DataRequired(),
             validators.Length(min=5),
@@ -274,7 +275,7 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'instruments', 'access_right', 'embargo_date'
+            'name', 'access_right', 'embargo_date'
             , 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',
