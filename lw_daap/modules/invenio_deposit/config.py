@@ -33,7 +33,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""Default configuration of instruments module."""
+"""Default configuration of deposit module."""
 
 import os
 import sys
@@ -68,7 +68,7 @@ Then your config will look like something like this::
 DEPOSIT_DEFAULT_TYPE = None
 """Import string of default deposition type."""
 
-DEPOSIT_STORAGEDIR = os.path.join(sys.prefix, "var/data/instruments/storage")
+DEPOSIT_STORAGEDIR = os.path.join(sys.prefix, "var/data/deposit/storage")
 """Default storage directory for uploaded depositions."""
 
 DEPOSIT_MAX_UPLOAD_SIZE = 104857600

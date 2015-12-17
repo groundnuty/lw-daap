@@ -16,7 +16,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 331, Boston, MA 02111-1307, USA.
 
-"""Define instruments views."""
+"""Define deposit views."""
 
 from .deposit import blueprint as deposit_blueprint
 

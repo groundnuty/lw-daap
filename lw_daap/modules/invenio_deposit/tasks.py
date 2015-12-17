@@ -233,7 +233,7 @@ def load_record(draft_id='_metadata', producer='json_for_form',
                     category='warning'
                 )
                 d.set_render_context(dict(
-                    template_name_or_list="instruments/completed.html",
+                    template_name_or_list="deposit/completed.html",
                     deposition=d,
                     deposition_type=(
                         None if d.type.is_default() else

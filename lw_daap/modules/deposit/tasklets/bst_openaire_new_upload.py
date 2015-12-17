@@ -41,7 +41,7 @@ Simple tasklet that is called after a bibupload of a new record
 """
 
 from invenio.modules.pidstore.tasks import datacite_register
-# from zenodo.modules.instruments.tasks import openaire_create_icon, \
+# from zenodo.modules.deposit.tasks import openaire_create_icon, \
 #    openaire_altmetric_update, openaire_upload_notification
 # from zenodo.modules.preservationmeter.tasks \
 #    import calculate_preservation_score

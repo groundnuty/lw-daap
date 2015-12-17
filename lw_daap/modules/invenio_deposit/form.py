@@ -63,7 +63,7 @@ class WebDepositForm(Form):
         """Init."""
         super(WebDepositForm, self).__init__(*args, **kwargs)
         if not hasattr(self, 'template'):
-            self.template = 'instruments/run.html'
+            self.template = 'deposit/run.html'
 
         if not hasattr(self, '_drafting'):
             self._drafting = True
@@ -130,7 +130,7 @@ class WebDepositForm(Form):
 
         Define a data member `template` to customize which template to use.
 
-        By default, it will render the template `instruments/run.html`
+        By default, it will render the template `deposit/run.html`
         """
         return [self.template]
 

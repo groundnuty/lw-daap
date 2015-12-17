@@ -97,7 +97,7 @@ def init_provider_tokens(user_id):
     internal_token = ProviderToken.create_personal(
         'github-upload',
         user_id,
-        scopes=['instruments:write', 'instruments:actions'],
+        scopes=['deposit:write', 'deposit:actions'],
         is_internal=True,
     )
 

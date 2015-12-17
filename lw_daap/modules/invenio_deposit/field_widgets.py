@@ -57,7 +57,7 @@ class PLUploadWidget(object):
 
     def __init__(self, template=None):
         """Initialize widget with custom template."""
-        self.template = template or "instruments/widget_plupload.html"
+        self.template = template or "deposit/widget_plupload.html"
 
     def __call__(self, field, **kwargs):
         """Render PLUpload widget."""
@@ -365,7 +365,7 @@ class DynamicItemWidget(ListItemWidget):
         elif subfield.name.endswith('__input__'):
             kwargs['class_'] = kwargs.get('class_', '') + ' input-element'
         else:
-            # for instruments form
+            # for deposit form
             kwargs['class_'] = kwargs.get('class_', '') + ' field-list-element'
         return super(DynamicItemWidget, self).__call__(subfield, **kwargs)
 
@@ -526,7 +526,7 @@ class DynamicListWidget(ExtendedListWidget):
             "icon_add_class": self.icon_add
         }
         return render_macro_from_template(name="add_button",
-                                          template="instruments/macros.html",
+                                          template="deposit/macros.html",
                                           ctx=ctx)
 
     def item_kwargs(self, field, subfield):

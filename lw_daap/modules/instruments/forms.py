@@ -274,7 +274,7 @@ class InstrumentForm(Form):
     #
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
-            'name', 'access_right', 'embargo_date'
+            'instruments', 'access_right', 'embargo_date'
             , 'license', 'access_conditions', 'access_groups'
         ], {
             # 'classes': '',

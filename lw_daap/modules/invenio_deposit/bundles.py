@@ -25,8 +25,8 @@ from invenio.ext.assets import Bundle, RequireJSFilter
 js = Bundle(
     "vendors/plupload/js/moxie.js",
     "vendors/plupload/js/plupload.dev.js",
-    "js/instruments/init.js",
-    output="instruments.js",
+    "js/deposit/init.js",
+    output="deposit.js",
     filters=RequireJSFilter(exclude=[_j, _i]),
     weight=51,
     bower={
@@ -38,10 +38,10 @@ js = Bundle(
 )
 
 styles = Bundle(
-    "css/instruments/form.css",
+    "css/deposit/form.css",
     ("vendors/eonasdan-bootstrap-datetimepicker"
      "/build/css/bootstrap-datetimepicker.css"),
-    output="instruments.css",
+    output="deposit.css",
     filters="cleancss",
     weight=51
 )

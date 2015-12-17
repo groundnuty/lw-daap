@@ -254,7 +254,7 @@ class DepositionType(object):
         if ctx:
             return render_template(**ctx)
         else:
-            return render_template('instruments/error.html', **dict(
+            return render_template('deposit/error.html', **dict(
                 depostion=deposition,
                 deposition_type=(
                     None if deposition.type.is_default()

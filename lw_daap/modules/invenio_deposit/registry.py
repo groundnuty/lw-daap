@@ -33,7 +33,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""Implement registries used in instruments module."""
+"""Implement registries used in deposit module."""
 
 from __future__ import absolute_import, print_function
 
@@ -49,7 +49,7 @@ class DepositSingletonRegistry(SingletonRegistry):
     """Specialized singleton registry for ``deposit_types``."""
 
     def get(self):
-        """Ensure instruments types are loaded before getting the object."""
+        """Ensure deposit types are loaded before getting the object."""
         if 'deposit_types' not in current_app.extensions['registry']:
             list(deposit_types)
         return super(DepositSingletonRegistry, self).get()
@@ -71,7 +71,7 @@ class DepositionTypeRegistry(ImportPathRegistry):
         )
 
     def _load_import_path(self, import_path):
-        """Register default instruments type when it is imported."""
+        """Register default deposit type when it is imported."""
         obj = super(DepositionTypeRegistry, self)._load_import_path(
             import_path
         )

@@ -39,7 +39,7 @@ Simple tasklet that is called after a bibupload of an updated record.
 
 from invenio.modules.pidstore.tasks import datacite_update
 
-# from zenodo.modules.instruments.tasks import openaire_altmetric_update
+# from zenodo.modules.deposit.tasks import openaire_altmetric_update
 # from zenodo.modules.preservationmeter.tasks \
 #    import calculate_preservation_score
 

@@ -265,7 +265,7 @@ class DepositionListResource(Resource, InputProcessorMixin):
         return map(lambda o: o.marshal(), result)
 
     @require_header('Content-Type', 'application/json')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def post(self):
         """Create a new deposition."""
         # Create deposition (uses default deposition type unless type is given)
@@ -312,7 +312,7 @@ class DepositionResource(Resource, InputProcessorMixin):
         abort(405)
 
     @require_header('Content-Type', 'application/json')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def put(self, resource_id):
         """Update a deposition."""
         d = Deposition.get(resource_id, user=current_user)
@@ -321,7 +321,7 @@ class DepositionResource(Resource, InputProcessorMixin):
         d.save()
         return d.marshal()
 
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def delete(self, resource_id):
         """Delete existing deposition."""
         d = Deposition.get(resource_id, user=current_user)
@@ -384,7 +384,7 @@ class DepositionDraftResource(Resource, InputProcessorMixin):
         abort(405)
 
     @require_header('Content-Type', 'application/json')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def put(self, resource_id, draft_id):
         """Update a deposition draft."""
         d = Deposition.get(resource_id, user=current_user)
@@ -417,7 +417,7 @@ class DepositionActionResource(Resource):
     def get(self, resource_id, action_id):
         abort(405)
 
-    @require_oauth_scopes('instruments:actions')
+    @require_oauth_scopes('deposit:actions')
     def post(self, resource_id, action_id):
         """Run an action."""
         d = Deposition.get(resource_id, user=current_user)
@@ -451,7 +451,7 @@ class DepositionFileListResource(Resource):
         return map(lambda f: d.type.marshal_file(f), d.files)
 
     @require_header('Content-Type', 'multipart/form-data')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def post(self, resource_id):
         """Upload a file."""
         d = Deposition.get(resource_id, user=current_user)
@@ -480,7 +480,7 @@ class DepositionFileListResource(Resource):
         return d.type.marshal_file(df), 201
 
     @require_header('Content-Type', 'application/json')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def put(self, resource_id):
         """Sort files in collection."""
         if not isinstance(request.json, list):
@@ -545,7 +545,7 @@ class DepositionFileResource(Resource):
             abort(404, message="File does not exist", status=404)
         return d.type.marshal_file(df)
 
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def delete(self, resource_id, file_id):
         """Delete existing deposition file."""
         d = Deposition.get(resource_id, user=current_user)
@@ -562,7 +562,7 @@ class DepositionFileResource(Resource):
         abort(405)
 
     @require_header('Content-Type', 'application/json')
-    @require_oauth_scopes('instruments:write')
+    @require_oauth_scopes('deposit:write')
     def put(self, resource_id, file_id):
         """Update a deposition file - i.e. rename it."""
         v = APIValidator()
@@ -616,33 +616,33 @@ class DepositionFileResource(Resource):
 def setup_app(app, api):
     api.add_resource(
         DepositionListResource,
-        '/api/instruments/depositions/',
+        '/api/deposit/depositions/',
     )
     api.add_resource(
         DepositionResource,
-        '/api/instruments/depositions/<string:resource_id>',
+        '/api/deposit/depositions/<string:resource_id>',
     )
     api.add_resource(
         DepositionFileListResource,
-        '/api/instruments/depositions/<string:resource_id>/files/',
+        '/api/deposit/depositions/<string:resource_id>/files/',
     )
     api.add_resource(
         DepositionDraftListResource,
-        '/api/instruments/depositions/<string:resource_id>/metadata/',
+        '/api/deposit/depositions/<string:resource_id>/metadata/',
     )
     api.add_resource(
         DepositionDraftResource,
-        '/api/instruments/depositions/<string:resource_id>/metadata/'
+        '/api/deposit/depositions/<string:resource_id>/metadata/'
         '<string:draft_id>',
     )
     api.add_resource(
         DepositionActionResource,
-        '/api/instruments/depositions/<string:resource_id>/actions/'
+        '/api/deposit/depositions/<string:resource_id>/actions/'
         '<string:action_id>',
     )
     api.add_resource(
         DepositionFileResource,
-        '/api/instruments/depositions/<string:resource_id>/files/<string:file_id>',
+        '/api/deposit/depositions/<string:resource_id>/files/<string:file_id>',
     )
 
     # Register scopes
@@ -650,12 +650,12 @@ def setup_app(app, api):
         from invenio.modules.oauth2server.models import Scope
         from invenio.modules.oauth2server.registry import scopes
         scopes.register(Scope(
-            'instruments:write',
+            'deposit:write',
             group='Deposit',
             help_text='Allow upload (but not publishing).',
         ))
         scopes.register(Scope(
-            'instruments:actions',
+            'deposit:actions',
             group='Deposit',
             help_text='Allow publishing of uploads.',
         ))
