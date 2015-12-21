@@ -47,9 +47,52 @@ from lw_daap.modules.invenio_deposit.field_base import WebDepositField
 from lw_daap.modules.invenio_deposit.processor_utils import set_flag
 from invenio.modules.knowledge.api import get_kb_mappings
 from lw_daap.modules.instruments.service_utils import getAllInstruments
+from lw_daap.modules.instruments.service_utils import getInstrument
+from datetime import datetime
 from flask import current_app
 
 __all__ = ['InstrumentField']
+
+def instrument_processor(form, field, submit=False, fields=None):
+    form.embargo_date.flags.hidden = True
+    form.embargo_date.flags.disabled = True
+    form.license.flags.hidden = True
+    form.license.flags.disabled = True
+    form.access_conditions.flags.hidden = True
+    form.access_conditions.flags.disabled = True
+    form.access_groups.flags.hidden = True
+    form.access_groups.flags.disabled = True
+
+
+    selected = getInstrument(field.data)
+    instrument = json.loads(selected)
+    accessRight = str(instrument['accessRight'])
+    license = str(instrument['license'])
+    embargoDate = str(instrument['embargoDate'])
+    conditions = str(instrument['conditions'])
+
+    form.license.data = license
+    form.access_conditions.data = conditions
+    if embargoDate is not None:
+        form.embargo_date.data = datetime.fromtimestamp(float(embargoDate)/1000.0).strftime('%Y-%m-%d')
+
+    if accessRight == 'embargoed':
+        form.embargo_date.flags.hidden = False
+        form.embargo_date.flags.disabled = False
+
+    if accessRight == 'restricted':
+        form.access_conditions.flags.hidden = False
+        form.access_conditions.flags.disabled = False
+        form.access_groups.flags.hidden = False
+        form.access_groups.flags.disabled = False
+
+    if accessRight in ['open', 'embargoed']:
+        form.license.flags.hidden = False
+        form.license.flags.disabled = False
+
+    form.access_right.data = accessRight
+    current_app.logger.debug(form.access_right)
+
 
 class InstrumentField(WebDepositField, SelectField):
 
@@ -67,5 +110,5 @@ class InstrumentField(WebDepositField, SelectField):
                 choices.append((str(instrument['idInstrument']), str(instrument['name'])))
 
             kwargs['choices'] = choices
-        kwargs['processors'] = [set_flag('touched'), ]
+        kwargs['processors'] = [set_flag('touched'),instrument_processor, ]
         super(InstrumentField, self).__init__(**kwargs)
