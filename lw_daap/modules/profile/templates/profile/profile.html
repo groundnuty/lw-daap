@@ -36,25 +36,23 @@
 </div>
 <form method="POST" role="form">
   {{form.csrf_token}}
-<!--  <div class="panel panel-default panel-sharp">
-    {% call hb.cpanel_head(1) %}
-    <i class="fa fa-info-circle fa-fw"></i> Personal info
-    {% endcall %}
-    {% call hb.cpanel_body(1, collapsed=False) %}
-    {{ render_field(form.name, show_description=True) }}
-    {{ render_field(form.institution, show_description=True) }}
-    {{ render_field(form.email, show_description=True) }}
-    {{ render_field(form.social_profiles, show_description=True) }}
-    {% endcall %}
-  </div>--!>
 
   <div class="panel panel-default panel-sharp">
     {% call hb.cpanel_head(2) %}
     <i class="fa fa-database fa-fw"></i> DB credentials
     {% endcall %}
     {% call hb.cpanel_body(2, collapsed=False) %}
-    {{ render_field(form.user_db, show_description=True) }}
-    {{ render_field(form.pass_db, show_description=True) }}
+    {% if form.user_db.data  %}
+        {{ render_field(form.user_db, show_description=True, readonly=True) }}
+    {% else %}
+        {{ render_field(form.user_db, show_description=True) }}
+    {% endif %}
+
+    {% if form.pass_db.data  %}
+        {{ render_field(form.pass_db, show_description=True, readonly=True) }}
+    {% else %}
+        {{ render_field(form.pass_db, show_description=True) }}
+    {% endif %}
     {% endcall %}
   </div>
 
@@ -63,7 +61,11 @@
     <i class="fa fa-key fa-fw"></i> OneData
     {% endcall %}
     {% call hb.cpanel_body(3, collapsed=False) %}
-    {{ render_field(form.token_onedata, show_description=True) }}
+    {% if form.token_onedata.data  %}
+        {{ render_field(form.token_onedata, show_description=True, readonly=True) }}
+    {% else %}
+        {{ render_field(form.token_onedata, show_description=True) }}
+    {% endif %}
     {% endcall %}
   </div>
 
