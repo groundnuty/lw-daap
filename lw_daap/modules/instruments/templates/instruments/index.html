@@ -37,10 +37,10 @@
 
 {% import "helpers_base.html" as hb %}
 
-{%- from "paginate.html" import paginate with context -%}
-{%- from "paginate.html" import list_status with context -%}
+{%- from "instruments/paginate.html" import paginate with context -%}
+{%- from "instruments/paginate.html" import list_status with context -%}
 
-{% extends "page.html" %}
+{% extends "instruments/page.html" %}
 
 {% block title %}{% endblock %}
 
@@ -89,8 +89,7 @@
   <div class="clearfix"></div>
   <div class="spacer20"></div>
 
-
-  {% for obj in instruments.items %}
+  {% for obj in instruments %}
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="panel panel-primary">
       {% call hb.panel_head() %}
@@ -101,28 +100,28 @@
       {% if obj.description %}
       <p>{{ obj.description|striptags|truncate }}</p>
       {% endif %}
-      <small class="text-muted">Created by: {{ obj.user.nickname }}</small>
+      <small class="text-muted">Created by: {{ obj.get_owner() }}</small>
       {% endcall %}
     </div>
   </div>
   {% endfor %}
 
   <div class="col-md-12">
-    {% if instruments.items %}
-    {% if instruments.total > per_page %}
-    <div class="row">
-      <ul class="list-group">
-      <li class="list-group-item text-center">
-      {{ list_status(instruments, page) }}
-      {{ paginate(instruments, 'page', small=True) if instruments.items|length }}
-      </li>
-      </ul>
-    </div>
-    {% endif %}
+    {% if instruments %}
+      {% if pagination.total|int > per_page|int %}
+      <div class="row">
+        <ul class="list-group">
+        <li class="list-group-item text-center">
+        {{ list_status(pagination, page, instruments) }}
+        {{ paginate(pagination, 'page', small=True) }}
+        </li>
+        </ul>
+      </div>
+      {% endif %}
     {% else %}
-    <p class="text-muted text-center well">
-    <strong>{{ _('Your search did not match any instruments. Please try again.') }}</strong>
-    </p>
+      <p class="text-muted text-center well">
+      <strong>{{ _('Your search did not match any instruments. Please try again.') }}</strong>
+      </p>
     {% endif %}
   </div>
 </div>

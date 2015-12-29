@@ -49,7 +49,7 @@ class InstrumentForm(Form):
     field_sets = [
         ('Information', [
             'name', 'access_right', 'embargo_date'
-            , 'license', 'conditions', 'access_groups'
+            , 'license', 'access_conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -198,7 +198,7 @@ class InstrumentForm(Form):
         placeholder="Start typing a license name or abbreviation...",
         icon='fa fa-certificate fa-fw',
     )
-    conditions = fields.TextAreaField(
+    access_conditions = fields.TextAreaField(
         label=_('Conditions'),
         icon='fa fa-pencil fa-fw',
         description='Specify the conditions under which you grant users '
