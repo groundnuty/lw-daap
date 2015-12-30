@@ -25,6 +25,7 @@ from lw_daap.modules.deposit.forms import AccessGroupsForm
 from invenio.utils.html import CFG_HTML_BUFFER_ALLOWED_TAG_WHITELIST
 
 from lw_daap.modules.deposit.field_widgets import date_widget, DynamicHiddenListWidget
+from lw_daap.modules.invenio_deposit.form import WebDepositForm
 
 CFG_GROUPS_META = {
     'classes': None,
@@ -42,14 +43,14 @@ class SearchForm(Form):
 class DeleteInstrumentForm(Form):
     delete = HiddenField(default='yes', validators=[validators.DataRequired()])
 
-class InstrumentForm(Form):
+class InstrumentForm(WebDepositForm):
 
     """Instrument Form."""
 
     field_sets = [
         ('Information', [
             'name', 'access_right', 'embargo_date'
-            , 'license', 'conditions', 'access_groups'
+            , 'license', 'access_conditions', 'access_groups'
         ], {'classes': 'in'}),
     ]
 
@@ -138,7 +139,7 @@ class InstrumentForm(Form):
         'name': 'fa fa-md fa-fw',
         'embargo_date': 'fa fa-calendar fa-fw',
         'license': 'fa fa-certificate fa-fw',
-        'access_conditions': 'fa fa-pencil fa-fw',
+        'access_access_conditions': 'fa fa-pencil fa-fw',
         'access_groups': 'fa fa-group fa-fw'
     }
 
@@ -147,8 +148,10 @@ class InstrumentForm(Form):
         validators=[
             validators.DataRequired(),
             validators.Length(min=5),
+            validators.Length(max=50),
+            validators.Regexp(regex=r'^\b[a-zA-Z0-9_]+\b$', message="The instrument name must be composed of a single word, should not contain whitespaces.")
         ],
-        description='Required.',
+        description='Required. It must be composed of a single word, without spaces.',
         filters=[
             strip_string,
         ],
@@ -198,13 +201,13 @@ class InstrumentForm(Form):
         placeholder="Start typing a license name or abbreviation...",
         icon='fa fa-certificate fa-fw',
     )
-    conditions = fields.TextAreaField(
+    access_conditions = fields.TextAreaField(
         label=_('Conditions'),
         icon='fa fa-pencil fa-fw',
-        description='Specify the conditions under which you grant users '
+        description='Specify the access_conditions under which you grant users '
         'access to the files in your upload. User requesting '
         'access will be asked to justify how they fulfil the '
-        'conditions. Based on the justification, you decide '
+        'access_conditions. Based on the justification, you decide '
         'who to grant/deny access. You are not allowed to '
         'charge users for granting access to data hosted on '
         'Dataset.',
@@ -276,7 +279,7 @@ class InstrumentForm(Form):
     groups = [
         ('<i class="fa fa-info"></i> Instrument information', [
             'name', 'access_right', 'embargo_date'
-            , 'license', 'access_conditions', 'access_groups'
+            , 'license', 'access_access_conditions', 'access_groups'
         ], {
             # 'classes': '',
             'indication': 'optional',

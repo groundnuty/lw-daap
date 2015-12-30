@@ -68,3 +68,30 @@ def getFilteredInstrumentsByIdUser(idUser, fiter=""):
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
     return result.read().strip()
+
+def addPermissionGroup(instrumentName, idGroup):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/addpermissiongroup?instrumentName=%s&idgroup=%s' % (lfw_url, instrumentName, idGroup))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+def findGroupByInstrumentId(instrumentId):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/group/findbyinstrumentid?instrumentid=%s' % (lfw_url, instrumentId))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+def findInstrumentByName(name):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/findbyname?name=%s' % (lfw_url, name))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
