@@ -983,7 +983,7 @@ class DatasetForm(BasicForm):
             # 'classes': '',
             'indication': 'optional',
             'description': (
-                'Si se selecciona un instrumento, este marcará los datos de licencia a utilizar.')
+                'If a instrument is selected, this will mark the license data used.')
         }),
         ('<i class="fa fa-certificate"></i> License', [
             'access_right', 'embargo_date', 'license',
