@@ -66,9 +66,11 @@ def instrument_processor(form, field, submit=False, fields=None):
     form.access_groups.flags.disabled = True
     form.access_right.flags.hidden = True
     form.access_right.flags.disabled = True
+    current_app.logger.debug("HOLA")
     if field.data != '-1':
         selected = getInstrument(field.data)
         instrument = json.loads(selected)
+        current_app.logger.debug(instrument)
         accessRight = str(instrument['accessRight'])
         license = str(instrument['license'])
         embargoDate = str(instrument['embargoDate'])
@@ -87,7 +89,7 @@ def instrument_processor(form, field, submit=False, fields=None):
         #MultiDict([(unicode('access_groups'),info)])
         form.license.data = license
         form.access_conditions.data = conditions
-        if embargoDate is not None:
+        if embargoDate is not None and str(embargoDate) != 'None':
             form.embargo_date.data = datetime.fromtimestamp(float(embargoDate)/1000.0).strftime('%Y-%m-%d')
         if accessRight == 'embargoed':
             form.embargo_date.flags.hidden = False

@@ -68,7 +68,6 @@ define(function(require, exports, module) {
 	return defineComponent(depositForm);
 
 	function depositForm() {
-		console.debug('depositForm');
 		this.defaultAttrs({
 			save_url: "",
 			save_all_url: "",
@@ -95,7 +94,6 @@ define(function(require, exports, module) {
 		// Helpers
 		//
 		function unique_id() {
-			console.debug('unique_id');
 			return Math.round(new Date().getTime() + (Math.random() * 100));
 		}
 
@@ -106,8 +104,6 @@ define(function(require, exports, module) {
 		 * @param {} settings: A hash with the keys: url, data.
 		 */
 		function json_options(settings){
-			console.debug('json_options');
-			console.debug('settings: ' + settings.url);
 			// Perform AJAX request with JSON data.
 			return {
 				url: settings.url,
@@ -123,7 +119,6 @@ define(function(require, exports, module) {
 		 * Serialize a form
 		 */
 		this.serialize_form = function(selector){
-			console.debug('selector');
 			// Sync CKEditor before serializing
 			if (typeof CKEDITOR !== 'undefined') {
 				$.each(CKEDITOR.instances, function(instance, editor) {
@@ -166,7 +161,6 @@ define(function(require, exports, module) {
 		 * the name structure into account.
 		 */
 		function serialize_object(a){
-			console.debug('serialize_object');
 			var o = {};
 			$.each(a, function() {
 				var sub_o = o;
@@ -213,7 +207,6 @@ define(function(require, exports, module) {
 		 * jQuery plugin to serialize an DOM element
 		 */
 		$.fn.serialize_object = function(){
-			console.debug('serialize_object2');
 			var inputs = $(this).find(':input');
 			var o = [];
 			$.each(inputs, function() {
@@ -228,7 +221,6 @@ define(function(require, exports, module) {
 		 * Create a new workflow
 		 */
 		function create_deposition(url){
-			console.debug('create_deposition');
 			var uuid;
 			$.ajax({
 				url: url,
@@ -246,7 +238,6 @@ define(function(require, exports, module) {
 		/**
 		 */
 		function getBytesWithUnit(bytes){
-			console.debug('getBytesWithUnit');
 			if( isNaN( bytes ) ){
 				return '';
 			}
@@ -277,7 +268,6 @@ define(function(require, exports, module) {
 		 * @return: True if message was set, False if no message was set.
 		 */
 		function handle_field_msg(name, data) {
-			console.debug('handle_field_msg');
 			var has_error = false;
 
 			if(!data) {
@@ -339,7 +329,6 @@ define(function(require, exports, module) {
 		/**
 		 */
 		function clear_error(name){
-			console.debug('clear_error');
 			$('#state-' + name).hide();
 			$('#state-' + name).html("");
 			['info','warning','error','success'].map(function(s){
@@ -352,8 +341,6 @@ define(function(require, exports, module) {
 		 * Update the value of a field to a new one.
 		 */
 		function handle_field_values(name, value) {
-			console.debug('handle_field_values');
-			console.debug(name);
 			if (name == 'files'){
 				$.each(value, function(i, file){
 					id = unique_id();
@@ -401,7 +388,6 @@ define(function(require, exports, module) {
 		 * Handle server response for multiple fields.
 		 */
 		function handle_response(data) {
-			console.debug('handle_response');
 			var errors = 0;
 
 			if('messages' in data) {
@@ -412,7 +398,6 @@ define(function(require, exports, module) {
 				});
 			}
 			if('values' in data) {
-				console.debug('values in data');
 				$.each(data.values, handle_field_values);
 			}
 			if('hidden_on' in data) {
@@ -466,13 +451,11 @@ define(function(require, exports, module) {
 		 * Set value of status indicator in form (e.g. saving, saved, ...)
 		 */
 		function set_status(html) {
-			//console.debug('set_status');
 			$('.status-indicator').show();
 			$('.status-indicator').html(html);
 		}
 
 		function set_loader(selector, html) {
-			console.debug('set_loader');
 			$(selector).show();
 			$(selector).html(html);
 		}
@@ -481,7 +464,6 @@ define(function(require, exports, module) {
 		 * Flash a message in the top.
 		 */
 		function _flash_message(ctx) {
-			console.debug('_flash_message');
 			$('#flash-message').html(tpl_flash_message(ctx));
 			$('#flash-message').show('fast');
 		}
@@ -503,7 +485,6 @@ define(function(require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.onSaveField = function(ev, data) {
-			console.debug('onSaveField');
 			save_field(this.attr.save_url, data.name, data.value);
 		}
 
@@ -512,7 +493,6 @@ define(function(require, exports, module) {
 		 * Save field value value
 		 */
 		function save_data(url, request_data, flash_message, success_callback, failure_callback) {
-			console.debug('save');
 			var loader_selector = '#' + name + '-loader';
 
 			if(flash_message === undefined){
@@ -556,7 +536,6 @@ define(function(require, exports, module) {
 		 * @param event {Event}
 		 */
 		this.onSaveClick = function (event) {
-			console.debug('onSaveClick');
 			event.preventDefault();
 			this.trigger('dataFormSave', {
 				url: this.attr.save_all_url,
@@ -573,7 +552,6 @@ define(function(require, exports, module) {
 		 * @param event {Event}
 		 */
 		this.onSubmitClick = function (event) {
-			console.debug('onSubmitClick');
 			event.preventDefault();
 			this.trigger('dataFormSubmit', {
 				url: this.attr.complete_url,
@@ -590,7 +568,6 @@ define(function(require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.submitForm = function (ev, data) {
-			console.debug('submitForm');
 			var dialog = data.dialog;
 			if(dialog !== undefined){
 				$(dialog).modal({
@@ -621,7 +598,6 @@ define(function(require, exports, module) {
 		var field_lists = {};
 		this.init_field_lists = function(selector, url, autocomplete_selector, url_autocomplete) {
 			function serialize_and_save(options) {
-				console.debug('serialize_and_save');
 				// Save list on remove element, sorting and paste of list
 				var data = $('#'+options.prefix).serialize_object();
 				if($.isEmptyObject(data)){
@@ -634,7 +610,6 @@ define(function(require, exports, module) {
 			var that = this;
 
 			function install_handler(options, element) {
-				console.debug('install_handler');
 				// Install save handler when adding new elements
 				$(element).find(":input").change( function() {
 					save_field(url, this.name, this.value);
@@ -661,7 +636,6 @@ define(function(require, exports, module) {
 		 * Save and check field values for errors.
 		 */
 		function init_inputs(selector, url) {
-			console.debug('init_inputs');
 			$(selector).change( function() {
 				if(this.name.indexOf('__input__') == -1){
 					save_field(url, this.name, this.value);
@@ -670,7 +644,6 @@ define(function(require, exports, module) {
 		}
 
 		this.onFieldChanged = function (event) {
-			console.debug('onFieldChanged');
 			if(event.target.name == 'instrument'){
 				if($('#instrument').val()!= '-1'){
 					$('#access_groups .field-list-element').remove();
@@ -688,7 +661,6 @@ define(function(require, exports, module) {
 		 * @param event {Event}
 		 */
 		this.onFieldPasted = function(event) {
-			console.debug('onFieldPasted');
 			var that=this;
 			/* timeout allows the pasted content to be available */
 			setTimeout(function () {
@@ -697,7 +669,6 @@ define(function(require, exports, module) {
 		}
 
 		this.onCheckboxChanged = function (event) {
-			console.debug('onCheckboxChanged');
 			if (event.target.name.indexOf('__input__') == -1 && event.target.name) {
 				if ($(event.target).prop("checked")) {
 					save_field(this.attr.save_url, event.target.name, event.target.value);
@@ -711,7 +682,6 @@ define(function(require, exports, module) {
 		 * Click form-button
 		 */
 		this.onButtonClick = function (event) {
-			console.debug('onButtonClick');
 			save_field(this.attr.save_url, event.target.name, true);
 			return false;
 		}
@@ -721,7 +691,6 @@ define(function(require, exports, module) {
 		 * CKEditor initialization
 		 */
 		function init_ckeditor(selector, url) {
-			console.debug('init_ckeditor');
 			$(selector).each(function(){
 				var options = $(this).data('ckeditorConfig');
 				if(options ===  undefined){
@@ -750,7 +719,6 @@ define(function(require, exports, module) {
 		 * Autocomplete initialization
 		 */
 		this.init_autocomplete = function(selector, save_url, url_template, handle_selection) {
-			console.debug('init_autocomplete');
 			var that = this;
 
 			$(selector).each(function(){
@@ -775,7 +743,6 @@ define(function(require, exports, module) {
 		 * Twitter typeahead.js support for autocompletion
 		 */
 		function init_typeahead_dataengine($item, url) {
-			console.debug('init_typeahead_dataengine');
 			var engine = new Bloodhound({
 				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -812,7 +779,6 @@ define(function(require, exports, module) {
 		 * @param handle_selection
 		 */
 		function connect_typeahead_events($item, save_url, handle_selection) {
-			console.debug('connect_typeahead_events');
 			$item.on('typeahead:selected', function(e, datum, name){
 				handle_selection(save_url, $item, datum, name);
 			});
@@ -830,7 +796,6 @@ define(function(require, exports, module) {
 		 * Handle selection of an autocomplete option
 		 */
 		function typeahead_selection(save_url, item, datum, name) {
-			console.debug('typeahead_selection');
 			if(typeof datum == 'string') {
 				var value = datum;
 				datum = {value: value, fields: {}};
@@ -865,7 +830,6 @@ define(function(require, exports, module) {
 				}
 
 				for(var field_name in datum.fields) {
-					console.debug('field_name in datum.fields')
 					handle_field_values(field_name, datum.fields[field_name]);
 					if(field_name == name) {
 						try {
@@ -889,7 +853,6 @@ define(function(require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.initAutocomplete = function(ev, data) {
-			console.debug('initAutocomplete');
 			var $item = $(data.item);
 			if ($item.attr('data-autocomplete') == 'default') {
 				init_typeahead_dataengine($item, data.url);
@@ -900,7 +863,6 @@ define(function(require, exports, module) {
 		 * Split paste text into multiple fields and elements.
 		 */
 		function paste_newline_splitter(field, data){
-			console.debug('paste_newline_splitter');
 			return data.split("\n").filter(function (item, idx, array){
 				return item.trim() !== "";
 			}).map(function (value){
@@ -918,7 +880,6 @@ define(function(require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.saveForm = function(ev, data) {
-			console.debug('saveForm');
 			save_data(data.url, this.serialize_form(data.form_selector), data.show);
 		}
 
@@ -929,12 +890,10 @@ define(function(require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.handleFieldMessage = function(ev, data) {
-			console.debug('handleFieldMessage');
 			handle_field_msg(data.name, data.data);
 		};
 
 		this.after('initialize', function() {
-			console.debug('after');
 			// Custom handlers
 			this.on('dataFormSave', this.saveForm);
 			this.on('dataFormSubmit', this.submitForm);
@@ -975,7 +934,6 @@ define(function(require, exports, module) {
 			});
 
             //Este metodo se le llama cuando se recarga la página completa
-			console.debug('instrument: ' + $('#instrument').val());
 			if($('#instrument').val()!= '-1'){
 			   // setTimeout(function() {
                 //    CKEDITOR.instances['access_conditions'].document.$.body.setAttribute("contenteditable", false);
@@ -999,7 +957,6 @@ define(function(require, exports, module) {
 				$('#access_groups .twitter-typeahead').show();
 				$('#access_groups .field-desc').show();
 			}
-			console.debug('fin after');
 		});
 	}
 })
