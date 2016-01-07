@@ -72,11 +72,46 @@ def getInstrument(idInstrument):
     result = urllib2.urlopen(req)
     return result.read().strip()
 
-
-def getFilteredInstrumentsByIdUser(idUser, fiter=""):
+def getUsergroupByIdInstrument(idInstrument):
     lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
-    req = urllib2.Request('%s/instrument/findfilteredselectablebyiduser?userId=%s&filter=%s' % (lfw_url, idUser, fiter))
+    req = urllib2.Request('%s/group/findbyinstrumentid?instrumentid=%s' % (lfw_url, idInstrument))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+
+def getFilteredInstrumentsByIdUser(idUser, filter):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    #current_app.logger.debug('lfw_url: *' + lfw_url + '*')
+    #current_app.logger.debug('idUser: *' + str(idUser) + '*')
+    #current_app.logger.debug('fiter :*' + filter + '*')
+    req = urllib2.Request('%s/instrument/findfilteredselectablebyiduser?userId=%s&filter=%s' % (lfw_url, idUser, filter))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+def getPaginatedInstrumentsByIdUser(idUser, filter, page, page_items):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    #current_app.logger.debug('lfw_url: *' + lfw_url + '*')
+    #current_app.logger.debug('idUser: *' + str(idUser) + '*')
+    #current_app.logger.debug('fiter :*' + filter + '*')
+    #current_app.logger.debug('page :*' + str(page) + '*')
+    #current_app.logger.debug('page_items :*' + str(page_items) + '*')
+    req = urllib2.Request('%s/instrument/findpaginatedbyiduser?userId=%s&filter=%s&page=%s&page_items=%s' % (lfw_url, idUser, filter,page,page_items))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+def getCountInstrumentsByIdUser(idUser, filter):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/counfilteredbyiduser?userId=%s&filter=%s' % (lfw_url, idUser, filter))
     base64string = getBase64StringAuth(lfw_service_json)
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)

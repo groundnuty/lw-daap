@@ -13,7 +13,8 @@ from invenio.ext.sqlalchemy import db
 from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
-from .service_utils import createInstrument, getFilteredInstrumentsByIdUser, addPermissionGroup, findInstrumentByName
+from .service_utils import createInstrument, getFilteredInstrumentsByIdUser, addPermissionGroup, findInstrumentByName, \
+    getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser
 from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
 
@@ -22,7 +23,10 @@ import urllib2, json
 
 from lw_daap.modules.instruments.models import Instrument
 from lw_daap.modules.instruments.forms import SearchForm, InstrumentForm
+from lw_daap.modules.instruments.pagination import Pagination
 
+from werkzeug import MultiDict
+from array import *
 
 blueprint = Blueprint(
     'lwdaap_instruments',
@@ -39,21 +43,30 @@ blueprint = Blueprint(
                  'page': (int, 1),
                  })
 def index(p, so, page):
-    instruments = Instrument.filter_instruments(p, so)
-    #instruments = getFilteredInstrumentsByIdUser(current_user['id'])
-
     page = max(page, 1)
     per_page = cfg.get('INSTRUMENTS_DISPLAYED_PER_PAGE', 9)
-    instruments = instruments.paginate(page, per_page=per_page)
+
+    instruments = getPaginatedInstrumentsByIdUser(current_user['id'],p, page, per_page)
+    count = getCountInstrumentsByIdUser(current_user['id'],p)
+    instruments_json = json.loads(instruments)
 
     form = SearchForm()
 
+    my_array = [None] * 0
+    for instrument in instruments_json:
+       i = Instrument.from_json(instrument)
+       my_array.append(i)
+
+    pagination = Pagination(page, per_page, count)
+
     ctx = dict(
-        instruments=instruments,
+        instruments=my_array,
         form=form,
         page=page,
         per_page=per_page,
+        pagination = pagination,
     )
+
     return render_template(
         "instruments/index.html",
         **ctx

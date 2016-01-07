@@ -106,7 +106,28 @@ class Instrument(db.Model):
 
     values = {}
 
+    def __init__(self, **kwargs):
+        super(Instrument, self).__init__(**kwargs)
 
+    def __init__(self, id, name, access_right, embargo_date, access_conditions, license, user_id):
+        self.id = id
+        self.user_id = user_id
+        self.name = name
+        self.access_right = access_right
+        self.embargo_date = embargo_date
+        self.access_conditions = access_conditions
+        self.license = license
+
+
+    @classmethod
+    def from_json(self, dct):
+        return Instrument(int(dct['idInstrument']),  dct['name'], dct['accessRight'], dct['embargoDate'], dct['conditions'], dct['license'],int(dct['owner']['idUser']))
+
+    def get_owner(self):
+        owner = User.query.filter_by(id=self.user_id).first()
+        current_app.logger.debug(owner)
+        current_app.logger.debug(owner.nickname)
+        return owner.nickname
 
     #
     # Collection management
@@ -363,6 +384,9 @@ class Instrument(db.Model):
         slice of them for the current page. If page == 0 function will return
         all instruments that match the pattern.
         """
+        #current_app.logger.debug(cls)
+        #current_app.logger.debug(p)
+        #current_app.logger.debug(so)
         query = cls.query
         if p:
             query = query.filter(db.or_(
