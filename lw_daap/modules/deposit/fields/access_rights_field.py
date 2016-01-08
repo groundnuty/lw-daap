@@ -39,7 +39,7 @@
 from wtforms import RadioField
 from wtforms.widgets import RadioInput, HTMLString
 from lw_daap.modules.invenio_deposit.field_base import WebDepositField
-
+from flask import current_app
 __all__ = ['AccessRightField']
 
 

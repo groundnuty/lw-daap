@@ -41,12 +41,12 @@ require(['jquery'], function($) {
       <h1><i class="fa fa-fw fa-list-alt"></i>{{ instrument.name }}</h1>
       <div style="padding: 10px 0 0 40px;">
         <label>Access right: </label>
-          {{ instrument.get_access_right(instrument.access_right) }}
+          {{ instrument.get_access_right() }}
       </div>
       {% if instrument.access_right == 'open' or instrument.access_right == 'embargoed' %}
       <div style="padding: 10px 0 0 40px;">
         <label>License: </label>
-          {{ instrument.get_license(instrument.license) }}
+          {{ instrument.get_license() }}
       </div>
       {% endif %}
       {% if instrument.access_right == 'embargoed' %}
@@ -58,13 +58,17 @@ require(['jquery'], function($) {
       {% if instrument.access_right == 'restricted' %}
       <div style="padding: 10px 0 0 40px;">
         <label>Conditions: </label>
-          {{ instrument.conditions }}
+          {{ instrument.access_conditions|safe }}
       </div>
       <div style="padding: 10px 0 0 40px;">
         <label>Groups: </label>
-
+          {{ instrument.get_groups() }}
       </div>
       {% endif %}
+      <div style="padding: 10px 0 0 40px;">
+        <label>Connection URL: </label>
+          {{ connection_url }}
+      </div>
     </div>
     {% if current_user.get_id() == instrument.user_id %}
 

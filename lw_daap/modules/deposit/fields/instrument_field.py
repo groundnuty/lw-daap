@@ -48,7 +48,9 @@ from lw_daap.modules.invenio_deposit.processor_utils import set_flag
 from invenio.modules.knowledge.api import get_kb_mappings
 from lw_daap.modules.instruments.service_utils import getAllInstruments
 from lw_daap.modules.instruments.service_utils import getInstrument
+from lw_daap.modules.instruments.service_utils import getUsergroupByIdInstrument
 from datetime import datetime
+from werkzeug import MultiDict
 from flask import current_app
 
 __all__ = ['InstrumentField']
@@ -62,36 +64,52 @@ def instrument_processor(form, field, submit=False, fields=None):
     form.access_conditions.flags.disabled = True
     form.access_groups.flags.hidden = True
     form.access_groups.flags.disabled = True
+    form.access_right.flags.hidden = True
+    form.access_right.flags.disabled = True
+    if field.data != '-1':
+        selected = getInstrument(field.data)
+        instrument = json.loads(selected)
+        accessRight = str(instrument['accessRight'])
+        license = str(instrument['license'])
+        embargoDate = str(instrument['embargoDate'])
+        conditions = str(instrument['conditions'])
+        groups = getUsergroupByIdInstrument(field.data)
+        groups_json = json.loads(groups)
+        d = MultiDict()
+        for group in groups_json:
+            info = {
+               u'identifier': unicode(str(group['idGroup'])),
+               u'title': group['name'],
+            }
+            d.add(unicode('access_groups'),info)
+        #current_app.logger.debug(d)
+        form.access_groups.process(d)
+        #MultiDict([(unicode('access_groups'),info)])
+        form.license.data = license
+        form.access_conditions.data = conditions
+        if embargoDate is not None and str(embargoDate) != 'None':
+            form.embargo_date.data = datetime.fromtimestamp(float(embargoDate)/1000.0).strftime('%Y-%m-%d')
+        if accessRight == 'embargoed':
+            form.embargo_date.flags.hidden = False
+            form.embargo_date.flags.disabled = False
 
+        if accessRight == 'restricted':
+            form.access_conditions.flags.hidden = False
+            form.access_conditions.flags.disabled = False
+            form.access_groups.flags.hidden = False
+            form.access_groups.flags.disabled = False
 
-    selected = getInstrument(field.data)
-    instrument = json.loads(selected)
-    accessRight = str(instrument['accessRight'])
-    license = str(instrument['license'])
-    embargoDate = str(instrument['embargoDate'])
-    conditions = str(instrument['conditions'])
-
-    form.license.data = license
-    form.access_conditions.data = conditions
-    if embargoDate is not None:
-        form.embargo_date.data = datetime.fromtimestamp(float(embargoDate)/1000.0).strftime('%Y-%m-%d')
-
-    if accessRight == 'embargoed':
-        form.embargo_date.flags.hidden = False
-        form.embargo_date.flags.disabled = False
-
-    if accessRight == 'restricted':
-        form.access_conditions.flags.hidden = False
-        form.access_conditions.flags.disabled = False
-        form.access_groups.flags.hidden = False
-        form.access_groups.flags.disabled = False
-
-    if accessRight in ['open', 'embargoed']:
+        if accessRight in ['open', 'embargoed']:
+            form.license.flags.hidden = False
+            form.license.flags.disabled = False
+        form.access_right.data = unicode(accessRight)
+    else:
+        form.access_right.data = 'open'
+        form.access_conditions.data = ''
         form.license.flags.hidden = False
         form.license.flags.disabled = False
-
-    form.access_right.data = accessRight
-    current_app.logger.debug(form.access_right)
+    form.access_right.flags.hidden = False
+    form.access_right.flags.disabled = False
 
 
 class InstrumentField(WebDepositField, SelectField):

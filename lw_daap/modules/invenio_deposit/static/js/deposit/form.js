@@ -130,7 +130,6 @@ define(function(require, exports, module) {
           uploader = this.select('uploaderSelector'),
           $checkboxes = $('input[type=checkbox]:not(:checked)'),
           $bootstrap_multiselect = $("[multiple=multiple]");
-
       if (uploader.length) {
         fields.push({
           name: 'files',
@@ -370,13 +369,36 @@ define(function(require, exports, module) {
               }
           } else if (field_lists !== undefined && name in field_lists &&
                      value instanceof Array) {
-              for(var i = 0; i < value.length; i++){
-                  field_lists[name].update_element(value[i], i);
-              }
+                  for(var i = 0; i < value.length; i++){
+                      field_lists[name].update_element(value[i], i);
+                  }
+
           } else {
-              if($('[name=' + name + ']').val() != value) {
-                  $('[name=' + name + ']').val(value);
-              }
+              if(name == 'access_right'){
+                $(":radio[value="+value+"]").prop("checked", true);
+                if($('#instrument').val()!= '-1'){
+                    $('[name=access_right]').attr('disabled',true);
+                    setTimeout(function() {
+                        CKEDITOR.instances['access_conditions'].document.$.body.setAttribute("contenteditable", false);
+                    }, 100);
+                    $('[name=license]').attr('readonly',true);
+                    $('[name=embargo_date]').attr('readonly',true);
+                    $('#access_groups-__input__-title').attr('disabled',true);
+                } else {
+                    $('[name=access_right]').attr('disabled',false);
+                    setTimeout(function() {
+                        CKEDITOR.instances['access_conditions'].document.$.body.setAttribute("contenteditable", true);
+                    }, 100);
+                    $('[name=license]').attr('readonly',false);
+                    $('[name=embargo_date]').attr('readonly',false);
+                    $('#access_groups-__input__-title').attr('disabled',false);
+                }
+               } else {
+                  if($('[name=' + name + ']').val() != value) {
+                      $('[name=' + name + ']').val(value);
+                  }
+               }
+
           }
       }
   }
@@ -472,10 +494,8 @@ define(function(require, exports, module) {
       if(flash_message === undefined){
           flash_message = false;
       }
-
       set_status(tpl_status_saving());
       set_loader(loader_selector, tpl_loader());
-
       $.ajax(
           json_options({url: url, data: request_data})
       ).done(function(data) {
@@ -620,6 +640,25 @@ define(function(require, exports, module) {
   }
 
   this.onFieldChanged = function (event) {
+    if(event.target.name == 'instrument'){
+            if($('#instrument').val()!= '-1'){
+                $('[name=access_right]').attr('disabled',true);
+                setTimeout(function() {
+                    CKEDITOR.instances['access_conditions'].document.$.body.setAttribute("contenteditable", false);
+                }, 100);
+                $('[name=license]').attr('readonly',true);
+                $('[name=embargo_date]').attr('readonly',true);
+                $('#access_groups-__input__-title').attr('disabled',true);
+            } else {
+                $('[name=access_right]').attr('disabled',false);
+                setTimeout(function() {
+                    CKEDITOR.instances['access_conditions'].document.$.body.setAttribute("contenteditable", true);
+                }, 100);
+                $('[name=license]').attr('readonly',false);
+                $('[name=embargo_date]').attr('readonly',false);
+                $('#access_groups-__input__-title').attr('disabled',false);
+            }
+    }
     if(event.target.name.indexOf('__input__') == -1){
               save_field(this.attr.save_url, event.target.name, $(event.target).val());
           }
@@ -662,6 +701,7 @@ define(function(require, exports, module) {
    * CKEditor initialization
    */
   function init_ckeditor(selector, url) {
+
       $(selector).each(function(){
           var options = $(this).data('ckeditorConfig');
           if(options ===  undefined){
@@ -673,7 +713,28 @@ define(function(require, exports, module) {
           ckeditor.on('blur',function(e){
               save_field(url, e.editor.name, e.editor.getData());
           });
+          if($(this).attr('name')== 'access_conditions' ){
+              ckeditor.on('instanceReady',function(e){
+                  if($('#instrument').val()!= '-1'){
+                        e.editor.document.$.body.setAttribute("contenteditable", false);
+                    } else{
+                         e.editor.document.$.body.setAttribute("contenteditable", true);
+                    }
+              });
+          }
       });
+
+        if($('#instrument').val()!= '-1'){
+            $('[name=access_right]').attr('disabled',true);
+            $('[name=license]').attr('readonly',true);
+            $('[name=embargo_date]').attr('readonly',true);
+            $('#access_groups-__input__-title').attr('disabled',true);
+        } else {
+            $('[name=access_right]').attr('disabled',false);
+            $('[name=license]').attr('readonly',false);
+            $('[name=embargo_date]').attr('readonly',false);
+            $('#access_groups-__input__-title').attr('disabled',false);
+        }
   }
 
 

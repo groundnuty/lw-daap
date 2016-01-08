@@ -23,6 +23,23 @@ from flask import current_app
 
 from lw_daap.modules.deposit.fields.access_rights_field import ACCESS_RIGHTS_CHOICES
 from lw_daap.modules.deposit.fields.license_field import _kb_license_choices
+from .forms import InstrumentForm
+from invenio.base.helpers import unicodifier
+from werkzeug.datastructures import MultiDict
+from .service_utils import findGroupByInstrumentId
+
+CFG_FIELD_FLAGS = [
+    'hidden',
+    'disabled'
+]
+
+class DepositionError(Exception):
+    """Base class for deposition errors."""
+    pass
+
+class FormDoesNotExists(DepositionError):
+    """Raise when a draft does not exists."""
+    pass
 
 
 class Instrument(db.Model):
@@ -60,7 +77,7 @@ class Instrument(db.Model):
                                 )
                            )
 
-    conditions = db.Column(db.String(length=4000),
+    access_conditions = db.Column(db.String(length=4000),
                             nullable=True, default='',
                             info=dict(
                                 label=_("Conditions"),
@@ -82,6 +99,23 @@ class Instrument(db.Model):
     user = db.relationship(
         User, backref=db.backref("instruments", uselist=False,
                                  cascade="all, delete-orphan"))
+
+    form_class = InstrumentForm
+
+    flags = {}
+
+    values = {}
+
+    @classmethod
+    def from_json(self, dct):
+        return Instrument(id = dct['idInstrument'], user_id=int(dct['owner']['idUser']), name = dct['name'], access_right = dct['accessRight'],
+                embargo_date = dct['embargoDate'], access_conditions=dct['conditions'], license = dct['license'])
+
+    def get_owner(self):
+        owner = User.query.filter_by(id=self.user_id).first()
+        current_app.logger.debug(owner)
+        current_app.logger.debug(owner.nickname)
+        return owner.nickname
 
     #
     # Collection management
@@ -296,6 +330,37 @@ class Instrument(db.Model):
             return None
 
     @classmethod
+    def get_or_create(cls):
+        instance = cls.get()
+        if instance:
+            return instance
+        else:
+            return cls.create()
+
+    @classmethod
+    def create(cls):
+        try:
+            obj = cls(
+                user_id=current_user.get_id(),
+            )
+            db.session.add(obj)
+            db.session.commit()
+            # PROFILE CREATE SIGNAL
+            return obj
+        except IntegrityError as e:
+            db.session.rollback()
+            raise e
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def get(cls):
+        try:
+            return cls.query.filter_by(user_id=current_user.get_id()).one()
+        except NoResultFound:
+            return None
+
+    @classmethod
     def filter_instruments(cls, p, so):
         """Search for instruments.
 
@@ -307,6 +372,9 @@ class Instrument(db.Model):
         slice of them for the current page. If page == 0 function will return
         all instruments that match the pattern.
         """
+        #current_app.logger.debug(cls)
+        #current_app.logger.debug(p)
+        #current_app.logger.debug(so)
         query = cls.query
         if p:
             query = query.filter(db.or_(
@@ -318,37 +386,177 @@ class Instrument(db.Model):
             query = query.order_by(order(getattr(cls, so)))
         return query
 
-    @classmethod
-    def get_access_right(self, id_access_right):
+
+    def get_access_right(self):
         for tuple in ACCESS_RIGHTS_CHOICES:
-            if tuple[0] == id_access_right:
+            if tuple[0] == self.access_right:
                 return tuple[1]
 
-    def get_license(self, id_license):
+    def get_license(self):
         licenses = _kb_license_choices(True, True, True)
         for tuple in licenses:
-            if tuple[0] == id_license:
+            if tuple[0] == self.license:
                 return tuple[1]
 
+    def get_groups(self):
+        import json
+        groups = findGroupByInstrumentId(self.id)
+        groups_text = ""
+        for group in json.loads(groups):
+            groups_text += group['name'] + " | "
+        return groups_text[:-3]
 
-#    @classmethod
-#    def get_user_instruments(cls, user):
-#        gids = [g.id for g in Group.query_by_uid(user.get_id())]
-#        return Instrument.query.filter(Instrument.id_group.in_(gids))
+    def complete(self):
+        """
+        Set state of draft to completed.
+        """
+        self.completed = True
+
+    def get_form(self, formdata=None, load_draft=True,
+                 validate_draft=False):
+        """
+        Create form instance with draft data and form data if provided.
+
+        :param formdata: Incoming form data.
+        :param files: Files to ingest into form
+        :param load_draft: True to initialize form with draft data.
+        :param validate_draft: Set to true to validate draft data, when no form
+             data is provided.
+        """
+        if not self.has_form():
+            raise FormDoesNotExists(self.id)
+
+        draft_data = unicodifier(self.values) if load_draft else {}
+        formdata = MultiDict(formdata or {})
+
+        form = self.form_class(
+            formdata=formdata, **draft_data
+        )
+
+        if formdata:
+            form.reset_field_data(exclude=formdata.keys())
+
+        # Set field flags
+        if load_draft and self.flags:
+            form.set_flags(self.flags)
+
+        if validate_draft and draft_data and formdata is None:
+            form.validate()
+
+        return form
+
+    def has_form(self):
+        return self.form_class is not None
+
+    def process(self, data, complete_form=False):
+        """
+        Process, validate and store incoming form data and return response.
+        """
 
 
-#
-# Directly taken from invenio.modules.communities
-#
-def update_changed_fields(obj, fields):
-    """Utility method to update fields on an object if they have changed.
+        # The form is initialized with form and draft data. The original
+        # draft_data is accessible in Field.object_data, Field.raw_data is the
+        # new form data and Field.data is the processed form data or the
+        # original draft data.
+        #
+        # Behind the scences, Form.process() is called, which in turns call
+        # Field.process_data(), Field.process_formdata() and any filters
+        # defined.
+        #
+        # Field.object_data contains the value of process_data(), while
+        # Field.data contains the value of process_formdata() and any filters
+        # applied.
 
-    Will also report back if any changes where made.
-    """
-    dirty = False
-    for attr, newval in fields.items():
-        val = getattr(obj, attr)
-        if val != newval:
-            setattr(obj, attr, newval)
-            dirty = True
-    return dirty
+
+        # Run form validation which will call Field.pre_valiate(),
+        # Field.validators, Form.validate_<field>() and Field.post_validate().
+        # Afterwards Field.data has been validated and any errors will be
+        # present in Field.errors.
+        # validated = form.validate()
+        form = self.get_form(formdata=data)
+        validated = form.validate()
+
+        # Call Form.run_processors() which in turn will call
+        # Field.run_processors() that allow fields to set flags (hide/show)
+        # and values of other fields after the entire formdata has been
+        # processed and validated.
+        validated_flags, validated_data, validated_msgs = (
+            form.get_flags(), form.data, form.messages
+        )
+
+        form.post_process(formfields=[] if complete_form else data.keys())
+        post_processed_flags, post_processed_data, post_processed_msgs = (
+            form.get_flags(), form.data, form.messages
+        )
+
+        # Save form values
+        self.update(form)
+
+        # Build result dictionary
+        process_field_names = None if complete_form else data.keys()
+
+
+        # Determine if some fields where changed during post-processing.
+        changed_values = dict(
+            (name, value) for name, value in post_processed_data.items()
+            if validated_data[name] != value
+        )
+
+        # Determine changed flags
+        changed_flags = dict(
+            (name, flags) for name, flags in post_processed_flags.items()
+            if validated_flags.get(name, []) != flags
+        )
+        # Determine changed messages
+        changed_msgs = dict(
+            (name, messages) for name, messages in post_processed_msgs.items()
+            if validated_msgs.get(name, []) != messages or
+            process_field_names is None or name in process_field_names
+        )
+
+        result = {}
+
+
+        if changed_msgs:
+            result['messages'] = changed_msgs
+        if changed_values:
+            result['values'] = changed_values
+
+
+        if 'access_right' in data:
+            if post_processed_data['access_right'] == 'open':
+                result['hidden_off'] = ['name', 'license', 'access_right']
+                result['hidden_on'] = ['embargo_date', 'access_groups', 'access_conditions']
+                result['disabled_off'] = ['name', 'license', 'access_right']
+                result['disabled_on'] = ['embargo_date', 'access_groups', 'access_conditions']
+            if post_processed_data['access_right'] == 'embargoed':
+                result['hidden_off'] = ['name', 'license', 'access_right', 'embargo_date']
+                result['hidden_on'] = ['access_groups', 'access_conditions']
+                result['disabled_off'] = ['name', 'license', 'access_right', 'embargo_date']
+                result['disabled_on'] = ['access_groups', 'access_conditions']
+            if post_processed_data['access_right'] == 'restricted':
+                result['hidden_off'] = ['name', 'access_right', 'access_groups', 'access_conditions']
+                result['hidden_on'] = ['license', 'embargo_date']
+                result['disabled_off'] = ['name', 'access_right', 'access_groups', 'access_conditions']
+                result['disabled_on'] = ['license', 'embargo_date']
+            if post_processed_data['access_right'] == 'closed':
+                result['hidden_off'] = ['name', 'access_right']
+                result['hidden_on'] = ['access_groups', 'access_conditions', 'license', 'embargo_date']
+                result['disabled_off'] = ['name', 'access_right']
+                result['disabled_on'] = ['access_groups', 'access_conditions', 'license', 'embargo_date']
+
+        return form, validated, result
+
+    def update(self, form):
+        """
+        Update draft values and flags with data from form.
+        """
+        data = dict((key, value) for key, value in form.data.items()
+                    if value is not None)
+        self.values = data
+        self.flags = form.get_flags()
+
+    def __str__(self):
+        instrumentStr = self.name + ',' + self.access_right + ',' + \
+                        self.access_conditions + ',' + self.license + ',' + str(self.embargo_date)
+        return instrumentStr

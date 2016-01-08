@@ -277,7 +277,6 @@ class FieldList(WebDepositField, wtforms.FieldList):
         if issubclass(self.unbound_field.field_class, FormField):
             separator = self.unbound_field.kwargs.get('separator', '-')
         offset = len(self.name) + 1
-
         if name.startswith(self.name):
             idx = name[offset:].split(separator, 1)[0]
             field = self.bound_field(idx)
