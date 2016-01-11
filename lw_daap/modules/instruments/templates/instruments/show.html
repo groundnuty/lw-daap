@@ -49,6 +49,20 @@ require(['jquery'], function($) {
           {{ instrument.get_license() }}
       </div>
       {% endif %}
+      {% if instrument.access_right == 'open' %}
+      <div style="padding: 10px 0 0 40px;">
+        <label>DB Public User: </label>
+          {{ dbuser }}
+      </div>
+      <div style="padding: 10px 0 0 40px;">
+        <label>DB Public Password: </label>
+          {{ dbpass }}
+      </div>
+      <div style="padding: 10px 0 0 40px;">
+        <label>DB tablename: </label>
+          {{ tablename }}
+      </div>
+      {% endif %}
       {% if instrument.access_right == 'embargoed' %}
       <div style="padding: 10px 0 0 40px;">
         <label>Embargo Date: </label>

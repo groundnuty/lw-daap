@@ -97,7 +97,7 @@ def getFilteredInstrumentsByIdUser(idUser, filter):
 def getPaginatedInstrumentsByIdUser(idUser, filter, page, page_items):
     lfw_service_json = getServiceJsonParamenters()
     lfw_url = lfw_service_json['lfw_service']
-    #current_app.logger.debug('lfw_url: *' + lfw_url + '*')
+    current_app.logger.debug('lfw_url: *' + lfw_url + '*')
     #current_app.logger.debug('idUser: *' + str(idUser) + '*')
     #current_app.logger.debug('fiter :*' + filter + '*')
     #current_app.logger.debug('page :*' + str(page) + '*')
@@ -143,3 +143,22 @@ def findInstrumentByName(name):
     req.add_header("Authorization", "Basic %s" % base64string)
     result = urllib2.urlopen(req)
     return result.read().strip()
+
+def getDBPublicUser(idInstrument):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/dbpublicuser?id=%s' % (lfw_url, idInstrument))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+
+def getDBPublicPass(idInstrument):
+    lfw_service_json = getServiceJsonParamenters()
+    lfw_url = lfw_service_json['lfw_service']
+    req = urllib2.Request('%s/instrument/dbpublicpass?id=%s' % (lfw_url, idInstrument))
+    base64string = getBase64StringAuth(lfw_service_json)
+    req.add_header("Authorization", "Basic %s" % base64string)
+    result = urllib2.urlopen(req)
+    return result.read().strip()
+

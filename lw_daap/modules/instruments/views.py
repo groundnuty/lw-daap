@@ -146,9 +146,11 @@ def new():
 @wash_arguments({'page': (int, 1)})
 def show(instrument_id, page):
     instrument = Instrument.query.get_or_404(instrument_id)
-    userInfo = getUserInfoByPortalUser(current_user['nickname'])
-    userInfoJson = json.loads(userInfo)
-    connection_url = "jdbc://"+userInfoJson['databaseUser']
+
+    dbuser = getDBPublicUser(instrument_id)
+    dbpass = getDBPublicUser(instrument_id)
+    tablename = "INST_CONTENT_" + instrument.name
+
     tabs = {
         'public': {
             'template': 'instruments/show.html',
@@ -171,7 +173,9 @@ def show(instrument_id, page):
     ctx = dict(
         instrument=instrument,
         records=records,
-        connection_url=connection_url,
+        tablename=tablename.upper(),
+        dbuser=dbuser,
+        dbpass=dbpass,
         format_record=format_record,
         page=page,
         per_page=per_page,
