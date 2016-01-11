@@ -14,7 +14,7 @@ from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
 from .service_utils import createInstrument, getFilteredInstrumentsByIdUser, addPermissionGroup, findInstrumentByName, \
-    getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser
+    getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser, getDBPublicUser, getDBPublicPass
 from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
 
@@ -147,6 +147,10 @@ def new():
 def show(instrument_id, page):
     instrument = Instrument.query.get_or_404(instrument_id)
 
+    dbuser = getDBPublicUser(instrument_id)
+    dbpass = getDBPublicUser(instrument_id)
+    tablename = "INST_CONTENT_" + instrument.name
+
     tabs = {
         'public': {
             'template': 'instruments/show.html',
@@ -169,6 +173,9 @@ def show(instrument_id, page):
     ctx = dict(
         instrument=instrument,
         records=records,
+        tablename=tablename.upper(),
+        dbuser=dbuser,
+        dbpass=dbpass,
         format_record=format_record,
         page=page,
         per_page=per_page,
