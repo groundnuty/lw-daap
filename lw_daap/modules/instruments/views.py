@@ -15,6 +15,7 @@ from invenio.modules.formatter import format_record
 from lw_daap.ext.login import login_required
 from .service_utils import createInstrument, getFilteredInstrumentsByIdUser, addPermissionGroup, findInstrumentByName, \
     getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser, getDBPublicUser, getDBPublicPass
+
 from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
 

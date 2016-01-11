@@ -26,18 +26,18 @@ from sqlalchemy.exc import IntegrityError
 
 from invenio.base.i18n import _
 from invenio.ext.sqlalchemy import db
-from invenio.modules.accounts.models import Usergroup
+from lw_daap.modules.invenio_groups.models import Group
 from lw_daap.modules.instruments.models import Instrument
 
 
-class UsergroupInstrument(db.Model):
-    __tablename__ = 'usergroup_instrument'
+class GroupInstrument(db.Model):
+    __tablename__ = 'group_instrument'
 
     """ Fields """
     id = db.Column(db.Integer(255, unsigned=True),
                         nullable=False, primary_key=True,
                         )
-    usergroup_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(Usergroup.id),
+    group_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(Group.id),
                         nullable=False,
                         )
     instrument_id = db.Column(db.Integer(255, unsigned=True), db.ForeignKey(Instrument.id),

@@ -106,22 +106,10 @@ class Instrument(db.Model):
 
     values = {}
 
-    def __init__(self, **kwargs):
-        super(Instrument, self).__init__(**kwargs)
-
-    def __init__(self, id, name, access_right, embargo_date, access_conditions, license, user_id):
-        self.id = id
-        self.user_id = user_id
-        self.name = name
-        self.access_right = access_right
-        self.embargo_date = embargo_date
-        self.access_conditions = access_conditions
-        self.license = license
-
-
     @classmethod
     def from_json(self, dct):
-        return Instrument(int(dct['idInstrument']),  dct['name'], dct['accessRight'], dct['embargoDate'], dct['conditions'], dct['license'],int(dct['owner']['idUser']))
+        return Instrument(id = dct['idInstrument'], user_id=int(dct['owner']['idUser']), name = dct['name'], access_right = dct['accessRight'],
+                embargo_date = dct['embargoDate'], access_conditions=dct['conditions'], license = dct['license'])
 
     def get_owner(self):
         owner = User.query.filter_by(id=self.user_id).first()

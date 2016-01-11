@@ -66,11 +66,10 @@ def instrument_processor(form, field, submit=False, fields=None):
     form.access_groups.flags.disabled = True
     form.access_right.flags.hidden = True
     form.access_right.flags.disabled = True
-    current_app.logger.debug("HOLA")
+
     if field.data != '-1':
         selected = getInstrument(field.data)
         instrument = json.loads(selected)
-        current_app.logger.debug(instrument)
         accessRight = str(instrument['accessRight'])
         license = str(instrument['license'])
         embargoDate = str(instrument['embargoDate'])
