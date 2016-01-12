@@ -14,7 +14,7 @@ from invenio.modules.formatter import format_record
 
 from lw_daap.ext.login import login_required
 from .service_utils import createInstrument, getFilteredInstrumentsByIdUser, addPermissionGroup, findInstrumentByName, \
-    getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser, getDBPublicUser, getDBPublicPass
+    getPaginatedInstrumentsByIdUser, getCountInstrumentsByIdUser, getDBPublicUser, getDBPublicPass, getDBUrl
 
 from lw_daap.modules.profile.service_utils import getUserInfoByPortalUser
 from lw_daap.modules.profile.models import UserProfile
@@ -151,6 +151,7 @@ def show(instrument_id, page):
     dbuser = getDBPublicUser(instrument_id)
     dbpass = getDBPublicUser(instrument_id)
     tablename = "INST_CONTENT_" + instrument.name
+    db_url = getDBUrl()
 
     tabs = {
         'public': {
@@ -177,6 +178,7 @@ def show(instrument_id, page):
         tablename=tablename.upper(),
         dbuser=dbuser,
         dbpass=dbpass,
+        dburl=db_url,
         format_record=format_record,
         page=page,
         per_page=per_page,
