@@ -94,6 +94,22 @@ def has_doi(obj, eng):
     return False
 
 
+def skip_files(obj, eng):
+    if has_doi(obj, eng):
+        return True
+    d = Deposition(obj)
+    try:
+        draft = d.get_draft("_metadata")
+        if draft.values.get('upload_type', '') == 'dataset':
+            if int(draft.values.get('instrument', -1)) != -1:
+                current_app.logger.debug(draft.values)
+                return True
+    except (DraftDoesNotExists, ValueError):
+        # this should never happen
+        pass
+    return False
+
+
 def is_api_request(obj, end):
     return getattr(request, 'is_api_request', False)
 
@@ -682,7 +698,7 @@ class upload(DepositionType):
                   ],
                   ),
         p.IF_NOT(
-            has_doi,
+            skip_files,
             [
                 p.IF_ELSE(is_api_request,
                           # Test all files are availables for API
