@@ -277,11 +277,11 @@ class InstrumentForm(WebDepositForm):
     # Grouping of fields
     #
     groups = [
-        ('<i class="fa fa-info"></i> Instrument information', [
+        ('<i class="fa fa-info"></i> Information', [
             'name', 'access_right', 'embargo_date'
-            , 'license', 'access_access_conditions', 'access_groups'
+            , 'license', 'access_conditions', 'access_groups'
         ], {
-            # 'classes': '',
+            'classes': 'in',
             'indication': 'optional',
         }),
     ]

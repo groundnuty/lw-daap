@@ -37,7 +37,7 @@ blueprint = Blueprint(
     template_folder="templates",
 )
 @blueprint.route('/', methods=['GET', ])
-@register_menu(blueprint, 'main.instruments', _('Instruments'), order=2)
+@register_menu(blueprint, 'main.instruments', _('Instruments'), order=3)
 @register_breadcrumb(blueprint, '.', _('Instruments'))
 @wash_arguments({'p': (unicode, ''),
                  'so': (unicode, ''),
@@ -149,7 +149,7 @@ def show(instrument_id, page):
     instrument = Instrument.query.get_or_404(instrument_id)
 
     dbuser = getDBPublicUser(instrument_id)
-    dbpass = getDBPublicUser(instrument_id)
+    dbpass = getDBPublicPass(instrument_id)
     tablename = "INST_CONTENT_" + instrument.name
     db_url = getDBUrl()
 

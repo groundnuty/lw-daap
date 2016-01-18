@@ -71,48 +71,64 @@
 
 <div class="row">
   <div id="file_container" class="col-sm-12 col-md-12">
-    <!--<form action="." method="POST" id="edit_form" class="form-horizontal" role="form">-->
     <form enctype="multipart/form-data" name="submitForm" id="submitForm"
         role="form" class="form-horizontal" method="post"
         action=".">
         <div class="well">
-        <button type="submit" class="btn btn-primary pull-right edit-form-submit">
-          <i class="fa fa-floppy-o fa-fw"></i>
-          Save
-        </button>
-        <div class="clearfix"></div>
+            <button type="submit" class="btn btn-primary pull-right edit-form-submit">
+              <i class="fa fa-floppy-o fa-fw"></i>
+              Save
+            </button>
+            <div class="clearfix"></div>
 
-      </div>
+        </div>
+
+        <div class="panel-list-wrapper">
           {% block form_body scoped %}
           {% for group, fields in form.get_groups() %}
-          {% set grouploop = loop %}
-          {% block form_group scoped %}
-          {% if grouploop.first %}
-          <div class="panel-list-wrapper">
-            <div id="webdeposit_form_accordion">
-              {% endif %}
-              {% block form_group_body scoped %}
-              {% if group and group.meta.description %}
-              <p>{{ group.meta.description|urlize }}</p>
-              {% endif %}
+            <div class="panel panel-default">
+                {% set grouploop = loop %}
+              {% block form_group scoped %}
+              {% if grouploop.first %}
+              <div class="panel-heading">
+                <a class="panel-toggle" data-toggle="collapse" data-idx="{{grouploop.index}}" href="#collapse{{grouploop.index}}">
+                <span class="show-on-collapsed pull-right">
+                    <i class="fa fa-chevron-down"></i>
+                </span>
+                <span class="hide-on-collapsed pull-right">
+                    <i class="fa fa-chevron-up"></i>
+                </span>
+                {{group.name|safe}}</a>
+              </div>
+                <div id="collapse{{grouploop.index}}" class="panel-body collapse{% if group.meta.classes %} {{group.meta.classes}}{% endif %}">
+                  {% endif %}
+                  {% block form_group_body scoped %}
 
-              {% block fieldset scoped %}
-              {% for field in fields %}
-              {% block field_body scoped %}
-              {{ field_display(field, field_class="form-control") }}
-              {% endblock field_body %}
-              {% endfor %}
-              {% endblock fieldset %}
-              {% endblock form_group_body%}
+                    <fieldset>
+                        {% if group and group.meta.description %}
+                          <p>{{ group.meta.description|urlize }}</p>
+                      {% endif %}
 
-              {% if grouploop.last %}
+                      {% block fieldset scoped %}
+                      {% for field in fields %}
+                      {% block field_body scoped %}
+                      {{ field_display(field, field_class="form-control") }}
+                      {% endblock field_body %}
+                      {% endfor %}
+                      {% endblock fieldset %}
+                    </fieldset>
+                  {% endblock form_group_body%}
+
+                  {% if grouploop.last %}
+                </div>
+              </div>
+              <div class="spacer30"></div>
+              {% endif %}
+              {% endblock form_group %}
             </div>
-          </div>
-          <div class="spacer30"></div>
-          {% endif %}
-          {% endblock form_group %}
           {% endfor %}
           {% endblock form_body %}
+        </div>
     </form>
     <div class="spacer30"></div>
   </div>

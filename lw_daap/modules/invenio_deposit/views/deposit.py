@@ -117,7 +117,7 @@ def deposition_error_handler(endpoint='.index'):
 
 @blueprint.route('/')
 @login_required
-@register_menu(blueprint, 'main.webdeposit', _('Deposit'), order=3)
+@register_menu(blueprint, 'main.webdeposit', _('Deposit'), order=4)
 @register_breadcrumb(blueprint, '.', _('Deposit'))
 def index():
     """Render the deposition index page.

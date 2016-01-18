@@ -57,7 +57,7 @@ def create_infra_action_roles():
 
 
 @blueprint.route('/')
-@register_menu(blueprint, 'main.analyze', 'Analyze', order=4)
+@register_menu(blueprint, 'main.analyze', 'Analyze', order=5)
 #@permission_required(INFRA_ACCESS)
 @login_required
 def index():
