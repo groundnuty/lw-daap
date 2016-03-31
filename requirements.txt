@@ -20,3 +20,5 @@ python-etcd
 intbitset==2.0
 # setuptools 18.6 breaks installing with -e
 setuptools==18.5
+# WTFroms-components 0.10.0 breaks things
+WTForms-components==0.9.9
