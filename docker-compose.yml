@@ -1,3 +1,14 @@
+oneclient:
+  image: onedata/oneclient:3.0.0-rc9
+  privileged: true
+  # dns: 8.8.8.8 # uncomment if container can't ping any domain
+  volumes:
+    - /mnt/oneclinet
+  environment:
+    PROVIDER_HOSTNAME: $PROVIDER_HOSTNAME
+    ONECLIENT_AUTHORIZATION_TOKEN: $ONECLIENT_AUTHORIZATION_TOKEN
+    NO_CHECK_CERTIFICATE: 'true'
+
 app:
   build: .
   dockerfile: Dockerfile.app
